@@ -1,0 +1,337 @@
+/*
+ * Copyright (C) 2019 Key Parker from K.I.C.
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+ * MA 02110-1301  USA
+ */
+
+package nextzz.ppplocalui;
+
+import java.util.Arrays;
+import java.util.List;
+import kosui.ppplocalui.EcButton;
+import kosui.ppplocalui.EcConst;
+import kosui.ppplocalui.EcElement;
+import kosui.ppplocalui.EcGauge;
+import kosui.ppplocalui.EcGraph;
+import kosui.ppplocalui.EcIcon;
+import kosui.ppplocalui.EcLamp;
+import kosui.ppplocalui.EcShape;
+import kosui.ppplocalui.EcText;
+import kosui.ppplocalui.EcValueBox;
+import kosui.ppplocalui.EiGroup;
+import kosui.ppputil.VcConst;
+import nextzz.pppmain.MainSketch;
+
+public final class SubVBondGroup implements EiGroup{
+  
+  private static final SubVBondGroup SELF = new SubVBondGroup();
+  public static SubVBondGroup ccRefer(){return SELF;}//+++
+
+  //===
+  
+  //-- indicative
+  public final EcShape cmPlate = new EcShape();
+  public final EcValueBox cmTargetTemperatureTB
+    = new EcValueBox("&vbtarget", "+000 'C", 0x3611);
+  public final EcValueBox cmChuteTemperatureTB
+    = new EcValueBox("&vbagc", "+000 'C");
+  public final EcValueBox cmVDPressureCB
+    = new EcValueBox("&vdpb", "+000 kpa");
+  public final EcValueBox cmBelconFlowCB
+    = new EcValueBox("&agsc", "000 tph");
+  public final EcGauge cmVDContentLV
+    = new EcGauge();
+  public final EcValueBox cmEntranceTemperatureCB
+    = new EcValueBox("&bagenc", "+000 'C");
+  public final EcLamp
+    cmBagHighLV = new EcLamp(" "),
+    cmBagLowLV = new EcLamp(" ")
+  ;//...
+  public final EcElement
+    cmAirPulsePL = new EcElement("- - - -"),
+    cmExfanPressurePL = new EcElement(" "),
+    cmBurnerPressurePL = new EcElement(" "),
+    cmBurnerIGPL = new EcElement(" "),
+    cmBurnerPVPL = new EcElement(" "),
+    cmBurnerMVPL = new EcElement(" ")
+  ;//...
+  
+  //-- graphic 
+  public final EcShape cmVDryerShape
+    = new EcGraph(ConstLocalUI.O_V_DRYER);
+  public final EcShape cmBagFilterShape
+    = new EcGraph(ConstLocalUI.O_BAGFILTER);
+  public final EcShape cmFirstDuctShape
+    = new EcGraph(ConstLocalUI.O_FIRST_DUCT);
+  public final EcShape cmSecondDuctShape
+    = new EcGraph(ConstLocalUI.O_SECOND_DUCT);
+  public final EcIcon cmBurnerIcon
+    = new EcIcon(ConstLocalUI.O_V_BURNER_ON, ConstLocalUI.O_V_BURNER_OFF);
+  public final EcIcon cmExfanIcon
+    = new EcIcon(ConstLocalUI.O_V_EXFAN_ON, ConstLocalUI.O_V_EXFAN_OFF);
+  
+  //-- operative
+  public final EcElement cmReadyPL = new EcElement("&ready");
+  public final EcButton cmStartSW = new EcButton("&start", 0x3621);
+  public final EcValueBox cmBurnerDegreeCB = new EcValueBox("&vbo", "+000 %");
+  public final EcValueBox cmExfanDegreeCB = new EcValueBox("&vdo", "+000 %");
+  public final EcButton
+    cmExfanCloseSW = new EcButton("-", 0x3641),
+    cmExfanOpenSW  = new EcButton("+", 0x3642),
+    cmExfanAutoSW  = new EcButton("#", 0x3640)
+  ;//...
+  public final EcButton
+    cmBurnerCloseSW = new EcButton("-", 0x3631),
+    cmBurnerOpenSW  = new EcButton("+", 0x3632),
+    cmBurnerAutoSW  = new EcButton("#", 0x3630)
+  ;//...
+  public final EcElement 
+    cmOilPL = new EcElement("&oill"),
+    cmGasPL = new EcElement("&gass"),
+    cmHeavyPL = new EcElement("&hevo"),
+    cmFuelPL = new EcElement("&feuo")
+  ;//...
+  public final EcText
+    cmVExfanText = new EcText("&ve"),
+    cmVBurnerText = new EcText("&vb")
+  ;//...
+  
+  //-- belcon
+  public final EcShape cmBelconShape = new EcShape();
+  public final EcLamp
+    cmBelconForwarPL = new EcLamp("<"),
+    cmBelconBackwardPL = new EcLamp("|")
+  ;//...
+  
+  //===
+  
+  private SubVBondGroup(){
+    
+    int lpPotentialX;
+    int lpPotentialY;
+    int lpPotentialW;
+    int lpPotentialH;
+    
+    //-- plate
+    cmPlate.ccSetLocation(SubVFeederGroup.ccRefer().cmPlate,
+      0,
+      ConstLocalUI.C_SIDE_MARGIN
+    );
+    cmPlate.ccSetW(SubVFeederGroup.ccRefer().cmPlate.ccGetW());
+    cmPlate.ccSetBaseColor
+      (EcConst.ccAdjustColor(MainSketch.C_BACKGROUD, -8));
+    
+    //-- assert
+    final int lpDryerGaugeGap=6;
+    final int lpDryerCaseGap=8;
+    final int lpDryerHeight=cmVDPressureCB.ccGetH()
+      + lpDryerGaugeGap*2+lpDryerCaseGap*2;
+    final int lpDryerWidth=cmVDPressureCB.ccGetW()
+      + lpDryerGaugeGap*2+lpDryerCaseGap*2;
+    /* 4 */VcConst.ccLogln("vd-w",lpDryerWidth);
+    /* 4 */VcConst.ccLogln("vd-h",lpDryerHeight);
+    cmPlate.ccSetH(
+      lpDryerHeight*2+cmVDPressureCB.ccGetH()*2
+        + ConstLocalUI.C_INPANE_GAP*12
+    );
+    
+    //-- burning temperature
+    cmTargetTemperatureTB.ccSetLocation(cmPlate, 
+      ConstLocalUI.C_INPANE_GAP, ConstLocalUI.C_INPANE_GAP
+    );
+    cmChuteTemperatureTB.ccSetLocation(cmTargetTemperatureTB,
+      0, ConstLocalUI.C_INPANE_GAP
+    );
+    
+    //-- BOND!!
+    lpPotentialX=cmPlate.ccGetW()/3+cmPlate.ccGetX();
+    lpPotentialY=cmPlate.ccGetY()+ConstLocalUI.C_INPANE_GAP*2;
+    cmBagFilterShape.ccSetLocation(lpPotentialX, lpPotentialY);
+    cmVDryerShape.ccSetLocation(cmBagFilterShape,
+      0,
+      ConstLocalUI.C_INPANE_GAP*2
+    );
+    cmVDContentLV.ccSetSize(
+      cmVDPressureCB.ccGetW()+lpDryerGaugeGap*2,
+      cmVDPressureCB.ccGetH()+lpDryerGaugeGap*2
+    );
+    cmVDContentLV.ccSetLocation(cmVDryerShape, lpDryerCaseGap*2,lpDryerCaseGap);
+    cmVDPressureCB.ccSetLocation(cmVDContentLV,lpDryerGaugeGap,lpDryerGaugeGap);
+    cmEntranceTemperatureCB.ccSetLocation(
+      cmVDryerShape.ccEndX()-cmEntranceTemperatureCB.ccGetW(),
+      cmBagFilterShape.ccCenterY()-cmEntranceTemperatureCB.ccGetH()/2
+    );
+    
+    //-- FAN!!
+    cmExfanIcon.ccSetLocation(cmBagFilterShape.ccGetX()
+      - cmExfanIcon.ccGetW()-ConstLocalUI.C_INPANE_GAP*8,
+      cmBagFilterShape.ccGetY()+ConstLocalUI.C_INPANE_GAP*4
+    );
+    cmBurnerIcon.ccSetLocation(cmVDryerShape.ccGetX()
+      - cmBurnerIcon.ccGetW()-ConstLocalUI.C_INPANE_GAP*2,
+      cmVDryerShape.ccGetY()+ConstLocalUI.C_INPANE_GAP*6
+    );
+    
+    //-- bag indicator
+    final int lpLevelLampScale=12;
+    final int lpLevelLampGap=11;
+    cmBagHighLV.ccSetSize(lpLevelLampScale, lpLevelLampScale);
+    cmBagLowLV.ccSetSize(cmBagHighLV);
+    cmBagHighLV.ccSetLocation(
+      cmBagFilterShape.ccGetX()+ConstLocalUI.C_INPANE_GAP*4,
+      cmBagFilterShape.ccCenterY()
+    );
+    cmBagLowLV.ccSetLocation(cmBagHighLV, lpLevelLampGap, lpLevelLampGap);
+    cmAirPulsePL.ccSetH(6);
+    cmAirPulsePL.ccSetLocation(cmBagFilterShape,
+      ConstLocalUI.C_INPANE_GAP,
+      ConstLocalUI.C_INPANE_GAP
+    );
+    
+    //-- duct
+    //-- duct ** 1st
+    final int lpDuctThick = 4;
+    final int lpDuctGap = 2;
+    lpPotentialW = (cmVDryerShape.ccEndX()+lpDuctThick+lpDuctGap)
+      - (cmBagFilterShape.ccEndX()+lpDuctThick);
+    lpPotentialH = cmVDryerShape.ccCenterY()-cmBagFilterShape.ccGetY();
+    /* 4 */VcConst.ccLogln("1std-w", lpPotentialW);
+    /* 4 */VcConst.ccLogln("1std-h", lpPotentialH);
+    cmFirstDuctShape.ccSetLocation(cmBagFilterShape,lpDuctGap, 0);
+    //-- duct ** 2nd
+    lpPotentialW=cmBagFilterShape.ccGetX()
+       - cmExfanIcon.ccCenterX()-lpDuctThick;
+    lpPotentialH=cmExfanIcon.ccEndY()-cmBagFilterShape.ccGetY()
+       + cmExfanIcon.ccGetW()/2;
+    /* 4 */VcConst.ccLogln("2ndd-w", lpPotentialW);
+    /* 4 */VcConst.ccLogln("2ndd-h", lpPotentialH);
+    cmSecondDuctShape.ccSetLocation(
+      cmExfanIcon.ccCenterX(),
+      cmBagFilterShape.ccGetY()
+    );
+    
+    //-- burner indicator
+    cmExfanPressurePL.ccSetSize(4, 4);
+    cmExfanPressurePL.ccSetLocation(cmExfanIcon, 2, 2);
+    cmBurnerPressurePL.ccSetSize(4,4);
+    cmBurnerPressurePL.ccSetLocation(
+      cmBurnerIcon.ccEndX()-6,
+      cmBurnerIcon.ccGetY()+2
+    );
+    lpPotentialW=3;
+    lpPotentialH=5;
+    cmBurnerIGPL.ccSetSize(lpPotentialW,lpPotentialH);
+    cmBurnerPVPL.ccSetSize(cmBurnerIGPL);
+    cmBurnerMVPL.ccSetSize(cmBurnerPVPL);
+    cmBurnerIGPL.ccSetLocation(
+      cmBurnerIcon.ccEndX()-(lpPotentialH+1)*3-2,
+      cmBurnerIcon.ccCenterY()-7
+    );
+    cmBurnerPVPL.ccSetLocation(cmBurnerIGPL, 1, 0);
+    cmBurnerMVPL.ccSetLocation(cmBurnerPVPL, 1, 0);
+    
+    //-- operative
+    //-- operative ** ready-start
+    lpPotentialH=cmVDPressureCB.ccGetH();
+    cmReadyPL.ccSetSize(cmChuteTemperatureTB.ccGetW(),lpPotentialH);
+    cmReadyPL.ccSetLocation(
+      cmTargetTemperatureTB.ccGetX(),
+      cmPlate.ccEndY()-lpPotentialH*2-ConstLocalUI.C_INPANE_GAP*2
+    );
+    cmStartSW.ccSetSize(cmReadyPL);
+    cmStartSW.ccSetLocation(cmReadyPL, 0, ConstLocalUI.C_INPANE_GAP);
+    //-- operative ** exfan
+    cmExfanCloseSW.ccSetSize(lpPotentialH, lpPotentialH);
+    cmExfanOpenSW.ccSetSize(cmExfanCloseSW);
+    cmExfanAutoSW.ccSetSize(lpPotentialH*2,lpPotentialH);
+    cmExfanCloseSW.ccSetLocation(lpPotentialX, cmReadyPL.ccGetY());
+    cmExfanOpenSW.ccSetLocation(cmExfanCloseSW,ConstLocalUI.C_INPANE_GAP,0);
+    cmExfanAutoSW.ccSetLocation(cmExfanOpenSW,ConstLocalUI.C_INPANE_GAP,0);
+    //-- operative ** burner
+    cmBurnerCloseSW.ccSetSize(cmExfanCloseSW);
+    cmBurnerOpenSW.ccSetSize(cmExfanOpenSW);
+    cmBurnerAutoSW.ccSetSize(cmExfanAutoSW);
+    cmBurnerCloseSW.ccSetLocation(cmExfanCloseSW,0,ConstLocalUI.C_INPANE_GAP);
+    cmBurnerOpenSW.ccSetLocation(cmExfanOpenSW,0,ConstLocalUI.C_INPANE_GAP);
+    cmBurnerAutoSW.ccSetLocation(cmExfanAutoSW,0,ConstLocalUI.C_INPANE_GAP);
+    //-- operative ** degree box
+    cmExfanDegreeCB.ccSetLocation(cmExfanAutoSW,ConstLocalUI.C_INPANE_GAP,0);
+    cmBurnerDegreeCB.ccSetLocation(cmBurnerAutoSW,ConstLocalUI.C_INPANE_GAP,0);
+    
+    //-- text
+    cmVExfanText.ccSetTextColor(EcConst.C_WHITE);
+    cmVBurnerText.ccSetTextColor(EcConst.C_WHITE);
+    lpPotentialX=cmReadyPL.ccEndX()+
+      (cmExfanCloseSW.ccGetX()-cmReadyPL.ccEndX())*3/4;
+    cmVExfanText.ccSetLocation(lpPotentialX, cmReadyPL.ccCenterY());
+    cmVBurnerText.ccSetLocation(lpPotentialX, cmStartSW.ccCenterY());
+    
+    //-- burning lamp
+    cmGasPL.ccSetSize(cmExfanAutoSW);
+    cmOilPL.ccSetSize(cmGasPL);
+    cmFuelPL.ccSetSize(cmGasPL);
+    cmHeavyPL.ccSetSize(cmGasPL);
+    cmGasPL.ccSetLocation(
+      cmPlate.ccEndX()-cmGasPL.ccGetW()*2-ConstLocalUI.C_INPANE_GAP*2,
+      cmReadyPL.ccGetY()
+    );
+    cmOilPL.ccSetLocation(cmGasPL, ConstLocalUI.C_INPANE_GAP, 0);
+    cmFuelPL.ccSetLocation(cmGasPL, 0, ConstLocalUI.C_INPANE_GAP);
+    cmHeavyPL.ccSetLocation(cmFuelPL, ConstLocalUI.C_INPANE_GAP, 0);
+    
+    //-- inclined belcon
+    ConstLocalUI.ccAssembleBelcon(
+      cmBelconShape, cmBelconForwarPL, cmBelconBackwardPL,
+      cmVDryerShape.ccEndX()+ConstLocalUI.C_INPANE_GAP*8,
+      cmVDryerShape.ccEndY()-cmBelconForwarPL.ccGetH(),
+      60, cmBelconForwarPL.ccGetH()
+    );
+    cmBelconFlowCB.ccSetLocation(
+      cmPlate.ccEndX()-cmBelconFlowCB.ccGetW()-ConstLocalUI.C_INPANE_GAP,
+      cmVDryerShape.ccGetY()
+    );
+    
+  }//..!
+  
+  //===
+  
+  @Override public List<? extends EcShape> ccGiveShapeList(){
+    return Arrays.asList(
+      cmPlate,
+      cmFirstDuctShape,cmSecondDuctShape,
+      cmBagFilterShape,cmVDryerShape,
+      cmBelconShape,
+      cmVExfanText,cmVBurnerText
+    );
+  }//+++
+
+  @Override public List<? extends EcElement> ccGiveElementList(){
+    return Arrays.asList(
+      cmTargetTemperatureTB,cmChuteTemperatureTB,
+      cmVDContentLV,cmVDPressureCB,cmEntranceTemperatureCB,
+      cmBagHighLV,cmBagLowLV,cmAirPulsePL,
+      cmExfanIcon,cmBurnerIcon,
+      cmExfanPressurePL,cmBurnerPressurePL,
+      cmBurnerIGPL,cmBurnerPVPL,cmBurnerMVPL,
+      cmBelconForwarPL,cmBelconBackwardPL,cmBelconFlowCB,
+      cmReadyPL,cmStartSW,
+      cmExfanCloseSW,cmExfanOpenSW,cmExfanAutoSW,cmExfanDegreeCB,
+      cmBurnerCloseSW,cmBurnerOpenSW,cmBurnerAutoSW,cmBurnerDegreeCB,
+      cmOilPL,cmGasPL,cmFuelPL,cmHeavyPL
+    );
+  }//+++
+  
+ }//***eof
