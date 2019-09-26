@@ -1,0 +1,422 @@
+/*
+ * Copyright (C) 2019 Key Parker from K.I.C.
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+ * MA 02110-1301  USA
+ */
+
+package nextzz.ppplocalui;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import kosui.ppplocalui.EcButton;
+import kosui.ppplocalui.EcConst;
+import kosui.ppplocalui.EcElement;
+import kosui.ppplocalui.EcPane;
+import kosui.ppplocalui.EcShape;
+import kosui.ppplocalui.EcText;
+import kosui.ppplocalui.EcTextBox;
+import kosui.ppplocalui.EcValueBox;
+import kosui.ppplocalui.EiGroup;
+import kosui.ppputil.VcLocalConsole;
+import kosui.ppputil.VcLocalCoordinator;
+import nextzz.pppmain.MainActionManager;
+import nextzz.pppmain.MainSketch;
+
+public final class SubOperativeGroup implements EiGroup{
+  
+  private static final SubOperativeGroup SELF = new SubOperativeGroup();
+  public static SubOperativeGroup ccRefer(){return SELF;}//+++
+
+  //===
+  
+  //-- motor pane
+  public final EcPane cmMotorSwitchPane = new EcPane("_motor");
+  public final List<EcButton> cmDesMotorSW
+    = Collections.unmodifiableList(Arrays.asList(
+    //--
+    new EcButton("_m00", 0x3100),new EcButton("_m01", 0x3101),
+    new EcButton("_m02", 0x3102),new EcButton("_m03", 0x3103),
+    new EcButton("_m04", 0x3104),new EcButton("_m05", 0x3105),
+    new EcButton("_m06", 0x3106),new EcButton("_m07", 0x3107),
+    //--
+    new EcButton("_m08", 0x3108),new EcButton("_m09", 0x3109),
+    new EcButton("_m10", 0x310A),new EcButton("_m11", 0x310B),
+    new EcButton("_m12", 0x310C),new EcButton("_m13", 0x310D),
+    new EcButton("_m14", 0x310E),new EcButton("_m15", 0x310F)
+  ));//...
+  
+  //-- assistance pane
+  public final EcShape cmAssistancePane = new EcShape();
+  public final List<EcButton> cmDesAssistSW
+    = Collections.unmodifiableList(Arrays.asList(
+    //--
+    new EcButton("$a00", 0x3110),new EcButton("$a01", 0x3111),
+    new EcButton("$a02", 0x3112),new EcButton("$a03", 0x3113),
+    new EcButton("$a04", 0x3114),new EcButton("$a05", 0x3115),
+    new EcButton("$a06", 0x3116),new EcButton("$a07", 0x3117),
+    //--
+    new EcButton("$a08", 0x3118),new EcButton("$a09", 0x3119),
+    new EcButton("$a10", 0x311A),new EcButton("$a11", 0x311B),
+    new EcButton("$a12", 0x311C),new EcButton("$a13", 0x311D),
+    new EcButton("$a14", 0x311E),new EcButton("$a15", 0x311F)
+  ));//...
+  
+  //-- zero pane
+  public final EcPane cmZeroPane = new EcPane("&zero");
+  public final EcShape cmZeroPlate = new EcShape();
+  public final EcButton cmAGZeroSW = new EcButton("&ag", 0x3209);
+  public final EcButton cmFRZeroSW = new EcButton("&fr", 0x3209);
+  public final EcButton cmASZeroSW = new EcButton("&as", 0x3209);
+  public final EcButton cmRCZeroSW = new EcButton("&rc", 0x3209);
+  public final EcButton cmApplyZeroSW = new EcButton("&apply", 0x3209);
+  
+  //-- mixture pane
+  public final EcPane cmMixtureControlPane = new EcPane("&mixture");
+  public final EcButton cmMixerGateHoldSW = new EcButton("&hold", 0x3302);
+  public final EcButton cmMixerGateAutoSW = new EcButton("&auto", 0x3301);
+  public final EcButton cmMixerGateOpenSW = new EcButton("&open", 0x3303);
+  
+  //-- booking pane
+  public final EcPane cmBookingPane = new EcPane("&book");
+  public final EcText cmRecipeText = new EcText("&recipe");
+  public final EcText cmNameText = new EcText("&name");
+  public final EcText cmKilogramText = new EcText("&kg");
+  public final EcText cmBatchText = new EcText("&batch");
+  public final EcShape cmBookingPlate = new EcShape();
+  public final EcButton cmWeighStartSW = new EcButton("&start", 0x34A1);
+  public final EcButton cmWeighPauseSW = new EcButton("&pause", 0x34A2);
+  public final EcButton cmWeighCancelSW = new EcButton("&cancel", 0x34A3);
+  public final List<EcValueBox> cmDesRecipeTB
+    = Collections.unmodifiableList(Arrays.asList(
+      new EcValueBox("&recipe", "000  ",0x3400),
+      new EcValueBox("&recipe", "000  ",0x3401),
+      new EcValueBox("&recipe", "000  ",0x3402),
+      new EcValueBox("&recipe", "000  ",0x3403),
+      new EcValueBox("&recipe", "000  ",0x3404)
+  ));//...
+  public final List<EcTextBox> cmDesNameCB
+    = Collections.unmodifiableList(Arrays.asList(
+      new EcTextBox("&name", "--Z"),
+      new EcTextBox("&name", "--I"),
+      new EcTextBox("&name", "--II"),
+      new EcTextBox("&name", "--III"),
+      new EcTextBox("&name", "--IV")
+  ));//...
+  public final List<EcValueBox> cmDesKilogramTB
+    = Collections.unmodifiableList(Arrays.asList(
+      new EcValueBox("&per", "0000 kg",0x3410),
+      new EcValueBox("&per", "0000 kg",0x3411),
+      new EcValueBox("&per", "0000 kg",0x3412),
+      new EcValueBox("&per", "0000 kg",0x3413),
+      new EcValueBox("&per", "0000 kg",0x3414)
+  ));//...
+  public final List<EcValueBox> cmDesBatchTB
+    = Collections.unmodifiableList(Arrays.asList(
+      new EcValueBox("&batch", "0000 b",0x3420),
+      new EcValueBox("&batch", "0000 b",0x3421),
+      new EcValueBox("&batch", "0000 b",0x3422),
+      new EcValueBox("&batch", "0000 b",0x3423),
+      new EcValueBox("&batch", "0000 b",0x3424)
+  ));//...
+  
+  //===
+  
+  private SubOperativeGroup(){
+    
+    final int lpPlateColor = EcConst.ccAdjustColor(EcConst.C_BLACK, 23);
+    
+    int lpPotentialY;
+    int lpPotentialW;
+    int lpPotentialH;
+    
+    //-- motor pane
+    //-- motor pane ** allocate
+    lpPotentialW=ConstLocalUI.C_MOTOR_SW_SIZE*5
+      +ConstLocalUI.C_INPANE_GAP*4
+      +ConstLocalUI.C_INPANE_MARGIN_S*2;
+    lpPotentialH=ConstLocalUI.C_MOTOR_SW_SIZE*3
+      +ConstLocalUI.C_INPANE_MARGIN_S*2
+      +ConstLocalUI.C_INPANE_MARGIN_S+ConstLocalUI.C_INPANE_MARGIN_U;
+    //-- motor pane ** anchor
+    cmMotorSwitchPane.ccSetLocation(
+      MainSketch.ccGetPrefferedW()-lpPotentialW-ConstLocalUI.C_SIDE_MARGIN,
+      MainSketch.ccGetPrefferedH()-lpPotentialH//-ConstLocalUI.C_SIDE_MARGIN
+        - VcLocalConsole.ccGetInstance().ccGetBarHeight()
+    );
+    cmDesMotorSW.get(1).ccSetLocation(cmMotorSwitchPane,
+      ConstLocalUI.C_INPANE_MARGIN_S,
+      ConstLocalUI.C_INPANE_MARGIN_U
+    );
+    cmDesMotorSW.get(1).ccSetSize(
+      ConstLocalUI.C_MOTOR_SW_SIZE,
+      ConstLocalUI.C_MOTOR_SW_SIZE
+    );
+    /* 6 */cmDesMotorSW.get(0).ccSetPage(99);//..intended disposed
+    //-- motor pane **  relate
+    cmDesMotorSW.get(6).ccSetLocation
+      (cmDesMotorSW.get(1), 0, ConstLocalUI.C_INPANE_GAP);
+    cmDesMotorSW.get(6).ccSetSize(cmDesMotorSW.get(1));
+    cmDesMotorSW.get(11).ccSetLocation
+      (cmDesMotorSW.get(6), 0, ConstLocalUI.C_INPANE_GAP);
+    cmDesMotorSW.get(11).ccSetSize(cmDesMotorSW.get(1));
+    for(int i=0;i<=3;i++){
+      cmDesMotorSW.get(i+2).ccSetLocation
+        (cmDesMotorSW.get(i+1), ConstLocalUI.C_INPANE_GAP, 0);
+      cmDesMotorSW.get(i+2).ccSetSize(cmDesMotorSW.get(1));
+      cmDesMotorSW.get(i+7).ccSetLocation
+        (cmDesMotorSW.get(i+6), ConstLocalUI.C_INPANE_GAP, 0);
+      cmDesMotorSW.get(i+7).ccSetSize(cmDesMotorSW.get(1));
+      cmDesMotorSW.get(i+12).ccSetLocation
+        (cmDesMotorSW.get(i+11), ConstLocalUI.C_INPANE_GAP, 0);
+      cmDesMotorSW.get(i+12).ccSetSize(cmDesMotorSW.get(1));
+    }//..~
+    //-- motor pane **  pack
+    cmMotorSwitchPane.ccSetEndPoint(
+      cmDesMotorSW.get(15).ccEndX()+ConstLocalUI.C_INPANE_MARGIN_S,
+      cmDesMotorSW.get(15).ccEndY()+ConstLocalUI.C_INPANE_MARGIN_S
+    );//..~
+    
+    //-- assistance
+    //-- assistance ** anchor
+    cmAssistancePane.ccSetX(ConstLocalUI.C_SIDE_MARGIN);
+    cmAssistancePane.ccSetY(
+      cmMotorSwitchPane.ccGetY()
+     -ConstLocalUI.C_ASSIST_SW_H
+     -ConstLocalUI.C_SIDE_MARGIN*2
+    );
+    cmAssistancePane.ccSetBaseColor(
+      EcConst.ccAdjustColor(MainSketch.C_BACKGROUD, -16)
+    );
+    //-- assistance
+    cmDesAssistSW.get(1).ccSetLocation
+      (cmAssistancePane, ConstLocalUI.C_INPANE_GAP, ConstLocalUI.C_INPANE_GAP);
+    cmDesAssistSW.get(1).ccSetSize
+      (ConstLocalUI.C_ASSIST_SW_W,ConstLocalUI.C_ASSIST_SW_H);
+    for(int i=2;i<=8;i++){
+      cmDesAssistSW.get(i).ccSetSize(cmDesAssistSW.get(i-1));
+      cmDesAssistSW.get(i).ccSetLocation
+        (cmDesAssistSW.get(i-1), ConstLocalUI.C_INPANE_GAP, 0);
+    }//..~
+    for(int it:new int[]{0,9,10,11,12,13,14,15}){
+      cmDesAssistSW.get(it).ccSetPage(99);//..intended disposed
+    }//..~
+    //-- assistance ** pack
+    cmAssistancePane.ccSetW
+      (MainSketch.ccGetPrefferedW()-ConstLocalUI.C_SIDE_MARGIN*2);
+    cmAssistancePane.ccSetH
+      (ConstLocalUI.C_ASSIST_SW_H+ConstLocalUI.C_INPANE_GAP*2);
+    
+    //-- zero
+    //-- zero ** anchor
+    cmZeroPane.ccSetX(ConstLocalUI.C_SIDE_MARGIN);
+    cmZeroPane.ccSetY(cmMotorSwitchPane.ccGetY());
+    cmZeroPane.ccSetW(120);
+    cmZeroPane.ccSetH(cmMotorSwitchPane.ccGetH());
+    //-- zero ** la switch
+    cmApplyZeroSW.ccSetX(cmZeroPane.ccGetX()+ConstLocalUI.C_INPANE_MARGIN_S);
+    cmApplyZeroSW.ccSetH(cmApplyZeroSW.ccGetH()*2);
+    cmApplyZeroSW.ccSetW(cmZeroPane.ccGetW()
+      -ConstLocalUI.C_INPANE_MARGIN_S*2
+    );
+    cmApplyZeroSW.ccSetY(cmZeroPane.ccEndY()
+      -cmApplyZeroSW.ccGetH()-ConstLocalUI.C_INPANE_MARGIN_S
+    );
+    //-- zero ** plate
+    cmZeroPlate.ccSetBaseColor(lpPlateColor);
+    cmZeroPlate.ccSetLocation(cmZeroPane,
+      ConstLocalUI.C_INPANE_MARGIN_S,
+      ConstLocalUI.C_INPANE_MARGIN_U
+    );
+    cmZeroPlate.ccSetEndPoint(
+      cmZeroPane.ccEndX()-ConstLocalUI.C_INPANE_MARGIN_S,
+      cmApplyZeroSW.ccGetY()-ConstLocalUI.C_INPANE_MARGIN_S
+    );
+    //-- zero ** des switch
+    cmAGZeroSW.ccSetSize(
+      (cmZeroPlate.ccGetW()-ConstLocalUI.C_INPANE_GAP*2)/2,
+      (cmZeroPlate.ccGetH()-ConstLocalUI.C_INPANE_GAP*4)/3
+    );
+    cmFRZeroSW.ccSetSize(cmAGZeroSW);
+    cmASZeroSW.ccSetSize(cmAGZeroSW);
+    cmRCZeroSW.ccSetSize(cmAGZeroSW);
+    cmAGZeroSW.ccSetLocation
+      (cmZeroPlate,ConstLocalUI.C_INPANE_GAP, ConstLocalUI.C_INPANE_GAP);
+    cmFRZeroSW.ccSetLocation(cmAGZeroSW, ConstLocalUI.C_INPANE_GAP, 0);
+    cmASZeroSW.ccSetLocation(cmAGZeroSW, 0, ConstLocalUI.C_INPANE_GAP);
+    cmRCZeroSW.ccSetLocation(cmASZeroSW, ConstLocalUI.C_INPANE_GAP, 0);
+    //-- zero ** optional
+    cmRCZeroSW.ccSetPage(99);//..optionally disposed
+    
+    //-- mixture
+    //-- mixture ** anchor
+    cmMixtureControlPane.ccSetLocation
+      (cmZeroPane, ConstLocalUI.C_SIDE_MARGIN, 0);
+    cmMixtureControlPane.ccSetH(cmMotorSwitchPane.ccGetH());
+    //-- mixture ** resize
+    cmMixerGateHoldSW.ccSetW(70);
+    cmMixerGateAutoSW.ccSetSize(cmMixerGateHoldSW);
+    cmMixerGateOpenSW.ccSetSize(cmMixerGateAutoSW);
+    //-- mixture ** reallocate
+    cmMixerGateAutoSW.ccSetLocation(cmMixtureControlPane,
+      ConstLocalUI.C_INPANE_MARGIN_S,
+      ConstLocalUI.C_INPANE_MARGIN_U
+    );
+    cmMixerGateHoldSW.ccSetLocation
+      (cmMixerGateAutoSW, 0, ConstLocalUI.C_INPANE_GAP);
+    cmMixerGateOpenSW.ccSetLocation
+      (cmMixerGateHoldSW, 0, ConstLocalUI.C_INPANE_GAP);
+    //-- mixtrue ** pack
+    cmMixtureControlPane.ccSetEndPoint(cmMixerGateOpenSW, 5, 65536);
+    
+    //-- booking
+    lpPotentialH=16;//..arbitrary
+    //-- booking ** pack
+    cmBookingPane.ccSetLocation
+      (cmMixtureControlPane, ConstLocalUI.C_SIDE_MARGIN, 0);
+    cmBookingPane.ccSetEndPoint(cmMotorSwitchPane.ccGetX()-ConstLocalUI.C_SIDE_MARGIN,
+      cmMotorSwitchPane.ccEndY()
+    );
+    //-- booking ** title
+    //-- booking ** title ** shrink
+    cmDesRecipeTB.get(0).ccSetH(lpPotentialH);
+    cmDesNameCB.get(0).ccSetH(lpPotentialH);
+    cmDesKilogramTB.get(0).ccSetH(lpPotentialH);
+    cmDesBatchTB.get(0).ccSetH(lpPotentialH);
+    //-- booking ** title ** color
+    cmDesRecipeTB.get(0).ccSetColor(EcConst.C_RED, EcConst.C_DARK_YELLOW);
+    cmDesNameCB.get(0).ccSetColor(EcConst.C_RED, EcConst.C_DARK_YELLOW);
+    cmDesKilogramTB.get(0).ccSetColor(EcConst.C_RED, EcConst.C_DARK_YELLOW);
+    cmDesBatchTB.get(0).ccSetColor(EcConst.C_RED, EcConst.C_DARK_YELLOW);
+    //-- booking ** title ** span size
+    cmDesNameCB.get(0).ccSetW(
+      cmBookingPane.ccGetW()
+     -ConstLocalUI.C_INPANE_GAP*3-ConstLocalUI.C_INPANE_MARGIN_S*2
+     -cmDesRecipeTB.get(0).ccGetW()
+     -cmDesKilogramTB.get(0).ccGetW()
+     -cmDesBatchTB.get(0).ccGetW()
+    );
+    //-- booking ** title ** allocate
+    cmDesRecipeTB.get(0).ccSetLocation(cmBookingPane,
+      ConstLocalUI.C_INPANE_MARGIN_S,
+      ConstLocalUI.C_INPANE_MARGIN_U+lpPotentialH
+    );
+    cmDesNameCB.get(0).ccSetLocation
+      (cmDesRecipeTB.get(0), ConstLocalUI.C_INPANE_GAP, 0);
+    cmDesKilogramTB.get(0).ccSetLocation
+      (cmDesNameCB.get(0), ConstLocalUI.C_INPANE_GAP, 0);
+    cmDesBatchTB.get(0).ccSetLocation
+      (cmDesKilogramTB.get(0), ConstLocalUI.C_INPANE_GAP, 0);
+    //-- booking ** table
+    for(int i=1;i<=4;i++){
+      //--
+      cmDesRecipeTB.get(i).ccSetLocation
+        (cmDesRecipeTB.get(i-1), 0,ConstLocalUI.C_INPANE_GAP);
+      cmDesRecipeTB.get(i).ccSetSize(cmDesRecipeTB.get(i-1));
+      //--
+      cmDesNameCB.get(i).ccSetLocation
+        (cmDesNameCB.get(i-1), 0,ConstLocalUI.C_INPANE_GAP);
+      cmDesNameCB.get(i).ccSetSize(cmDesNameCB.get(i-1));
+      //--
+      cmDesKilogramTB.get(i).ccSetLocation
+        (cmDesKilogramTB.get(i-1), 0,ConstLocalUI.C_INPANE_GAP);
+      cmDesKilogramTB.get(i).ccSetSize(cmDesKilogramTB.get(i-1));
+      //--
+      cmDesBatchTB.get(i).ccSetLocation
+        (cmDesBatchTB.get(i-1), 0,ConstLocalUI.C_INPANE_GAP);
+      cmDesBatchTB.get(i).ccSetSize(cmDesBatchTB.get(i-1));
+    }//..~
+    //-- booking ** title ** label
+    lpPotentialY=cmBookingPane.ccGetY()+22+5;
+    cmRecipeText.ccSetTextColor(EcConst.C_LIT_GRAY);
+    cmNameText.ccSetTextColor(EcConst.C_LIT_GRAY);
+    cmKilogramText.ccSetTextColor(EcConst.C_LIT_GRAY);
+    cmBatchText.ccSetTextColor(EcConst.C_LIT_GRAY);
+    cmRecipeText.ccSetLocation
+      (cmDesRecipeTB.get(0).ccCenterX(), lpPotentialY);
+    cmNameText.ccSetLocation
+      (cmDesNameCB.get(0).ccCenterX(), lpPotentialY);
+    cmKilogramText.ccSetLocation
+      (cmDesKilogramTB.get(0).ccCenterX(), lpPotentialY);
+    cmBatchText.ccSetLocation
+      (cmDesBatchTB.get(0).ccCenterX(), lpPotentialY);
+    //-- booking ** control ** plate
+    lpPotentialH=22;
+    cmBookingPlate.ccSetBaseColor(lpPlateColor);
+    cmBookingPlate.ccSetLocation(
+      cmDesRecipeTB.get(0).ccGetX(),
+      cmBookingPane.ccEndY()-lpPotentialH-ConstLocalUI.C_INPANE_MARGIN_S*2
+    );
+    cmBookingPlate.ccSetEndPoint(cmBookingPane,
+      -1*ConstLocalUI.C_INPANE_MARGIN_S,
+      -1*ConstLocalUI.C_INPANE_MARGIN_S
+    );
+    //-- booking ** control ** switch
+    lpPotentialW=55;
+    cmWeighStartSW.ccSetSize(lpPotentialW,lpPotentialH);
+    cmWeighPauseSW.ccSetSize(lpPotentialW,lpPotentialH);
+    cmWeighCancelSW.ccSetSize(lpPotentialW,lpPotentialH);
+    cmWeighStartSW.ccSetLocation(cmBookingPlate,
+      ConstLocalUI.C_INPANE_GAP,
+      ConstLocalUI.C_INPANE_GAP
+    );
+    cmWeighPauseSW.ccSetLocation(cmWeighStartSW, ConstLocalUI.C_INPANE_GAP, 0);
+    cmWeighCancelSW.ccSetLocation(cmWeighPauseSW, ConstLocalUI.C_INPANE_GAP, 0);
+    
+    //-- inputtable ** register
+    for(int it:new int[]{1,2,3,4}){
+      VcLocalCoordinator.ccAddInputtable(cmDesRecipeTB.get(it));
+      VcLocalCoordinator.ccAddInputtable(cmDesKilogramTB.get(it));
+      VcLocalCoordinator.ccAddInputtable(cmDesBatchTB.get(it));
+      VcLocalCoordinator.ccRegisterMouseTrigger
+        (cmDesRecipeTB.get(it), MainActionManager.ccRefer().cmInputtableClicking);
+      VcLocalCoordinator.ccRegisterMouseTrigger
+        (cmDesKilogramTB.get(it), MainActionManager.ccRefer().cmInputtableClicking);
+      VcLocalCoordinator.ccRegisterMouseTrigger
+        (cmDesBatchTB.get(it), MainActionManager.ccRefer().cmInputtableClicking);
+    }//..~
+    
+  }//..!
+  
+  @Override public List<? extends EcShape> ccGiveShapeList(){
+    return Arrays.asList(
+      cmMotorSwitchPane,cmAssistancePane,
+      cmZeroPane,cmZeroPlate,
+      cmMixtureControlPane,
+      cmBookingPane,cmBookingPlate,
+      cmRecipeText,cmNameText,cmKilogramText,cmBatchText
+    );//...
+  }//+++
+
+  @Override public List<? extends EcElement> ccGiveElementList(){
+    ArrayList<EcElement> lpRes = new ArrayList<EcElement>();
+    lpRes.addAll(cmDesMotorSW);
+    lpRes.addAll(cmDesAssistSW);
+    lpRes.addAll(cmDesRecipeTB);
+    lpRes.addAll(cmDesNameCB);
+    lpRes.addAll(cmDesKilogramTB);
+    lpRes.addAll(cmDesBatchTB);
+    lpRes.addAll(Arrays.asList(
+      cmAGZeroSW,cmFRZeroSW,cmASZeroSW,cmRCZeroSW,
+      cmApplyZeroSW,
+      cmMixerGateHoldSW,cmMixerGateAutoSW,cmMixerGateOpenSW,
+      cmWeighStartSW,cmWeighPauseSW,cmWeighCancelSW
+    ));//...
+    return lpRes;
+  }//+++
+  
+ }//***eof
