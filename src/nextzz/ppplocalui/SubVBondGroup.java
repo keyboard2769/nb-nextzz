@@ -126,7 +126,8 @@ public final class SubVBondGroup implements EiGroup{
     int lpPotentialH;
     
     //-- plate
-    cmPlate.ccSetLocation(SubVFeederGroup.ccRefer().cmPlate,
+    cmPlate.ccSetLocation(
+      SubVFeederGroup.ccRefer().cmPlate,
       0,
       ConstLocalUI.C_SIDE_MARGIN
     );
@@ -293,11 +294,14 @@ public final class SubVBondGroup implements EiGroup{
     cmHeavyPL.ccSetLocation(cmFuelPL, ConstLocalUI.C_INPANE_GAP, 0);
     
     //-- inclined belcon
+    lpPotentialW=
+      (cmHeavyPL.ccEndX()-cmVDryerShape.ccEndX())
+       * 2/3;
     ConstLocalUI.ccAssembleBelcon(
       cmBelconShape, cmBelconForwarPL, cmBelconBackwardPL,
       cmVDryerShape.ccEndX()+ConstLocalUI.C_INPANE_GAP*8,
       cmVDryerShape.ccEndY()-cmBelconForwarPL.ccGetH(),
-      60, cmBelconForwarPL.ccGetH()
+      lpPotentialW, cmBelconForwarPL.ccGetH()
     );
     cmBelconFlowCB.ccSetLocation(
       cmPlate.ccEndX()-cmBelconFlowCB.ccGetW()-ConstLocalUI.C_INPANE_GAP,

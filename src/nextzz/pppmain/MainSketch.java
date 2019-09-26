@@ -47,12 +47,16 @@ import nextzz.ppplocalui.SubWeigherGroup;
 import nextzz.pppmodel.MainFileManager;
 import nextzz.pppmodel.MainSpecificator;
 import nextzz.pppsimulate.MainSimulator;
+import nextzz.pppswingui.ConstSwingUI;
 import processing.core.PApplet;
 import processing.core.PFont;
 
 public class MainSketch extends PApplet{
   
   static private MainSketch self;
+  
+  public static final String C_WARE_TITLE = "Next ZZ v19a01";
+  
   static public final int C_BACKGROUD=0xFF336633;
   static public final int C_WIDTH_S  =  800;
   static public final int C_HEIGHT_S =  600;
@@ -74,7 +78,7 @@ public class MainSketch extends PApplet{
     
     //-- pre
     EcConst.ccSetupSketch(this);
-    this.frame.setTitle("Next ZZ v19a01");
+    this.frame.setTitle(C_WARE_TITLE);
     self=this;
     ssInitFont();
     
@@ -83,6 +87,7 @@ public class MainSketch extends PApplet{
     
     //-- library
     ConstLocalUI.ccInit();
+    ConstSwingUI.ccInit();
     EcElement.ccSetTextAdjust(0, -1);
     VcLocalCoordinator.ccGetInstance().ccInit(this);
     VcLocalConsole.ccGetInstance().ccInit(this);
@@ -116,6 +121,7 @@ public class MainSketch extends PApplet{
     MainActionManager.ccRefer().cmBackgroundRefreshing.ccTrigger();
     
     //-- post
+    frame.setIconImage(ConstSwingUI.O_WINDOW_ICON);
     /* 4 */VcConst.ccPrintln("MainSketch.setup()::over");
     
   }//+++
@@ -146,6 +152,7 @@ public class MainSketch extends PApplet{
     
     //-- debug
     ssTagging(!pbDoesTag);
+    /* 4 */VcLocalTagger.ccStabilize();
     
   }//+++
 
@@ -172,8 +179,6 @@ public class MainSketch extends PApplet{
       ("inputID",nf(VcLocalCoordinator.ccGetInputFocusID(),6));
     VcLocalTagger.ccTag("mX",nf(mouseX,4));
     VcLocalTagger.ccTag("mY",nf(mouseY,4));
-    //--
-    VcLocalTagger.ccStabilize();
   }//+++
   
   private void ssInitFont(){
@@ -218,7 +223,7 @@ public class MainSketch extends PApplet{
   public static final Frame ccGetFrame(){return self.frame;}//+++
   
   public static final String ccGetLastLeavingStamp(){
-    return "_1909260915";
+    return "_1909261147";
   }//+++
 
   //=== entry
@@ -226,15 +231,15 @@ public class MainSketch extends PApplet{
   public static void main(String[] args) {
     
     //-- check in
-    VcConst.ccPrintln("kosui-with", VcConst.C_V_OS);
-    VcConst.ccPrintln("kosui-at", VcConst.C_V_PWD);
+    VcConst.ccPrintln(".main()::with", VcConst.C_V_OS);
+    VcConst.ccPrintln(".main()::at", VcConst.C_V_PWD);
     
     //-- translation
     VcTranslator.ccGetInstance().ccInit();
     boolean lpCSV = VcTranslator.ccGetInstance().ccParseCSV
       (MainSketch.class.getResourceAsStream("/nextzz/pppresource/tr.csv"));
     VcTranslator.ccGetInstance().ccSetMode('c');
-    if(!lpCSV){ScConst.ccMessage("faild to laod csv text resource.");}
+    if(!lpCSV){ScConst.ccMessage(".main()::faild to laod csv text resource.");}
     
     //-- resource finding
     MainFileManager.ccRefer().ccInit();
@@ -256,6 +261,7 @@ public class MainSketch extends PApplet{
     }//..?
     EcRect lpPotentialWindow = new EcRect(cmWindowW, cmWindowH);
     if(ScConst.ccHasSubMonior()){
+      /* 4 */VcConst.ccPrintln(".main()::detected sub monitor");
       Rectangle lpSubBound = ScConst.ccGetSubMoniorBound();
       int lpPotentialInitX=0;
       int lpPotentialInitY=0;
@@ -263,8 +269,8 @@ public class MainSketch extends PApplet{
         EcRect lpSubMonitor=new EcRect(lpSubBound);
         EcPoint lpPotentialInitPoint
           = EcRect.ccGetOffsetForCenterAlign(lpSubMonitor, lpPotentialWindow);
-        lpPotentialInitX=lpPotentialInitPoint.ccGetX();
-        lpPotentialInitY=lpPotentialInitPoint.ccGetY();
+        lpPotentialInitX=lpSubMonitor.ccGetX()+lpPotentialInitPoint.ccGetX();
+        lpPotentialInitY=lpSubMonitor.ccGetY()+lpPotentialInitPoint.ccGetY();
       }else{
         //.. this case would only get to happen on my sony 13 laptop.
         //   forgive this thing, any way.

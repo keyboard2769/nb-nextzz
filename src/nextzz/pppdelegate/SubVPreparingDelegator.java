@@ -31,6 +31,7 @@ public final class SubVPreparingDelegator {
     //-- misc
     mnVCompressorMSSW,mnVCompressorMSPL,
     mnMixerMSSW,mnMixerMSPL,
+    mnVExfanMSSW,mnVExfanMSPL,
     mnTowerBlowerTGSW,
     mnWeighSystemTGSW,mnWeighSystemTGPL,
     
@@ -109,6 +110,8 @@ public final class SubVPreparingDelegator {
       .get(1).ccIsMousePressed();
     mnMixerMSSW=SubOperativeGroup.ccRefer().cmDesMotorSW
       .get(2).ccIsMousePressed();
+    mnVExfanMSSW=SubOperativeGroup.ccRefer().cmDesMotorSW
+      .get(3).ccIsMousePressed();
     //[todo]::mnToerBlowerTGSW
     mnWeighSystemTGSW=SubOperativeGroup.ccRefer().cmDesMotorSW
       .get(7).ccIsMousePressed();
@@ -118,6 +121,8 @@ public final class SubVPreparingDelegator {
       .get(1).ccSetIsActivated(mnVCompressorMSPL);
     SubOperativeGroup.ccRefer().cmDesMotorSW
       .get(2).ccSetIsActivated(mnMixerMSPL);
+    SubOperativeGroup.ccRefer().cmDesMotorSW
+      .get(3).ccSetIsActivated(mnVExfanMSPL);
     SubOperativeGroup.ccRefer().cmDesMotorSW
       .get(7).ccSetIsActivated(mnWeighSystemTGPL);
     

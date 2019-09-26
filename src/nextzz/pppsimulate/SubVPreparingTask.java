@@ -26,6 +26,7 @@ import kosui.ppplogic.ZcOffDelayTimer;
 import kosui.ppplogic.ZcOnDelayTimer;
 import kosui.ppplogic.ZcTimer;
 import kosui.ppplogic.ZiTask;
+import kosui.ppputil.VcLocalTagger;
 import nextzz.pppdelegate.SubCurrentSlotDelefator;
 import nextzz.pppdelegate.SubVPreparingDelegator;
 
@@ -40,28 +41,30 @@ public final class SubVPreparingTask implements ZiTask{
   
   //===
   
+  //-- misc ** motor
+  
+  private final ZcMotor dcVCompressor = new ZcMotor(32);
+  private final ZcHookFlicker cmVCompressorHOOK = new ZcHookFlicker();
+  
+  private final ZcMotor dcMixer = new ZcMotor(48);
+  private final ZcHookFlicker cmMixerHOOK = new ZcHookFlicker();
+  
+  private final ZcMotor dcVExFan = new ZcMotor(36);
+  private final ZcHookFlicker cmVExFanHooker = new ZcHookFlicker();
+  
+  //-- filler supply
+  
   private boolean
-    
-    //-- misc
-    dcVCompressorMC,dcVCompressorAN,dcVCompressorAL,
     
     //-- filler 
     dcFillerEelevatorMC,
     dcFillerScrewMC,
     dcFillerBinLV
     
-    //== 
-    
   ;//...
   
-  private int 
-    dcVComporessorCT  
-  ;//...
   
-  private final ZcHookFlicker
-    cmVCompressorHOOK = new ZcHookFlicker(),
-    cmFillerSupplyHOOK = new ZcHookFlicker()
-  ;//...
+  private final ZcHookFlicker  cmFillerSupplyHOOK = new ZcHookFlicker();
   
   
   private final ZcTimer cmFillerEVStopTM = new ZcOffDelayTimer(32);
@@ -72,11 +75,31 @@ public final class SubVPreparingTask implements ZiTask{
     
     //-- misc ** v comprssor
     cmVCompressorHOOK.ccHook
-      (SubVPreparingDelegator.mnVCompressorMSSW,dcVCompressorAL);
-    dcVCompressorMC=cmVCompressorHOOK.ccIsHooked();
-    SubVPreparingDelegator.mnVCompressorMSPL=dcVCompressorMC&&
-      (MainSimulator.ccOneSecondClock()||dcVCompressorAN);
-    SubCurrentSlotDelefator.mnCTSlotZ=dcVComporessorCT;
+      (SubVPreparingDelegator.mnVCompressorMSSW,dcVCompressor.ccIsTripped());
+    dcVCompressor.ccContact(cmVCompressorHOOK.ccIsHooked());
+    SubVPreparingDelegator.mnVCompressorMSPL
+      = ConstFunctionBlockHolder.ccMoterFeedBackLamp
+          (cmVCompressorHOOK, dcVCompressor);
+    SubCurrentSlotDelefator.mnCTSlotZ=dcVCompressor.ccGetCT();
+    
+    //-- misc ** mixer
+    cmMixerHOOK.ccHook
+      (SubVPreparingDelegator.mnMixerMSSW,dcMixer.ccIsTripped());
+    dcMixer.ccContact(cmMixerHOOK.ccIsHooked());
+    SubVPreparingDelegator.mnMixerMSPL
+      = ConstFunctionBlockHolder.ccMoterFeedBackLamp
+          (cmMixerHOOK, dcMixer);
+    //[notsure]::SubCurrentSlotDelefator.mnCTSlotVI= ??? ;
+    
+    //-- misc ** exfan
+    cmVExFanHooker.ccHook
+      (SubVPreparingDelegator.mnVExfanMSSW,dcVExFan.ccIsTripped());
+    dcVExFan.ccContact(cmVExFanHooker.ccIsHooked());
+    SubVPreparingDelegator.mnVExfanMSPL
+      = ConstFunctionBlockHolder.ccMoterFeedBackLamp
+        (cmVExFanHooker, dcVExFan);
+    //[notsure]:: how s the ct slot??
+    
     
     //-- filler supply 
     //-- filler supply ** software input
@@ -95,36 +118,27 @@ public final class SubVPreparingTask implements ZiTask{
     SubVPreparingDelegator.mnFillerSystemPL=cmFillerEVStopTM.ccIsUp()&&
       (MainSimulator.ccOneSecondClock()||dcFillerScrewMC);
     
-    
   }//+++
   
   //===
   
-  private final ZcTimer simVCompressorStartWaitTM
-    = new ZcOnDelayTimer(30);
-  
   private final ZcCheckedValueModel simFillerBin
     = new ZcCheckedValueModel(0, 29999);
   
-  private final ZcMotor simVCompressor = new ZcMotor();
-  
   @Override public void ccSimulate(){
     
-    //-- misc ** v compressor
-    simVCompressorStartWaitTM.ccAct(dcVCompressorMC);
-    dcVCompressorAN=simVCompressorStartWaitTM.ccIsUp();
-    dcVComporessorCT=simVCompressor.ccContact(dcVCompressorAN, 0.76f);
-    dcVCompressorAL=simVCompressor.ccGetIsTripped();
+    //-- misc
+    dcVCompressor.ccSimulate(0.76f);
+    dcMixer.ccSimulate(0.65f);
+    dcVExFan.ccSimulate(0.55f);
     
-    
+    //-- transfer
     MainSimulator.ccTransferExclusive(simFillerBin,
       dcFillerScrewMC&&dcFillerEelevatorMC, 64,
       true, 16
     );
     dcFillerBinLV=simFillerBin.ccIsAbove(22222);
     /* 4 *///VcLocalTagger.ccTag("ffcbin", simFillerBin.ccGetValue());
-    
-    
     
   }//+++
   

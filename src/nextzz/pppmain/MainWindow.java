@@ -27,6 +27,10 @@ import javax.swing.JToolBar;
 import kosui.pppswingui.ScConst;
 import kosui.pppswingui.ScFactory;
 import kosui.pppswingui.ScTitledWindow;
+import kosui.ppputil.VcConst;
+import kosui.ppputil.VcStampUtility;
+import nextzz.pppswingui.SubErrorPane;
+import nextzz.pppswingui.SubMonitorPane;
 
 public final class MainWindow {
 
@@ -48,15 +52,24 @@ public final class MainWindow {
   public final Runnable cmInitiating = new Runnable() {
     @Override public void run() {
       
-      cmWindow.ccInit("next zz ", ScConst.C_DARK_GREEN);
+      //-- init 
+      cmWindow.ccInit(MainSketch.C_WARE_TITLE, ScConst.C_DARK_GREEN);
+      SubErrorPane.ccRefer().ccInit();
+      SubMonitorPane.ccRefer().ccInit();
       
+      //-- content
       final JPanel lpDummyPane=new JPanel();
       lpDummyPane.add(new JButton("=D="));
       
       final JTabbedPane lpCenterPane = new JTabbedPane();
+      lpCenterPane.add
+        (SubMonitorPane.C_TAB_NAME, SubMonitorPane.ccRefer().cmPane);
+      lpCenterPane.add
+        (SubErrorPane.C_TAB_NAME, SubErrorPane.ccRefer().cmPane);
       lpCenterPane.add("=D=", lpDummyPane);
       lpCenterPane.setPreferredSize(new Dimension(800, 600));
       
+      //-- bar
       final JToolBar lpToolBar = ScFactory.ccCreateStuckedToolBar();
       lpToolBar.add(lpQuitButton);
       lpToolBar.add(lpHideButton);
@@ -64,6 +77,14 @@ public final class MainWindow {
       cmWindow.ccAddCenter(lpCenterPane);
       cmWindow.ccAddPageEnd(lpToolBar);
       cmWindow.ccFinish(cmDoShowAtFirst, cmInitX, cmInitY);
+      
+      //-- post
+      SubErrorPane.ccRefer().cmErrorList.ccRefresh();
+      SubErrorPane.ccRefer().cmLogger
+        .ccWriteln("hellow, have a nice day!");
+      SubErrorPane.ccRefer().cmLogger
+        .ccWriteln("it is",VcStampUtility.ccDataLogTypeI());
+      
       
     }//+++
   };//***

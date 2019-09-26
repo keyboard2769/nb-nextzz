@@ -1,0 +1,53 @@
+/*
+ * Copyright (C) 2019 Key Parker from K.I.C.
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+ * MA 02110-1301  USA
+ */
+
+package nextzz.pppswingui;
+
+import kosui.ppplocalui.EcConst;
+import kosui.pppmodel.MiPixillatable;
+import kosui.pppswingui.ScIcon;
+
+public final class ConstSwingUI {
+
+  public static final ScIcon O_WINDOW_ICON = new ScIcon();
+  //===
+  
+  static public final void ccInit(){
+    
+    O_WINDOW_ICON.ccFillPixel(EcConst.C_LIT_GRAY, new MiPixillatable() {
+      @Override public boolean ccPixillate(int pxX, int pxY) {
+        return true;
+      }//+++
+    });
+    O_WINDOW_ICON.ccFillPixel(EcConst.C_DIM_GREEN, new MiPixillatable() {
+      @Override public boolean ccPixillate(int pxX, int pxY) {
+        return pxX<pxY;
+      }//+++
+    });
+    O_WINDOW_ICON.ccFillPixel(EcConst.C_BLACK, new MiPixillatable() {
+      private final int cmBorderThick=3;
+      @Override public boolean ccPixillate(int pxX, int pxY) {
+        return pxX<cmBorderThick || pxX>(ScIcon.C_SCALE-cmBorderThick)
+             ||pxY<cmBorderThick || pxY>(ScIcon.C_SCALE-cmBorderThick);
+      }//+++
+    });
+    
+  }//..!
+  
+ }//***eof

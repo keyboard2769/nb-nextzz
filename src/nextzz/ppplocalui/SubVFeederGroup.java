@@ -142,8 +142,12 @@ public final class SubVFeederGroup implements EiGroup{
     /* 6 */VcConst.ccLogln("h",lpSingleHopperHeight);
     
     //-- buffered
+    final int lpAdditionalMargin = 100;
     int lpPotentialW
-      = lpSingleHopperWidth*6+lpSingleHopperWidth/2+ConstLocalUI.C_INPANE_GAP*6;
+      = lpSingleHopperWidth*6
+         + lpSingleHopperWidth/2
+         + ConstLocalUI.C_INPANE_GAP*6
+         + lpAdditionalMargin;
     int lpPotentialH
       = lpSingleHopperHeight*2+lpBelconHeight+ConstLocalUI.C_INPANE_GAP*4;
     int lpPotentialX
