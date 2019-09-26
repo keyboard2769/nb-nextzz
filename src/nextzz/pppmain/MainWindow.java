@@ -29,6 +29,8 @@ import kosui.pppswingui.ScFactory;
 import kosui.pppswingui.ScTitledWindow;
 import kosui.ppputil.VcConst;
 import kosui.ppputil.VcStampUtility;
+import nextzz.pppmodel.SubAnalogScalarManager;
+import nextzz.pppswingui.SubAssistantPane;
 import nextzz.pppswingui.SubErrorPane;
 import nextzz.pppswingui.SubMonitorPane;
 
@@ -37,6 +39,20 @@ public final class MainWindow {
   private static final MainWindow SELF = new MainWindow();
   public static final MainWindow ccRefer(){return SELF;}//+++
   private MainWindow(){}//++!
+  
+  //===
+  
+  public final Runnable cmUpdating = new Runnable() {
+    @Override public void run() {
+    
+      //-- current
+      for(int i=0;i<SubMonitorPane.C_CTSLOT_MAX;i++){
+        SubMonitorPane.ccRefer().cmDesCurrentCTSlot.get(i)
+          .ccSetValue(SubAnalogScalarManager.ccRefer().ccGetCurrentA(i));
+      }//..~
+      
+    }//+++
+  };//***
 
   //===
   
@@ -45,35 +61,35 @@ public final class MainWindow {
   
   public final ScTitledWindow cmWindow=new ScTitledWindow(null);
   
-  public final JButton lpQuitButton = new JButton("_quit");
+  public final JButton cmQuitButton = new JButton("_quit");
   
-  public final JButton lpHideButton = new JButton("_hide");
+  public final JButton cmHideButton = new JButton("_hide");
   
   public final Runnable cmInitiating = new Runnable() {
     @Override public void run() {
       
       //-- init 
       cmWindow.ccInit(MainSketch.C_WARE_TITLE, ScConst.C_DARK_GREEN);
-      SubErrorPane.ccRefer().ccInit();
       SubMonitorPane.ccRefer().ccInit();
+      SubAssistantPane.ccRefer().ccInit();
+      SubErrorPane.ccRefer().ccInit();
       
       //-- content
-      final JPanel lpDummyPane=new JPanel();
-      lpDummyPane.add(new JButton("=D="));
-      
       final JTabbedPane lpCenterPane = new JTabbedPane();
+      lpCenterPane.setPreferredSize(new Dimension(800, 600));
       lpCenterPane.add
         (SubMonitorPane.C_TAB_NAME, SubMonitorPane.ccRefer().cmPane);
       lpCenterPane.add
+        (SubAssistantPane.C_TAB_NAME, SubAssistantPane.ccRefer().cmPane);
+      lpCenterPane.add
         (SubErrorPane.C_TAB_NAME, SubErrorPane.ccRefer().cmPane);
-      lpCenterPane.add("=D=", lpDummyPane);
-      lpCenterPane.setPreferredSize(new Dimension(800, 600));
       
       //-- bar
       final JToolBar lpToolBar = ScFactory.ccCreateStuckedToolBar();
-      lpToolBar.add(lpQuitButton);
-      lpToolBar.add(lpHideButton);
+      lpToolBar.add(cmQuitButton);
+      lpToolBar.add(cmHideButton);
       
+      //-- pack
       cmWindow.ccAddCenter(lpCenterPane);
       cmWindow.ccAddPageEnd(lpToolBar);
       cmWindow.ccFinish(cmDoShowAtFirst, cmInitX, cmInitY);
@@ -84,7 +100,6 @@ public final class MainWindow {
         .ccWriteln("hellow, have a nice day!");
       SubErrorPane.ccRefer().cmLogger
         .ccWriteln("it is",VcStampUtility.ccDataLogTypeI());
-      
       
     }//+++
   };//***

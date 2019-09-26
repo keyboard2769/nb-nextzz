@@ -25,11 +25,17 @@ import java.util.Collections;
 import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
 import kosui.pppswingui.ScFactory;
 import kosui.pppswingui.ScGauge;
+import kosui.ppputil.VcConst;
 import kosui.ppputil.VcTranslator;
+import nextzz.pppmodel.MainSpecificator;
 
 public final class SubMonitorPane {
+  
+  public static final int C_CTSLOT_MAX = 32;
+  public static final int C_CTSLOT_MASK = 31;
 
   private static final SubMonitorPane SELF = new SubMonitorPane();
   public static final SubMonitorPane ccRefer(){return SELF;}//+++
@@ -70,10 +76,25 @@ public final class SubMonitorPane {
   
   public final void ccInit(){
     
-    //[head]::
-    cmPane.add(new JButton("=D="),BorderLayout.LINE_START);
-    cmPane.add(new JButton("=D="),BorderLayout.CENTER);
-    cmPane.add(new JButton("=D="),BorderLayout.PAGE_END);
+    //-- ctslot
+    JPanel lpSlotGroupI  = ScFactory.ccCreateGridPanel(16, 1);
+    JPanel lpSlotGroupII = ScFactory.ccCreateGridPanel(16, 1);
+    for(int i=0;i<16;i++){
+      lpSlotGroupI.add(cmDesCurrentCTSlot.get(i));
+      lpSlotGroupII.add(cmDesCurrentCTSlot.get(i+16));
+    }////~
+    JTabbedPane lpLeftWing = new JTabbedPane();
+    lpLeftWing.add(VcTranslator.tr("_vact"),lpSlotGroupI);
+    if(MainSpecificator.ccRefer().ccNeedsExtendsCurrentSlot())
+      {lpLeftWing.add(VcTranslator.tr("_rsct"),lpSlotGroupII);}
+    for(ScGauge it : cmDesCurrentCTSlot){
+       it.ccSetText(VcTranslator.tr(it.ccGetKey()));
+       it.ccSetPercentage(4);
+    }//..~
+    
+    //-- pack
+    cmPane.add(lpLeftWing,BorderLayout.LINE_START);
+    cmPane.add(new JButton("=Dweigh="),BorderLayout.CENTER);
     
   }//..!
   

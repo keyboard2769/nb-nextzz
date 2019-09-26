@@ -20,9 +20,12 @@
 package nextzz.pppdelegate;
 
 import nextzz.ppplocalui.ConstLocalUI;
+import nextzz.ppplocalui.SubMixerGroup;
 import nextzz.ppplocalui.SubOperativeGroup;
+import nextzz.ppplocalui.SubVBondGroup;
 import nextzz.ppplocalui.SubVFeederGroup;
 import nextzz.ppplocalui.SubVSurgeGroup;
+import nextzz.pppswingui.SubAssistantPane;
 
 public final class SubVPreparingDelegator {
   
@@ -31,7 +34,9 @@ public final class SubVPreparingDelegator {
     //-- misc
     mnVCompressorMSSW,mnVCompressorMSPL,
     mnMixerMSSW,mnMixerMSPL,
+    mnMixerIconPL,
     mnVExfanMSSW,mnVExfanMSPL,
+    mnVExfanIconPL,
     mnTowerBlowerTGSW,
     mnWeighSystemTGSW,mnWeighSystemTGPL,
     
@@ -101,7 +106,7 @@ public final class SubVPreparingDelegator {
     /* 6 */throw new RuntimeException("NOT YET!!");
   }//+++
   
-  public static final void ccBinding(){
+  public static final void ccBind(){
     
     //-- misc
     
@@ -112,7 +117,6 @@ public final class SubVPreparingDelegator {
       .get(2).ccIsMousePressed();
     mnVExfanMSSW=SubOperativeGroup.ccRefer().cmDesMotorSW
       .get(3).ccIsMousePressed();
-    //[todo]::mnToerBlowerTGSW
     mnWeighSystemTGSW=SubOperativeGroup.ccRefer().cmDesMotorSW
       .get(7).ccIsMousePressed();
     
@@ -121,6 +125,10 @@ public final class SubVPreparingDelegator {
       .get(1).ccSetIsActivated(mnVCompressorMSPL);
     SubOperativeGroup.ccRefer().cmDesMotorSW
       .get(2).ccSetIsActivated(mnMixerMSPL);
+    SubMixerGroup.ccRefer().cmMixerIcon
+      .ccSetIsActivated(mnMixerIconPL);
+    SubVBondGroup.ccRefer().cmExfanIcon
+      .ccSetIsActivated(mnVExfanIconPL);
     SubOperativeGroup.ccRefer().cmDesMotorSW
       .get(3).ccSetIsActivated(mnVExfanMSPL);
     SubOperativeGroup.ccRefer().cmDesMotorSW

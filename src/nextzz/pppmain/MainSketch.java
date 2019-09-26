@@ -46,6 +46,7 @@ import nextzz.ppplocalui.SubVFeederGroup;
 import nextzz.ppplocalui.SubWeigherGroup;
 import nextzz.pppmodel.MainFileManager;
 import nextzz.pppmodel.MainSpecificator;
+import nextzz.pppmodel.SubAnalogScalarManager;
 import nextzz.pppsimulate.MainSimulator;
 import nextzz.pppswingui.ConstSwingUI;
 import processing.core.PApplet;
@@ -91,6 +92,9 @@ public class MainSketch extends PApplet{
     EcElement.ccSetTextAdjust(0, -1);
     VcLocalCoordinator.ccGetInstance().ccInit(this);
     VcLocalConsole.ccGetInstance().ccInit(this);
+    
+    //-- manager
+    SubAnalogScalarManager.ccRefer().ccInit();
     
     //-- local ui group
     VcLocalCoordinator.ccAddGroup
@@ -149,6 +153,9 @@ public class MainSketch extends PApplet{
     VcLocalConsole.ccUpdate();
     
     //-- swing ui
+    if(ccIsRollingAt(7)){
+      SwingUtilities.invokeLater(MainWindow.ccRefer().cmUpdating);
+    }//..?
     
     //-- debug
     ssTagging(!pbDoesTag);
@@ -223,7 +230,7 @@ public class MainSketch extends PApplet{
   public static final Frame ccGetFrame(){return self.frame;}//+++
   
   public static final String ccGetLastLeavingStamp(){
-    return "_1909261147";
+    return "_1909261629";
   }//+++
 
   //=== entry

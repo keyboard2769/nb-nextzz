@@ -40,6 +40,10 @@ public final class MainSpecificator {
   public final int mnRCCattegoryCount;
   public final int mnADCattegoryCount;
   
+  public final int mnFillerSiloCount;
+  
+  public final int mnMixtureSiloType;
+  
   private MainSpecificator(){
   
     /* 7 */mnVFeederAmount=6;
@@ -50,10 +54,27 @@ public final class MainSpecificator {
     /* 7 */mnRCCattegoryCount=0;
     /* 7 */mnADCattegoryCount=0;
     
+    /* 7 */mnFillerSiloCount=1;
+    
+    //.. [ 0 ]none
+    //.. [ 1 ]beside tower
+    //.. [ 2 ]none
+    //.. [ 3 ]below mixer
+    /* 7 */mnMixtureSiloType = 0;
+    
   }//..!
   
   public final void ccInit(){
     VcConst.ccPrintln("MainSpecification.%file loading%::not yet");
   }//..!
+  
+  //===
+  
+  public final boolean ccNeedsExtendsCurrentSlot(){
+    return
+         mnRCCattegoryCount>0
+      || mnMixtureSiloType==1
+      || mnMixtureSiloType==3;
+  }//+++
   
  }//***eof

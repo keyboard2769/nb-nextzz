@@ -27,7 +27,7 @@ import kosui.ppplogic.ZcOnDelayTimer;
 import kosui.ppplogic.ZcTimer;
 import kosui.ppplogic.ZiTask;
 import kosui.ppputil.VcLocalTagger;
-import nextzz.pppdelegate.SubCurrentSlotDelefator;
+import nextzz.pppdelegate.SubAnalogDelegator;
 import nextzz.pppdelegate.SubVPreparingDelegator;
 
 public final class SubVPreparingTask implements ZiTask{
@@ -43,14 +43,28 @@ public final class SubVPreparingTask implements ZiTask{
   
   //-- misc ** motor
   
-  private final ZcMotor dcVCompressor = new ZcMotor(32);
+  public final ZcMotor dcVCompressor = new ZcMotor(32);
   private final ZcHookFlicker cmVCompressorHOOK = new ZcHookFlicker();
   
-  private final ZcMotor dcMixer = new ZcMotor(48);
+  public final ZcMotor dcMixer = new ZcMotor(48);
   private final ZcHookFlicker cmMixerHOOK = new ZcHookFlicker();
   
-  private final ZcMotor dcVExFan = new ZcMotor(36);
+  public final ZcMotor dcVExFan = new ZcMotor(36);
   private final ZcHookFlicker cmVExFanHooker = new ZcHookFlicker();
+  
+  //-- ag chain ** motor
+  private final ZcHookFlicker cmAGChainHOOK = new ZcHookFlicker();
+  private final ZcCheckedValueModel cmAGChainGum
+    = new ZcCheckedValueModel(0, 16*32);
+  public final ZcMotor dcScreen = new ZcMotor(4);
+  public final ZcMotor dcHotElevator = new ZcMotor(4);
+  public final ZcMotor dcDryer = new ZcMotor(4);
+  public final ZcMotor dcInclinedBelcon = new ZcMotor(4);
+  public final ZcMotor dcHorizontal = new ZcMotor(4);
+  
+  
+  
+  
   
   //-- filler supply
   
@@ -63,9 +77,7 @@ public final class SubVPreparingTask implements ZiTask{
     
   ;//...
   
-  
   private final ZcHookFlicker  cmFillerSupplyHOOK = new ZcHookFlicker();
-  
   
   private final ZcTimer cmFillerEVStopTM = new ZcOffDelayTimer(32);
   private final ZcTimer cmFillerSCStartTM = new ZcOnDelayTimer(32);
@@ -80,7 +92,7 @@ public final class SubVPreparingTask implements ZiTask{
     SubVPreparingDelegator.mnVCompressorMSPL
       = ConstFunctionBlockHolder.ccMoterFeedBackLamp
           (cmVCompressorHOOK, dcVCompressor);
-    SubCurrentSlotDelefator.mnCTSlotZ=dcVCompressor.ccGetCT();
+    SubAnalogDelegator.mnCTSlotZ=dcVCompressor.ccGetCT();
     
     //-- misc ** mixer
     cmMixerHOOK.ccHook
@@ -89,7 +101,8 @@ public final class SubVPreparingTask implements ZiTask{
     SubVPreparingDelegator.mnMixerMSPL
       = ConstFunctionBlockHolder.ccMoterFeedBackLamp
           (cmMixerHOOK, dcMixer);
-    //[notsure]::SubCurrentSlotDelefator.mnCTSlotVI= ??? ;
+    SubAnalogDelegator.mnCTSlotI=dcMixer.ccGetCT();
+    SubVPreparingDelegator.mnMixerIconPL=dcMixer.ccIsContacted();
     
     //-- misc ** exfan
     cmVExFanHooker.ccHook
@@ -98,7 +111,13 @@ public final class SubVPreparingTask implements ZiTask{
     SubVPreparingDelegator.mnVExfanMSPL
       = ConstFunctionBlockHolder.ccMoterFeedBackLamp
         (cmVExFanHooker, dcVExFan);
-    //[notsure]:: how s the ct slot??
+    SubAnalogDelegator.mnCTSlotII=dcVExFan.ccGetCT();
+    SubVPreparingDelegator.mnVExfanIconPL=dcVExFan.ccIsContacted();
+    
+    //-- ag supply chain
+    
+    //[head]::
+    
     
     
     //-- filler supply 
@@ -131,6 +150,13 @@ public final class SubVPreparingTask implements ZiTask{
     dcVCompressor.ccSimulate(0.76f);
     dcMixer.ccSimulate(0.65f);
     dcVExFan.ccSimulate(0.55f);
+    
+    //-- ag chain
+    dcScreen.ccSimulate(0.66f);
+    dcHotElevator.ccSimulate(0.65f);
+    dcDryer.ccSimulate(0.64f);
+    dcInclinedBelcon.ccSimulate(0.63f);
+    dcHotElevator.ccSimulate(0.62f);
     
     //-- transfer
     MainSimulator.ccTransferExclusive(simFillerBin,

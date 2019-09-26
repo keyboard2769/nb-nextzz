@@ -47,8 +47,11 @@ public final class MainDelegator {
     
     //-- w
     
+    //-- a
+    SubAnalogDelegator.ccBind();
+    
     //-- v
-    SubVPreparingDelegator.ccBinding();
+    SubVPreparingDelegator.ccBind();
     
     //-- r
     

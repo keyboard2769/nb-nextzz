@@ -19,6 +19,8 @@
 
 package nextzz.pppmain;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import kosui.ppplocalui.EcElement;
 import kosui.ppplocalui.EcValueBox;
@@ -28,9 +30,11 @@ import kosui.ppputil.VcLocalConsole;
 import kosui.ppputil.VcLocalCoordinator;
 import kosui.ppputil.VcNumericUtility;
 import kosui.ppputil.VcSwingCoordinator;
+import nextzz.pppdelegate.SubVPreparingDelegator;
 import nextzz.ppplocalui.SubIndicativeGroup;
 import nextzz.ppplocalui.SubOperativeGroup;
 import static nextzz.pppmain.MainSketch.C_BACKGROUD;
+import nextzz.pppswingui.SubAssistantPane;
 
 public final class MainActionManager {
   
@@ -114,13 +118,24 @@ public final class MainActionManager {
   
   //=== swing 
   
+  public final ActionListener cmNotchListener = new ActionListener() {
+    @Override public void actionPerformed(ActionEvent e) {
+      
+      SubVPreparingDelegator.mnTowerBlowerTGSW=
+        SubAssistantPane.ccRefer().cmTowerBlowerNT.getSelectedIndex()==0;
+      
+      
+    }//+++
+  };//***
+  
+  
   public final Runnable cmSwingClickableRegisering = new Runnable() {
     @Override public void run() {
     
       VcSwingCoordinator.ccRegisterAction
-        (MainWindow.ccRefer().lpQuitButton, cmQuitting);
+        (MainWindow.ccRefer().cmQuitButton, cmQuitting);
       VcSwingCoordinator.ccRegisterAction
-        (MainWindow.ccRefer().lpHideButton, cmHiding);
+        (MainWindow.ccRefer().cmHideButton, cmHiding);
     
     }//+++
   };
