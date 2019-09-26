@@ -20,6 +20,7 @@
 package nextzz.pppswingui;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import kosui.pppswingui.ScFactory;
@@ -43,9 +44,9 @@ public final class SubErrorPane {
   public final JPanel cmPane = ScFactory.ccCreateBorderPanel();
   
   public final ScStoker cmLogger
-    = new ScStoker("-> "+VcConst.C_V_NEWLINE, 64, 80);
+    = new ScStoker("-> "+VcConst.C_V_NEWLINE);
   
-  public final JTextArea cmDescriptor = new JTextArea("...", 8, 80);
+  public final JTextArea cmDescriptor = new JTextArea("...", 3, 80);
   
   public final ScList cmErrorList = new ScList(
     SubErrorListModel.ccRefer(),
@@ -55,7 +56,7 @@ public final class SubErrorPane {
   
   public final void ccInit(){
     
-    ScFactory.ccSetupConsoleArea(cmDescriptor);
+    ScFactory.ccSetupInfoArea(cmDescriptor);
     
     cmPane.add(cmErrorList,BorderLayout.LINE_START);
     cmPane.add(cmLogger,BorderLayout.CENTER);

@@ -20,8 +20,8 @@ package nextzz.pppsimulate;
 import kosui.ppplogic.ZcOnDelayTimer;
 import kosui.ppplogic.ZcRangedValueModel;
 import kosui.ppplogic.ZcTimer;
+import kosui.ppputil.VcNumericUtility;
 import kosui.ppputil.VcStringUtility;
-import nextzz.pppmain.MainSketch;
 import processing.core.PApplet;
 
 public class ZcMotor extends ZcRangedValueModel{
@@ -38,25 +38,49 @@ public class ZcMotor extends ZcRangedValueModel{
   //===
   
   public final void ccSimulate(float pxLoad){
+    
+    //--
     cmContactDelay.ccAct(cmMC);
     cmAN=cmContactDelay.ccIsUp();
+    
+    //--
     if(!cmAN){
       ccSetValue(1);
     }else{
       ccSetValue(PApplet.ceil(
-        pxLoad*5000f+MainSketch.ccGetPApplet().random(-200,200)
+        pxLoad*5000f+VcNumericUtility.ccRandom(200f)
       ));
     }//..?
-    cmAL=cmValue>4765;
+    
+    //--
+    if(cmValue>4765){cmAL=true;}
     if(cmAL){
       cmAN=false;
       ccSetValue(1);
     }//..?
+    
   }//+++
   
   //===
   
-  public final void ccContact(boolean pxInput){cmMC=pxInput;}
+  public final void ccContact(boolean pxInput){
+    cmMC=pxInput;
+  }//+++
+  
+  public final void ccTestTrip(boolean pxInput){
+    cmAL=pxInput;
+  }//+++
+  
+  public final void ccForceTrip(){
+    cmAL=true;
+  }//+++
+  
+  public final void ccResetTrip(){
+    cmAL=false;
+  }//+++
+  
+  //===
+  
   public final boolean ccIsTripped(){return cmAL;}
   public final boolean ccIsContacted(){return cmAN;}
   public final int ccGetCT(){return cmValue;}
@@ -66,11 +90,10 @@ public class ZcMotor extends ZcRangedValueModel{
   @Override public String toString() {
     StringBuilder lpBuilder = new StringBuilder();
     lpBuilder.append(super.toString());
-    lpBuilder.append(" -> ");
+    lpBuilder.append('|');
     lpBuilder.append(VcStringUtility.ccPackupParedTag("AL", cmAL));
     lpBuilder.append(VcStringUtility.ccPackupParedTag("AN", cmAN));
     lpBuilder.append(VcStringUtility.ccPackupParedTag("MC", cmMC));
-    lpBuilder.append(VcStringUtility.ccPackupParedTag("CT", cmValue));
     lpBuilder.append(VcStringUtility
       .ccPackupParedTag("%delay%", cmContactDelay.ccGetValue()));
     return lpBuilder.toString();

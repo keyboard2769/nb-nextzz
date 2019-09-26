@@ -417,7 +417,7 @@ public final class ConstLocalUI {
       break;
       
       default:
-        pxLabel.ccSetIsVisible(false);
+        pxLabel.ccSetVisible(false);
         pxLabel.ccSetIsEnabled(false);
       break;
       

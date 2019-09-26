@@ -74,7 +74,10 @@ public class MainSketch extends PApplet{
   
   @Override public void setup(){
     
-    size(cmWindowW,cmWindowH);
+    size(cmWindowW,cmWindowH,JAVA2D);
+    
+    VcConst.ccPrintln(".setup()::commited-w", cmWindowW);
+    VcConst.ccPrintln(".setup()::commited-h", cmWindowH);
     /* 4 */VcConst.ccLogln("MainSketch.setup()::start");
     
     //-- pre
@@ -112,6 +115,13 @@ public class MainSketch extends PApplet{
     VcLocalCoordinator.ccAddGroup
       (SubMixerGroup.ccRefer());//.. might depends on weigher group
     
+    //-- swing ui group
+    SwingUtilities.invokeLater
+      (MainWindow.ccRefer().cmInitiating);
+    SwingUtilities.invokeLater
+      (MainActionManager.ccRefer().cmSwingClickableRegisering);
+    
+    //-- debug
     /* 6 */VcLocalTagger.ccGetInstance().ccInit(this, 7);
     /* 6 */VcLocalTagger.ccGetInstance().ccSetColor(0xFF111111, 0xFFEEEEEE);
     
@@ -127,6 +137,7 @@ public class MainSketch extends PApplet{
     //-- post
     frame.setIconImage(ConstSwingUI.O_WINDOW_ICON);
     /* 4 */VcConst.ccPrintln("MainSketch.setup()::over");
+    
     
   }//+++
 
@@ -229,13 +240,10 @@ public class MainSketch extends PApplet{
   
   public static final Frame ccGetFrame(){return self.frame;}//+++
   
-  public static final String ccGetLastLeavingStamp(){
-    return "_1909261920";
-  }//+++
-
   //=== entry
   
   public static void main(String[] args) {
+    
     
     //-- check in
     VcConst.ccPrintln(".main()::with", VcConst.C_V_OS);
@@ -299,15 +307,15 @@ public class MainSketch extends PApplet{
       );
     }//..?
     
-    //-- swing init
-    SwingUtilities.invokeLater
-      (MainWindow.ccRefer().cmInitiating);
-    SwingUtilities.invokeLater
-      (MainActionManager.ccRefer().cmSwingClickableRegisering);
-    
     //-- run sketch
+    VcConst.ccPrintln(".main()::commited-w", cmWindowW);
+    VcConst.ccPrintln(".main()::commited-h", cmWindowH);
     PApplet.main(MainSketch.class.getCanonicalName());
     
+  }//+++
+  
+  public static final String ccGetLastLeavingStamp(){
+    return "_1909262239";
   }//+++
 
 }//***eof

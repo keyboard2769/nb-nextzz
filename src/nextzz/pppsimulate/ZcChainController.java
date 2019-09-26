@@ -22,6 +22,8 @@ package nextzz.pppsimulate;
 import kosui.ppplocalui.EcConst;
 import kosui.ppplogic.ZcCheckedValueModel;
 import kosui.ppplogic.ZcLevelComparator;
+import kosui.ppplogic.ZcPulser;
+import kosui.ppputil.VcStringUtility;
 
 public class ZcChainController extends ZcCheckedValueModel {
   
@@ -31,44 +33,92 @@ public class ZcChainController extends ZcCheckedValueModel {
     rule #3 : it some stage tripped, previouse stage should not stopp immediatly
   */
   
-  private boolean cmIsEngaged = false;
+  private boolean cmRunsUp = false;
+  private boolean cmRunsDown = false;
+  private final int cmMaxLV;
+  private int cmConfirmedLV=0;
+  private final ZcPulser cmEngagePulser = new ZcPulser();
 
-  public ZcChainController(int pxIntervalS) {
+  public ZcChainController(int pxIntervalS, int pxMaxLV) {
     super(0, EcConst.C_FPS*(pxIntervalS&0x1F)*ZcLevelComparator.C_LEVEL_MAX);
+    cmMaxLV=pxMaxLV;
   }//..!
   
   //===
   
   public final void ccRun(){
-    if(cmIsEngaged){
-      ccShift(1);
-    }else{
-      ccShift(-1);
+    
+    //--
+    if(cmRunsUp){
+      if(cmConfirmedLV>=ccGetCurrentLevel()){
+        ccShift(1);
+      }//..?
+      if(ccIsLevelAbove(cmMaxLV)){
+        ccSetToLevel(cmMaxLV);
+        cmRunsUp=false;
+      }//..?
     }//..?
+    
+    //--
+    if(cmRunsDown){
+      ccShift(-1);
+      if(ccIsLevelAt(0)){
+        cmRunsDown=false;
+      }//..?
+    }//..?
+    
   }//+++
   
   //===
   
-  public final void ccSetEngaged(boolean pxStatus){
-    cmIsEngaged=pxStatus;
+  public final void ccTakePulse(boolean pxInput){
+    if(cmEngagePulser.ccUpPulse(pxInput)){
+      if(ccIsLevelAt(0)){
+        cmRunsUp=true;
+        cmRunsDown=false;
+      }else{
+        cmRunsUp=false;
+        cmRunsDown=true;
+      }//..?
+    }//..?
   }//+++
   
-  public final void ccSetTrippedAt(int pxIndex, boolean pxStatus){
-    //[head]::
+  public final void ccSetTrippedAt(int pxLevel, boolean pxStatus){
+    if(pxStatus && pxLevel<=ccGetCurrentLevel()){
+      ccSetToLevel(pxLevel-1);cmRunsUp=false;
+    }//..?
   }//+++
   
-  public final void ccSetConfirmedAt(int pxIndex, boolean pxStatus){
-    
+  public final void ccSetConfirmedAt(int pxLevel, boolean pxStatus){
+    if(pxStatus){cmConfirmedLV=pxLevel;}
   }//+++
   
-  public final boolean ccGetOutputAt(int pxIndex){
-    return false;
+  public final boolean ccGetOutputAt(int pxLevel){
+    return ccIsLevelAbove(pxLevel);
   }//+++
   
   //===
   
   public final void ccAllStop(){
+    //[head]::
+  }//+++
   
+  public final int ccGetStatus(){
+    //.. [ 0 ]all stopped
+    //.. [ 1 ]all started
+    //.. [ 2 ]transition
+    return 0;
+  }//+++
+  
+  //===
+
+  @Override public String toString() {
+    StringBuilder lpRes=new StringBuilder();
+    lpRes.append(super.toString());
+    lpRes.append('|');
+    lpRes.append(VcStringUtility.ccPackupParedTag("up", cmRunsUp));
+    lpRes.append(VcStringUtility.ccPackupParedTag("dn", cmRunsDown));
+    return lpRes.toString();
   }//+++
   
 }//***eof
