@@ -86,7 +86,7 @@ public class MainSketch extends PApplet{
     ssInitFont();
     
     //-- loadable config
-    MainSpecificator.ccRefer().ccInit();
+    MainSpecificator.ccRefer().ccVerify();
     
     //-- library
     ConstLocalUI.ccInit();
@@ -310,7 +310,7 @@ public class MainSketch extends PApplet{
   }//+++
   
   public static final String ccGetLastLeavingStamp(){
-    return "_1909272202";
+    return "_1909280716";
   }//+++
 
 }//***eof

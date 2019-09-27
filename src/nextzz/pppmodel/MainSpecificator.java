@@ -21,10 +21,6 @@ package nextzz.pppmodel;
 
 import kosui.ppputil.VcConst;
 
-/**
- *
- * @author Key Parker from K.I.C
- */
 public final class MainSpecificator {
   
   private static final MainSpecificator SELF = new MainSpecificator();
@@ -47,34 +43,57 @@ public final class MainSpecificator {
   public final int mnMixtureSiloType;
   
   private MainSpecificator(){
+    
+    ssInit();
+    
+    //-- a
+    mnAGCattegoryCount=ccGetValue("mnAGCattegoryCount", 6);
+    mnFRCattegoryCount=ccGetValue("mnFRCattegoryCount", 2);
+    mnASCattegoryCount=ccGetValue("mnASCattegoryCount", 1);
+    mnRCCattegoryCount=ccGetValue("mnRCCattegoryCount", 0);
+    mnADCattegoryCount=ccGetValue("mnADCattegoryCount", 0);
   
-    /* 7 */mnVFeederAmount=6;
+    //-- v
+    mnVFeederAmount=ccGetValue("mnVFeederAmount", 6);
     
-    /* 7 */mnAGCattegoryCount=6;
-    /* 7 */mnFRCattegoryCount=2;
-    /* 7 */mnASCattegoryCount=1;
-    /* 7 */mnRCCattegoryCount=0;
-    /* 7 */mnADCattegoryCount=0;
+    //-- v ** f
+    mnFillerSiloCount=ccGetValue("mnFillerSiloCount", 1);
+    mnDustBinSeparated=ccGetValue("mnDustBinSeparated", false);
+    mnDustSiloExists=ccGetValue("mnDustSiloExists", true);
     
-    /* 7 */mnFillerSiloCount=1;
-    
+    //-- s
     //.. [ 0 ]none
     //.. [ 1 ]beside tower
     //.. [ 2 ]none
     //.. [ 3 ]below mixer
-    /* 7 */mnMixtureSiloType = 0;
+    /* 7 */mnMixtureSiloType = ccGetValue("mnMixtureSiloType", 0);
     
-    /* 7 */mnDustBinSeparated=false;
-    /* 7 */mnDustSiloExists=true;
+    //-- r
     
+    //-- a
     
   }//..!
   
-  public final void ccInit(){
+  private void ssInit(){
     VcConst.ccPrintln("MainSpecification.%file loading%::not yet");
   }//..!
   
+  private int ccGetValue(String pxKey,int pxOrDefault){
+    //[notyet]::
+    return pxOrDefault;
+  }//+++
+  
+  private boolean ccGetValue(String pxKey, boolean pxOrDeault){
+    //[notyet]::
+    return pxOrDeault;
+  }//+++
+  
   //===
+  
+  public final boolean ccVerify(){
+    //[notyet]::
+    return false;
+  }//+++
   
   public final boolean ccNeedsExtendsCurrentSlot(){
     return
