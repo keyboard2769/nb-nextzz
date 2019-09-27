@@ -22,6 +22,7 @@ package pppcase;
 import kosui.ppplocalui.EcComponent;
 import kosui.ppplocalui.EcConst;
 import kosui.ppplocalui.EcElement;
+import kosui.ppplocalui.EcRect;
 import kosui.ppplogic.ZcRoller;
 import kosui.ppputil.VcConst;
 import kosui.ppputil.VcLocalCoordinator;
@@ -47,12 +48,11 @@ public class CaseContainer extends PApplet{
     EcConst.ccSetupSketch(this);
     VcLocalCoordinator.ccGetInstance().ccInit(this);
     VcLocalTagger.ccGetInstance().ccInit(this, 9);
-    cmChargeKEY.ccSetLocation(160, 20);
-    cmTransferKEY.ccSetLocation(cmChargeKEY, 0,5);
-    cmDischargeKEY.ccSetLocation(cmTransferKEY, 5, 0);
-    cmResetKEY.ccSetLocation(
-      cmTransferKEY.ccGetX()-cmResetKEY.ccGetW()-5, cmDischargeKEY.ccGetY()
-    );
+    EcRect lpG = new EcRect(5,120,27, 27);
+    cmChargeKEY.ccSetLocation(   lpG.ccGridX(2), lpG.ccGridY(1));
+    cmResetKEY.ccSetLocation(    lpG.ccGridX(1), lpG.ccGridY(2));
+    cmTransferKEY.ccSetLocation( lpG.ccGridX(2), lpG.ccGridY(2));
+    cmDischargeKEY.ccSetLocation(lpG.ccGridX(3), lpG.ccGridY(2));
     VcLocalCoordinator.ccAddElement(cmChargeKEY);
     VcLocalCoordinator.ccAddElement(cmTransferKEY);
     VcLocalCoordinator.ccAddElement(cmResetKEY);
@@ -86,13 +86,13 @@ public class CaseContainer extends PApplet{
     //--
     fill(0xFF);
     text(
-      "tgt"+VcConst.C_V_NEWLINE+VcStringUtility.ccBreakObject(cmTarget)
-       + VcConst.C_V_NEWLINE+PApplet.nf(cmTarget.ccGetScaledValue(3600),4),
-      5, 140
+      "src"+VcConst.C_V_NEWLINE+VcStringUtility.ccBreakObject(cmSource),
+      160,5
     );
     text(
-      "src"+VcConst.C_V_NEWLINE+VcStringUtility.ccBreakObject(cmSource),
-      130,120
+      "tgt"+VcConst.C_V_NEWLINE+VcStringUtility.ccBreakObject(cmTarget)
+       + VcConst.C_V_NEWLINE+PApplet.nf(cmTarget.ccGetScaledValue(3600),4),
+      160, 120
     );
     
     //--

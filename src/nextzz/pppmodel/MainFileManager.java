@@ -60,59 +60,54 @@ public final class MainFileManager {
   
   public final void ccInit(){
     
-    ccVelidateFontFile();
+    //[todo]::validate root folder
+    ssValidateFontFile();
+    //[todo]::validate configfile
+    //[todo]::validate ...
     
   }//..!
   
-  private void ccVelidateFontFile(){
+  private void ssValidateFontFile(){
     
-    boolean lpOK;
+    //--
+    boolean lpOK=false;
+    for(String it:new String[]{
+      C_LOCAL_FONT_MY_MAC_XI,
+      C_TEXT_FONT_LOCATION_MY_MAC_XIII,
+      C_TRUETYPE_FONT_MY_MI_XV,
+      C_TRUETYPE_FONT_MY_SONY_XI
+    }){
+      cmFontFile=new File(it);
+      lpOK=McConst.ccVerifyFileForLoading(cmFontFile);
+      if(lpOK){break;}
+    }//..~
     
-    cmFontFile = new File(C_LOCAL_FONT_MY_MAC_XI);
-    lpOK=McConst.ccVerifyFileForLoading(cmFontFile,"vlw",9999999l);
+    //--
     if(lpOK){
-      VcConst.ccPrintln("located-font-file", cmFontFile.getName());
-      VcConst.ccPrintln("length", cmFontFile.length());
-      return;
-    }//..?
+      /* 4 */VcConst.ccPrintln("MainFileManager.ssValidateFontFile()::"
+        +"loadted file",cmFontFile.getName());
+    }else{
+      /* 4 */VcConst.ccPrintln("MainFileManager.ssValidateFontFile()::"
+        +"failed to verify file for loading");
+      cmFontFile=null;
+      return; 
+    }//..!
     
-    cmFontFile = new File(C_TEXT_FONT_LOCATION_MY_MAC_XIII);
-    lpOK=McConst.ccVerifyFileForLoading(cmFontFile,"vlw",9999999l);
-    if(lpOK){
-      VcConst.ccPrintln("located-font-file", cmFontFile.getName());
-      VcConst.ccPrintln("length", cmFontFile.length());
-      return;
+    //--
+    if(cmFontFile.length()<=9999999l){
+      /* 4 */VcConst.ccPrintln("MainFileManager.ssValidateFontFile()::"
+        +"file length",cmFontFile.length());
+    }else{
+      /* 4 */VcConst.ccPrintln("MainFileManager.ssValidateFontFile()::"
+        +"refuse file larger than 9999kB");
+      cmFontFile=null;
+      return; 
     }//..?
-    
-    cmFontFile = new File(C_LOCAL_FONT_MY_MI_XV);
-    lpOK=McConst.ccVerifyFileForLoading(cmFontFile,"vlw",9999999l);
-    if(lpOK){
-      VcConst.ccPrintln("located-font-file", cmFontFile.getName());
-      VcConst.ccPrintln("length", cmFontFile.length());
-      return;
-    }//..?
-    
-    cmFontFile = new File(C_TRUETYPE_FONT_MY_MI_XV);
-    lpOK=McConst.ccVerifyFileForLoading(cmFontFile);
-    if(lpOK){
-      VcConst.ccPrintln("located-font-file", cmFontFile.getName());
-      VcConst.ccPrintln("length", cmFontFile.length());
-      return;
-    }//..?
-    
-    cmFontFile = new File(C_TRUETYPE_FONT_MY_SONY_XI);
-    lpOK=McConst.ccVerifyFileForLoading(cmFontFile);
-    if(lpOK){
-      VcConst.ccPrintln("located-font-file", cmFontFile.getName());
-      VcConst.ccPrintln("length", cmFontFile.length());
-      return;
-    }//..?
-    
-    cmFontFile=null;
-    ScConst.ccMessage("failed to locate font file");
     
   }//+++
   
-  public final File ccGetFontFile(){return cmFontFile;}
+  //===
+  
+  public final File ccGetFontFile(){return cmFontFile;}//+++
   
  }//***eof

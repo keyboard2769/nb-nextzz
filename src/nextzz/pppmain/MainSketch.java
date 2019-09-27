@@ -48,6 +48,7 @@ import nextzz.pppmodel.MainFileManager;
 import nextzz.pppmodel.MainSpecificator;
 import nextzz.pppmodel.SubAnalogScalarManager;
 import nextzz.pppsimulate.MainSimulator;
+import nextzz.pppsimulate.SubVPreparingTask;
 import nextzz.pppswingui.ConstSwingUI;
 import processing.core.PApplet;
 import processing.core.PFont;
@@ -69,7 +70,7 @@ public class MainSketch extends PApplet{
   private static int cmWindowH=C_HEIGHT_S;
   private static int cmRoller=10;
   
-  public static volatile boolean pbDoesTag=false;
+  public static volatile boolean pbDebugMode=false;
   
   //=== overidden
   
@@ -93,7 +94,7 @@ public class MainSketch extends PApplet{
     EcElement.ccSetTextAdjust(0, -1);
     VcLocalCoordinator.ccGetInstance().ccInit(this);
     VcLocalConsole.ccGetInstance().ccInit(this);
-    /* 6 */VcLocalTagger.ccGetInstance().ccInit(this, 15);
+    /* 6 */VcLocalTagger.ccGetInstance().ccInit(this,false);
     /* 6 */VcLocalTagger.ccGetInstance().ccSetColor(0xFF111111, 0xFFEEEEEE);
     
     //-- manager
@@ -120,7 +121,6 @@ public class MainSketch extends PApplet{
       (MainWindow.ccRefer().cmInitiating);
     SwingUtilities.invokeLater
       (MainActionManager.ccRefer().cmSwingClickableRegisering);
-    
     
     //-- translation
     EcConst.ccTranslateText(SubOperativeGroup.ccRefer().cmDesMotorSW);
@@ -165,8 +165,17 @@ public class MainSketch extends PApplet{
     }//..?
     
     //-- debug
-    ssTagging(!pbDoesTag);
-    /* 4 */VcLocalTagger.ccStabilize();
+    /* 4 */
+    VcLocalTagger.ccTag("roll",nf(cmRoller,2));
+    VcLocalTagger.ccTag
+      ("latency",VcNumericUtility.ccFormatPointTwoFloat(17f-frameRate));
+    VcLocalTagger.ccTag
+      ("clickID",nf(VcLocalCoordinator.ccGetMouseOverID(),6));
+    VcLocalTagger.ccTag
+      ("inputID",nf(VcLocalCoordinator.ccGetInputFocusID(),6));
+    VcLocalTagger.ccTag("mX",nf(mouseX,4));
+    VcLocalTagger.ccTag("mY",nf(mouseY,4));
+    VcLocalTagger.ccStabilize();
     
   }//+++
 
@@ -181,19 +190,6 @@ public class MainSketch extends PApplet{
   }//+++
   
   //=== utility
-  
-  private void ssTagging(boolean pxHide){
-    if(pxHide){return;}
-    VcLocalTagger.ccTag("roll",nf(cmRoller,2));
-    VcLocalTagger.ccTag
-      ("latency",VcNumericUtility.ccFormatPointTwoFloat(17f-frameRate));
-    VcLocalTagger.ccTag
-      ("clickID",nf(VcLocalCoordinator.ccGetMouseOverID(),6));
-    VcLocalTagger.ccTag
-      ("inputID",nf(VcLocalCoordinator.ccGetInputFocusID(),6));
-    VcLocalTagger.ccTag("mX",nf(mouseX,4));
-    VcLocalTagger.ccTag("mY",nf(mouseY,4));
-  }//+++
   
   private void ssInitFont(){
     File lpFont=MainFileManager.ccRefer().ccGetFontFile();
@@ -240,10 +236,13 @@ public class MainSketch extends PApplet{
   
   public static void main(String[] args) {
     
-    
     //-- check in
     VcConst.ccPrintln(".main()::with", VcConst.C_V_OS);
     VcConst.ccPrintln(".main()::at", VcConst.C_V_PWD);
+    /* ? */VcConst.ccPrintln
+      (".main()::kosui -b", EcConst.ccGetLastLeavingStamp());
+    /* ? */VcConst.ccPrintln
+      (".main()::nzz -b", MainSketch.ccGetLastLeavingStamp());
     
     //-- translation
     VcTranslator.ccGetInstance().ccInit();
@@ -311,7 +310,7 @@ public class MainSketch extends PApplet{
   }//+++
   
   public static final String ccGetLastLeavingStamp(){
-    return "_1909271604";
+    return "_1909272202";
   }//+++
 
 }//***eof

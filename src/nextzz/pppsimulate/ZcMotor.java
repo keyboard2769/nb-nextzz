@@ -88,15 +88,18 @@ public class ZcMotor extends ZcRangedValueModel{
   //===
 
   @Override public String toString() {
-    StringBuilder lpBuilder = new StringBuilder();
-    lpBuilder.append(super.toString());
-    lpBuilder.append('|');
-    lpBuilder.append(VcStringUtility.ccPackupParedTag("AL", cmAL));
-    lpBuilder.append(VcStringUtility.ccPackupParedTag("AN", cmAN));
-    lpBuilder.append(VcStringUtility.ccPackupParedTag("MC", cmMC));
-    lpBuilder.append(VcStringUtility
-      .ccPackupParedTag("%delay%", cmContactDelay.ccGetValue()));
-    return lpBuilder.toString();
+    StringBuilder lpRes = new StringBuilder(ZcMotor.class.getSimpleName());
+    lpRes.append('@');
+    lpRes.append(Integer.toHexString(this.hashCode()));
+    lpRes.append('$');
+    lpRes.append(VcStringUtility.ccPackupParedTag("AL", cmAL));
+    lpRes.append(VcStringUtility.ccPackupParedTag("AN", cmAN));
+    lpRes.append(VcStringUtility.ccPackupParedTag("MC", cmMC));
+    lpRes.append(VcStringUtility.ccPackupParedTag("CT", cmValue));
+    lpRes.append(VcStringUtility.ccPackupParedTag(
+      "%delay%", cmContactDelay.ccGetValue()
+    ));
+    return lpRes.toString();
   }//+++
   
 }//***eof

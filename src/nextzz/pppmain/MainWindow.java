@@ -21,13 +21,11 @@ package nextzz.pppmain;
 
 import java.awt.Dimension;
 import javax.swing.JButton;
-import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JToolBar;
 import kosui.pppswingui.ScConst;
 import kosui.pppswingui.ScFactory;
 import kosui.pppswingui.ScTitledWindow;
-import kosui.ppputil.VcConst;
 import kosui.ppputil.VcStampUtility;
 import nextzz.pppmodel.SubAnalogScalarManager;
 import nextzz.pppswingui.SubAssistantPane;
@@ -69,7 +67,7 @@ public final class MainWindow {
     @Override public void run() {
       
       //-- style
-      ScConst.ccApplyLookAndFeel(0, true);
+      ScConst.ccApplyLookAndFeel(0, false);
 
       //-- init 
       cmWindow.ccInit(MainSketch.C_WARE_TITLE, ScConst.C_DARK_GREEN);

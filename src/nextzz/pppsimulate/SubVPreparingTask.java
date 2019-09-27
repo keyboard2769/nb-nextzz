@@ -60,7 +60,7 @@ public final class SubVPreparingTask implements ZiTask{
   
   //-- filler supply
   private final ZcHookFlicker  cmFillerSupplyHOOK = new ZcHookFlicker();
-  private final ZcTimer cmFillerBinInputStopTM = new ZcOffDelayTimer(32);
+  private final ZcTimer cmFillerBinInputStopTM = new ZcOffDelayTimer(80);
   private final ZcTimer cmFillerBinInpuStartTM = new ZcOnDelayTimer(32);
   private final ZcTimer cmFillerBinLevelDelayor = new ZcDelayor(7, 888);
   public final ZcMotor dcFillerElevator = new ZcMotor(4);
@@ -71,29 +71,18 @@ public final class SubVPreparingTask implements ZiTask{
   public final ZcContainer dcFillerBin = new ZcContainer(2.2f);
   
   //-- dust extraction
-  private boolean cmBagDustOutConfirm=false;
-  private boolean cmBagDustOutFlag=false;
   private final ZcHookFlicker cmDustExtractionHOOK = new ZcHookFlicker();
-  private final ZcTimer cmDustSiloInputStopTM = new ZcOffDelayTimer(32);
+  private final ZcTimer cmDustSiloInputStopTM = new ZcOffDelayTimer(80);
   private final ZcTimer cmDustSiloInputStartTM = new ZcOnDelayTimer(32);
   private final ZcTimer cmDustSiloLevelDelayor = new ZcDelayor(16, 16);
-  private final ZcChainController cmDustExtractionCTRL = new ZcChainController(2, 4);
+  private final ZcChainController cmDustExtractionCTRL = new ZcChainController(2, 3);
   public boolean dcDustSiloDischargeGateMV=false;
   public boolean dcDustSiloAirationMV=false;
   public final ZcMotor dcDustSiloElevator = new ZcMotor(4);
   public final ZcMotor dcDustExtractionScrew = new ZcMotor(4);
+  public final ZcMotor dcBagDustScrew = new ZcMotor(4);
   public final ZcContainer dcBagHopper = new ZcContainer(1.8f);
   public final ZcContainer dcDustSilo = new ZcContainer(1.2f);
-  
-  //===
-  
-  public final void ccSetBagDustOutComfirm(boolean pxVal){
-    cmBagDustOutConfirm=pxVal;
-  }//+++
-  
-  public final boolean ccGetBagDustOutFlag(){
-    return cmBagDustOutFlag;
-  }//+++
   
   //===
   
@@ -129,7 +118,7 @@ public final class SubVPreparingTask implements ZiTask{
     SubVPreparingDelegator.mnVExfanIconPL=dcVExFan.ccIsContacted();
     
     //-- ag supply chain
-    //-- ag supply chain ** take
+    //-- ag supply chain ** takewith
     cmAGChainCTRL.ccSetTrippedAt(1, dcScreen.ccIsTripped());
     cmAGChainCTRL.ccSetTrippedAt(2, dcHotElevator.ccIsTripped());
     cmAGChainCTRL.ccSetTrippedAt(3, dcDryer.ccIsTripped());
@@ -166,7 +155,7 @@ public final class SubVPreparingTask implements ZiTask{
     SubAnalogDelegator.mnCTSlotX=dcHorizontalBelcon.ccGetCT();
     
     //-- filler supply 
-    //-- filler supply ** software input
+    //-- filler supply ** takewith
     cmFillerSupplyHOOK.ccHook(SubVPreparingDelegator.mnFillerSystemSW);
     cmFillerBinInputStopTM.ccAct(cmFillerSupplyHOOK.ccIsHooked());
     cmFillerBinInpuStartTM.ccAct(cmFillerSupplyHOOK.ccIsHooked());
@@ -176,41 +165,53 @@ public final class SubVPreparingTask implements ZiTask{
     dcFillerScrew.ccContact(!cmFillerBinLevelDelayor.ccIsUp()
       &&cmFillerBinInpuStartTM.ccIsUp()
     );
-    //-- filler supply ** software output
+    //-- filler supply ** feedback
     SubVPreparingDelegator.mnFillerBinMLVPL
       =SubVPreparingDelegator.mnFillerBinLLVPL
       =dcFillerBin.ccIsMiddle();
     SubVPreparingDelegator.mnFillerSystemPL=cmFillerBinInputStopTM.ccIsUp()&&
       (MainSimulator.ccOneSecondClock()||dcFillerScrew.ccIsContacted());
     SubAnalogDelegator.mnFillerSiloLV = dcFillerSilo.ccGetScaledValue(255);
+    SubAnalogDelegator.mnCTSlotXV=dcFillerElevator.ccGetCT();
     
     //-- dust extraction
-    //-- dust extraction ** software input
+    //-- dust extraction ** takewith
     cmDustExtractionHOOK.ccHook(SubVPreparingDelegator.mnDustExtractionMSSW);
     cmDustSiloInputStopTM.ccAct(cmDustExtractionHOOK.ccIsHooked());
     cmDustSiloInputStartTM.ccAct(cmDustExtractionHOOK.ccIsHooked());
     //-- dust extraction ** controller
     cmDustExtractionCTRL.ccSetTrippedAt
-      (1,dcDustSiloElevator.ccIsTripped());
+      (1,dcDustExtractionScrew.ccIsTripped());
     cmDustExtractionCTRL.ccSetTrippedAt
-      (2,dcDustExtractionScrew.ccIsTripped());
+      (2,dcBagDustScrew.ccIsTripped());
     cmDustExtractionCTRL.ccSetConfirmedAt
-      (1,dcDustSiloElevator.ccIsContacted());
+      (1,dcDustExtractionScrew.ccIsContacted());
     cmDustExtractionCTRL.ccSetConfirmedAt
-      (2,dcDustExtractionScrew.ccIsContacted());
-    cmDustExtractionCTRL.ccSetConfirmedAt
-      (3, cmBagDustOutConfirm);
+      (2,dcBagDustScrew.ccIsContacted());
     boolean lpDustExtractionStartHLD
-      = dcDustSiloElevator.ccIsContacted()&&cmDustExtractionHOOK.ccIsHooked();
+      = dcDustSiloElevator.ccIsContacted()
+       && cmDustExtractionHOOK.ccIsHooked()
+       && (!cmDustSiloLevelDelayor.ccIsUp());
     cmDustExtractionCTRL.ccTakeInput
       (lpDustExtractionStartHLD, !lpDustExtractionStartHLD);
     cmDustExtractionCTRL.ccRun();
+    //-- dust extraction ** output
+    dcDustSiloElevator.ccContact(cmDustSiloInputStopTM.ccIsUp());
+    dcDustExtractionScrew.ccContact(cmDustExtractionCTRL.ccGetOutputAt(1));
+    dcBagDustScrew.ccContact(cmDustExtractionCTRL.ccGetOutputAt(2));
+    SubVPreparingDelegator.mnDustExtractionMSPL=
+      cmDustSiloInputStopTM.ccIsUp()
+        &&
+      (cmDustExtractionCTRL.ccIsAllEngaged()||MainSimulator.ccOneSecondClock());
+    dcDustSiloDischargeGateMV=SubVPreparingDelegator.mnDustSiloDischargeSW;
+    //-- dust extraction ** feedback
+    SubVPreparingDelegator.mnBagHopperLLV=dcBagHopper.ccIsMiddle();
+    SubVPreparingDelegator.mnBagHopperHLV=dcBagHopper.ccIsFull();
+    SubAnalogDelegator.mnDustSiloLV=dcDustSilo.ccGetScaledValue(255);
+    SubAnalogDelegator.mnCTSlotXII=dcBagDustScrew.ccGetCT();
     
-    //[head]::
-    
-    
-    
-    
+    //--???
+
     
   }//+++
   
@@ -239,9 +240,33 @@ public final class SubVPreparingTask implements ZiTask{
       dcFillerScrew.ccIsContacted()&&dcFillerElevator.ccIsContacted(),
       64
     );
-    VcLocalTagger.ccTag("fs", dcFillerSilo);
-    VcLocalTagger.ccTag("fb", dcFillerBin);
     
+    //--
+    if(dcVExFan.ccIsContacted()){dcBagHopper.ccCharge(8);}
+    if(dcDustSiloDischargeGateMV){dcDustSilo.ccDischarge(64);}
+    dcDustSiloElevator.ccSimulate(0.45f);
+    dcDustExtractionScrew.ccSimulate(0.47f);
+    dcBagDustScrew.ccSimulate(0.55f);
+    ZcContainer.ccTransfer(
+      dcBagHopper, dcDustSilo,
+      dcDustSiloElevator.ccIsContacted()
+        && dcDustExtractionScrew.ccIsContacted()
+        && dcBagDustScrew.ccIsContacted(),
+      32
+    );
+    
+  }//+++
+  
+  //===
+  
+  @Deprecated public static final void tstTagDustExtractionSIMS(){
+    VcLocalTagger.ccTag("d-e-offtm",self.cmDustSiloInputStopTM);
+    VcLocalTagger.ccTag("d-e-ctrl",self.cmDustExtractionCTRL);
+    VcLocalTagger.ccTag("#37B", self.dcDustSiloElevator);
+    VcLocalTagger.ccTag("#37", self.dcDustExtractionScrew);
+    VcLocalTagger.ccTag("#33", self.dcBagDustScrew);
+    VcLocalTagger.ccTag("c-c-bagh", self.dcBagHopper);
+    VcLocalTagger.ccTag("c-c-dustsilo", self.dcDustSilo);
   }//+++
   
 }//***eof

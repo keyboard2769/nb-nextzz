@@ -58,17 +58,4 @@ public final class MainSimulator {
   
   }//+++
   
-  //===
-  
-  public static final void ccTransferExclusive(
-    ZcRangedValueModel pxTarget,
-    boolean pxCharge, int pxChargeSpeed,
-    boolean pxDischarge, int pxDischargeSpeed
-  ){
-    if(pxCharge){pxTarget.ccShift(pxChargeSpeed);}
-    if(pxDischarge){pxTarget.ccShift(-1*pxDischargeSpeed);}
-  }//+++
-  
-  //[todo]::ccTansferInteractive()
-  
  }//***eof

@@ -24,7 +24,6 @@ import kosui.ppplocalui.EcConst;
 import kosui.ppplocalui.EcElement;
 import kosui.ppplocalui.EiTriggerable;
 import kosui.ppplogic.ZcRoller;
-import kosui.ppputil.VcConst;
 import kosui.ppputil.VcLocalCoordinator;
 import kosui.ppputil.VcLocalTagger;
 import kosui.ppputil.VcStringUtility;
@@ -83,7 +82,7 @@ public class CaseChainController extends PApplet{
     
     //--
     EcConst.ccSetupSketch(this);
-    VcLocalTagger.ccGetInstance().ccInit(this, 9);
+    VcLocalTagger.ccGetInstance().ccInit(this);
     VcLocalCoordinator.ccGetInstance().ccInit(this);
     EcElement.ccSetTextAdjust(0, -2);
     
@@ -92,12 +91,12 @@ public class CaseChainController extends PApplet{
       (java.awt.event.KeyEvent.VK_Q, cmQuitting);
     
     //--
-    cmAlartIxPL.ccSetLocation(160, 5);
+    cmAlartIxPL.ccSetLocation(160, 120);
     cmAlartIIxPL.ccSetLocation(cmAlartIxPL, 5, 0);
     cmAlartIIIxPL.ccSetLocation(cmAlartIIxPL, 5, 0);
     cmAlartIVxPL.ccSetLocation(cmAlartIIIxPL, 5, 0);
     cmAlartVxPL.ccSetLocation(cmAlartIVxPL, 5, 0);
-    cmRunPLB.ccSetLocation(cmAlartIxPL, 0, 5);
+    cmRunPLB.ccSetLocation(cmAlartIVxPL, 0, 5);
     cmRunPLB.ccSetEndX(cmAlartVxPL.ccEndX());
     VcLocalCoordinator.ccAddElement(cmAlartIxPL);
     VcLocalCoordinator.ccAddElement(cmAlartIIxPL);
@@ -145,7 +144,10 @@ public class CaseChainController extends PApplet{
     dcTheController.ccSetConfirmedAt(3, dcMotorIII.ccIsContacted());
     dcTheController.ccSetConfirmedAt(4, dcMotorIV.ccIsContacted());
     dcTheController.ccSetConfirmedAt(5, dcMotorV.ccIsContacted());
-    dcTheController.ccTakePulse(EcComponent.ccIsKeyPressed('r'));
+    
+    //--
+    boolean lpSW=EcComponent.ccIsKeyPressed('r');
+    dcTheController.ccTakePulse(lpSW);
     dcTheController.ccRun();
     dcMotorI.ccContact(  dcTheController.ccGetOutputAt(1));
     dcMotorII.ccContact( dcTheController.ccGetOutputAt(2));
@@ -166,13 +168,19 @@ public class CaseChainController extends PApplet{
     VcLocalCoordinator.ccUpdate();
     
     //--
+    fill(0xFF);
+    text(
+      VcStringUtility.ccBreakObject(dcTheController),
+      160,5
+    );
+    
+    //--
     VcLocalTagger.ccTag("roller", cmRoller.ccGetValue());
     VcLocalTagger.ccTag(ccPackupMotorTag(1,dcMotorI));
     VcLocalTagger.ccTag(ccPackupMotorTag(2,dcMotorII));
     VcLocalTagger.ccTag(ccPackupMotorTag(3,dcMotorIII));
     VcLocalTagger.ccTag(ccPackupMotorTag(4,dcMotorIV));
     VcLocalTagger.ccTag(ccPackupMotorTag(5,dcMotorV));
-    VcLocalTagger.ccTag("ctrl",VcStringUtility.ccBreakObject(dcTheController));
     VcLocalTagger.ccStabilize();
     
   }//+++

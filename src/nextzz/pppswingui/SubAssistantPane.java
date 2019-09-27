@@ -19,8 +19,6 @@
 
 package nextzz.pppswingui;
 
-import java.awt.ItemSelectable;
-import javax.swing.AbstractButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -157,32 +155,32 @@ public final class SubAssistantPane {
     //-- layout ** tower
     JPanel lpLeftI=ScFactory.ccCreateGridPanel(C_ROW_MAX, 1);
     lpLeftI.add(new JLabel(VcTranslator.tr("_aptower:")));
-    ssAddAssistant(lpLeftI, cmTowerBlowerNT);
+    ccAddAssistant(lpLeftI, cmTowerBlowerNT);
     
     //-- layout ** ag
     JPanel lpLeftII=ScFactory.ccCreateGridPanel(C_ROW_MAX, 1);
     lpLeftII.add(new JLabel(VcTranslator.tr("_vergin:")));
-    lpLeftII.add(cmAirPulseOperateNT);
-    lpLeftII.add(cmAirPulseModeNT);
-    lpLeftII.add(cmCoolingDamperNT);
+    ccAddAssistant(lpLeftII,cmAirPulseOperateNT);
+    ccAddAssistant(lpLeftII,cmAirPulseModeNT);
+    ccAddAssistant(lpLeftII,cmCoolingDamperNT);
     lpLeftII.add(new JSeparator(SwingConstants.HORIZONTAL));
-    lpLeftII.add(cmVFeederIxVibratorNT);
-    lpLeftII.add(cmVFeederIIxVibratorNT);
+    ccAddAssistant(lpLeftII,cmVFeederIxVibratorNT);
+    ccAddAssistant(lpLeftII,cmVFeederIIxVibratorNT);
     lpLeftII.add(new JSeparator(SwingConstants.HORIZONTAL));
-    lpLeftII.add(cmVCombustSourceNT);
-    lpLeftII.add(cmVFuelExchangeNT);
+    ccAddAssistant(lpLeftII,cmVCombustSourceNT);
+    ccAddAssistant(lpLeftII,cmVFuelExchangeNT);
     
     //-- layout ** filler/asphalt
     JPanel lpLeftIII=ScFactory.ccCreateGridPanel(C_ROW_MAX, 1);
     lpLeftIII.add(new JLabel(VcTranslator.tr("_powder:")));
-    lpLeftIII.add(cmFillerSiloAirNT);
-    ssAddAssistant(lpLeftIII, cmFillerSiloSelectNT);
-    lpLeftIII.add(cmCementSiloAirNT);
-    lpLeftIII.add(cmDustSiloAirNT);
-    lpLeftIII.add(cmDustSiloDischargeSW);
+    ccAddAssistant(lpLeftIII,cmFillerSiloAirNT);
+    ccAddAssistant(lpLeftIII,cmFillerSiloSelectNT);
+    ccAddAssistant(lpLeftIII,cmCementSiloAirNT);
+    ccAddAssistant(lpLeftIII,cmDustSiloAirNT);
+    ccAddAssistant(lpLeftIII,cmDustSiloDischargeSW);
     lpLeftIII.add(new JSeparator(SwingConstants.HORIZONTAL));
     lpLeftIII.add(new JLabel(VcTranslator.tr("_asphalt:")));
-    ssAddAssistant(lpLeftIII, cmAsphaltSupplySW);
+    ccAddAssistant(lpLeftIII, cmAsphaltSupplySW);
     
     //-- layout ** recycle/add
     JPanel lpLeftIV=ScFactory.ccCreateGridPanel(C_ROW_MAX, 1);
@@ -207,7 +205,7 @@ public final class SubAssistantPane {
     
   }//..!
   
-  private void ssAddAssistant(JPanel pxPane, JComponent pxSwitch){
+  private void ccAddAssistant(JPanel pxPane, JComponent pxSwitch){
     assert pxPane!=null;
     assert pxSwitch!=null;
     pxPane.add(pxSwitch);

@@ -65,10 +65,10 @@ public final class SubVPreparingDelegator {
     mnAirPulseDisableTGSW,mnAirPulseForceTGSW,
     mnAirPulseWithFeederTGSW,mnAirPulseWithAirTGSW,
     mnDustExtractionMSSW,mnDustExtractionMSPL,
+    mnBagHopperHLV,mnBagHopperLLV,
     
     //-- fr ** dust silo
-    mnDustSiloDischargeSW,mnDustSiloAirTGSW,
-    mnDustSiloFullLV,mnDustSiloMidLV,mnDustSiloLowLV,
+    mnDustSiloDischargeSW,mnDustSiloAirAutoSW,
     mnDustMixerSW,mnDustMixerScrewSW,mnDustMixerPumpSW,
     
     //-- fr ** filler
@@ -82,17 +82,11 @@ public final class SubVPreparingDelegator {
   ;//...
   
   public static volatile int
-    
-    //-- tph
-    mnAGTonPerHourAD,
-    
+        
     //-- vf speed
     mnVFSpeedADnI,mnVFSpeedADnII,mnVFSpeedADnIII,mnVFSpeedADnIV,
     mnVFSpeedADnV,mnVFSpeedADnVI,mnVFSpeedADnVII,mnVFSpeedADnVIII,
     mnVFSpeedADnIX,mnVFSpeedADnX,
-    
-    //-- thermo
-    mnSandTemperatureAD,mnPipeTemperatureAD,mnMixerTemperatureAD,
     
     //-- as tank selection
     mnASTankInWith,mnASTankOutWith
@@ -155,25 +149,9 @@ public final class SubVPreparingDelegator {
       .ccSetIsActivated(mnVInclinedBelconPL);
     SubVFeederGroup.ccRefer().cmBelconForwarPL
       .ccSetIsActivated(mnVHorizontalBelconPL);
-    ssBindVFeederPL();
     
-    //-- FR ** ui to simulator
-    mnFillerSystemSW=SubOperativeGroup.ccRefer().cmDesMotorSW
-      .get(8).ccIsMousePressed();
-    //-- FR ** simulator to ui
-    SubOperativeGroup.ccRefer().cmDesMotorSW
-      .get(8).ccSetIsActivated(mnFillerSystemPL);
-    SubVSurgeGroup.ccRefer().cmFillerBinLV
-      .ccSetPercentage(ConstLocalUI.ccLeverage
-        (mnFillerBinHLVPL, mnFillerBinMLVPL, mnFillerBinLLVPL));
-    
-    //-- AS
-    
-  }//+++
-  
-  private static void ssBindVFeederPL(){
-    
-    //-- runnning
+    //-- v feeder
+    //-- v feeder ** runnning
     SubVFeederGroup.ccRefer().cmDesFeederRPMBox
       .get(1).ccSetIsActivated(mnVFRunningPLnI);
     SubVFeederGroup.ccRefer().cmDesFeederRPMBox
@@ -197,7 +175,7 @@ public final class SubVPreparingDelegator {
     SubVFeederGroup.ccRefer().cmDesFeederRPMBox
       .get(10).ccSetIsActivated(mnVFRunningPLnX);
     
-    //-- stiking
+    //-- v feeder ** stuck
     SubVFeederGroup.ccRefer().cmDesFeederRPMGauge
       .get(1).ccSetIsActivated(mnVFStuckPLnI);
     SubVFeederGroup.ccRefer().cmDesFeederRPMGauge
@@ -221,17 +199,36 @@ public final class SubVPreparingDelegator {
     SubVFeederGroup.ccRefer().cmDesFeederRPMGauge
       .get(10).ccSetIsActivated(mnVFStuckPLnX);
     
-  }//+++
-  
-  private static void ssBindAsphaultSupply(){
-     
-    //-- pc >> plc
+    //-- filler supply
+    //-- filler supply ** pc -> plc
+    mnFillerSystemSW=SubOperativeGroup.ccRefer().cmDesMotorSW
+      .get(8).ccIsMousePressed();
+    //-- filler supply ** plc -> pc
+    SubOperativeGroup.ccRefer().cmDesMotorSW
+      .get(8).ccSetIsActivated(mnFillerSystemPL);
+    SubVSurgeGroup.ccRefer().cmFillerBinLV
+      .ccSetPercentage(ConstLocalUI.ccLeverage
+        (mnFillerBinHLVPL, mnFillerBinMLVPL, mnFillerBinLLVPL));
+    
+    //-- dust extraction
+    //-- dust extraction ** pc -> plc
+    mnDustExtractionMSSW=SubOperativeGroup.ccRefer().cmDesMotorSW
+      .get(9).ccIsMousePressed();
+    //-- dust extraction ** plc -> pc
+    SubOperativeGroup.ccRefer().cmDesMotorSW
+      .get(9).ccSetIsActivated(mnDustExtractionMSPL);
+    SubVBondGroup.ccRefer().cmBagHighLV
+      .ccSetIsActivated(mnBagHopperHLV);
+    SubVBondGroup.ccRefer().cmBagLowLV
+      .ccSetIsActivated(mnBagHopperLLV);
+    
+    //-- asphalt supply
+    //-- asphalt supply ** pc -> plc
     mnASSupplyPumpMSSW=SubOperativeGroup.ccRefer().cmDesMotorSW
       .get(6).ccIsMousePressed();
     //[todo]:: % mnASTankInWith
     //[todo]::mnASTankOutWith
-    
-    //-- plc >> pc
+    //-- asphalt supply **  plc -> pc
     SubOperativeGroup.ccRefer().cmDesMotorSW
       .get(6).ccSetIsActivated(mnASSupplyPumpMSPL);
     

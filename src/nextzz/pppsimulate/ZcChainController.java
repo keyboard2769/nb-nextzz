@@ -73,8 +73,10 @@ public class ZcChainController extends ZcCheckedValueModel {
     if(ccIsLevelAt(0)){
       if(pxRun){cmRunsUp=true;}
     }else{
-      cmRunsUp=false;
-      cmRunsDown=true;
+      if(pxStop){
+        cmRunsUp=false;
+        cmRunsDown=true;
+      }
     }//..?
   }//+++
   
@@ -138,11 +140,17 @@ public class ZcChainController extends ZcCheckedValueModel {
   //===
 
   @Override public String toString() {
-    StringBuilder lpRes=new StringBuilder();
-    lpRes.append(super.toString());
+    StringBuilder lpRes
+      = new StringBuilder(ZcChainController.class.getSimpleName());
+    lpRes.append('@');
+    lpRes.append(Integer.toHexString(this.hashCode()));
+    lpRes.append('$');
+    lpRes.append(VcStringUtility.ccPackupParedTag("c-v", cmValue));
+    lpRes.append(VcStringUtility.ccPackupParedTag("c-l", cmCurrentLV));
+    lpRes.append(VcStringUtility.ccPackupParedTag("MAX", cmMaxLV));
     lpRes.append('|');
-    lpRes.append(VcStringUtility.ccPackupParedTag("up", cmRunsUp));
-    lpRes.append(VcStringUtility.ccPackupParedTag("dn", cmRunsDown));
+    lpRes.append(VcStringUtility.ccPackupParedTag("UP", cmRunsUp));
+    lpRes.append(VcStringUtility.ccPackupParedTag("DN", cmRunsDown));
     return lpRes.toString();
   }//+++
   

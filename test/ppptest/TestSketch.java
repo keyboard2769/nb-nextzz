@@ -30,7 +30,7 @@ public class TestSketch extends PApplet{
   @Override public void setup() {
     size(320,240);
     EcConst.ccSetupSketch(this);
-    VcLocalTagger.ccGetInstance().ccInit(this, 9);
+    VcLocalTagger.ccGetInstance().ccInit(this);
   }//+++
 
   @Override public void draw() {

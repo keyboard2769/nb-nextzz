@@ -37,8 +37,8 @@ public final class SubAnalogDelegator {
     mnCTSlotXXIV,mnCTSlotXXV,mnCTSlotXXVI,mnCTSlotXXVII,
     mnCTSlotXXVIII,mnCTSlotXXIX,mnCTSlotXXX,mnCTSlotXXXI,
     
-    //-- misc
-    mnFillerSiloLV,mnCementSiloLV
+    //-- lv
+    mnFillerSiloLV,mnCementSiloLV,mnDustSiloLV
     
   ;//...
   
@@ -92,6 +92,7 @@ public final class SubAnalogDelegator {
     //-- misc
     SubVSurgeGroup.ccRefer().cmFillerSiloLV.ccSetPercentage(mnFillerSiloLV);
     SubVSurgeGroup.ccRefer().cmCementSiloLV.ccSetPercentage(mnCementSiloLV);
+    SubVSurgeGroup.ccRefer().cmDustSiloLV.ccSetPercentage(mnDustSiloLV);
     
   }//+++
   

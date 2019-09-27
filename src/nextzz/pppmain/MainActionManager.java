@@ -28,6 +28,7 @@ import kosui.ppplocalui.EiTriggerable;
 import kosui.ppputil.VcConst;
 import kosui.ppputil.VcLocalConsole;
 import kosui.ppputil.VcLocalCoordinator;
+import kosui.ppputil.VcLocalTagger;
 import kosui.ppputil.VcNumericUtility;
 import kosui.ppputil.VcSwingCoordinator;
 import nextzz.pppdelegate.SubVPreparingDelegator;
@@ -60,7 +61,6 @@ public final class MainActionManager {
   
   public final EiTriggerable cmPopping = new EiTriggerable() {
     @Override public void ccTrigger() {
-      System.out.println("cmPopping.ccTrigger()");
       MainWindow.ccRefer().cmWindow.setVisible(true);
       MainWindow.ccRefer().cmWindow.toFront();
     }//+++
@@ -121,9 +121,27 @@ public final class MainActionManager {
   public final ActionListener cmNotchListener = new ActionListener() {
     @Override public void actionPerformed(ActionEvent e) {
       
+      //-- tower
       SubVPreparingDelegator.mnTowerBlowerTGSW=
         SubAssistantPane.ccRefer().cmTowerBlowerNT.getSelectedIndex()==0;
       
+      //-- aggregate
+      
+      //-- filler
+      
+      //-- dust
+      SubVPreparingDelegator.mnDustSiloAirAutoSW
+        = SubAssistantPane.ccRefer().cmDustSiloAirNT.getSelectedIndex()==0;
+      SubVPreparingDelegator.mnDustSiloDischargeSW
+        = SubAssistantPane.ccRefer().cmDustSiloDischargeSW.isSelected();
+      
+      //-- asphalt
+      
+      //-- recycle
+      
+      //-- additive
+      
+      //-- misc
       
     }//+++
   };//***
@@ -167,7 +185,9 @@ public final class MainActionManager {
     VcLocalConsole.ccRegisterCommand
       ("debug", new EiTriggerable() {
       @Override public void ccTrigger(){
-        MainSketch.pbDoesTag=!MainSketch.pbDoesTag;
+        MainSketch.pbDebugMode=!MainSketch.pbDebugMode;
+        VcLocalTagger.ccGetInstance().ccSetIsVisible(MainSketch.pbDebugMode);
+        VcConst.ccSetDoseLog(MainSketch.pbDebugMode);
       }//+++
     });
   
