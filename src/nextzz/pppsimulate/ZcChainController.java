@@ -27,30 +27,28 @@ import kosui.ppputil.VcStringUtility;
 
 public class ZcChainController extends ZcCheckedValueModel {
   
-  /*
-    rule #1 : if some stage tripped, he may stop immeatly
-    rule #2 : if some stage tripped, it chain it seld is stopped
-    rule #3 : it some stage tripped, previouse stage should not stopp immediatly
-  */
-  
   private boolean cmRunsUp = false;
   private boolean cmRunsDown = false;
   private final int cmMaxLV;
+  private int cmCurrentLV;
   private int cmConfirmedLV=0;
   private final ZcPulser cmEngagePulser = new ZcPulser();
 
   public ZcChainController(int pxIntervalS, int pxMaxLV) {
     super(0, EcConst.C_FPS*(pxIntervalS&0x1F)*ZcLevelComparator.C_LEVEL_MAX);
     cmMaxLV=pxMaxLV;
+    cmCurrentLV=ccGetCurrentLevel();
   }//..!
   
   //===
   
   public final void ccRun(){
     
+    cmCurrentLV = ccGetCurrentLevel();
+    
     //--
     if(cmRunsUp){
-      if(cmConfirmedLV>=ccGetCurrentLevel()){
+      if(cmConfirmedLV>=cmCurrentLV){
         ccShift(1);
       }//..?
       if(ccIsLevelAbove(cmMaxLV)){
@@ -84,7 +82,7 @@ public class ZcChainController extends ZcCheckedValueModel {
   }//+++
   
   public final void ccSetTrippedAt(int pxLevel, boolean pxStatus){
-    if(pxStatus && pxLevel<=ccGetCurrentLevel()){
+    if(pxStatus && pxLevel<=cmCurrentLV){
       ccSetToLevel(pxLevel-1);cmRunsUp=false;
     }//..?
   }//+++
@@ -100,14 +98,32 @@ public class ZcChainController extends ZcCheckedValueModel {
   //===
   
   public final void ccAllStop(){
-    //[head]::
+    cmRunsUp=false;
+    cmRunsDown=false;
+    ccSetValue(0);
   }//+++
   
-  public final int ccGetStatus(){
-    //.. [ 0 ]all stopped
-    //.. [ 1 ]all started
-    //.. [ 2 ]transition
-    return 0;
+  public final boolean ccIsAllStopped(){
+    return cmValue==0;
+  }//+++
+  
+  public final boolean ccIsTransacting(){
+    return 
+        cmRunsUp
+      ||cmRunsDown
+      ||(cmCurrentLV>0 && (cmCurrentLV<cmMaxLV));
+  }//+++
+  
+  public final boolean ccIsAllEngaged(){
+    return (cmCurrentLV>=cmMaxLV)
+      &&(!cmRunsUp)
+      &&(!cmRunsDown);
+  }//+++
+  
+  public final boolean ccGetFlasher(boolean pxClock){
+    return
+      (!ccIsAllStopped())&&
+      (ccIsAllEngaged()||pxClock);
   }//+++
   
   //===

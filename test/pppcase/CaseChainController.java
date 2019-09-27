@@ -23,9 +23,10 @@ import kosui.ppplocalui.EcComponent;
 import kosui.ppplocalui.EcConst;
 import kosui.ppplocalui.EcElement;
 import kosui.ppplocalui.EiTriggerable;
+import kosui.ppplogic.ZcRoller;
+import kosui.ppputil.VcConst;
 import kosui.ppputil.VcLocalCoordinator;
 import kosui.ppputil.VcLocalTagger;
-import kosui.ppputil.VcNumericUtility;
 import nextzz.pppsimulate.ZcChainController;
 import nextzz.pppsimulate.ZcMotor;
 import processing.core.PApplet;
@@ -34,10 +35,13 @@ public class CaseChainController extends PApplet{
   
   static private CaseChainController self=null;
   
+  //===
+  
+  private final ZcRoller cmRoller = new ZcRoller(15, 2);
+  
   private final ZcChainController dcTheController
     = new ZcChainController(2,6);
   
-  private boolean dcRunFlag = false;
   private boolean dcAlartI  = false;
   private boolean dcAlartII  = false;
   private boolean dcAlartIII  = false;
@@ -62,21 +66,23 @@ public class CaseChainController extends PApplet{
       if(self==null){
         System.out.println(".cmQuitting::this should never happen!");
         return;
-      }
+      }//..?
       PApplet.println(".cmQuitting::call exit");
       self.exit();
     }//+++
-  };
+  };//***
+  
+  //===
   
   @Override public void setup() {
    
-    size(800,600);
+    size(320,240);
     frame.setTitle(CaseChainController.class.getSimpleName());
     self=this;
     
     //--
     EcConst.ccSetupSketch(this);
-    VcLocalTagger.ccGetInstance().ccInit(this, 7);
+    VcLocalTagger.ccGetInstance().ccInit(this, 9);
     VcLocalCoordinator.ccGetInstance().ccInit(this);
     EcElement.ccSetTextAdjust(0, -2);
     
@@ -102,7 +108,9 @@ public class CaseChainController extends PApplet{
   }//+++
 
   @Override public void draw() {
+    
     background(0);
+    cmRoller.ccRoll();
     
     //--
     dcAlartI=EcComponent.ccIsKeyPressed('1');
@@ -143,6 +151,8 @@ public class CaseChainController extends PApplet{
     dcMotorIII.ccContact(dcTheController.ccGetOutputAt(3));
     dcMotorIV.ccContact( dcTheController.ccGetOutputAt(4));
     dcMotorV.ccContact(  dcTheController.ccGetOutputAt(5));
+    cmRunPLB.ccSetIsActivated
+      (dcTheController.ccGetFlasher(cmRoller.ccIsAbove(7)));
     
     //--
     dcMotorI.ccSimulate(0.5f);
@@ -151,27 +161,41 @@ public class CaseChainController extends PApplet{
     dcMotorIV.ccSimulate(0.5f);
     dcMotorV.ccSimulate(0.5f);
     
-    
     //--
     VcLocalCoordinator.ccUpdate();
     
     //--
-    VcLocalTagger.ccTag
-      ("frameRate", VcNumericUtility.ccFormatPointTwoFloat(frameRate));
-    VcLocalTagger.ccTag("ctrl", dcTheController);
-    VcLocalTagger.ccTag("motor-1",dcMotorI);
-    VcLocalTagger.ccTag("motor-2",dcMotorII);
-    VcLocalTagger.ccTag("motor-3",dcMotorIII);
-    VcLocalTagger.ccTag("motor-4",dcMotorIV);
-    VcLocalTagger.ccTag("motor-5",dcMotorV);
+    VcLocalTagger.ccTag("roller", cmRoller.ccGetValue());
+    VcLocalTagger.ccTag(ccPackupMotorTag(1,dcMotorI));
+    VcLocalTagger.ccTag(ccPackupMotorTag(2,dcMotorII));
+    VcLocalTagger.ccTag(ccPackupMotorTag(3,dcMotorIII));
+    VcLocalTagger.ccTag(ccPackupMotorTag(4,dcMotorIV));
+    VcLocalTagger.ccTag(ccPackupMotorTag(5,dcMotorV));
+    VcLocalTagger.ccTag("ctrl",
+      dcTheController.toString()
+        .replaceAll("\\$", VcConst.C_V_NEWLINE)
+        .replaceAll("@", VcConst.C_V_NEWLINE)
+        .replaceAll("\\|", VcConst.C_V_NEWLINE)
+    );
     VcLocalTagger.ccStabilize();
-    
     
   }//+++
 
   @Override public void keyPressed() {
     VcLocalCoordinator.ccKeyPressed(keyCode);
   }//+++
+  
+  //===
+  
+  private String ccPackupMotorTag(int pxID,ZcMotor pxMotor){
+    if(pxMotor==null){return "<null>";}
+    return String.format("m%d > AL:%b | AN:%b ",
+      pxID,
+      pxMotor.ccIsTripped(),pxMotor.ccIsContacted()
+    );
+  }//+++
+  
+  //===
   
   public static void main(String[] args) {
     PApplet.main(CaseChainController.class.getCanonicalName());
