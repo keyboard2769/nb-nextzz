@@ -41,6 +41,8 @@ public final class MainSpecificator {
   public final int mnADCattegoryCount;
   
   public final int mnFillerSiloCount;
+  public final boolean mnDustBinSeparated;
+  public final boolean mnDustSiloExists;
   
   public final int mnMixtureSiloType;
   
@@ -61,6 +63,10 @@ public final class MainSpecificator {
     //.. [ 2 ]none
     //.. [ 3 ]below mixer
     /* 7 */mnMixtureSiloType = 0;
+    
+    /* 7 */mnDustBinSeparated=false;
+    /* 7 */mnDustSiloExists=true;
+    
     
   }//..!
   

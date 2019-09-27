@@ -47,7 +47,7 @@ public final class SubIndicativeGroup implements EiGroup{
     //-- switch
     cmSystemPopSW.ccSetW(64);
     cmSystemPopSW.ccSetH(VcLocalConsole.ccGetInstance().ccGetBarHeight());
-    cmSystemPopSW.ccSetColor(EcConst.C_LIT_GRAY, EcConst.C_GRAY);
+    cmSystemPopSW.ccSetupColor(EcConst.C_LIT_GRAY, EcConst.C_GRAY);
     
     //-- led
     //-- led ** size
@@ -64,7 +64,7 @@ public final class SubIndicativeGroup implements EiGroup{
     
     //-- console
     VcLocalConsole.ccGetInstance().ccSetMessageBarColor
-      (EcConst.ccAdjustColor(MainSketch.C_BACKGROUD,0x20));
+      (EcConst.ccAdjustColor(MainSketch.C_COLOR_BACKGROUD,0x20));
     VcLocalConsole.ccGetInstance().ccSetMessageBarAnchor
       (cmLinkageRecievingPL.ccEndX()+1, 0);
     VcLocalConsole.ccGetInstance().ccSetFieldBarAnchor(

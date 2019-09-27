@@ -135,7 +135,7 @@ public final class SubVSurgeGroup implements EiGroup{
       = SubVFeederGroup.ccRefer().cmPlate.ccGetH();
     cmPlate.ccSetBound(lpPotentialX, lpPotentialY, lpPotentialW, lpPotentialH);
     cmPlate.ccSetBaseColor
-      (EcConst.ccAdjustColor(MainSketch.C_BACKGROUD, -8));
+      (EcConst.ccAdjustColor(MainSketch.C_COLOR_BACKGROUD, -8));
     
     //-- ag surge
     //-- ag surge ** high line
@@ -163,7 +163,7 @@ public final class SubVSurgeGroup implements EiGroup{
     cmSandTemperatueText.ccSetTextColor(EcConst.C_LIT_GRAY);
     
     //-- ag surge ** dispose
-    cmDesHotbinLV.get(0).ccSetPage(99);
+    cmDesHotbinLV.get(0).ccHide();
     //-- ag surge ** lowline
     lpPotentialX = SubWeigherGroup.ccRefer().cmPlateAG.ccGetX();
     lpPotentialY = cmPlate.ccCenterY()+ConstLocalUI.C_INPANE_GAP;
@@ -192,7 +192,7 @@ public final class SubVSurgeGroup implements EiGroup{
     }//~
     //-- ag surge ** hiding
     for(int i=MainSpecificator.ccRefer().mnAGCattegoryCount+1;i<=7;i++){
-      cmDesHotbinLV.get(i).ccSetPage(99);
+      cmDesHotbinLV.get(i).ccHide();
     }//..~
     
     //-- fr surge
@@ -245,6 +245,23 @@ public final class SubVSurgeGroup implements EiGroup{
         (ConstLocalUI.C_INPANE_GAP,lpPotentialW, 2),
       lpPotentialY, 'a'
     );
+    //-- fr surge ** optional
+    if(!MainSpecificator.ccRefer().mnDustSiloExists){
+      EcConst.ccHideAll(Arrays.asList
+        (cmDustSiloLV,cmDustSiloShape,cmDustSiloText));
+    }//..?
+    if(!MainSpecificator.ccRefer().mnDustBinSeparated){
+      EcConst.ccHideAll(Arrays.asList
+        (cmDustBinLV,cmDustBinShape,cmDustBinText));
+    }//..?
+    if(MainSpecificator.ccRefer().mnFillerSiloCount<2){
+      EcConst.ccHideAll(Arrays.asList
+        (cmCementSiloLV,cmCementSiloShape,cmCementSiloText));
+    }
+    if(MainSpecificator.ccRefer().mnFRCattegoryCount<3){
+      EcConst.ccHideAll(Arrays.asList
+        (cmCementBinLV,cmCementBinShape,cmCementBinText));
+    }//..?
     
     //-- as surge 
     //-- as surge ** lowline

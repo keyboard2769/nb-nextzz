@@ -54,17 +54,12 @@ public final class SubVPreparingTask implements ZiTask{
   
   //-- ag chain ** motor
   private final ZcHookFlicker cmAGChainHOOK = new ZcHookFlicker();
-  private final ZcCheckedValueModel cmAGChainGum
-    = new ZcCheckedValueModel(0, 16*32);
+  private final ZcChainController cmAGChainCTRL = new ZcChainController(3, 6);
   public final ZcMotor dcScreen = new ZcMotor(4);
   public final ZcMotor dcHotElevator = new ZcMotor(4);
   public final ZcMotor dcDryer = new ZcMotor(4);
   public final ZcMotor dcInclinedBelcon = new ZcMotor(4);
-  public final ZcMotor dcHorizontal = new ZcMotor(4);
-  
-  
-  
-  
+  public final ZcMotor dcHorizontalBelcon = new ZcMotor(4);
   
   //-- filler supply
   
@@ -115,10 +110,41 @@ public final class SubVPreparingTask implements ZiTask{
     SubVPreparingDelegator.mnVExfanIconPL=dcVExFan.ccIsContacted();
     
     //-- ag supply chain
-    
-    //[head]::
-    
-    
+    //-- ag supply chain ** take
+    cmAGChainCTRL.ccSetTrippedAt(1, dcScreen.ccIsTripped());
+    cmAGChainCTRL.ccSetTrippedAt(2, dcHotElevator.ccIsTripped());
+    cmAGChainCTRL.ccSetTrippedAt(3, dcDryer.ccIsTripped());
+    cmAGChainCTRL.ccSetTrippedAt(4, dcInclinedBelcon.ccIsTripped());
+    cmAGChainCTRL.ccSetTrippedAt(5, dcHorizontalBelcon.ccIsTripped());
+    cmAGChainCTRL.ccSetConfirmedAt(1, dcScreen.ccIsContacted());
+    cmAGChainCTRL.ccSetConfirmedAt(2, dcHotElevator.ccIsContacted());
+    cmAGChainCTRL.ccSetConfirmedAt(3, dcDryer.ccIsContacted());
+    cmAGChainCTRL.ccSetConfirmedAt(4, dcInclinedBelcon.ccIsContacted());
+    cmAGChainCTRL.ccSetConfirmedAt(5, dcHorizontalBelcon.ccIsContacted());
+    //-- ag supply chain ** run
+    cmAGChainCTRL.ccTakePulse(SubVPreparingDelegator.mnAGChainMSSW);
+    cmAGChainCTRL.ccRun();
+    //-- ag supply chain ** give ** mc
+    dcScreen.ccContact(cmAGChainCTRL.ccGetOutputAt(1));
+    dcHotElevator.ccContact(cmAGChainCTRL.ccGetOutputAt(2));
+    dcDryer.ccContact(cmAGChainCTRL.ccGetOutputAt(3));
+    dcInclinedBelcon.ccContact(cmAGChainCTRL.ccGetOutputAt(4));
+    dcHorizontalBelcon.ccContact(cmAGChainCTRL.ccGetOutputAt(5));
+    //-- ag supply chain ** give ** pc ** pl
+    SubVPreparingDelegator.mnAGChainMSPL
+      = cmAGChainCTRL.ccGetFlasher(MainSimulator.ccOneSecondClock());
+    SubVPreparingDelegator.mnVDryerPL
+      = dcDryer.ccIsContacted();
+    SubVPreparingDelegator.mnVInclinedBelconPL
+      = dcInclinedBelcon.ccIsContacted();
+    SubVPreparingDelegator.mnVHorizontalBelconPL
+      = dcHorizontalBelcon.ccIsContacted();
+    //-- ag supply chain ** give ** pc ** ct
+    SubAnalogDelegator.mnCTSlotVI=dcScreen.ccGetCT();
+    SubAnalogDelegator.mnCTSlotVII=dcHotElevator.ccGetCT();
+    SubAnalogDelegator.mnCTSlotVIII=dcDryer.ccGetCT();
+    SubAnalogDelegator.mnCTSlotIX=dcInclinedBelcon.ccGetCT();
+    SubAnalogDelegator.mnCTSlotX=dcHorizontalBelcon.ccGetCT();
     
     //-- filler supply 
     //-- filler supply ** software input
@@ -156,10 +182,11 @@ public final class SubVPreparingTask implements ZiTask{
     dcHotElevator.ccSimulate(0.65f);
     dcDryer.ccSimulate(0.64f);
     dcInclinedBelcon.ccSimulate(0.63f);
-    dcHotElevator.ccSimulate(0.62f);
+    dcHorizontalBelcon.ccSimulate(0.62f);
     
     //-- transfer
-    MainSimulator.ccTransferExclusive(simFillerBin,
+    MainSimulator.ccTransferExclusive(
+      simFillerBin,
       dcFillerScrewMC&&dcFillerEelevatorMC, 64,
       true, 16
     );

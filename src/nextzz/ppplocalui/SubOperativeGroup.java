@@ -166,7 +166,7 @@ public final class SubOperativeGroup implements EiGroup{
       ConstLocalUI.C_MOTOR_SW_SIZE,
       ConstLocalUI.C_MOTOR_SW_SIZE
     );
-    /* 6 */cmDesMotorSW.get(0).ccSetPage(99);//..intended disposed
+    /* 6 */cmDesMotorSW.get(0).ccHide();//..intended disposed
     //-- motor pane **  relate
     cmDesMotorSW.get(6).ccSetLocation
       (cmDesMotorSW.get(1), 0, ConstLocalUI.C_INPANE_GAP);
@@ -200,7 +200,7 @@ public final class SubOperativeGroup implements EiGroup{
      -ConstLocalUI.C_SIDE_MARGIN*2
     );
     cmAssistancePane.ccSetBaseColor(
-      EcConst.ccAdjustColor(MainSketch.C_BACKGROUD, -16)
+      EcConst.ccAdjustColor(MainSketch.C_COLOR_BACKGROUD, -16)
     );
     //-- assistance
     cmDesAssistSW.get(1).ccSetLocation
@@ -213,7 +213,7 @@ public final class SubOperativeGroup implements EiGroup{
         (cmDesAssistSW.get(i-1), ConstLocalUI.C_INPANE_GAP, 0);
     }//..~
     for(int it:new int[]{0,9,10,11,12,13,14,15}){
-      cmDesAssistSW.get(it).ccSetPage(99);//..intended disposed
+      cmDesAssistSW.get(it).ccHide();//..intended disposed
     }//..~
     //-- assistance ** pack
     cmAssistancePane.ccSetW
@@ -260,7 +260,7 @@ public final class SubOperativeGroup implements EiGroup{
     cmASZeroSW.ccSetLocation(cmAGZeroSW, 0, ConstLocalUI.C_INPANE_GAP);
     cmRCZeroSW.ccSetLocation(cmASZeroSW, ConstLocalUI.C_INPANE_GAP, 0);
     //-- zero ** optional
-    cmRCZeroSW.ccSetPage(99);//..optionally disposed
+    cmRCZeroSW.ccHide();//..optionally disposed
     
     //-- mixture
     //-- mixture ** anchor
@@ -298,10 +298,10 @@ public final class SubOperativeGroup implements EiGroup{
     cmDesKilogramTB.get(0).ccSetH(lpPotentialH);
     cmDesBatchTB.get(0).ccSetH(lpPotentialH);
     //-- booking ** title ** color
-    cmDesRecipeTB.get(0).ccSetColor(EcConst.C_RED, EcConst.C_DARK_YELLOW);
-    cmDesNameCB.get(0).ccSetColor(EcConst.C_RED, EcConst.C_DARK_YELLOW);
-    cmDesKilogramTB.get(0).ccSetColor(EcConst.C_RED, EcConst.C_DARK_YELLOW);
-    cmDesBatchTB.get(0).ccSetColor(EcConst.C_RED, EcConst.C_DARK_YELLOW);
+    cmDesRecipeTB.get(0).ccSetupColor(EcConst.C_RED, EcConst.C_DARK_YELLOW);
+    cmDesNameCB.get(0).ccSetupColor(EcConst.C_RED, EcConst.C_DARK_YELLOW);
+    cmDesKilogramTB.get(0).ccSetupColor(EcConst.C_RED, EcConst.C_DARK_YELLOW);
+    cmDesBatchTB.get(0).ccSetupColor(EcConst.C_RED, EcConst.C_DARK_YELLOW);
     //-- booking ** title ** span size
     cmDesNameCB.get(0).ccSetW(
       cmBookingPane.ccGetW()

@@ -33,8 +33,8 @@ import kosui.ppputil.VcSwingCoordinator;
 import nextzz.pppdelegate.SubVPreparingDelegator;
 import nextzz.ppplocalui.SubIndicativeGroup;
 import nextzz.ppplocalui.SubOperativeGroup;
-import static nextzz.pppmain.MainSketch.C_BACKGROUD;
 import nextzz.pppswingui.SubAssistantPane;
+import static nextzz.pppmain.MainSketch.C_COLOR_BACKGROUD;
 
 public final class MainActionManager {
   
@@ -46,7 +46,7 @@ public final class MainActionManager {
   
   public final EiTriggerable cmBackgroundRefreshing = new EiTriggerable() {
     @Override public void ccTrigger(){
-      MainSketch.ccGetPApplet().background(C_BACKGROUD);
+      MainSketch.ccGetPApplet().background(C_COLOR_BACKGROUD);
       VcLocalCoordinator.ccUpdatePassive();
     }//+++
   };//***

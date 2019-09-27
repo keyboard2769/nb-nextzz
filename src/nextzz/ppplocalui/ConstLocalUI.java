@@ -38,13 +38,32 @@ import processing.core.PGraphics;
 
 public final class ConstLocalUI {
   
-  public static final int C_SIDE_MARGIN = 5;
+  //===
+  
+  //-- operative ui ** pix ** single
+  public static final int C_DEFAULT_SINGLELINE_H = 20;
   public static final int C_MOTOR_SW_SIZE = 48;
-  public static final int C_ASSIST_SW_W = 80;
+  public static final int C_ASSIST_SW_W = 80;//[todo]::re impl this with cfg
   public static final int C_ASSIST_SW_H = 20;
+  
+  //-- operative ui ** pix ** margin
+  public static final int C_SIDE_MARGIN = 5;
   public static final int C_INPANE_MARGIN_S = 5;
   public static final int C_INPANE_MARGIN_U = 22;
   public static final int C_INPANE_GAP = 2;
+  
+  //-- indicative ui ** pix
+  public static final int C_SHAPE_DRYER_ROLLER_W = 4;
+  
+  //-- indicative ui ** color
+  public static final int C_COLOR_POWERDEVICE_OFF
+    = 0xFF797979;
+  public static final int C_COLOR_POWERDEVICE_ON
+    = 0xFFCECE32;
+  public static final int C_COLOR_CONTAINER
+    = 0xFFA3A3A3;
+  public static final int C_COLOR_DUCT
+    = 0xFF888888;
   
   //===
   
@@ -221,7 +240,7 @@ public final class ConstLocalUI {
     pxTarget.beginDraw();
     pxTarget.ellipseMode(PApplet.CENTER);
     pxTarget.clip(0, 0, pxTarget.width, pxTarget.height);
-    pxTarget.fill(MainSketch.C_BACKGROUD);
+    pxTarget.fill(MainSketch.C_COLOR_BACKGROUD);
     pxTarget.ellipse(pxTarget.width/2,pxTarget.height,pxCut*2,pxCut*2);
     pxTarget.noClip();
     pxTarget.endDraw();
@@ -232,18 +251,17 @@ public final class ConstLocalUI {
     if(pxTarget==null){return;}
     int lpW=pxTarget.width;
     int lpH=pxTarget.height;
-    int lpRound=lpH-pxCut*2;
-    int lpSupporterA=lpW*1/4;
-    int lpSupporterC=lpW*3/4;
-    final int lpSupporter=4;
+    int lpBarrelD=lpH-pxCut*2;
+    int lpRollerA=lpW*1/4;
+    int lpRollerC=lpW*3/4;
     pxTarget.beginDraw();
     pxTarget.fill(EcConst.C_TRANSPARENT);
     pxTarget.noStroke();
     {
       pxTarget.fill(pxColor);
-      pxTarget.rect(0, pxCut, lpW, lpRound);
-      pxTarget.rect(lpSupporterA,0,lpSupporter,lpH);
-      pxTarget.rect(lpSupporterC,0,lpSupporter,lpH);
+      pxTarget.rect(0, pxCut, lpW, lpBarrelD);
+      pxTarget.rect(lpRollerA,0,C_SHAPE_DRYER_ROLLER_W,lpH);
+      pxTarget.rect(lpRollerC,0,C_SHAPE_DRYER_ROLLER_W,lpH);
     }
     pxTarget.endDraw();
   }//+++
@@ -358,9 +376,9 @@ public final class ConstLocalUI {
     if(pxPullyR==null){return;}
     
     //-- styling
-    pxBody.ccSetBaseColor(EcConst.C_LIT_GRAY);
-    pxPullyL.ccSetBorderColor(EcConst.C_LIT_GRAY);
-    pxPullyR.ccSetBorderColor(EcConst.C_LIT_GRAY);
+    pxBody.ccSetBaseColor(C_COLOR_POWERDEVICE_OFF);
+    pxPullyL.ccSetupColor(C_COLOR_POWERDEVICE_ON, C_COLOR_POWERDEVICE_OFF);
+    pxPullyR.ccSetupColor(C_COLOR_POWERDEVICE_ON, C_COLOR_POWERDEVICE_OFF);
     
     //-- sizing
     int lpW=pxW>18?pxW:18;
@@ -392,7 +410,7 @@ public final class ConstLocalUI {
     pxLevelor.ccSetSize(pxBody.ccGetW()/4, pxBody.ccGetH()*2/3);
     pxLevelor.ccSetHasStroke(true);
     pxLevelor.ccSetGaugeColor(EcConst.C_DARK_GRAY, EcConst.C_WHITE);
-    pxLevelor.ccSetColor(EcConst.C_LIT_RED, EcConst.C_LIT_YELLOW);
+    pxLevelor.ccSetupColor(EcConst.C_LIT_RED, EcConst.C_LIT_YELLOW);
     pxLabel.ccSetTextColor(EcConst.C_LIT_GRAY);
     
     //-- locating
@@ -417,7 +435,7 @@ public final class ConstLocalUI {
       break;
       
       default:
-        pxLabel.ccSetVisible(false);
+        pxLabel.ccSetIsVisible(false);
         pxLabel.ccSetIsEnabled(false);
       break;
       
@@ -437,26 +455,25 @@ public final class ConstLocalUI {
   public static final void ccInit(){
     
     //-- feeder
-    ccDrawHopperShape(O_FEEDER, 14, EcConst.C_LIT_GRAY);
+    ccDrawHopperShape(O_FEEDER, 14, C_COLOR_CONTAINER);
     
     //-- v surge
-    ccDrawHopperShape(O_BIN_CAN_TANK, 6, EcConst.C_LIT_GRAY);
-    ccDrawHopperShape(O_HOT_BIN, 8, EcConst.C_LIT_GRAY);
+    ccDrawHopperShape(O_BIN_CAN_TANK, 6, C_COLOR_CONTAINER);
+    ccDrawHopperShape(O_HOT_BIN, 8, C_COLOR_CONTAINER);
     
     //-- mixer
-    ccDrawMixerShape(O_MIXER_ON, 12, EcConst.C_YELLOW);
-    ccDrawMixerShape(O_MIXER_OFF, 12, EcConst.C_LIT_GRAY);
+    ccDrawMixerShape(O_MIXER_ON, 12, C_COLOR_POWERDEVICE_ON);
+    ccDrawMixerShape(O_MIXER_OFF, 12, C_COLOR_POWERDEVICE_OFF);
     
     //-- bond
-    ccDrawDuctShape(O_FIRST_DUCT, 'b', 4, 4, EcConst.C_LIT_GRAY);
-    ccDrawDuctShape(O_SECOND_DUCT, 'c', 4, 4, EcConst.C_LIT_GRAY);
-    ccDrawDryerShape(O_V_DRYER, 3, EcConst.C_LIT_GRAY);
-    ccDrawHopperShape(O_BAGFILTER, 20, EcConst.C_LIT_GRAY);
-    ccDrawBlowerShape(O_V_BURNER_OFF, 'r', EcConst.C_LIT_GRAY);
-    ccDrawBlowerShape(O_V_BURNER_ON, 'r', EcConst.C_YELLOW);
-    ccDrawBlowerShape(O_V_EXFAN_OFF, 'u', EcConst.C_LIT_GRAY);
-    ccDrawBlowerShape(O_V_EXFAN_ON, 'u', EcConst.C_LIT_YELLOW);
-    
+    ccDrawDuctShape(O_FIRST_DUCT, 'b', 4, 4, C_COLOR_DUCT);
+    ccDrawDuctShape(O_SECOND_DUCT, 'c', 4, 4, C_COLOR_DUCT);
+    ccDrawDryerShape(O_V_DRYER, 3, C_COLOR_POWERDEVICE_OFF);
+    ccDrawHopperShape(O_BAGFILTER, 20, C_COLOR_CONTAINER);
+    ccDrawBlowerShape(O_V_BURNER_OFF, 'r', C_COLOR_POWERDEVICE_OFF);
+    ccDrawBlowerShape(O_V_BURNER_ON, 'r', C_COLOR_POWERDEVICE_ON);
+    ccDrawBlowerShape(O_V_EXFAN_OFF, 'u', C_COLOR_POWERDEVICE_OFF);
+    ccDrawBlowerShape(O_V_EXFAN_ON, 'u', C_COLOR_POWERDEVICE_ON);
     
   }//..!
   

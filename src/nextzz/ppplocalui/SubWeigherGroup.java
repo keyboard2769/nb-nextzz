@@ -184,15 +184,15 @@ public final class SubWeigherGroup implements EiGroup{
     int lpPotentialH;
     
     //-- disposing ** zero lock
-    cmDesAGLockSW.get(0).ccSetPage(99);
-    cmDesFRLockSW.get(0).ccSetPage(99);
-    cmDesASLockSW.get(0).ccSetPage(99);
-    cmDesRCLockSW.get(0).ccSetPage(99);
-    cmDesADLockSW.get(0).ccSetPage(99);
+    cmDesAGLockSW.get(0).ccHide();
+    cmDesFRLockSW.get(0).ccHide();
+    cmDesASLockSW.get(0).ccHide();
+    cmDesRCLockSW.get(0).ccHide();
+    cmDesADLockSW.get(0).ccHide();
     
     //-- plate 
     //-- plate ** coloring
-    final int lpPlateColor=(EcConst.ccAdjustColor(MainSketch.C_BACKGROUD, -8));
+    final int lpPlateColor=(EcConst.ccAdjustColor(MainSketch.C_COLOR_BACKGROUD, -8));
     cmPlateAD.ccSetBaseColor(lpPlateColor);
     cmPlateFR.ccSetBaseColor(lpPlateColor);
     cmPlateAG.ccSetBaseColor(lpPlateColor);
@@ -281,30 +281,30 @@ public final class SubWeigherGroup implements EiGroup{
     //-- hiding
     //-- hiding ** ag
     for(int i=MainSpecificator.ccRefer().mnAGCattegoryCount+1;i<=7;i++){
-      cmDesAGLockSW.get(i).ccSetPage(99);
-      cmDesAGWeighSW.get(i).ccSetPage(99);
-      cmDesAGText.get(i).ccSetPage(99);
+      cmDesAGLockSW.get(i).ccHide();
+      cmDesAGWeighSW.get(i).ccHide();
+      cmDesAGText.get(i).ccHide();
     }//..~
     //-- hiding ** fr
     if(MainSpecificator.ccRefer().mnFRCattegoryCount<3){
-      cmDesFRLockSW.get(1).ccSetPage(99);
-      cmDesFRWeighSW.get(1).ccSetPage(99);
-      cmDesFRText.get(1).ccSetPage(99);
+      cmDesFRLockSW.get(1).ccHide();
+      cmDesFRWeighSW.get(1).ccHide();
+      cmDesFRText.get(1).ccHide();
     }//..?
     //-- hiding ** as
     switch(MainSpecificator.ccRefer().mnASCattegoryCount){
       case 1:
-        cmDesASLockSW.get(1).ccSetPage(99);
-        cmDesASWeighSW.get(1).ccSetPage(99);
-        cmDesASText.get(1).ccSetPage(99);
-        cmDesASLockSW.get(3).ccSetPage(99);
-        cmDesASWeighSW.get(3).ccSetPage(99);
-        cmDesASText.get(3).ccSetPage(99);
+        cmDesASLockSW.get(1).ccHide();
+        cmDesASWeighSW.get(1).ccHide();
+        cmDesASText.get(1).ccHide();
+        cmDesASLockSW.get(3).ccHide();
+        cmDesASWeighSW.get(3).ccHide();
+        cmDesASText.get(3).ccHide();
       break;
       case 2:
-        cmDesASLockSW.get(3).ccSetPage(99);
-        cmDesASWeighSW.get(3).ccSetPage(99);
-        cmDesASText.get(3).ccSetPage(99);
+        cmDesASLockSW.get(3).ccHide();
+        cmDesASWeighSW.get(3).ccHide();
+        cmDesASText.get(3).ccHide();
       break;
       case 3:default:break;
     }//..?

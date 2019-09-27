@@ -58,7 +58,8 @@ public class MainSketch extends PApplet{
   
   public static final String C_WARE_TITLE = "Next ZZ v19a01";
   
-  static public final int C_BACKGROUD=0xFF336633;
+  static public final int C_COLOR_BACKGROUD=0xFF336633;
+  static public final int C_COLOR_PLATE    =0xFF225522;
   static public final int C_WIDTH_S  =  800;
   static public final int C_HEIGHT_S =  600;
   static public final int C_WIDTH_M  = 1024;
@@ -75,10 +76,7 @@ public class MainSketch extends PApplet{
   @Override public void setup(){
     
     size(cmWindowW,cmWindowH,JAVA2D);
-    
-    VcConst.ccPrintln(".setup()::commited-w", cmWindowW);
-    VcConst.ccPrintln(".setup()::commited-h", cmWindowH);
-    /* 4 */VcConst.ccLogln("MainSketch.setup()::start");
+    /* 4 */VcConst.ccPrintln("MainSketch.setup()::begin");
     
     //-- pre
     EcConst.ccSetupSketch(this);
@@ -137,7 +135,6 @@ public class MainSketch extends PApplet{
     //-- post
     frame.setIconImage(ConstSwingUI.O_WINDOW_ICON);
     /* 4 */VcConst.ccPrintln("MainSketch.setup()::over");
-    
     
   }//+++
 
@@ -308,14 +305,14 @@ public class MainSketch extends PApplet{
     }//..?
     
     //-- run sketch
-    VcConst.ccPrintln(".main()::commited-w", cmWindowW);
-    VcConst.ccPrintln(".main()::commited-h", cmWindowH);
+    /* 4 */VcConst.ccLogln(".main()::commited-w", cmWindowW);
+    /* 4 */VcConst.ccLogln(".main()::commited-h", cmWindowH);
     PApplet.main(MainSketch.class.getCanonicalName());
     
   }//+++
   
   public static final String ccGetLastLeavingStamp(){
-    return "_1909262239";
+    return "_1909271139";
   }//+++
 
 }//***eof

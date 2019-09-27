@@ -109,11 +109,15 @@ public final class SubVBondGroup implements EiGroup{
     cmVBurnerText = new EcText("&vb")
   ;//...
   
-  //-- belcon
+  //-- motorative
   public final EcShape cmBelconShape = new EcShape();
   public final EcLamp
     cmBelconForwarPL = new EcLamp("<"),
-    cmBelconBackwardPL = new EcLamp("|")
+    cmBelconBackwardPL = new EcLamp(">")
+  ;//...
+  public final EcElement
+    cmVDryerRollerA = new EcElement(),//.. A means burner side
+    cmVDryerRollerC = new EcElement() //.. C means belcon side
   ;//...
   
   //===
@@ -132,20 +136,19 @@ public final class SubVBondGroup implements EiGroup{
       ConstLocalUI.C_SIDE_MARGIN
     );
     cmPlate.ccSetW(SubVFeederGroup.ccRefer().cmPlate.ccGetW());
-    cmPlate.ccSetBaseColor
-      (EcConst.ccAdjustColor(MainSketch.C_BACKGROUD, -8));
+    cmPlate.ccSetBaseColor(MainSketch.C_COLOR_PLATE);
     
     //-- assert
     final int lpDryerGaugeGap=6;
     final int lpDryerCaseGap=8;
-    final int lpDryerHeight=cmVDPressureCB.ccGetH()
+    final int lpDryerHeight=ConstLocalUI.C_DEFAULT_SINGLELINE_H
       + lpDryerGaugeGap*2+lpDryerCaseGap*2;
     final int lpDryerWidth=cmVDPressureCB.ccGetW()
       + lpDryerGaugeGap*2+lpDryerCaseGap*2;
     /* 4 */VcConst.ccLogln("vd-w",lpDryerWidth);
     /* 4 */VcConst.ccLogln("vd-h",lpDryerHeight);
     cmPlate.ccSetH(
-      lpDryerHeight*2+cmVDPressureCB.ccGetH()*2
+      lpDryerHeight*2+ConstLocalUI.C_DEFAULT_SINGLELINE_H*2
         + ConstLocalUI.C_INPANE_GAP*12
     );
     
@@ -164,6 +167,25 @@ public final class SubVBondGroup implements EiGroup{
     cmVDryerShape.ccSetLocation(cmBagFilterShape,
       0,
       ConstLocalUI.C_INPANE_GAP*2
+    );
+    cmVDryerRollerA.ccSetupColor(
+      ConstLocalUI.C_COLOR_POWERDEVICE_ON,
+      ConstLocalUI.C_COLOR_POWERDEVICE_OFF
+    );
+    cmVDryerRollerC.ccSetupColor(
+      ConstLocalUI.C_COLOR_POWERDEVICE_ON,
+      ConstLocalUI.C_COLOR_POWERDEVICE_OFF
+    );
+    cmVDryerRollerA.ccSetSize
+      (ConstLocalUI.C_SHAPE_DRYER_ROLLER_W, cmVDryerShape.ccGetH());
+    cmVDryerRollerC.ccSetSize(cmVDryerRollerA);
+    cmVDryerRollerA.ccSetLocation(
+      cmVDryerShape.ccGetX()+cmVDryerShape.ccGetW()*1/4,
+      cmVDryerShape.ccGetY()
+    );
+    cmVDryerRollerC.ccSetLocation(
+      cmVDryerShape.ccGetX()+cmVDryerShape.ccGetW()*3/4,
+      cmVDryerShape.ccGetY()
     );
     cmVDContentLV.ccSetSize(
       cmVDPressureCB.ccGetW()+lpDryerGaugeGap*2,
@@ -246,7 +268,7 @@ public final class SubVBondGroup implements EiGroup{
     
     //-- operative
     //-- operative ** ready-start
-    lpPotentialH=cmVDPressureCB.ccGetH();
+    lpPotentialH=ConstLocalUI.C_DEFAULT_SINGLELINE_H;
     cmReadyPL.ccSetSize(cmChuteTemperatureTB.ccGetW(),lpPotentialH);
     cmReadyPL.ccSetLocation(
       cmTargetTemperatureTB.ccGetX(),
@@ -323,8 +345,8 @@ public final class SubVBondGroup implements EiGroup{
   }//+++
 
   @Override public List<? extends EcElement> ccGiveElementList(){
-    return Arrays.asList(
-      cmTargetTemperatureTB,cmChuteTemperatureTB,
+    return Arrays.asList(cmTargetTemperatureTB,cmChuteTemperatureTB,
+      cmVDryerRollerA,cmVDryerRollerC,
       cmVDContentLV,cmVDPressureCB,cmEntranceTemperatureCB,
       cmBagHighLV,cmBagLowLV,cmAirPulsePL,
       cmExfanIcon,cmBurnerIcon,

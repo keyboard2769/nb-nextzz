@@ -40,7 +40,7 @@ public final class SubMixerGroup implements EiGroup{
   //-- pane
   public final EcShape cmPlate = new EcShape();
   public final int cmPlateColor
-    = EcConst.ccAdjustColor(MainSketch.C_BACKGROUD, -8);
+    = EcConst.ccAdjustColor(MainSketch.C_COLOR_BACKGROUD, -8);
   
   //-- icon
   public final EcIcon cmMixerIcon =

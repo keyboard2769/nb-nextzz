@@ -18,16 +18,26 @@
  */
 package ppptest;
 
+import kosui.ppplocalui.EcConst;
+import kosui.ppplogic.ZcRoller;
+import kosui.ppputil.VcLocalTagger;
 import processing.core.PApplet;
 
 public class TestSketch extends PApplet{
-
+  
+  ZcRoller cmRoller = new ZcRoller();
+  
   @Override public void setup() {
     size(320,240);
+    EcConst.ccSetupSketch(this);
+    VcLocalTagger.ccGetInstance().ccInit(this, 9);
   }//+++
 
   @Override public void draw() {
     background(0);
+    cmRoller.ccRoll();
+    VcLocalTagger.ccTag("roll", cmRoller.ccGetValue());
+    VcLocalTagger.ccStabilize();
   }//+++
 
   @Override public void keyPressed() {

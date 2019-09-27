@@ -160,7 +160,7 @@ public final class SubVFeederGroup implements EiGroup{
     //-- pane
     cmPlate.ccSetBound(lpPotentialX, lpPotentialY, lpPotentialW, lpPotentialH);
     cmPlate.ccSetBaseColor
-      (EcConst.ccAdjustColor(MainSketch.C_BACKGROUD, -8));
+      (EcConst.ccAdjustColor(MainSketch.C_COLOR_BACKGROUD, -8));
     
     //-- reinit
     for(EcValueBox it:cmDesFeederRPMBox){
@@ -175,16 +175,16 @@ public final class SubVFeederGroup implements EiGroup{
     
     //-- disposing
     for(int it:new int[]{0,11,12,13,14,15}){
-      cmDesFeederRPMBox.get(it).ccSetPage(99);
-      cmDesFeederRPMGauge.get(it).ccSetPage(99);
-      cmDesFeederShape.get(it).ccSetPage(99);
-      cmDesFeederText.get(it).ccSetPage(99);
+      cmDesFeederRPMBox.get(it).ccHide();
+      cmDesFeederRPMGauge.get(it).ccHide();
+      cmDesFeederShape.get(it).ccHide();
+      cmDesFeederText.get(it).ccHide();
     }//..~
     for(int i=MainSpecificator.ccRefer().mnVFeederAmount+1;i<=10;i++){
-      cmDesFeederRPMBox.get(i).ccSetPage(99);
-      cmDesFeederRPMGauge.get(i).ccSetPage(99);
-      cmDesFeederShape.get(i).ccSetPage(99);
-      cmDesFeederText.get(i).ccSetPage(99);
+      cmDesFeederRPMBox.get(i).ccHide();
+      cmDesFeederRPMGauge.get(i).ccHide();
+      cmDesFeederShape.get(i).ccHide();
+      cmDesFeederText.get(i).ccHide();
     }//..~
     
     //-- line dividing

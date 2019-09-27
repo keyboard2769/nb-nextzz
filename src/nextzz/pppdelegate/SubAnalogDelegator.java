@@ -19,11 +19,14 @@
 
 package nextzz.pppdelegate;
 
+import nextzz.ppplocalui.SubVSurgeGroup;
 import nextzz.pppmodel.SubAnalogScalarManager;
 
 public final class SubAnalogDelegator {
   
   public static volatile int
+    
+    //-- ct
     mnCTSlotZ,mnCTSlotI,mnCTSlotII,mnCTSlotIII,
     mnCTSlotIV,mnCTSlotV,mnCTSlotVI,mnCTSlotVII,
     mnCTSlotVIII,mnCTSlotIX,mnCTSlotX,mnCTSlotXI,
@@ -32,7 +35,11 @@ public final class SubAnalogDelegator {
     mnCTSlotXVI,mnCTSlotXVII,mnCTSlotXVIII,mnCTSlotXIX,
     mnCTSlotXX,mnCTSlotXXI,mnCTSlotXXII,mnCTSlotXXIII,
     mnCTSlotXXIV,mnCTSlotXXV,mnCTSlotXXVI,mnCTSlotXXVII,
-    mnCTSlotXXVIII,mnCTSlotXXIX,mnCTSlotXXX,mnCTSlotXXXI
+    mnCTSlotXXVIII,mnCTSlotXXIX,mnCTSlotXXX,mnCTSlotXXXI,
+    
+    //-- misc
+    mnFillerSiloLV,mnCementSiloLV
+    
   ;//...
   
   public static final void ccWire(){
@@ -41,6 +48,7 @@ public final class SubAnalogDelegator {
   
   public static final void ccBind(){
     
+    //-- ct
     SubAnalogScalarManager.ccRefer().ccSetCurrentAD( 0, mnCTSlotZ);
     SubAnalogScalarManager.ccRefer().ccSetCurrentAD( 1, mnCTSlotI);
     SubAnalogScalarManager.ccRefer().ccSetCurrentAD( 2, mnCTSlotII);
@@ -80,6 +88,10 @@ public final class SubAnalogDelegator {
     SubAnalogScalarManager.ccRefer().ccSetCurrentAD(29, mnCTSlotXXIX);
     SubAnalogScalarManager.ccRefer().ccSetCurrentAD(30, mnCTSlotXXX);
     SubAnalogScalarManager.ccRefer().ccSetCurrentAD(31, mnCTSlotXXXI);
+    
+    //-- misc
+    SubVSurgeGroup.ccRefer().cmFillerSiloLV.ccSetPercentage(mnFillerSiloLV);
+    SubVSurgeGroup.ccRefer().cmCementSiloLV.ccSetPercentage(mnCementSiloLV);
     
   }//+++
   

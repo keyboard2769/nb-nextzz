@@ -25,7 +25,6 @@ import nextzz.ppplocalui.SubOperativeGroup;
 import nextzz.ppplocalui.SubVBondGroup;
 import nextzz.ppplocalui.SubVFeederGroup;
 import nextzz.ppplocalui.SubVSurgeGroup;
-import nextzz.pppswingui.SubAssistantPane;
 
 public final class SubVPreparingDelegator {
   
@@ -148,8 +147,15 @@ public final class SubVPreparingDelegator {
       .get(4).ccSetIsActivated(mnAGChainMSPL);
     SubOperativeGroup.ccRefer().cmDesMotorSW
       .get(5).ccSetIsActivated(mnVFChainMSPL);
+    SubVBondGroup.ccRefer().cmVDryerRollerA
+      .ccSetIsActivated(mnVDryerPL);
+    SubVBondGroup.ccRefer().cmVDryerRollerC
+      .ccSetIsActivated(mnVDryerPL);
+    SubVBondGroup.ccRefer().cmBelconForwarPL
+      .ccSetIsActivated(mnVInclinedBelconPL);
+    SubVFeederGroup.ccRefer().cmBelconForwarPL
+      .ccSetIsActivated(mnVHorizontalBelconPL);
     ssBindVFeederPL();
-    
     
     //-- FR ** ui to simulator
     mnFillerSystemSW=SubOperativeGroup.ccRefer().cmDesMotorSW
