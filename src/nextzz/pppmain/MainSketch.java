@@ -93,6 +93,8 @@ public class MainSketch extends PApplet{
     EcElement.ccSetTextAdjust(0, -1);
     VcLocalCoordinator.ccGetInstance().ccInit(this);
     VcLocalConsole.ccGetInstance().ccInit(this);
+    /* 6 */VcLocalTagger.ccGetInstance().ccInit(this, 15);
+    /* 6 */VcLocalTagger.ccGetInstance().ccSetColor(0xFF111111, 0xFFEEEEEE);
     
     //-- manager
     SubAnalogScalarManager.ccRefer().ccInit();
@@ -119,9 +121,6 @@ public class MainSketch extends PApplet{
     SwingUtilities.invokeLater
       (MainActionManager.ccRefer().cmSwingClickableRegisering);
     
-    //-- debug
-    /* 6 */VcLocalTagger.ccGetInstance().ccInit(this, 7);
-    /* 6 */VcLocalTagger.ccGetInstance().ccSetColor(0xFF111111, 0xFFEEEEEE);
     
     //-- translation
     EcConst.ccTranslateText(SubOperativeGroup.ccRefer().cmDesMotorSW);

@@ -20,21 +20,31 @@
 package nextzz.pppsimulate;
 
 import kosui.ppplogic.ZcRangedValueModel;
+import kosui.ppputil.VcNumericUtility;
 import kosui.ppputil.VcStringUtility;
+import processing.core.PApplet;
 
 public class ZcContainer extends ZcRangedValueModel{
+  
+  private final float cmSpeedMag;
 
   public ZcContainer() {
     super(0, 29999);
+    cmSpeedMag=1.0f;
+  }//..!
+  
+  public ZcContainer(float cmMagnitude){
+    super(0,29999);
+    cmSpeedMag=PApplet.constrain(cmMagnitude, 0.01f, 2.99f);
   }//..!
   
   //===
   
   public final void ccCharge(int pxSpeed){
-    ccShift( 1*(pxSpeed&0xFF));
+    ccShift( 1*(VcNumericUtility.ccMagnify(pxSpeed, cmSpeedMag)&0xFF));
   }//+++
   public final void ccDischarge(int pxSpeed){
-    ccShift(-1*(pxSpeed&0xFF));
+    ccShift(-1*(VcNumericUtility.ccMagnify(pxSpeed, cmSpeedMag)&0xFF));
   }//+++
   
   //===
@@ -53,6 +63,13 @@ public class ZcContainer extends ZcRangedValueModel{
   
   public final boolean ccIsEmpty(){
     return ccIsBelow( 5555);
+  }//+++
+  
+  public final int ccGetScaledValue(int pxSpan){
+    return (int)(
+      (((float)cmValue)/29999f)
+      *((float)(pxSpan&0xFFFF))
+    );
   }//+++
   
   //===

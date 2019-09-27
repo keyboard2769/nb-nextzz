@@ -29,7 +29,8 @@ public final class MainFileManager {
   private static final String C_LOCAL_FONT_MY_MAC_XI
     = "/Users/keypad/Yard/_temp/nextZZ/font/GB18030Bitmap-12.vlw";
   private static final String C_TEXT_FONT_LOCATION_MY_MAC_XIII
-    = "??!!??!!?";
+    = "/Users/Keypad/Documents/Processing/CodeP/ResourceFontCreator/data/"
+      + "MDSChGothic16-11.vlw";
   private static final String C_LOCAL_FONT_MY_MI_XV
     = "??!!?!!";
   private static final String C_TRUETYPE_FONT_MY_MI_XV
@@ -66,9 +67,17 @@ public final class MainFileManager {
   private void ccVelidateFontFile(){
     
     boolean lpOK;
+    
     cmFontFile = new File(C_LOCAL_FONT_MY_MAC_XI);
     lpOK=McConst.ccVerifyFileForLoading(cmFontFile,"vlw",9999999l);
+    if(lpOK){
+      VcConst.ccPrintln("located-font-file", cmFontFile.getName());
+      VcConst.ccPrintln("length", cmFontFile.length());
+      return;
+    }//..?
     
+    cmFontFile = new File(C_TEXT_FONT_LOCATION_MY_MAC_XIII);
+    lpOK=McConst.ccVerifyFileForLoading(cmFontFile,"vlw",9999999l);
     if(lpOK){
       VcConst.ccPrintln("located-font-file", cmFontFile.getName());
       VcConst.ccPrintln("length", cmFontFile.length());

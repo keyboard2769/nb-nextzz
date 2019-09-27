@@ -67,13 +67,15 @@ public final class MainWindow {
   
   public final Runnable cmInitiating = new Runnable() {
     @Override public void run() {
+      
+      //-- style
+      ScConst.ccApplyLookAndFeel(0, true);
 
       //-- init 
       cmWindow.ccInit(MainSketch.C_WARE_TITLE, ScConst.C_DARK_GREEN);
       SubMonitorPane.ccRefer().ccInit();
       SubAssistantPane.ccRefer().ccInit();
       SubErrorPane.ccRefer().ccInit();
-      
       
       //-- content
       final JTabbedPane lpCenterPane = new JTabbedPane();

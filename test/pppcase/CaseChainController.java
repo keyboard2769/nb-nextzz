@@ -27,6 +27,7 @@ import kosui.ppplogic.ZcRoller;
 import kosui.ppputil.VcConst;
 import kosui.ppputil.VcLocalCoordinator;
 import kosui.ppputil.VcLocalTagger;
+import kosui.ppputil.VcStringUtility;
 import nextzz.pppsimulate.ZcChainController;
 import nextzz.pppsimulate.ZcMotor;
 import processing.core.PApplet;
@@ -171,12 +172,7 @@ public class CaseChainController extends PApplet{
     VcLocalTagger.ccTag(ccPackupMotorTag(3,dcMotorIII));
     VcLocalTagger.ccTag(ccPackupMotorTag(4,dcMotorIV));
     VcLocalTagger.ccTag(ccPackupMotorTag(5,dcMotorV));
-    VcLocalTagger.ccTag("ctrl",
-      dcTheController.toString()
-        .replaceAll("\\$", VcConst.C_V_NEWLINE)
-        .replaceAll("@", VcConst.C_V_NEWLINE)
-        .replaceAll("\\|", VcConst.C_V_NEWLINE)
-    );
+    VcLocalTagger.ccTag("ctrl",VcStringUtility.ccBreakObject(dcTheController));
     VcLocalTagger.ccStabilize();
     
   }//+++

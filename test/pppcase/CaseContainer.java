@@ -19,23 +19,44 @@
 
 package pppcase;
 
+import kosui.ppplocalui.EcComponent;
 import kosui.ppplocalui.EcConst;
+import kosui.ppplocalui.EcElement;
 import kosui.ppplogic.ZcRoller;
 import kosui.ppputil.VcConst;
+import kosui.ppputil.VcLocalCoordinator;
 import kosui.ppputil.VcLocalTagger;
+import kosui.ppputil.VcStringUtility;
 import nextzz.pppsimulate.ZcContainer;
 import processing.core.PApplet;
 
 public class CaseContainer extends PApplet{
   
-  ZcRoller cmRoller = new ZcRoller();
+  private final ZcRoller cmRoller = new ZcRoller();
   
-  ZcContainer cmSource = new ZcContainer();
+  private final ZcContainer cmSource = new ZcContainer(1.1f);
+  private final ZcContainer cmTarget = new ZcContainer(2.3f);
+  
+  private final EcElement cmChargeKEY = new EcElement("W", 0xAA1);
+  private final EcElement cmTransferKEY = new EcElement("S", 0xAA2);
+  private final EcElement cmResetKEY = new EcElement("A", 0xAA3);
+  private final EcElement cmDischargeKEY = new EcElement("D", 0xAA4);
   
   @Override public void setup() {
     size(320,240);
     EcConst.ccSetupSketch(this);
+    VcLocalCoordinator.ccGetInstance().ccInit(this);
     VcLocalTagger.ccGetInstance().ccInit(this, 9);
+    cmChargeKEY.ccSetLocation(160, 20);
+    cmTransferKEY.ccSetLocation(cmChargeKEY, 0,5);
+    cmDischargeKEY.ccSetLocation(cmTransferKEY, 5, 0);
+    cmResetKEY.ccSetLocation(
+      cmTransferKEY.ccGetX()-cmResetKEY.ccGetW()-5, cmDischargeKEY.ccGetY()
+    );
+    VcLocalCoordinator.ccAddElement(cmChargeKEY);
+    VcLocalCoordinator.ccAddElement(cmTransferKEY);
+    VcLocalCoordinator.ccAddElement(cmResetKEY);
+    VcLocalCoordinator.ccAddElement(cmDischargeKEY);
   }//+++
 
   @Override public void draw() {
@@ -44,20 +65,34 @@ public class CaseContainer extends PApplet{
     cmRoller.ccRoll();
     
     //--
-    cmSource.ccCharge(1);
-    //[head]::
+    cmChargeKEY.ccSetIsActivated(EcComponent.ccIsKeyPressed('w'));
+    cmTransferKEY.ccSetIsActivated(EcComponent.ccIsKeyPressed('s'));
+    cmResetKEY.ccSetIsActivated(EcComponent.ccIsKeyPressed('a'));
+    cmDischargeKEY.ccSetIsActivated(EcComponent.ccIsKeyPressed('d'));
     
+    //--
+    if(cmResetKEY.ccIsActivated()){
+      cmSource.ccSetValue(0);
+      cmTarget.ccSetValue(0);
+    }//..?
+    if(cmChargeKEY.ccIsActivated()){cmSource.ccCharge(0x32);}
+    if(cmDischargeKEY.ccIsActivated()){cmTarget.ccDischarge(0x64);}
+    ZcContainer.ccTransfer
+      (cmSource, cmTarget, cmTransferKEY.ccIsActivated(), 0x16);
+    
+    //--
+    VcLocalCoordinator.ccUpdate();
     
     //--
     fill(0xFF);
     text(
-      "src"+VcConst.C_V_NEWLINE
-        +cmSource.toString()
-          .replaceAll("\\$", VcConst.C_V_NEWLINE)
-          .replaceAll("@", VcConst.C_V_NEWLINE)
-          .replaceAll("true", "x")
-          .replaceAll("false", "o"),
-      5, 120
+      "tgt"+VcConst.C_V_NEWLINE+VcStringUtility.ccBreakObject(cmTarget)
+       + VcConst.C_V_NEWLINE+PApplet.nf(cmTarget.ccGetScaledValue(3600),4),
+      5, 140
+    );
+    text(
+      "src"+VcConst.C_V_NEWLINE+VcStringUtility.ccBreakObject(cmSource),
+      130,120
     );
     
     //--
@@ -67,7 +102,9 @@ public class CaseContainer extends PApplet{
   }//+++
 
   @Override public void keyPressed() {
-    exit();
+    if(key=='q'){
+      exit();
+    }//..?
   }//+++
   
   public static void main(String[] args) {

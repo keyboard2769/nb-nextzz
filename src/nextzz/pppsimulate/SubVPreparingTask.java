@@ -19,7 +19,6 @@
 
 package nextzz.pppsimulate;
 
-import kosui.ppplogic.ZcCheckedValueModel;
 import kosui.ppplogic.ZcDelayor;
 import kosui.ppplogic.ZcHookFlicker;
 import kosui.ppplogic.ZcOffDelayTimer;
@@ -42,7 +41,6 @@ public final class SubVPreparingTask implements ZiTask{
   //===
   
   //-- misc ** motor
-  
   public final ZcMotor dcVCompressor = new ZcMotor(32);
   private final ZcHookFlicker cmVCompressorHOOK = new ZcHookFlicker();
   
@@ -53,7 +51,6 @@ public final class SubVPreparingTask implements ZiTask{
   private final ZcHookFlicker cmVExFanHooker = new ZcHookFlicker();
   
   //-- ag chain ** motor
-  private final ZcHookFlicker cmAGChainHOOK = new ZcHookFlicker();
   private final ZcChainController cmAGChainCTRL = new ZcChainController(3, 6);
   public final ZcMotor dcScreen = new ZcMotor(4);
   public final ZcMotor dcHotElevator = new ZcMotor(4);
@@ -62,22 +59,44 @@ public final class SubVPreparingTask implements ZiTask{
   public final ZcMotor dcHorizontalBelcon = new ZcMotor(4);
   
   //-- filler supply
-  
-  private boolean
-    
-    //-- filler 
-    dcFillerEelevatorMC,
-    dcFillerScrewMC,
-    dcFillerBinLV
-    
-  ;//...
-  
   private final ZcHookFlicker  cmFillerSupplyHOOK = new ZcHookFlicker();
+  private final ZcTimer cmFillerBinInputStopTM = new ZcOffDelayTimer(32);
+  private final ZcTimer cmFillerBinInpuStartTM = new ZcOnDelayTimer(32);
+  private final ZcTimer cmFillerBinLevelDelayor = new ZcDelayor(7, 888);
+  public final ZcMotor dcFillerElevator = new ZcMotor(4);
+  public final ZcMotor dcFillerScrew = new ZcMotor(4);
+  //[todo]::fillerScrewB
+  public final ZcContainer dcFillerSilo = new ZcContainer(0.8f);
+  //[todo]::fillerSiloB
+  public final ZcContainer dcFillerBin = new ZcContainer(2.2f);
   
-  private final ZcTimer cmFillerEVStopTM = new ZcOffDelayTimer(32);
-  private final ZcTimer cmFillerSCStartTM = new ZcOnDelayTimer(32);
-  private final ZcTimer cmFillerLevelDelay = new ZcDelayor(7, 999);
-
+  //-- dust extraction
+  private boolean cmBagDustOutConfirm=false;
+  private boolean cmBagDustOutFlag=false;
+  private final ZcHookFlicker cmDustExtractionHOOK = new ZcHookFlicker();
+  private final ZcTimer cmDustSiloInputStopTM = new ZcOffDelayTimer(32);
+  private final ZcTimer cmDustSiloInputStartTM = new ZcOnDelayTimer(32);
+  private final ZcTimer cmDustSiloLevelDelayor = new ZcDelayor(16, 16);
+  private final ZcChainController cmDustExtractionCTRL = new ZcChainController(2, 4);
+  public boolean dcDustSiloDischargeGateMV=false;
+  public boolean dcDustSiloAirationMV=false;
+  public final ZcMotor dcDustSiloElevator = new ZcMotor(4);
+  public final ZcMotor dcDustExtractionScrew = new ZcMotor(4);
+  public final ZcContainer dcBagHopper = new ZcContainer(1.8f);
+  public final ZcContainer dcDustSilo = new ZcContainer(1.2f);
+  
+  //===
+  
+  public final void ccSetBagDustOutComfirm(boolean pxVal){
+    cmBagDustOutConfirm=pxVal;
+  }//+++
+  
+  public final boolean ccGetBagDustOutFlag(){
+    return cmBagDustOutFlag;
+  }//+++
+  
+  //===
+  
   @Override public void ccScan(){
     
     //-- misc ** v comprssor
@@ -149,26 +168,53 @@ public final class SubVPreparingTask implements ZiTask{
     //-- filler supply 
     //-- filler supply ** software input
     cmFillerSupplyHOOK.ccHook(SubVPreparingDelegator.mnFillerSystemSW);
-    cmFillerEVStopTM.ccAct(cmFillerSupplyHOOK.ccIsHooked());
-    cmFillerSCStartTM.ccAct(cmFillerSupplyHOOK.ccIsHooked());
+    cmFillerBinInputStopTM.ccAct(cmFillerSupplyHOOK.ccIsHooked());
+    cmFillerBinInpuStartTM.ccAct(cmFillerSupplyHOOK.ccIsHooked());
     //-- filler supply ** hardware io
-    cmFillerLevelDelay.ccAct(dcFillerBinLV);
-    dcFillerEelevatorMC=cmFillerEVStopTM.ccIsUp();
-    dcFillerScrewMC=!cmFillerLevelDelay.ccIsUp()
-      &&cmFillerSCStartTM.ccIsUp();
+    cmFillerBinLevelDelayor.ccAct(dcFillerBin.ccIsMiddle());
+    dcFillerElevator.ccContact(cmFillerBinInputStopTM.ccIsUp());
+    dcFillerScrew.ccContact(!cmFillerBinLevelDelayor.ccIsUp()
+      &&cmFillerBinInpuStartTM.ccIsUp()
+    );
     //-- filler supply ** software output
     SubVPreparingDelegator.mnFillerBinMLVPL
       =SubVPreparingDelegator.mnFillerBinLLVPL
-      =dcFillerBinLV;
-    SubVPreparingDelegator.mnFillerSystemPL=cmFillerEVStopTM.ccIsUp()&&
-      (MainSimulator.ccOneSecondClock()||dcFillerScrewMC);
+      =dcFillerBin.ccIsMiddle();
+    SubVPreparingDelegator.mnFillerSystemPL=cmFillerBinInputStopTM.ccIsUp()&&
+      (MainSimulator.ccOneSecondClock()||dcFillerScrew.ccIsContacted());
+    SubAnalogDelegator.mnFillerSiloLV = dcFillerSilo.ccGetScaledValue(255);
+    
+    //-- dust extraction
+    //-- dust extraction ** software input
+    cmDustExtractionHOOK.ccHook(SubVPreparingDelegator.mnDustExtractionMSSW);
+    cmDustSiloInputStopTM.ccAct(cmDustExtractionHOOK.ccIsHooked());
+    cmDustSiloInputStartTM.ccAct(cmDustExtractionHOOK.ccIsHooked());
+    //-- dust extraction ** controller
+    cmDustExtractionCTRL.ccSetTrippedAt
+      (1,dcDustSiloElevator.ccIsTripped());
+    cmDustExtractionCTRL.ccSetTrippedAt
+      (2,dcDustExtractionScrew.ccIsTripped());
+    cmDustExtractionCTRL.ccSetConfirmedAt
+      (1,dcDustSiloElevator.ccIsContacted());
+    cmDustExtractionCTRL.ccSetConfirmedAt
+      (2,dcDustExtractionScrew.ccIsContacted());
+    cmDustExtractionCTRL.ccSetConfirmedAt
+      (3, cmBagDustOutConfirm);
+    boolean lpDustExtractionStartHLD
+      = dcDustSiloElevator.ccIsContacted()&&cmDustExtractionHOOK.ccIsHooked();
+    cmDustExtractionCTRL.ccTakeInput
+      (lpDustExtractionStartHLD, !lpDustExtractionStartHLD);
+    cmDustExtractionCTRL.ccRun();
+    
+    //[head]::
+    
+    
+    
+    
     
   }//+++
   
   //===
-  
-  private final ZcCheckedValueModel simFillerBin
-    = new ZcCheckedValueModel(0, 29999);
   
   @Override public void ccSimulate(){
     
@@ -184,14 +230,17 @@ public final class SubVPreparingTask implements ZiTask{
     dcInclinedBelcon.ccSimulate(0.63f);
     dcHorizontalBelcon.ccSimulate(0.62f);
     
-    //-- transfer
-    MainSimulator.ccTransferExclusive(
-      simFillerBin,
-      dcFillerScrewMC&&dcFillerEelevatorMC, 64,
-      true, 16
+    //-- fr chain
+    dcFillerScrew.ccSimulate(0.66f);
+    dcFillerElevator.ccSimulate(0.64f);
+    dcFillerSilo.ccCharge(127);
+    ZcContainer.ccTransfer(
+      dcFillerSilo, dcFillerBin,
+      dcFillerScrew.ccIsContacted()&&dcFillerElevator.ccIsContacted(),
+      64
     );
-    dcFillerBinLV=simFillerBin.ccIsAbove(22222);
-    /* 4 *///VcLocalTagger.ccTag("ffcbin", simFillerBin.ccGetValue());
+    VcLocalTagger.ccTag("fs", dcFillerSilo);
+    VcLocalTagger.ccTag("fb", dcFillerBin);
     
   }//+++
   

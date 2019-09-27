@@ -69,6 +69,15 @@ public class ZcChainController extends ZcCheckedValueModel {
   
   //===
   
+  public final void ccTakeInput(boolean pxRun, boolean pxStop){
+    if(ccIsLevelAt(0)){
+      if(pxRun){cmRunsUp=true;}
+    }else{
+      cmRunsUp=false;
+      cmRunsDown=true;
+    }//..?
+  }//+++
+  
   public final void ccTakePulse(boolean pxInput){
     if(cmEngagePulser.ccUpPulse(pxInput)){
       if(ccIsLevelAt(0)){
