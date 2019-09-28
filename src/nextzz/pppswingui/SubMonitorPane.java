@@ -28,11 +28,10 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import kosui.pppswingui.ScFactory;
 import kosui.pppswingui.ScGauge;
-import kosui.ppputil.VcConst;
 import kosui.ppputil.VcTranslator;
 import nextzz.pppmodel.MainSpecificator;
 
-public final class SubMonitorPane {
+public final class SubMonitorPane implements SiTabbable{
   
   public static final int C_CTSLOT_MAX = 32;
   public static final int C_CTSLOT_MASK = 31;
@@ -74,7 +73,9 @@ public final class SubMonitorPane {
       new ScGauge("_ct30", "A"),new ScGauge("_ct31", "A")
     ));
   
-  public final void ccInit(){
+  //===
+  
+  @Override public final void ccInit(){
     
     //-- ctslot
     JPanel lpSlotGroupI  = ScFactory.ccCreateGridPanel(16, 1);
@@ -97,5 +98,13 @@ public final class SubMonitorPane {
     cmPane.add(new JButton("=Dweigh="),BorderLayout.CENTER);
     
   }//..!
+  
+  @Override public final String ccGetTitle() {
+    return C_TAB_NAME;
+  }//+++
+
+  @Override public final JPanel ccGetPane() {
+    return cmPane;
+  }//+++
   
  }//***eof

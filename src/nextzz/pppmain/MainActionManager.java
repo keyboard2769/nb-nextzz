@@ -33,7 +33,6 @@ import kosui.ppputil.VcNumericUtility;
 import kosui.ppputil.VcSwingCoordinator;
 import nextzz.pppdelegate.SubVPreparingDelegator;
 import nextzz.ppplocalui.SubIndicativeGroup;
-import nextzz.ppplocalui.SubOperativeGroup;
 import nextzz.pppswingui.SubAssistantPane;
 import static nextzz.pppmain.MainSketch.C_COLOR_BACKGROUD;
 
@@ -154,9 +153,9 @@ public final class MainActionManager {
         (MainWindow.ccRefer().cmQuitButton, cmQuitting);
       VcSwingCoordinator.ccRegisterAction
         (MainWindow.ccRefer().cmHideButton, cmHiding);
-    
+
     }//+++
-  };
+  };//***
   
   //=== local
   
@@ -194,10 +193,7 @@ public final class MainActionManager {
   }//..!
   
   public final void ccLogic(){
-    
-    
-    
-    
+    /* 6 */
   }//..!
   
  }//***eof

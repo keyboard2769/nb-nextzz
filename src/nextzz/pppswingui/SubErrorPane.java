@@ -20,7 +20,6 @@
 package nextzz.pppswingui;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import kosui.pppswingui.ScFactory;
@@ -31,7 +30,7 @@ import kosui.ppputil.VcTranslator;
 import nextzz.pppmain.MainSketch;
 import nextzz.pppmodel.SubErrorListModel;
 
-public final class SubErrorPane {
+public final class SubErrorPane implements SiTabbable{
 
   private static final SubErrorPane SELF = new SubErrorPane();
   public static final SubErrorPane ccRefer(){return SELF;}//+++
@@ -54,7 +53,9 @@ public final class SubErrorPane {
     MainSketch.ccGetPrefferedW()/4
   );
   
-  public final void ccInit(){
+  //===
+  
+  @Override public final void ccInit(){
     
     ScFactory.ccSetupInfoArea(cmDescriptor);
     
@@ -63,5 +64,13 @@ public final class SubErrorPane {
     cmPane.add(cmDescriptor,BorderLayout.PAGE_END);
     
   }//..!
+  
+  @Override public final String ccGetTitle() {
+    return C_TAB_NAME;
+  }//+++
+
+  @Override public final JPanel ccGetPane() {
+    return cmPane;
+  }//+++
   
  }//***eof

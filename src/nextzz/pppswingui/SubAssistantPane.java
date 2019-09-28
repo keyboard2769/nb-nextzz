@@ -32,11 +32,7 @@ import kosui.ppputil.VcTranslator;
 import nextzz.pppmain.MainActionManager;
 import nextzz.pppmodel.MainSpecificator;
 
-/**
- *
- * @author Key Parker from K.I.C
- */
-public final class SubAssistantPane {
+public final class SubAssistantPane implements SiTabbable{
   
   public static final int C_ROW_MAX = 24;
 
@@ -150,7 +146,7 @@ public final class SubAssistantPane {
   
   //===
   
-  public final void ccInit(){
+  @Override public final void ccInit(){
     
     //-- layout ** tower
     JPanel lpLeftI=ScFactory.ccCreateGridPanel(C_ROW_MAX, 1);
@@ -204,6 +200,16 @@ public final class SubAssistantPane {
     cmPane.add(lpLeftV);
     
   }//..!
+  
+  @Override public final String ccGetTitle() {
+    return C_TAB_NAME;
+  }//+++
+
+  @Override public final JPanel ccGetPane() {
+    return cmPane;
+  }//+++
+  
+  //===
   
   private void ccAddAssistant(JPanel pxPane, JComponent pxSwitch){
     assert pxPane!=null;

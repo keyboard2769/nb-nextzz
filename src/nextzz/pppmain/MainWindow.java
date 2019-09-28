@@ -26,10 +26,14 @@ import javax.swing.JToolBar;
 import kosui.pppswingui.ScConst;
 import kosui.pppswingui.ScFactory;
 import kosui.pppswingui.ScTitledWindow;
+import kosui.ppputil.VcConst;
+import kosui.ppputil.VcNumericUtility;
 import kosui.ppputil.VcStampUtility;
 import nextzz.pppmodel.SubAnalogScalarManager;
+import nextzz.pppswingui.SiTabbable;
 import nextzz.pppswingui.SubAssistantPane;
 import nextzz.pppswingui.SubErrorPane;
+import nextzz.pppswingui.SubFeederPane;
 import nextzz.pppswingui.SubMonitorPane;
 
 public final class MainWindow {
@@ -45,8 +49,15 @@ public final class MainWindow {
     
       //-- current
       for(int i=0;i<SubMonitorPane.C_CTSLOT_MAX;i++){
+        int lpValue=SubAnalogScalarManager.ccRefer().ccGetScaledCTSlotValue(i);
+        int lpSpan=SubAnalogScalarManager.ccRefer().ccGetCTSlotSpan(i);
         SubMonitorPane.ccRefer().cmDesCurrentCTSlot.get(i)
-          .ccSetValue(SubAnalogScalarManager.ccRefer().ccGetCurrentA(i));
+          .ccSetFloatValueForOneAfter(
+            lpValue<10?0f:
+            VcNumericUtility.ccToFloatForOneAfter(lpValue)
+          );
+        SubMonitorPane.ccRefer().cmDesCurrentCTSlot.get(i)
+          .ccSetPercentage(VcNumericUtility.ccProportion(lpValue, lpSpan));
       }//..~
       
     }//+++
@@ -71,19 +82,14 @@ public final class MainWindow {
 
       //-- init 
       cmWindow.ccInit(MainSketch.C_WARE_TITLE, ScConst.C_DARK_GREEN);
-      SubMonitorPane.ccRefer().ccInit();
-      SubAssistantPane.ccRefer().ccInit();
-      SubErrorPane.ccRefer().ccInit();
       
       //-- content
       final JTabbedPane lpCenterPane = new JTabbedPane();
       lpCenterPane.setPreferredSize(new Dimension(800, 600));
-      lpCenterPane.add
-        (SubMonitorPane.C_TAB_NAME, SubMonitorPane.ccRefer().cmPane);
-      lpCenterPane.add
-        (SubAssistantPane.C_TAB_NAME, SubAssistantPane.ccRefer().cmPane);
-      lpCenterPane.add
-        (SubErrorPane.C_TAB_NAME, SubErrorPane.ccRefer().cmPane);
+      ccAddPaneAsTab(lpCenterPane, SubMonitorPane.ccRefer());
+      ccAddPaneAsTab(lpCenterPane, SubAssistantPane.ccRefer());
+      ccAddPaneAsTab(lpCenterPane, SubFeederPane.ccRefer());
+      ccAddPaneAsTab(lpCenterPane, SubErrorPane.ccRefer());
       
       //-- bar
       final JToolBar lpToolBar = ScFactory.ccCreateStuckedToolBar();
@@ -104,6 +110,15 @@ public final class MainWindow {
       
     }//+++
   };//***
+  
+  private void ccAddPaneAsTab(JTabbedPane pxOwner, SiTabbable pxChild){
+    if(pxOwner==null){return;}
+    if(pxChild==null){return;}
+    if(pxChild.ccGetPane()==null){return;}
+    if(!VcConst.ccIsValidString(pxChild.ccGetTitle())){return;}
+    pxChild.ccInit();
+    pxOwner.add(pxChild.ccGetTitle(), pxChild.ccGetPane());
+  }//+++
   
   public static final
   void ccSetupInitInformation(int pxX, int pxY, boolean pxVisible){
