@@ -51,7 +51,7 @@ public final class SubVFeederGroup implements EiGroup{
   public final EcShape cmBelconShape = new EcShape();
   public final EcLamp
     cmBelconForwarPL = new EcLamp("<"),
-    cmBelconBackwardPL = new EcLamp("|")
+    cmBelconBackwardPL = new EcLamp(">")
   ;//...
   
   //-- feeder
@@ -125,37 +125,33 @@ public final class SubVFeederGroup implements EiGroup{
   
   private SubVFeederGroup(){
     
-    //-- finally
+    //-- const
     final int lpSingleInnerGap = 1;
     final int lpSingleBoxH = 19;
     final int lpSingleGaugeH = 5;
-    final int lpSingleCutH = 16;
-    
-    final int lpSingleHopperWidth
-      = cmDesFeederRPMBox.get(0).ccGetW()+lpSingleInnerGap*3;
-    final int lpSingleHopperHeight
-      = lpSingleBoxH+lpSingleGaugeH+lpSingleCutH+lpSingleInnerGap*3;
-    
+    final int lpSingleHopperWidth = cmDesFeederShape.get(1).ccGetW();
+    final int lpSingleHopperHeight = cmDesFeederShape.get(1).ccGetH();
     final int lpBelconHeight = cmBelconBackwardPL.ccGetH();
     
-    /* 6 */VcConst.ccLogln("w",lpSingleHopperWidth);
-    /* 6 */VcConst.ccLogln("h",lpSingleHopperHeight);
+    //-- buffer
+    int lpPotentialX;
+    int lpPotentialY;
+    int lpPotentialW;
+    int lpPotentialH;
     
-    //-- buffered
+    //-- pane
     final int lpAdditionalMargin = 100;
-    int lpPotentialW
-      = lpSingleHopperWidth*6
-         + lpSingleHopperWidth/2
-         + ConstLocalUI.C_INPANE_GAP*6
-         + lpAdditionalMargin;
-    int lpPotentialH
-      = lpSingleHopperHeight*2+lpBelconHeight+ConstLocalUI.C_INPANE_GAP*4;
-    int lpPotentialX
-      = MainSketch.ccGetPrefferedW()-lpPotentialW
-        - ConstLocalUI.C_SIDE_MARGIN;
-    int lpPotentialY
-      = VcLocalConsole.ccGetInstance().ccGetBarHeight()
-        + ConstLocalUI.C_SIDE_MARGIN;
+    lpPotentialW = lpSingleHopperWidth*6
+      + lpSingleHopperWidth/2
+      + ConstLocalUI.C_INPANE_GAP*6
+      + lpAdditionalMargin;
+    lpPotentialH = lpSingleHopperHeight*2
+      + lpBelconHeight+ConstLocalUI.C_INPANE_GAP*4;
+    lpPotentialX = MainSketch.ccGetPrefferedW()
+      - lpPotentialW
+      - ConstLocalUI.C_SIDE_MARGIN;
+    lpPotentialY = VcLocalConsole.ccGetInstance().ccGetBarHeight()
+      + ConstLocalUI.C_SIDE_MARGIN;
     
     //-- pane
     cmPlate.ccSetBound(lpPotentialX, lpPotentialY, lpPotentialW, lpPotentialH);
@@ -164,7 +160,9 @@ public final class SubVFeederGroup implements EiGroup{
     
     //-- reinit
     for(EcValueBox it:cmDesFeederRPMBox){
+      it.ccSetW(lpSingleHopperWidth-lpSingleInnerGap*2);
       it.ccSetH(lpSingleBoxH);
+      it.ccSetupColor(EcConst.C_DARK_YELLOW, EcConst.C_DARK_GRAY);
     }//..~
     for(EcGauge it:cmDesFeederRPMGauge){
       it.ccSetSize(cmDesFeederRPMBox.get(0).ccGetW(),lpSingleGaugeH);
@@ -273,6 +271,7 @@ public final class SubVFeederGroup implements EiGroup{
     );
     
     //-- the switch
+    cmSpeedAutoAdjustSW.ccSetH(ConstLocalUI.C_DEFAULT_SINGLELINE_H);
     cmSpeedAutoAdjustSW.ccSetLocation
       (cmPlate,ConstLocalUI.C_INPANE_GAP, ConstLocalUI.C_INPANE_GAP);
     

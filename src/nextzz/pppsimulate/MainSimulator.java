@@ -19,9 +19,6 @@
 
 package nextzz.pppsimulate;
 
-import kosui.ppplogic.ZcRangedValueModel;
-import kosui.ppputil.VcLocalTagger;
-
 public final class MainSimulator {
   
   private static MainSimulator self = null;
@@ -48,13 +45,16 @@ public final class MainSimulator {
   }//+++
   
   static public final void ccSimulate(){
+    
     ssRoll();
     
     //-- scan
     SubVPreparingTask.ccRefer().ccScan();
+    SubFeederTask.ccRefer().ccScan();
     
     //-- simulate
     SubVPreparingTask.ccRefer().ccSimulate();
+    SubFeederTask.ccRefer().ccSimulate();
   
   }//+++
   

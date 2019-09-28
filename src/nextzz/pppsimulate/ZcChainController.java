@@ -103,7 +103,11 @@ public class ZcChainController extends ZcCheckedValueModel {
   }//+++
   
   public final boolean ccGetOutputAt(int pxLevel){
-    return ccIsLevelAbove(pxLevel);
+    return cmCurrentLV>=pxLevel;
+  }//+++
+  
+  public final boolean ccGetPulseAt(int pxLevel){
+    return ccIsValueAt(pxLevel);
   }//+++
   
   //===

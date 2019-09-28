@@ -18,30 +18,49 @@
  */
 package ppptest;
 
+import kosui.ppplocalui.EcComponent;
 import kosui.ppplocalui.EcConst;
 import kosui.ppplogic.ZcRoller;
+import kosui.ppputil.VcLocalCoordinator;
 import kosui.ppputil.VcLocalTagger;
 import processing.core.PApplet;
 
 public class TestSketch extends PApplet{
   
-  ZcRoller cmRoller = new ZcRoller();
+  private final ZcRoller cmRoller=new ZcRoller();
   
   @Override public void setup() {
+    
+    //--
     size(320,240);
     EcConst.ccSetupSketch(this);
+    VcLocalCoordinator.ccGetInstance().ccInit(this);
     VcLocalTagger.ccGetInstance().ccInit(this);
+    
+    //--
+  
   }//+++
 
   @Override public void draw() {
+    
     background(0);
     cmRoller.ccRoll();
+    
+    //--
+    VcLocalTagger.ccTag("[W]", EcComponent.ccIsKeyPressed('w'));
+    VcLocalTagger.ccTag("[S]", EcComponent.ccIsKeyPressed('s'));
+    VcLocalTagger.ccTag("[A]", EcComponent.ccIsKeyPressed('a'));
+    VcLocalTagger.ccTag("[D]", EcComponent.ccIsKeyPressed('d'));
     VcLocalTagger.ccTag("roll", cmRoller.ccGetValue());
+    
     VcLocalTagger.ccStabilize();
+    
   }//+++
 
   @Override public void keyPressed() {
-    exit();
+    if(key=='q'){
+      exit();
+    }//..?
   }//+++
   
   public static void main(String[] args) {

@@ -151,7 +151,16 @@ public final class SubVPreparingDelegator {
       .ccSetIsActivated(mnVHorizontalBelconPL);
     
     //-- v feeder
-    //-- v feeder ** runnning
+    
+    //-- v feeder ** pc -> plc
+    mnVFChainMSSW=SubOperativeGroup.ccRefer().cmDesMotorSW
+      .get(5).ccIsMousePressed();
+    
+    //-- v feeder ** plc -> pc ** operative
+    SubOperativeGroup.ccRefer().cmDesMotorSW
+      .get(5).ccSetIsActivated(mnVFChainMSPL);
+    
+    //-- v feeder ** plc -> pc ** runnning
     SubVFeederGroup.ccRefer().cmDesFeederRPMBox
       .get(1).ccSetIsActivated(mnVFRunningPLnI);
     SubVFeederGroup.ccRefer().cmDesFeederRPMBox
@@ -175,7 +184,7 @@ public final class SubVPreparingDelegator {
     SubVFeederGroup.ccRefer().cmDesFeederRPMBox
       .get(10).ccSetIsActivated(mnVFRunningPLnX);
     
-    //-- v feeder ** stuck
+    //-- v feeder ** plc -> pc **stuck
     SubVFeederGroup.ccRefer().cmDesFeederRPMGauge
       .get(1).ccSetIsActivated(mnVFStuckPLnI);
     SubVFeederGroup.ccRefer().cmDesFeederRPMGauge

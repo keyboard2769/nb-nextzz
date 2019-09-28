@@ -48,6 +48,7 @@ import nextzz.pppmodel.MainFileManager;
 import nextzz.pppmodel.MainSpecificator;
 import nextzz.pppmodel.SubAnalogScalarManager;
 import nextzz.pppsimulate.MainSimulator;
+import nextzz.pppsimulate.SubFeederTask;
 import nextzz.pppsimulate.SubVPreparingTask;
 import nextzz.pppswingui.ConstSwingUI;
 import processing.core.PApplet;
@@ -165,6 +166,7 @@ public class MainSketch extends PApplet{
     }//..?
     
     //-- debug
+    SubFeederTask.tstTagVFeederSystem();
     /* 4 */
     VcLocalTagger.ccTag("roll",nf(cmRoller,2));
     VcLocalTagger.ccTag

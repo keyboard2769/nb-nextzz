@@ -70,7 +70,7 @@ public final class ConstLocalUI {
   //.. for passive issue we have to hand code graphic size here
   
   public static final PGraphics O_FEEDER
-    = EcFactory.ccCreatePGraphics(51, 43);
+    = EcFactory.ccCreatePGraphics(56, 43);
   
   public static final PGraphics O_BIN_CAN_TANK
     = EcFactory.ccCreatePGraphics(20,30);
