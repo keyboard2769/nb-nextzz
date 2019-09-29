@@ -35,6 +35,7 @@ import nextzz.pppswingui.SubAssistantPane;
 import nextzz.pppswingui.SubErrorPane;
 import nextzz.pppswingui.SubFeederPane;
 import nextzz.pppswingui.SubMonitorPane;
+import nextzz.pppswingui.SubSettingPane;
 
 public final class MainWindow {
 
@@ -89,6 +90,7 @@ public final class MainWindow {
       ccAddPaneAsTab(lpCenterPane, SubMonitorPane.ccRefer());
       ccAddPaneAsTab(lpCenterPane, SubAssistantPane.ccRefer());
       ccAddPaneAsTab(lpCenterPane, SubFeederPane.ccRefer());
+      ccAddPaneAsTab(lpCenterPane, SubSettingPane.ccRefer());
       ccAddPaneAsTab(lpCenterPane, SubErrorPane.ccRefer());
       
       //-- bar
