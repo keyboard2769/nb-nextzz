@@ -26,7 +26,7 @@ import nextzz.ppplocalui.SubVBondGroup;
 import nextzz.ppplocalui.SubVFeederGroup;
 import nextzz.ppplocalui.SubVSurgeGroup;
 
-public final class SubVPreparingDelegator {
+public final class SubVProvisionDelegator {
     
   public static volatile boolean 
     
@@ -43,7 +43,7 @@ public final class SubVPreparingDelegator {
     
     //-- ag ** tower bond
     mnAGChainMSSW,mnAGChainMSPL,
-    mnVDryerPL,mnVInclinedBelconPL,mnVColdAggreageSensorPL,
+    mnVDryerPL,mnVInclinedBelconPL,
     mnVHorizontalBelconPL,
 
     //-- fr

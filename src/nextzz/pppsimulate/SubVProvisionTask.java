@@ -27,16 +27,16 @@ import kosui.ppplogic.ZcTimer;
 import kosui.ppplogic.ZiTask;
 import kosui.ppputil.VcLocalTagger;
 import nextzz.pppdelegate.SubAnalogDelegator;
-import nextzz.pppdelegate.SubVPreparingDelegator;
+import nextzz.pppdelegate.SubVProvisionDelegator;
 
-public final class SubVPreparingTask implements ZiTask{
+public final class SubVProvisionTask implements ZiTask{
   
-  private static SubVPreparingTask self = null;
-  public static SubVPreparingTask ccRefer() {
-    if(self==null){self=new SubVPreparingTask();}
+  private static SubVProvisionTask self = null;
+  public static SubVProvisionTask ccRefer() {
+    if(self==null){self=new SubVProvisionTask();}
     return self;
   }//+++
-  private SubVPreparingTask(){}//..!
+  private SubVProvisionTask(){}//..!
   
   //===
   
@@ -90,32 +90,32 @@ public final class SubVPreparingTask implements ZiTask{
     
     //-- misc ** v comprssor
     cmVCompressorHOOK.ccHook
-      (SubVPreparingDelegator.mnVCompressorMSSW,dcVCompressor.ccIsTripped());
+      (SubVProvisionDelegator.mnVCompressorMSSW,dcVCompressor.ccIsTripped());
     dcVCompressor.ccContact(cmVCompressorHOOK.ccIsHooked());
-    SubVPreparingDelegator.mnVCompressorMSPL
+    SubVProvisionDelegator.mnVCompressorMSPL
       = ConstFunctionBlockHolder.ccMoterFeedBackLamp
           (cmVCompressorHOOK, dcVCompressor);
     SubAnalogDelegator.mnCTSlotZ=dcVCompressor.ccGetCT();
     
     //-- misc ** mixer
     cmMixerHOOK.ccHook
-      (SubVPreparingDelegator.mnMixerMSSW,dcMixer.ccIsTripped());
+      (SubVProvisionDelegator.mnMixerMSSW,dcMixer.ccIsTripped());
     dcMixer.ccContact(cmMixerHOOK.ccIsHooked());
-    SubVPreparingDelegator.mnMixerMSPL
+    SubVProvisionDelegator.mnMixerMSPL
       = ConstFunctionBlockHolder.ccMoterFeedBackLamp
           (cmMixerHOOK, dcMixer);
     SubAnalogDelegator.mnCTSlotI=dcMixer.ccGetCT();
-    SubVPreparingDelegator.mnMixerIconPL=dcMixer.ccIsContacted();
+    SubVProvisionDelegator.mnMixerIconPL=dcMixer.ccIsContacted();
     
     //-- misc ** exfan
     cmVExFanHooker.ccHook
-      (SubVPreparingDelegator.mnVExfanMSSW,dcVExFan.ccIsTripped());
+      (SubVProvisionDelegator.mnVExfanMSSW,dcVExFan.ccIsTripped());
     dcVExFan.ccContact(cmVExFanHooker.ccIsHooked());
-    SubVPreparingDelegator.mnVExfanMSPL
+    SubVProvisionDelegator.mnVExfanMSPL
       = ConstFunctionBlockHolder.ccMoterFeedBackLamp
         (cmVExFanHooker, dcVExFan);
     SubAnalogDelegator.mnCTSlotII=dcVExFan.ccGetCT();
-    SubVPreparingDelegator.mnVExfanIconPL=dcVExFan.ccIsContacted();
+    SubVProvisionDelegator.mnVExfanIconPL=dcVExFan.ccIsContacted();
     
     //-- ag supply chain
     //-- ag supply chain ** takewith
@@ -130,7 +130,7 @@ public final class SubVPreparingTask implements ZiTask{
     cmAGChainCTRL.ccSetConfirmedAt(4, dcInclinedBelcon.ccIsContacted());
     cmAGChainCTRL.ccSetConfirmedAt(5, dcHorizontalBelcon.ccIsContacted());
     //-- ag supply chain ** run
-    cmAGChainCTRL.ccTakePulse(SubVPreparingDelegator.mnAGChainMSSW);
+    cmAGChainCTRL.ccTakePulse(SubVProvisionDelegator.mnAGChainMSSW);
     cmAGChainCTRL.ccRun();
     //-- ag supply chain ** give ** mc
     dcScreen.ccContact(cmAGChainCTRL.ccGetOutputAt(1));
@@ -139,13 +139,13 @@ public final class SubVPreparingTask implements ZiTask{
     dcInclinedBelcon.ccContact(cmAGChainCTRL.ccGetOutputAt(4));
     dcHorizontalBelcon.ccContact(cmAGChainCTRL.ccGetOutputAt(5));
     //-- ag supply chain ** give ** pc ** pl
-    SubVPreparingDelegator.mnAGChainMSPL
+    SubVProvisionDelegator.mnAGChainMSPL
       = cmAGChainCTRL.ccGetFlasher(MainSimulator.ccOneSecondClock());
-    SubVPreparingDelegator.mnVDryerPL
+    SubVProvisionDelegator.mnVDryerPL
       = dcDryer.ccIsContacted();
-    SubVPreparingDelegator.mnVInclinedBelconPL
+    SubVProvisionDelegator.mnVInclinedBelconPL
       = dcInclinedBelcon.ccIsContacted();
-    SubVPreparingDelegator.mnVHorizontalBelconPL
+    SubVProvisionDelegator.mnVHorizontalBelconPL
       = dcHorizontalBelcon.ccIsContacted();
     //-- ag supply chain ** give ** pc ** ct
     SubAnalogDelegator.mnCTSlotVI=dcScreen.ccGetCT();
@@ -156,7 +156,7 @@ public final class SubVPreparingTask implements ZiTask{
     
     //-- filler supply 
     //-- filler supply ** takewith
-    cmFillerSupplyHOOK.ccHook(SubVPreparingDelegator.mnFillerSystemSW);
+    cmFillerSupplyHOOK.ccHook(SubVProvisionDelegator.mnFillerSystemSW);
     cmFillerBinInputStopTM.ccAct(cmFillerSupplyHOOK.ccIsHooked());
     cmFillerBinInpuStartTM.ccAct(cmFillerSupplyHOOK.ccIsHooked());
     //-- filler supply ** hardware io
@@ -166,17 +166,17 @@ public final class SubVPreparingTask implements ZiTask{
       &&cmFillerBinInpuStartTM.ccIsUp()
     );
     //-- filler supply ** feedback
-    SubVPreparingDelegator.mnFillerBinMLVPL
-      =SubVPreparingDelegator.mnFillerBinLLVPL
+    SubVProvisionDelegator.mnFillerBinMLVPL
+      =SubVProvisionDelegator.mnFillerBinLLVPL
       =dcFillerBin.ccIsMiddle();
-    SubVPreparingDelegator.mnFillerSystemPL=cmFillerBinInputStopTM.ccIsUp()&&
+    SubVProvisionDelegator.mnFillerSystemPL=cmFillerBinInputStopTM.ccIsUp()&&
       (MainSimulator.ccOneSecondClock()||dcFillerScrew.ccIsContacted());
     SubAnalogDelegator.mnFillerSiloLV = dcFillerSilo.ccGetScaledValue(255);
     SubAnalogDelegator.mnCTSlotXV=dcFillerElevator.ccGetCT();
     
     //-- dust extraction
     //-- dust extraction ** takewith
-    cmDustExtractionHOOK.ccHook(SubVPreparingDelegator.mnDustExtractionMSSW);
+    cmDustExtractionHOOK.ccHook(SubVProvisionDelegator.mnDustExtractionMSSW);
     cmDustSiloInputStopTM.ccAct(cmDustExtractionHOOK.ccIsHooked());
     cmDustSiloInputStartTM.ccAct(cmDustExtractionHOOK.ccIsHooked());
     //-- dust extraction ** controller
@@ -199,14 +199,14 @@ public final class SubVPreparingTask implements ZiTask{
     dcDustSiloElevator.ccContact(cmDustSiloInputStopTM.ccIsUp());
     dcDustExtractionScrew.ccContact(cmDustExtractionCTRL.ccGetOutputAt(1));
     dcBagDustScrew.ccContact(cmDustExtractionCTRL.ccGetOutputAt(2));
-    SubVPreparingDelegator.mnDustExtractionMSPL=
+    SubVProvisionDelegator.mnDustExtractionMSPL=
       cmDustSiloInputStopTM.ccIsUp()
         &&
       (cmDustExtractionCTRL.ccIsAllEngaged()||MainSimulator.ccOneSecondClock());
-    dcDustSiloDischargeGateMV=SubVPreparingDelegator.mnDustSiloDischargeSW;
+    dcDustSiloDischargeGateMV=SubVProvisionDelegator.mnDustSiloDischargeSW;
     //-- dust extraction ** feedback
-    SubVPreparingDelegator.mnBagHopperLLV=dcBagHopper.ccIsMiddle();
-    SubVPreparingDelegator.mnBagHopperHLV=dcBagHopper.ccIsFull();
+    SubVProvisionDelegator.mnBagHopperLLV=dcBagHopper.ccIsMiddle();
+    SubVProvisionDelegator.mnBagHopperHLV=dcBagHopper.ccIsFull();
     SubAnalogDelegator.mnDustSiloLV=dcDustSilo.ccGetScaledValue(255);
     SubAnalogDelegator.mnCTSlotXII=dcBagDustScrew.ccGetCT();
     

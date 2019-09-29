@@ -45,15 +45,18 @@ public final class SubCTSlotSetting extends McAbstractSettingPartition{
         +VcTranslator.tr("_ct_span");
     }//+++
     @Override public String ccGetValue() {
-      //[todo]::fix this!
-      String lpD=Integer.toString
-        (SubAnalogScalarManager.ccRefer().ccGetCTSlotSpan(cmIndex));
-      return lpD;
+      return VcNumericUtility
+        .ccFormatFloatForOneAfter
+          (SubAnalogScalarManager.ccRefer().ccGetCTSlotSpan(cmIndex));
     }//+++
     @Override public void ccSetValue(String pxVal) {
-      //[todo]::fix this!
-      int lpD=VcNumericUtility.ccParseIntegerString(pxVal);
-      SubAnalogScalarManager.ccRefer().ccSetCTSlotSpan(cmIndex, lpD);
+      SubAnalogScalarManager.ccRefer()
+        .ccSetCTSlotSpan(
+          cmIndex,
+          VcNumericUtility.ccInteger(
+            VcNumericUtility.ccParseFloatString(pxVal),10f
+          )
+        );
     }//+++
   }//***
   

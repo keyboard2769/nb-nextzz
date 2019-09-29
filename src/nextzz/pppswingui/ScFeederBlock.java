@@ -41,10 +41,10 @@ public class ScFeederBlock extends JPanel{
   
   //===
   
-  public final JSpinner cmSpinner
-    = new JSpinner(new SpinnerNumberModel(900, 0, 1800, 50));
+  public final JSpinner cmRPMSpinner
+    = new JSpinner(new SpinnerNumberModel(0, 0, 1800, 50));
   
-  public final JTextField cmField
+  public final JTextField cmTPHField
     = ScFactory.ccCreateValueBox("000tph",64,22);
   public final JToggleButton cmForceSW
     = ScFactory.ccCreateCommandToggler("_force", 48, 22);
@@ -62,15 +62,15 @@ public class ScFeederBlock extends JPanel{
       (VcStringUtility.ccNulloutString(pxTitle)));
     
     //--
-    cmSpinner.setBackground(ScConst.C_LIT_GRAY);
-    cmSpinner.setForeground(ScConst.C_DARK_GRAY);
+    cmRPMSpinner.setBackground(ScConst.C_LIT_GRAY);
+    cmRPMSpinner.setForeground(ScConst.C_DARK_GRAY);
     
     //--
     add(cmForceSW);
     add(cmDisableSW);
-    add(cmSpinner);
+    add(cmRPMSpinner);
     add(cmConfigSW);
-    add(cmField);
+    add(cmTPHField);
     
   }//+++
   
@@ -85,11 +85,11 @@ public class ScFeederBlock extends JPanel{
   }//+++
   
   public final int ccGetValue(){
-    return VcNumericUtility.ccInteger(cmSpinner.getValue());
+    return VcNumericUtility.ccInteger(cmRPMSpinner.getValue());
   }//+++
   
   public final void ccSetStep(int pxStep){
-    Object lpModel = cmSpinner.getModel();
+    Object lpModel = cmRPMSpinner.getModel();
     if(lpModel instanceof SpinnerNumberModel){
       SpinnerNumberModel lpNumberModel = (SpinnerNumberModel)lpModel;
       lpNumberModel.setStepSize(pxStep);

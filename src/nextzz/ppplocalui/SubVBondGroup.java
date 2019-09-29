@@ -50,8 +50,8 @@ public final class SubVBondGroup implements EiGroup{
     = new EcValueBox("&vbagc", "+000 'C");
   public final EcValueBox cmVDPressureCB
     = new EcValueBox("&vdpb", "+000 kpa");
-  public final EcValueBox cmBelconFlowCB
-    = new EcValueBox("&agsc", "000 tph");
+  public final EcValueBox cmBelconFluxCB
+    = new EcValueBox("&agsc", "000.0 tph");
   public final EcGauge cmVDContentLV
     = new EcGauge();
   public final EcValueBox cmEntranceTemperatureCB
@@ -325,8 +325,7 @@ public final class SubVBondGroup implements EiGroup{
       cmVDryerShape.ccEndY()-cmBelconForwarPL.ccGetH(),
       lpPotentialW, cmBelconForwarPL.ccGetH()
     );
-    cmBelconFlowCB.ccSetLocation(
-      cmPlate.ccEndX()-cmBelconFlowCB.ccGetW()-ConstLocalUI.C_INPANE_GAP,
+    cmBelconFluxCB.ccSetLocation(cmPlate.ccEndX()-cmBelconFluxCB.ccGetW()-ConstLocalUI.C_INPANE_GAP,
       cmVDryerShape.ccGetY()
     );
     
@@ -352,7 +351,7 @@ public final class SubVBondGroup implements EiGroup{
       cmExfanIcon,cmBurnerIcon,
       cmExfanPressurePL,cmBurnerPressurePL,
       cmBurnerIGPL,cmBurnerPVPL,cmBurnerMVPL,
-      cmBelconForwarPL,cmBelconBackwardPL,cmBelconFlowCB,
+      cmBelconForwarPL,cmBelconBackwardPL,cmBelconFluxCB,
       cmReadyPL,cmStartSW,
       cmExfanCloseSW,cmExfanOpenSW,cmExfanAutoSW,cmExfanDegreeCB,
       cmBurnerCloseSW,cmBurnerOpenSW,cmBurnerAutoSW,cmBurnerDegreeCB,

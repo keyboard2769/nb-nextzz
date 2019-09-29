@@ -28,6 +28,7 @@ import kosui.ppplogic.ZcTimer;
 import kosui.ppplogic.ZiTask;
 import kosui.ppputil.VcLocalTagger;
 import nextzz.pppdelegate.SubFeederDelegator;
+import nextzz.pppdelegate.SubVCombustDelegator;
 import nextzz.pppmodel.MainSpecificator;
 
 public final class SubFeederTask implements ZiTask{
@@ -65,6 +66,9 @@ public final class SubFeederTask implements ZiTask{
       new ZcHookFlicker(),new ZcHookFlicker()
     ));
   
+  private final ZcTimer simColdAggregateSensorTM
+    = new ZcOnDelayTimer(99);
+  
   private final List<? extends ZcTimer> simDesVFeederSensorTM
     = Collections.unmodifiableList(Arrays.asList(
       new ZcOnDelayTimer(11),
@@ -93,7 +97,7 @@ public final class SubFeederTask implements ZiTask{
     
     //-- vf ** pre
     boolean lpVFeederIL
-      = SubVPreparingTask.ccRefer().dcHorizontalBelcon.ccIsContacted();
+      = SubVProvisionTask.ccRefer().dcHorizontalBelcon.ccIsContacted();
     
     //-- vf ** controller
     if(!lpVFeederIL){
@@ -129,11 +133,14 @@ public final class SubFeederTask implements ZiTask{
       SubFeederDelegator.ccSetVFeederStuck
         (i, ccGetVFeederStuckSensor(i));
     }//..~
+    SubVCombustDelegator.mnVColdAggreageSensorPL=dcCAS;
     
   }//+++
 
   @Override public void ccSimulate() {
     
+    //-- v feeder
+    boolean lpBeforCAS=false;
     for(
       int i=SubFeederDelegator.C_VF_INIT_ORDER;
       i<=SubFeederDelegator.C_VF_VALID_MAX;
@@ -144,8 +151,19 @@ public final class SubFeederTask implements ZiTask{
         && (SubFeederDelegator.ccGetVFeederSpeed(i)>512)
       );
       dcDesVFSG[i]=!simDesVFeederSensorTM.get(i).ccIsUp();
+      
+      //[head]::
+      lpBeforCAS|=dcDesVFSG[i];
+      
     }//..~
     for(ZcMotor it:dcDesVFeeder){it.ccSimulate(0.66f);}
+    
+    //-- v cas
+    simColdAggregateSensorTM.ccAct(lpBeforCAS
+        && SubVProvisionTask.ccRefer().dcHorizontalBelcon.ccIsContacted()
+    );
+    dcCAS=simColdAggregateSensorTM.ccIsUp()
+      && SubVProvisionTask.ccRefer().dcInclinedBelcon.ccIsContacted();
     
   }//+++
   

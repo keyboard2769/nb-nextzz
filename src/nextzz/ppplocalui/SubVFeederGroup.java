@@ -143,11 +143,9 @@ public final class SubVFeederGroup implements EiGroup{
     int lpPotentialH;
     
     //-- pane
-    final int lpAdditionalMargin = 100;
     lpPotentialW = lpSingleHopperWidth*6
       + lpSingleHopperWidth/2
-      + ConstLocalUI.C_INPANE_GAP*6
-      + lpAdditionalMargin;
+      + ConstLocalUI.C_INPANE_GAP*6;
     lpPotentialH = lpSingleHopperHeight*2
       + lpBelconHeight+ConstLocalUI.C_INPANE_GAP*4;
     lpPotentialX = MainSketch.ccGetPrefferedW()

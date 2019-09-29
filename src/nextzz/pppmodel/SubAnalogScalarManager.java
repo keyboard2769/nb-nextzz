@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 import kosui.ppplogic.ZcScaledModel;
 import nextzz.pppdelegate.SubAnalogDelegator;
+import nextzz.pppdelegate.SubFeederDelegator;
 
 public final class SubAnalogScalarManager {
   
@@ -61,7 +62,7 @@ public final class SubAnalogScalarManager {
     //-- feeder flux
     
     //-- feeder flux ** V
-    for(int i=0;i<32;i++){
+    for(int i=0;i<16;i++){
       cmListOfVFeederFluxScalar.add(new ZcScaledModel(0, 900, 0, 500));
       //.. 500d -> 50.0f [ton]
     }//+++
@@ -92,6 +93,14 @@ public final class SubAnalogScalarManager {
    return cmListOfVFeederFluxScalar.get(pxIndex&15).ccGetOutputSpan();
   }//+++
   
+  synchronized public final
+  int ccGetVFeederFluxTPHValue(int pxIndex){
+    return cmListOfVFeederFluxScalar.get(pxIndex&15)
+      .ccToScaledIntegerValue(
+        SubFeederDelegator.ccGetVFeederSpeed(pxIndex)
+      );
+  }//+++
+  
   //=== feeder flux ** R
   
   //=== CT Slot
@@ -105,11 +114,10 @@ public final class SubAnalogScalarManager {
   }//+++
   
   synchronized public final int ccGetScaledCTSlotValue(int pxIndex){
-    int lpFixedIndex=pxIndex&0x31;
-    return cmListOfCTSlotScalar.get(lpFixedIndex)
+    return cmListOfCTSlotScalar.get(pxIndex&31)
       .ccToScaledIntegerValue(
-        SubAnalogDelegator.ccGetCTSlotAD(lpFixedIndex)
-    );
+        SubAnalogDelegator.ccGetCTSlotAD(pxIndex)
+      );
   }//+++
   
  }//***eof

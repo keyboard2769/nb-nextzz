@@ -34,8 +34,6 @@ public final class MainDelegator {
 
   //===
   
-  //===
-  
   public static final void ccWire(){
     
     //[NOTYET]::
@@ -44,20 +42,17 @@ public final class MainDelegator {
   
   public static final void ccBind(){
     
-    //-- w
-    
-    //-- f
+    //-- general
     SubFeederDelegator.ccBind();
-    
-    //-- a
     SubAnalogDelegator.ccBind();
     
-    //-- v
-    SubVPreparingDelegator.ccBind();
+    //-- virgin
+    SubVProvisionDelegator.ccBind();
+    SubVCombustDelegator.ccBind();
     
-    //-- r
+    //-- recycle
     
-    //-- s
+    //-- silo
     
     //-- post
     ssBindSystemElements();

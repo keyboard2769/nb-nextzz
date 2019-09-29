@@ -45,6 +45,7 @@ import nextzz.ppplocalui.SubVBondGroup;
 import nextzz.ppplocalui.SubVFeederGroup;
 import nextzz.ppplocalui.SubWeigherGroup;
 import nextzz.pppmodel.MainFileManager;
+import nextzz.pppmodel.MainPlantModel;
 import nextzz.pppmodel.MainSpecificator;
 import nextzz.pppmodel.SubAnalogScalarManager;
 import nextzz.pppsimulate.MainSimulator;
@@ -153,6 +154,7 @@ public class MainSketch extends PApplet{
     MainSimulator.ccSimulate();
     
     //-- modeling
+    MainPlantModel.ccRefer().ccLogic();
     
     //-- local ui
     MainDelegator.ccBind();
@@ -311,7 +313,7 @@ public class MainSketch extends PApplet{
   }//+++
   
   public static final String ccGetLastLeavingStamp(){
-    return "_1909291501";
+    return "_1909291640";
   }//+++
 
 }//***eof

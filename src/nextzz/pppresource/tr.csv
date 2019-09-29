@@ -17,10 +17,10 @@
 <tr>,_m09,DUST<ln>SYS,(),排粉<ln>系统,[]
 <tr>,_m10,Bcomp,(),燃烧器<ln>空压机,[]
 <tr>,_m11,Rcomp,(),再生<ln>空压机,[]
-<tr>,_m12,Rexfan,(),再生<ln>排风机,[]
-<tr>,_m13,RC<ln>SUP,(),再生料<ln>系统,[]
-<tr>,_m14,RF<ln>CHAIN,(),再生料<ln>供料,[]
-<tr>,_m15,MI<ln>BC,(),搅拌缸<ln>皮带,[]
+<tr>,_m12,MI<ln>BC,(),搅拌缸<ln>皮带,[]
+<tr>,_m13,Rexfan,(),再生<ln>排风机,[]
+<tr>,_m14,RC<ln>SUP,(),再生料<ln>系统,[]
+<tr>,_m15,RF<ln>CHAIN,(),再生料<ln>供料,[]
 ,,,,,
 ,,,,,
 <sep>,,* current slot *,,,

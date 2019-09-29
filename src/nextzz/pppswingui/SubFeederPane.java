@@ -39,7 +39,9 @@ import kosui.ppputil.VcNumericUtility;
 import kosui.ppputil.VcTranslator;
 import nextzz.pppdelegate.SubFeederDelegator;
 import nextzz.pppmain.MainActionManager;
+import nextzz.pppmodel.MainPlantModel;
 import nextzz.pppmodel.MainSpecificator;
+import nextzz.pppmodel.SubAnalogScalarManager;
 
 public final class SubFeederPane implements SiTabbable{
   
@@ -121,8 +123,12 @@ public final class SubFeederPane implements SiTabbable{
         i<=SubFeederDelegator.C_VF_VALID_MAX;
         i++
       ){
-        SubFeederDelegator
-          .ccSetVFeederSpeed(i, cmDesVFeederBlock.get(i).ccGetValue());
+        SubFeederDelegator.ccSetVFeederSpeed
+          (i, cmDesVFeederBlock.get(i).ccGetValue());
+        int lpTPH=SubAnalogScalarManager.ccRefer().ccGetVFeederFluxTPHValue(i);
+        MainPlantModel.ccRefer().cmDesVFeederTPH.ccSet(i, lpTPH);
+        cmDesVFeederBlock.get(i).cmTPHField
+          .setText(VcNumericUtility.ccFormatFloatForOneAfter(lpTPH)+"tph");
       }//..~
     }//+++
   };//***
@@ -139,9 +145,8 @@ public final class SubFeederPane implements SiTabbable{
       
       //-- V ** register
       lpVFeederPanel.add(cmDesVFeederBlock.get(i));
-      cmMapOfConfigSW.put(
-        cmDesVFeederBlock.get(i) .cmConfigSW,
-        cmDesVFeederBlock.get(i) .cmSpinner
+      cmMapOfConfigSW.put(cmDesVFeederBlock.get(i) .cmConfigSW,
+        cmDesVFeederBlock.get(i) .cmRPMSpinner
       );
       //-- V ** event
       cmDesVFeederBlock.get(i).cmForceSW
@@ -150,7 +155,7 @@ public final class SubFeederPane implements SiTabbable{
         .addActionListener(MainActionManager.ccRefer().cmNotchListener);
       cmDesVFeederBlock.get(i).cmConfigSW
         .addActionListener(cmFeederSpeedConfigListener);
-      cmDesVFeederBlock.get(i).cmSpinner
+      cmDesVFeederBlock.get(i).cmRPMSpinner
         .addChangeListener(cmFeederSpeedChangeListener);
       
       //-- V ** hide

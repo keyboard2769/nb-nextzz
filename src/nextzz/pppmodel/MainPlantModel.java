@@ -17,44 +17,32 @@
  * MA 02110-1301  USA
  */
 
-package nextzz.pppsimulate;
 
-public final class MainSimulator {
+package nextzz.pppmodel;
+
+import kosui.pppmodel.McLockedIntArray;
+
+public final class MainPlantModel {
+
+  private static final MainPlantModel SELF = new MainPlantModel();
+  public static final MainPlantModel ccRefer(){return SELF;}//+++
+  private MainPlantModel(){}//++!
+
+  //===
   
-  private static MainSimulator self = null;
-  public static MainSimulator ccRefer() {
-    if(self==null){self=new MainSimulator();}
-    return self;
-  }//+++
-  private MainSimulator(){}//..!
+  public final McLockedIntArray cmDesVFeederTPH = new McLockedIntArray(16);
+  public volatile int cmVSupplyTPH = 0;
   
   //===
   
-  private static int cmRoller=11;
-  
-  private static void ssRoll(){
-    cmRoller++;cmRoller&=0xF;
-  }//+++
-  
-  public static boolean ccOneSecondPLS(){
-    return cmRoller==7;
-  }//+++
-  
-  public static boolean ccOneSecondClock(){
-    return cmRoller>7;
-  }//+++
-  
-  static public final void ccSimulate(){
+  public final void ccInit(){
     
-    ssRoll();
+  }//..!
+  
+  
+  public final void ccLogic(){
     
-    //-- scan
-    SubVProvisionTask.ccRefer().ccScan();
-    SubFeederTask.ccRefer().ccScan();
-    
-    //-- simulate
-    SubVProvisionTask.ccRefer().ccSimulate();
-    SubFeederTask.ccRefer().ccSimulate();
+    cmVSupplyTPH=cmDesVFeederTPH.ccSum();
   
   }//+++
   

@@ -34,7 +34,7 @@ import kosui.ppputil.VcNumericUtility;
 import kosui.ppputil.VcSwingCoordinator;
 import kosui.ppputil.VcTranslator;
 import nextzz.pppdelegate.SubFeederDelegator;
-import nextzz.pppdelegate.SubVPreparingDelegator;
+import nextzz.pppdelegate.SubVProvisionDelegator;
 import nextzz.ppplocalui.SubIndicativeGroup;
 import nextzz.pppswingui.SubAssistantPane;
 import static nextzz.pppmain.MainSketch.C_COLOR_BACKGROUD;
@@ -159,7 +159,7 @@ public final class MainActionManager {
     @Override public void actionPerformed(ActionEvent e) {
       
       //-- tower
-      SubVPreparingDelegator.mnTowerBlowerTGSW=
+      SubVProvisionDelegator.mnTowerBlowerTGSW=
         SubAssistantPane.ccRefer().cmTowerBlowerNT.getSelectedIndex()==0;
       
       //-- feeder
@@ -179,9 +179,9 @@ public final class MainActionManager {
       //-- filler
       
       //-- dust
-      SubVPreparingDelegator.mnDustSiloAirAutoSW
+      SubVProvisionDelegator.mnDustSiloAirAutoSW
         = SubAssistantPane.ccRefer().cmDustSiloAirNT.getSelectedIndex()==0;
-      SubVPreparingDelegator.mnDustSiloDischargeSW
+      SubVProvisionDelegator.mnDustSiloDischargeSW
         = SubAssistantPane.ccRefer().cmDustSiloDischargeSW.isSelected();
       
       //-- asphalt
@@ -244,8 +244,4 @@ public final class MainActionManager {
   
   }//..!
   
-  public final void ccLogic(){
-    /* 6 */
-  }//..!
-  
- }//***eof
+}//***eof

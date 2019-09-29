@@ -67,6 +67,7 @@ public final class MainWindow {
   //===
   
   private int cmInitX=100, cmInitY=100;
+  
   private boolean cmDoShowAtFirst=true;
   
   public final ScTitledWindow cmWindow=new ScTitledWindow(null);
