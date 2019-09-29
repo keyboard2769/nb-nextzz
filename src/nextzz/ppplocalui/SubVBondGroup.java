@@ -325,9 +325,12 @@ public final class SubVBondGroup implements EiGroup{
       cmVDryerShape.ccEndY()-cmBelconForwarPL.ccGetH(),
       lpPotentialW, cmBelconForwarPL.ccGetH()
     );
-    cmBelconFluxCB.ccSetLocation(cmPlate.ccEndX()-cmBelconFluxCB.ccGetW()-ConstLocalUI.C_INPANE_GAP,
+    cmBelconFluxCB.ccSetH(ConstLocalUI.C_DEFAULT_SINGLELINE_H);
+    cmBelconFluxCB.ccSetLocation(
+      cmPlate.ccEndX()-cmBelconFluxCB.ccGetW()-ConstLocalUI.C_INPANE_GAP,
       cmVDryerShape.ccGetY()
     );
+    ConstLocalUI.ccSetupFluxBoxColor(cmBelconFluxCB);
     
   }//..!
   

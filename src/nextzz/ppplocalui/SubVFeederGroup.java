@@ -60,17 +60,17 @@ public final class SubVFeederGroup implements EiGroup{
   //-- feeder
   public final List<EcText> cmDesFeederText
     = Collections.unmodifiableList(Arrays.asList(
-      new EcText("&vf00"),new EcText("&vf01"),
-      new EcText("&vf02"),new EcText("&vf03"),
+      new EcText("VF00"),new EcText("VF01"),
+      new EcText("VF02"),new EcText("VF03"),
       //--
-      new EcText("&vf04"),new EcText("&vf05"),
-      new EcText("&vf06"),new EcText("&vf07"),
+      new EcText("VF04"),new EcText("VF05"),
+      new EcText("VF06"),new EcText("VF07"),
       //--
-      new EcText("&vf08"),new EcText("&vf09"),
-      new EcText("&vf10"),new EcText("&vf11"),
+      new EcText("VF08"),new EcText("VF09"),
+      new EcText("VF10"),new EcText("VF11"),
       //--
-      new EcText("&vf12"),new EcText("&vf13"),
-      new EcText("&vf14"),new EcText("&vf15")
+      new EcText("VF12"),new EcText("VF13"),
+      new EcText("VF14"),new EcText("VF15")
     ));//...
   public final List<EcGraph> cmDesFeederShape
     = Collections.unmodifiableList(Arrays.asList(
@@ -88,41 +88,46 @@ public final class SubVFeederGroup implements EiGroup{
     ));//...
   public final List<EcValueBox> cmDesFeederRPMBox
     = Collections.unmodifiableList(Arrays.asList(
-      new EcValueBox("&vf00", "0000 r", 0x3510),
-      new EcValueBox("&vf01", "0000 r", 0x3511),
-      new EcValueBox("&vf02", "0000 r", 0x3512),
-      new EcValueBox("&vf03", "0000 r", 0x3513),
+      new EcValueBox("VF00", "0000 r", 0x3510),
+      new EcValueBox("VF01", "0000 r", 0x3511),
+      new EcValueBox("VF02", "0000 r", 0x3512),
+      new EcValueBox("VF03", "0000 r", 0x3513),
       //--
-      new EcValueBox("&vf04", "0000 r", 0x3514),
-      new EcValueBox("&vf05", "0000 r", 0x3515),
-      new EcValueBox("&vf06", "0000 r", 0x3516),
-      new EcValueBox("&vf07", "0000 r", 0x3517),
+      new EcValueBox("VF04", "0000 r", 0x3514),
+      new EcValueBox("VF05", "0000 r", 0x3515),
+      new EcValueBox("VF06", "0000 r", 0x3516),
+      new EcValueBox("VF07", "0000 r", 0x3517),
       //--
-      new EcValueBox("&vf08", "0000 r", 0x3518),
-      new EcValueBox("&vf09", "0000 r", 0x3519),
-      new EcValueBox("&vf10", "0000 r", 0x351A),
-      new EcValueBox("&vf11", "0000 r", 0x351B),
+      new EcValueBox("VF08", "0000 r", 0x3518),
+      new EcValueBox("VF09", "0000 r", 0x3519),
+      new EcValueBox("VF10", "0000 r", 0x351A),
+      new EcValueBox("VF11", "0000 r", 0x351B),
       //--
-      new EcValueBox("&vf12", "0000 r", 0x351C),
-      new EcValueBox("&vf13", "0000 r", 0x351D),
-      new EcValueBox("&vf14", "0000 r", 0x351E),
-      new EcValueBox("&vf15", "0000 r", 0x351F)
+      new EcValueBox("VF12", "0000 r", 0x351C),
+      new EcValueBox("VF13", "0000 r", 0x351D),
+      new EcValueBox("VF14", "0000 r", 0x351E),
+      new EcValueBox("VF15", "0000 r", 0x351F)
     ));//...
   public final List<EcGauge> cmDesFeederRPMGauge
     = Collections.unmodifiableList(Arrays.asList(
-      new EcGauge("&vf00"),new EcGauge("&vf01"),
-      new EcGauge("&vf02"),new EcGauge("&vf03"),
+      new EcGauge("VF00"),new EcGauge("VF01"),
+      new EcGauge("VF02"),new EcGauge("VF03"),
       //--
-      new EcGauge("&vf04"),new EcGauge("&vf05"),
-      new EcGauge("&vf06"),new EcGauge("&vf07"),
+      new EcGauge("VF04"),new EcGauge("VF05"),
+      new EcGauge("VF06"),new EcGauge("VF07"),
       //--
-      new EcGauge("&vf08"),new EcGauge("&vf09"),
-      new EcGauge("&vf10"),new EcGauge("&vf11"),
+      new EcGauge("VF08"),new EcGauge("VF09"),
+      new EcGauge("VF10"),new EcGauge("VF11"),
       //--
-      new EcGauge("&vf12"),new EcGauge("&vf13"),
-      new EcGauge("&vf14"),new EcGauge("&vf15")
+      new EcGauge("VF12"),new EcGauge("VF13"),
+      new EcGauge("VF14"),new EcGauge("VF15")
     ));//...
-  public final EcButton cmSpeedAutoAdjustSW = new EcButton("&ratio", 0x3599);
+  
+  public final EcButton
+    cmRatioAutoSW  = new EcButton("_ratio", 0x3520),
+    cmRatioDownSW  = new EcButton("-",      0x3521),
+    cmRatioUpSW    = new EcButton("+",      0x3522)
+  ;//..?
   
   //===
   
@@ -163,8 +168,7 @@ public final class SubVFeederGroup implements EiGroup{
     for(EcValueBox it:cmDesFeederRPMBox){
       it.ccSetW(lpSingleHopperWidth-lpSingleInnerGap*2);
       it.ccSetH(lpSingleBoxH);
-      it.ccSetupColor(EcConst.C_YELLOW, EcConst.C_DARK_GRAY);
-      it.ccSetTextColor(EcConst.C_DIM_GRAY);
+      ConstLocalUI.ccSetupFluxBoxColor(it);
     }//..~
     for(EcGauge it:cmDesFeederRPMGauge){
       it.ccSetSize(cmDesFeederRPMBox.get(0).ccGetW(),lpSingleGaugeH);
@@ -275,9 +279,15 @@ public final class SubVFeederGroup implements EiGroup{
     );
     
     //-- the switch
-    cmSpeedAutoAdjustSW.ccSetH(ConstLocalUI.C_DEFAULT_SINGLELINE_H);
-    cmSpeedAutoAdjustSW.ccSetLocation
+    lpPotentialH = ConstLocalUI.C_DEFAULT_SINGLELINE_H;
+    lpPotentialW = lpPotentialH*2+ConstLocalUI.C_INPANE_GAP;
+    cmRatioAutoSW.ccSetSize(lpPotentialW,lpPotentialH);
+    cmRatioAutoSW.ccSetLocation
       (cmPlate,ConstLocalUI.C_INPANE_GAP, ConstLocalUI.C_INPANE_GAP);
+    cmRatioDownSW.ccSetSize(lpPotentialH,lpPotentialH);
+    cmRatioDownSW.ccSetLocation(cmRatioAutoSW,0,ConstLocalUI.C_INPANE_GAP);
+    cmRatioUpSW.ccSetSize(lpPotentialH,lpPotentialH);
+    cmRatioUpSW.ccSetLocation(cmRatioDownSW, ConstLocalUI.C_INPANE_GAP, 0);
     
   }//..!
   
@@ -305,8 +315,10 @@ public final class SubVFeederGroup implements EiGroup{
     List<EcElement> lpRes = new ArrayList<EcElement>();
     lpRes.addAll(cmDesFeederRPMBox);
     lpRes.addAll(cmDesFeederRPMGauge);
-    lpRes.addAll(Arrays.asList(cmBelconBackwardPL,cmBelconForwarPL));
-    lpRes.add(cmSpeedAutoAdjustSW);
+    lpRes.addAll(Arrays.asList(
+      cmBelconBackwardPL,cmBelconForwarPL,
+      cmRatioAutoSW,cmRatioDownSW,cmRatioUpSW
+    ));
     return lpRes;
   }//+++
   

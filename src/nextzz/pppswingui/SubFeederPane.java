@@ -177,6 +177,22 @@ public final class SubFeederPane implements SiTabbable{
     cmPane.add(lpRFeederPanel,BorderLayout.LINE_END);
     
   }//..!
+  
+  //===
+  
+  
+  public final void ccVRatioShift(float pxMagnitude){
+    //[todo]:fix this
+    int lpStep=VcNumericUtility.ccInteger(50, pxMagnitude);
+    int lpBuf;
+    for(ScFeederBlock it : cmDesVFeederBlock){
+      lpBuf = it.ccGetValue();
+      lpBuf+=lpStep;
+      it.ccSetValue(lpBuf);
+    }//..~
+  }//+++
+  
+  //===
 
   @Override public final String ccGetTitle() {
     return C_TAB_NAME;

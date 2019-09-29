@@ -22,6 +22,7 @@ package nextzz.pppsimulate;
 import java.util.Collections;
 import java.util.Arrays;
 import java.util.List;
+import kosui.ppplogic.ZcDelayor;
 import kosui.ppplogic.ZcHookFlicker;
 import kosui.ppplogic.ZcOnDelayTimer;
 import kosui.ppplogic.ZcTimer;
@@ -67,7 +68,7 @@ public final class SubFeederTask implements ZiTask{
     ));
   
   private final ZcTimer simColdAggregateSensorTM
-    = new ZcOnDelayTimer(99);
+    = new ZcDelayor(50,50);
   
   private final List<? extends ZcTimer> simDesVFeederSensorTM
     = Collections.unmodifiableList(Arrays.asList(
@@ -151,15 +152,13 @@ public final class SubFeederTask implements ZiTask{
         && (SubFeederDelegator.ccGetVFeederSpeed(i)>512)
       );
       dcDesVFSG[i]=!simDesVFeederSensorTM.get(i).ccIsUp();
-      
-      //[head]::
-      lpBeforCAS|=dcDesVFSG[i];
-      
+      lpBeforCAS|=simDesVFeederSensorTM.get(i).ccIsUp();
     }//..~
     for(ZcMotor it:dcDesVFeeder){it.ccSimulate(0.66f);}
     
     //-- v cas
-    simColdAggregateSensorTM.ccAct(lpBeforCAS
+    simColdAggregateSensorTM.ccAct(
+      lpBeforCAS
         && SubVProvisionTask.ccRefer().dcHorizontalBelcon.ccIsContacted()
     );
     dcCAS=simColdAggregateSensorTM.ccIsUp()

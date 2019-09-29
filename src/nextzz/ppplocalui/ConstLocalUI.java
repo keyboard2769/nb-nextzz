@@ -112,7 +112,7 @@ public final class ConstLocalUI {
   
   private ConstLocalUI(){}//..!
   
-  //=== 
+  //=== draw
   
   public static final
   void ccDrawDuctShape(
@@ -266,7 +266,7 @@ public final class ConstLocalUI {
     pxTarget.endDraw();
   }//+++
   
-  //===
+  //=== assemble
   
   public static final
   void ccAssembleWeighControl(
@@ -443,7 +443,15 @@ public final class ConstLocalUI {
   
   }//+++
   
-  //=== intervel
+  //=== setup
+  
+  public static final void ccSetupFluxBoxColor(EcValueBox pxFluxBox){
+    if(pxFluxBox==null){return;}
+    pxFluxBox.ccSetupColor(EcConst.C_YELLOW, EcConst.C_DARK_GRAY);
+    pxFluxBox.ccSetTextColor(EcConst.C_DIM_GRAY);
+  }//+++
+  
+  //=== interval
   
   public static final
   int ccTellFlowInterval(int pxGap, int pxLength, int pxOrder){

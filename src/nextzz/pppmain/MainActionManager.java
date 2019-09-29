@@ -36,6 +36,7 @@ import kosui.ppputil.VcTranslator;
 import nextzz.pppdelegate.SubFeederDelegator;
 import nextzz.pppdelegate.SubVProvisionDelegator;
 import nextzz.ppplocalui.SubIndicativeGroup;
+import nextzz.ppplocalui.SubVFeederGroup;
 import nextzz.pppswingui.SubAssistantPane;
 import static nextzz.pppmain.MainSketch.C_COLOR_BACKGROUD;
 import nextzz.pppmodel.MainSettingManager;
@@ -112,6 +113,33 @@ public final class MainActionManager {
       }//..?
     }//+++
   };//***
+  
+  //=== trigger ** operative
+  
+  //=== trigger ** operative ** v feeder group
+  
+  public final EiTriggerable cmVFeederRatioAutoFitting
+    = new EiTriggerable() {
+    @Override public void ccTrigger() {
+      System.err.println(".cmVFeederRatioAutoFitting::not_yet");
+    }//+++
+  };//***
+  
+  public final EiTriggerable cmVFeederRatioDecrementing
+    = new EiTriggerable() {
+    @Override public void ccTrigger() {
+      SubFeederPane.ccRefer().ccVRatioShift(-2f);
+    }//+++
+  };//***
+  
+  public final EiTriggerable cmVFeederRatioIncrementing
+    = new EiTriggerable() {
+    @Override public void ccTrigger() {
+      SubFeederPane.ccRefer().ccVRatioShift(2f);
+    }//+++
+  };//***
+  
+  //=== trigger ** operative ** v bond group
   
   //=== trigger ** swing
    
@@ -213,9 +241,22 @@ public final class MainActionManager {
   
   public final void ccInit(){
     
-    //-- sketch ** operative buttons 
+    //-- sketch ** indicative
     VcLocalCoordinator.ccRegisterMouseTrigger
       (SubIndicativeGroup.ccRefer().cmSystemPopSW, cmPopping);
+    
+    //-- sketch ** operative
+    
+    //-- sketch ** floatting
+    
+    //-- sketch ** floatting ** v feeder group
+    VcLocalCoordinator.ccRegisterMouseTrigger
+      (SubVFeederGroup.ccRefer().cmRatioAutoSW, cmVFeederRatioAutoFitting);
+    VcLocalCoordinator.ccRegisterMouseTrigger
+      (SubVFeederGroup.ccRefer().cmRatioDownSW, cmVFeederRatioDecrementing);
+    VcLocalCoordinator.ccRegisterMouseTrigger
+      (SubVFeederGroup.ccRefer().cmRatioUpSW, cmVFeederRatioIncrementing);
+    
     
     //-- skectch ** key pressing
     VcLocalCoordinator.ccRegisterKeyTrigger

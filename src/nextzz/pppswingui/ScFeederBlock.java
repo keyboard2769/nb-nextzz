@@ -27,6 +27,7 @@ import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 import javax.swing.SpinnerNumberModel;
+import kosui.ppplogic.ZcRangedModel;
 import kosui.pppswingui.ScConst;
 import kosui.pppswingui.ScFactory;
 import kosui.ppputil.VcNumericUtility;
@@ -86,6 +87,11 @@ public class ScFeederBlock extends JPanel{
   
   public final int ccGetValue(){
     return VcNumericUtility.ccInteger(cmRPMSpinner.getValue());
+  }//+++
+  
+  public final void ccSetValue(int pxVal){
+    cmRPMSpinner.setValue(ZcRangedModel
+      .ccLimitInclude(pxVal, C_SPEED_MIN, C_SPEED_MAX));
   }//+++
   
   public final void ccSetStep(int pxStep){
