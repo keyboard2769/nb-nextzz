@@ -21,6 +21,7 @@
 package nextzz.pppmodel;
 
 import kosui.pppmodel.McLockedIntArray;
+import nextzz.pppdelegate.SubFeederDelegator;
 
 public final class MainPlantModel {
 
@@ -30,8 +31,11 @@ public final class MainPlantModel {
 
   //===
   
+  //-- v combust
   public final McLockedIntArray cmDesVFeederTPH = new McLockedIntArray(16);
   public volatile int cmVSupplyTPH = 0;
+  public volatile int cmVTargetTemperature = 160;
+  public volatile int cmVTargetTempAdjustWidth = 5;
   
   //===
   
@@ -42,8 +46,22 @@ public final class MainPlantModel {
   
   public final void ccLogic(){
     
-    cmVSupplyTPH=cmDesVFeederTPH.ccSum();
+    cmVSupplyTPH=0;
+    for(
+      int i=SubFeederDelegator.C_VF_INIT_ORDER;
+      i<=MainSpecificator.ccRefer().mnVFeederAmount;
+      i++
+    ){
+      if(SubFeederDelegator.ccGetVFeederRunning(i)){
+        cmVSupplyTPH+=cmDesVFeederTPH.ccGet(i);
+      }//..? 
+    }//..~
+    
+    
+    //cmDesVFeederTPH.ccSum();
   
   }//+++
+  
+  //===
   
  }//***eof

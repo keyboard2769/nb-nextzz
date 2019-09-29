@@ -172,7 +172,7 @@ public final class SubVFeederGroup implements EiGroup{
     }//..~
     for(EcGauge it:cmDesFeederRPMGauge){
       it.ccSetSize(cmDesFeederRPMBox.get(0).ccGetW(),lpSingleGaugeH);
-      it.ccSetupColor(EcConst.C_GRAY, EcConst.C_YELLOW);
+      it.ccSetupColor(EcConst.C_DARK_GRAY, EcConst.C_YELLOW);
       it.ccSetIsVertical(false);
     }//..~
     for(EcText it:cmDesFeederText){

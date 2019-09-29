@@ -167,7 +167,6 @@ public class MainSketch extends PApplet{
     }//..?
     
     //-- debug
-    SubFeederTask.tstTagVFeederSystem();
     /* 4 */
     VcLocalTagger.ccTag("roll",nf(cmRoller,2));
     VcLocalTagger.ccTag
@@ -313,7 +312,7 @@ public class MainSketch extends PApplet{
   }//+++
   
   public static final String ccGetLastLeavingStamp(){
-    return "_1909291640";
+    return "_1909292241";
   }//+++
 
 }//***eof

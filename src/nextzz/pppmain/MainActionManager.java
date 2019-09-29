@@ -22,6 +22,7 @@ package nextzz.pppmain;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import javax.swing.SwingUtilities;
 import kosui.ppplocalui.EcElement;
 import kosui.ppplocalui.EcValueBox;
 import kosui.ppplocalui.EiTriggerable;
@@ -36,9 +37,11 @@ import kosui.ppputil.VcTranslator;
 import nextzz.pppdelegate.SubFeederDelegator;
 import nextzz.pppdelegate.SubVProvisionDelegator;
 import nextzz.ppplocalui.SubIndicativeGroup;
+import nextzz.ppplocalui.SubVBondGroup;
 import nextzz.ppplocalui.SubVFeederGroup;
 import nextzz.pppswingui.SubAssistantPane;
 import static nextzz.pppmain.MainSketch.C_COLOR_BACKGROUD;
+import nextzz.pppmodel.MainPlantModel;
 import nextzz.pppmodel.MainSettingManager;
 import nextzz.pppmodel.MiSettingItem;
 import nextzz.pppswingui.SubFeederPane;
@@ -140,6 +143,46 @@ public final class MainActionManager {
   };//***
   
   //=== trigger ** operative ** v bond group
+  
+  public final EiTriggerable cmVTargetTemperatureAdjusting
+    = new EiTriggerable() {
+    @Override public void ccTrigger() {
+      SwingUtilities.invokeLater(new Runnable() {
+        @Override public void run() {
+          String lpInput = ScConst.ccGetStringByInputBox(
+            VcTranslator.tr("_m_adjust_vb_target_temperature"),
+            Integer.toString(MainPlantModel.ccRefer().cmVTargetTemperature)
+          );
+          if(!VcConst.ccIsValidString(lpInput)){return;}
+          if(lpInput.equals(ScConst.C_M_CANCEL)){return;}
+          if(!VcNumericUtility.ccIsIntegerString(lpInput)){
+            ScConst.ccErrorBox(VcTranslator.tr("_m_general_format_error"));
+            return;
+          }//..!
+          MainPlantModel.ccRefer().cmVTargetTemperature
+            = VcNumericUtility.ccParseIntegerString(lpInput)&0xFF;
+        }//+++
+      });//***
+    }//+++
+  };//***
+  
+  public final EiTriggerable cmVTargetTemperatureDecrementing
+    = new EiTriggerable() {
+    @Override public void ccTrigger() {
+      MainPlantModel.ccRefer().cmVTargetTemperature
+        -= MainPlantModel.ccRefer().cmVTargetTempAdjustWidth;
+      MainPlantModel.ccRefer().cmVTargetTemperature &= 0xFF;
+    }//+++
+  };//***
+  
+  public final EiTriggerable cmVTargetTemperatureIncrementing
+    = new EiTriggerable() {
+    @Override public void ccTrigger() {
+      MainPlantModel.ccRefer().cmVTargetTemperature
+        += MainPlantModel.ccRefer().cmVTargetTempAdjustWidth;
+      MainPlantModel.ccRefer().cmVTargetTemperature &= 0xFF;
+    }//+++
+  };//***
   
   //=== trigger ** swing
    
@@ -257,6 +300,16 @@ public final class MainActionManager {
     VcLocalCoordinator.ccRegisterMouseTrigger
       (SubVFeederGroup.ccRefer().cmRatioUpSW, cmVFeederRatioIncrementing);
     
+    //-- sketch ** floatting ** v bond group
+    VcLocalCoordinator.ccRegisterMouseTrigger
+      (SubVBondGroup.ccRefer().cmTargetTemperatureTB
+        ,cmVTargetTemperatureAdjusting);
+    VcLocalCoordinator.ccRegisterMouseTrigger
+      (SubVBondGroup.ccRefer().cmTargetDecrementSW
+        ,cmVTargetTemperatureDecrementing);
+    VcLocalCoordinator.ccRegisterMouseTrigger
+      (SubVBondGroup.ccRefer().cmTargetIncrementSW
+        ,cmVTargetTemperatureIncrementing);
     
     //-- skectch ** key pressing
     VcLocalCoordinator.ccRegisterKeyTrigger

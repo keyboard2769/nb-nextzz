@@ -44,22 +44,35 @@ public final class SubVBondGroup implements EiGroup{
   
   //-- indicative
   public final EcShape cmPlate = new EcShape();
+  
   public final EcValueBox cmTargetTemperatureTB
-    = new EcValueBox("&vbtarget", "+000 'C", 0x3611);
+    = new EcValueBox("_vbtarget", "+000 'C", 0x3610);
+  
+  public final EcButton
+    cmTargetDecrementSW = new EcButton("-", 0x3611),
+    cmTargetIncrementSW = new EcButton("+", 0x3612)
+  ;//...
+  
   public final EcValueBox cmChuteTemperatureTB
-    = new EcValueBox("&vbagc", "+000 'C");
+    = new EcValueBox("_vbagc", "+000 'C");
+  
+  public final EcValueBox cmEntranceTemperatureCB
+    = new EcValueBox("_bagenc", "+000 'C");
+  
   public final EcValueBox cmVDPressureCB
-    = new EcValueBox("&vdpb", "+000 kpa");
+    = new EcValueBox("_vdpb", "+000 kpa");
+  
   public final EcValueBox cmBelconFluxCB
-    = new EcValueBox("&agsc", "000.0 tph");
+    = new EcValueBox("_agsc", "000.0 tph");
+  
   public final EcGauge cmVDContentLV
     = new EcGauge();
-  public final EcValueBox cmEntranceTemperatureCB
-    = new EcValueBox("&bagenc", "+000 'C");
+  
   public final EcLamp
     cmBagHighLV = new EcLamp(" "),
     cmBagLowLV = new EcLamp(" ")
   ;//...
+  
   public final EcElement
     cmAirPulsePL = new EcElement("- - - -"),
     cmExfanPressurePL = new EcElement(" "),
@@ -84,29 +97,29 @@ public final class SubVBondGroup implements EiGroup{
     = new EcIcon(ConstLocalUI.O_V_EXFAN_ON, ConstLocalUI.O_V_EXFAN_OFF);
   
   //-- operative
-  public final EcElement cmReadyPL = new EcElement("&ready");
-  public final EcButton cmStartSW = new EcButton("&start", 0x3621);
-  public final EcValueBox cmBurnerDegreeCB = new EcValueBox("&vbo", "+000 %");
-  public final EcValueBox cmExfanDegreeCB = new EcValueBox("&vdo", "+000 %");
+  public final EcElement cmReadyPL = new EcElement("_ready");
+  public final EcButton cmStartSW = new EcButton("_start", 0x3621);
+  public final EcValueBox cmBurnerDegreeCB = new EcValueBox("_vbo", "+000 %");
+  public final EcValueBox cmExfanDegreeCB = new EcValueBox("_vdo", "+000 %");
   public final EcButton
-    cmExfanCloseSW = new EcButton("-", 0x3641),
-    cmExfanOpenSW  = new EcButton("+", 0x3642),
-    cmExfanAutoSW  = new EcButton("#", 0x3640)
+    cmExfanCloseSW = new EcButton("-", 0x3631),
+    cmExfanOpenSW  = new EcButton("+", 0x3632),
+    cmExfanAutoSW  = new EcButton("#", 0x3630)
   ;//...
   public final EcButton
-    cmBurnerCloseSW = new EcButton("-", 0x3631),
-    cmBurnerOpenSW  = new EcButton("+", 0x3632),
-    cmBurnerAutoSW  = new EcButton("#", 0x3630)
+    cmBurnerCloseSW = new EcButton("-", 0x3641),
+    cmBurnerOpenSW  = new EcButton("+", 0x3642),
+    cmBurnerAutoSW  = new EcButton("#", 0x3640)
   ;//...
   public final EcElement 
-    cmOilPL = new EcElement("&oill"),
-    cmGasPL = new EcElement("&gass"),
-    cmHeavyPL = new EcElement("&hevo"),
-    cmFuelPL = new EcElement("&feuo")
+    cmOilPL = new EcElement("_oill"),
+    cmGasPL = new EcElement("_gass"),
+    cmHeavyPL = new EcElement("_hevo"),
+    cmFuelPL = new EcElement("_feuo")
   ;//...
   public final EcText
-    cmVExfanText = new EcText("&ve"),
-    cmVBurnerText = new EcText("&vb")
+    cmVExfanText = new EcText("_ve"),
+    cmVBurnerText = new EcText("_vb")
   ;//...
   
   //-- motorative
@@ -128,6 +141,7 @@ public final class SubVBondGroup implements EiGroup{
     int lpPotentialY;
     int lpPotentialW;
     int lpPotentialH;
+    int lpPotentialG;
     
     //-- plate
     cmPlate.ccSetLocation(
@@ -153,12 +167,25 @@ public final class SubVBondGroup implements EiGroup{
     );
     
     //-- burning temperature
-    cmTargetTemperatureTB.ccSetLocation(cmPlate, 
+    lpPotentialH = ConstLocalUI.C_DEFAULT_SINGLELINE_H;
+    lpPotentialG = cmTargetTemperatureTB.ccGetW()-lpPotentialH*2;
+    cmTargetTemperatureTB.ccSetH(lpPotentialH);
+    cmTargetTemperatureTB.ccSetLocation(
+      cmPlate, 
       ConstLocalUI.C_INPANE_GAP, ConstLocalUI.C_INPANE_GAP
     );
-    cmChuteTemperatureTB.ccSetLocation(cmTargetTemperatureTB,
-      0, ConstLocalUI.C_INPANE_GAP
+    cmTargetDecrementSW.ccSetSize(lpPotentialH, lpPotentialH);
+    cmTargetDecrementSW.ccSetLocation
+      (cmTargetTemperatureTB, 0,ConstLocalUI.C_INPANE_GAP);
+    cmTargetIncrementSW.ccSetSize(cmTargetDecrementSW);
+    cmTargetIncrementSW.ccSetLocation(cmTargetDecrementSW, lpPotentialG, 0);
+    cmChuteTemperatureTB.ccSetH(lpPotentialH);
+    cmChuteTemperatureTB.ccSetLocation(
+      cmTargetTemperatureTB.ccGetX(),
+      cmPlate.ccCenterY()
     );
+    ConstLocalUI.ccSetupClickableBoxColor(cmTargetTemperatureTB);
+    ConstLocalUI.ccSetupTemperatureBoxColor(cmChuteTemperatureTB);
     
     //-- BOND!!
     lpPotentialX=cmPlate.ccGetW()/3+cmPlate.ccGetX();
@@ -187,16 +214,21 @@ public final class SubVBondGroup implements EiGroup{
       cmVDryerShape.ccGetX()+cmVDryerShape.ccGetW()*3/4,
       cmVDryerShape.ccGetY()
     );
+    cmVDContentLV.ccSetLocation(cmVDryerShape, lpDryerCaseGap*2,lpDryerCaseGap);
+    cmVDPressureCB.ccSetH(ConstLocalUI.C_DEFAULT_SINGLELINE_H);
+    cmVDPressureCB.ccSetLocation(cmVDContentLV,lpDryerGaugeGap,lpDryerGaugeGap);
     cmVDContentLV.ccSetSize(
       cmVDPressureCB.ccGetW()+lpDryerGaugeGap*2,
       cmVDPressureCB.ccGetH()+lpDryerGaugeGap*2
     );
-    cmVDContentLV.ccSetLocation(cmVDryerShape, lpDryerCaseGap*2,lpDryerCaseGap);
-    cmVDPressureCB.ccSetLocation(cmVDContentLV,lpDryerGaugeGap,lpDryerGaugeGap);
+    cmVDContentLV.ccSetColor(EcConst.C_DARK_RED);
+    cmEntranceTemperatureCB.ccSetH(ConstLocalUI.C_DEFAULT_SINGLELINE_H);
     cmEntranceTemperatureCB.ccSetLocation(
       cmVDryerShape.ccEndX()-cmEntranceTemperatureCB.ccGetW(),
       cmBagFilterShape.ccCenterY()-cmEntranceTemperatureCB.ccGetH()/2
     );
+    ConstLocalUI.ccSetupPressureBoxColor(cmVDPressureCB);
+    ConstLocalUI.ccSetupTemperatureBoxColor(cmEntranceTemperatureCB);
     
     //-- FAN!!
     cmExfanIcon.ccSetLocation(cmBagFilterShape.ccGetX()
@@ -291,8 +323,12 @@ public final class SubVBondGroup implements EiGroup{
     cmBurnerOpenSW.ccSetLocation(cmExfanOpenSW,0,ConstLocalUI.C_INPANE_GAP);
     cmBurnerAutoSW.ccSetLocation(cmExfanAutoSW,0,ConstLocalUI.C_INPANE_GAP);
     //-- operative ** degree box
+    cmExfanDegreeCB.ccSetH(ConstLocalUI.C_DEFAULT_SINGLELINE_H);
     cmExfanDegreeCB.ccSetLocation(cmExfanAutoSW,ConstLocalUI.C_INPANE_GAP,0);
+    cmBurnerDegreeCB.ccSetH(ConstLocalUI.C_DEFAULT_SINGLELINE_H);
     cmBurnerDegreeCB.ccSetLocation(cmBurnerAutoSW,ConstLocalUI.C_INPANE_GAP,0);
+    ConstLocalUI.ccSetupDegreeBoxColor(cmExfanDegreeCB);
+    ConstLocalUI.ccSetupDegreeBoxColor(cmBurnerDegreeCB);
     
     //-- text
     cmVExfanText.ccSetTextColor(EcConst.C_WHITE);
@@ -347,7 +383,9 @@ public final class SubVBondGroup implements EiGroup{
   }//+++
 
   @Override public List<? extends EcElement> ccGiveElementList(){
-    return Arrays.asList(cmTargetTemperatureTB,cmChuteTemperatureTB,
+    return Arrays.asList(
+      cmTargetTemperatureTB,cmChuteTemperatureTB,
+      cmTargetDecrementSW,cmTargetIncrementSW,
       cmVDryerRollerA,cmVDryerRollerC,
       cmVDContentLV,cmVDPressureCB,cmEntranceTemperatureCB,
       cmBagHighLV,cmBagLowLV,cmAirPulsePL,

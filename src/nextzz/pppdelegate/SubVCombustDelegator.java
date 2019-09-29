@@ -37,6 +37,10 @@ public class SubVCombustDelegator {
   
   public static final void ccBind(){
     
+    //-- temperature
+    SubVBondGroup.ccRefer().cmTargetTemperatureTB
+      .ccSetValue(MainPlantModel.ccRefer().cmVTargetTemperature);
+    
     //-- cas
     SubVBondGroup.ccRefer().cmBelconFluxCB
       .ccSetFloatValueForOneAfter(VcNumericUtility
@@ -44,6 +48,8 @@ public class SubVCombustDelegator {
       );
     SubVBondGroup.ccRefer().cmBelconFluxCB
       .ccSetIsActivated(mnVColdAggreageSensorPL);
+    SubVBondGroup.ccRefer().cmVDContentLV
+      .ccSetPercentage(MainPlantModel.ccRefer().cmVSupplyTPH, 4000);
   
   }//+++
   

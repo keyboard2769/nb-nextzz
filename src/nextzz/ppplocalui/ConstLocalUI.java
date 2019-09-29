@@ -445,10 +445,34 @@ public final class ConstLocalUI {
   
   //=== setup
   
-  public static final void ccSetupFluxBoxColor(EcValueBox pxFluxBox){
-    if(pxFluxBox==null){return;}
-    pxFluxBox.ccSetupColor(EcConst.C_YELLOW, EcConst.C_DARK_GRAY);
-    pxFluxBox.ccSetTextColor(EcConst.C_DIM_GRAY);
+  public static final void ccSetupFluxBoxColor(EcValueBox pxBox){
+    if(pxBox==null){return;}
+    pxBox.ccSetupColor(EcConst.C_YELLOW, EcConst.C_DARK_GRAY);
+    pxBox.ccSetTextColor(EcConst.C_DIM_GRAY);
+  }//+++
+  
+  public static final void ccSetupTemperatureBoxColor(EcValueBox pxBox){
+    if(pxBox==null){return;}
+    pxBox.ccSetupColor(EcConst.C_ORANGE, EcConst.C_DARK_RED);
+    pxBox.ccSetTextColor(EcConst.C_LIT_GRAY);
+  }//+++
+  
+  public static final void ccSetupPressureBoxColor(EcValueBox pxBox){
+    if(pxBox==null){return;}
+    pxBox.ccSetupColor(EcConst.C_ORANGE, EcConst.C_DARK_WATER);
+    pxBox.ccSetTextColor(EcConst.C_LIT_GRAY);
+  }//+++
+  
+  public static final void ccSetupDegreeBoxColor(EcValueBox pxBox){
+    if(pxBox==null){return;}
+    pxBox.ccSetupColor(EcConst.C_ORANGE, EcConst.C_BLACK);
+    pxBox.ccSetTextColor(EcConst.C_LIT_GRAY);
+  }//+++
+  
+  public static final void ccSetupClickableBoxColor(EcValueBox pxBox){
+    if(pxBox==null){return;}
+    pxBox.ccSetupColor(EcConst.C_DARK_YELLOW, EcConst.C_DARK_GREEN);
+    pxBox.ccSetTextColor(EcConst.C_LIT_GRAY);
   }//+++
   
   //=== interval

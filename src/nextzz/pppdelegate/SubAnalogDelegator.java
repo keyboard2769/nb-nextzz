@@ -36,6 +36,12 @@ public final class SubAnalogDelegator {
     mnCTSlotXXIV,mnCTSlotXXV,mnCTSlotXXVI,mnCTSlotXXVII,
     mnCTSlotXXVIII,mnCTSlotXXIX,mnCTSlotXXX,mnCTSlotXXXI,
     
+    //-- deg
+    mnVBDegreeAD, mnVEDegreeAD,
+    
+    //-- press
+    mnVDPressureAD,
+    
     //-- lv
     mnFillerSiloLV,mnCementSiloLV,mnDustSiloLV
     
