@@ -17,7 +17,6 @@
  * MA 02110-1301  USA
  */
 
-
 package nextzz.pppmodel;
 
 import java.util.ArrayList;
@@ -35,7 +34,6 @@ public final class SubAnalogScalarManager {
   public static final String Q_TYPE_TPH  = "tph"; //.. ton
   public static final String Q_TYPE_MISC = "misc";//.. WTF??
   
-
   private static final SubAnalogScalarManager SELF
     = new SubAnalogScalarManager();
   public static final
@@ -44,8 +42,11 @@ public final class SubAnalogScalarManager {
 
   //===
   
-  private final List<ZcScaledModel> cmListOfCTSlotModel
+  private final List<ZcScaledModel> cmListOfCTSlotScalar
     = new ArrayList<ZcScaledModel>(32);
+
+  private final List<ZcScaledModel> cmListOfVFeederFluxScalar
+    = new ArrayList<ZcScaledModel>(16);
   
   //===
     
@@ -53,22 +54,59 @@ public final class SubAnalogScalarManager {
     
     //-- create current 
     for(int i=0;i<32;i++){
-      cmListOfCTSlotModel.add(new ZcScaledModel(0, 5000, 0, 1000));
+      cmListOfCTSlotScalar.add(new ZcScaledModel(0, 5000, 0, 1000));
+      //.. 1000d -> 100.0f [A]
+    }//+++
+    
+    //-- feeder flux
+    
+    //-- feeder flux ** V
+    for(int i=0;i<32;i++){
+      cmListOfVFeederFluxScalar.add(new ZcScaledModel(0, 900, 0, 500));
+      //.. 500d -> 50.0f [ton]
     }//+++
     
   }//..!
   
-  //=== Feeder Speed
+  //=== 
+  
+  //=== feeder flux ** V
+  
+  synchronized public final
+  void ccSetVFeederFluxRPMSpan(int pxIndex, int pxVal){
+    cmListOfVFeederFluxScalar.get(pxIndex&15).ccSetInputSpan(pxVal&0xFFFF);
+  }//+++
+  
+  synchronized public final
+  int ccGetVFeederFluxRPMSpan(int pxIndex){
+   return cmListOfVFeederFluxScalar.get(pxIndex&15).ccGetInputSpan();
+  }//+++
+  
+  synchronized public final
+  void ccSetVFeederFluxTPHSpan(int pxIndex, int pxVal){
+    cmListOfVFeederFluxScalar.get(pxIndex&15).ccSetOutputSpan(pxVal&0xFFFF);
+  }//+++
+  
+  synchronized public final
+  int ccGetVFeederFluxTPHSpan(int pxIndex){
+   return cmListOfVFeederFluxScalar.get(pxIndex&15).ccGetOutputSpan();
+  }//+++
+  
+  //=== feeder flux ** R
   
   //=== CT Slot
   
+  synchronized public final void ccSetCTSlotSpan(int pxIndex, int pxVal){
+    cmListOfCTSlotScalar.get(pxIndex&31).ccSetOutputSpan(pxVal&0xFFFF);
+  }//+++
+  
   synchronized public final int ccGetCTSlotSpan(int pxIndex){
-    return cmListOfCTSlotModel.get(pxIndex&31).ccGetOutputSpan();
+    return cmListOfCTSlotScalar.get(pxIndex&31).ccGetOutputSpan();
   }//+++
   
   synchronized public final int ccGetScaledCTSlotValue(int pxIndex){
-    int lpFixedIndex=pxIndex&0x1F;
-    return cmListOfCTSlotModel.get(lpFixedIndex)
+    int lpFixedIndex=pxIndex&0x31;
+    return cmListOfCTSlotScalar.get(lpFixedIndex)
       .ccToScaledIntegerValue(
         SubAnalogDelegator.ccGetCTSlotAD(lpFixedIndex)
     );

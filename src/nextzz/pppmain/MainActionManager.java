@@ -25,18 +25,23 @@ import java.awt.event.KeyEvent;
 import kosui.ppplocalui.EcElement;
 import kosui.ppplocalui.EcValueBox;
 import kosui.ppplocalui.EiTriggerable;
+import kosui.pppswingui.ScConst;
 import kosui.ppputil.VcConst;
 import kosui.ppputil.VcLocalConsole;
 import kosui.ppputil.VcLocalCoordinator;
 import kosui.ppputil.VcLocalTagger;
 import kosui.ppputil.VcNumericUtility;
 import kosui.ppputil.VcSwingCoordinator;
+import kosui.ppputil.VcTranslator;
 import nextzz.pppdelegate.SubFeederDelegator;
 import nextzz.pppdelegate.SubVPreparingDelegator;
 import nextzz.ppplocalui.SubIndicativeGroup;
 import nextzz.pppswingui.SubAssistantPane;
 import static nextzz.pppmain.MainSketch.C_COLOR_BACKGROUD;
+import nextzz.pppmodel.MainSettingManager;
+import nextzz.pppmodel.MiSettingItem;
 import nextzz.pppswingui.SubFeederPane;
+import nextzz.pppswingui.SubSettingPane;
 
 public final class MainActionManager {
   
@@ -66,14 +71,7 @@ public final class MainActionManager {
       MainWindow.ccRefer().cmWindow.toFront();
     }//+++
   };//***
-  
-  public final EiTriggerable cmHiding = new EiTriggerable() {
-    @Override public void ccTrigger() {
-      System.out.println("cmHiding.ccTrigger()");
-      MainWindow.ccRefer().cmWindow.setVisible(false);
-    }//+++
-  };//***
-  
+ 
   public final EiTriggerable cmInputFocusShifting = new EiTriggerable() {
     @Override public void ccTrigger(){
       VcLocalCoordinator.ccGetInstance().ccToNextInputIndex();
@@ -112,6 +110,44 @@ public final class MainActionManager {
             (VcLocalConsole.ccGetLastAccepted())
         );
       }//..?
+    }//+++
+  };//***
+  
+  //=== trigger ** swing
+   
+  public final EiTriggerable cmHiding = new EiTriggerable() {
+    @Override public void ccTrigger() {
+      MainWindow.ccRefer().cmWindow.setVisible(false);
+    }//+++
+  };//***
+  
+  public final EiTriggerable cmSettingModifing = new EiTriggerable() {
+    @Override public void ccTrigger() {
+      int lpListIndex = SubSettingPane.ccRefer()
+        .cmList.ccGetCurrentIndex();
+      int lpTableIndex = SubSettingPane.ccRefer()
+        .cmTable.ccGetSelectedRowIndex();
+      if(
+          (lpListIndex<0)
+        ||(lpTableIndex<0)
+      ){
+        ScConst.ccErrorBox(VcTranslator.tr("_m_warn_of_none_selection"));
+        return;
+      }//..?
+      MiSettingItem lpItem = MainSettingManager.ccRefer()
+        .ccGetSelectedItem(lpListIndex, lpTableIndex);
+      if(lpItem==null){
+        ScConst.ccErrorBox(VcTranslator.tr("_m_warn_of_unkoun_error"));
+        return;
+      }//..?
+      String lpInput = ScConst.ccGetStringByInputBox(
+        lpItem.ccGetName(),
+        lpItem.ccGetValue()
+      );
+      if(!VcConst.ccIsValidString(lpInput)){return;}
+      if(lpInput.equals(ScConst.C_M_CANCEL)){return;}
+      lpItem.ccSetValue(lpInput);
+      SubSettingPane.ccRefer().cmTable.ccRefresh();
     }//+++
   };//***
   
@@ -167,6 +203,8 @@ public final class MainActionManager {
         (MainWindow.ccRefer().cmQuitButton, cmQuitting);
       VcSwingCoordinator.ccRegisterAction
         (MainWindow.ccRefer().cmHideButton, cmHiding);
+      VcSwingCoordinator.ccRegisterAction
+        (SubSettingPane.ccRefer().cmModifyButton, cmSettingModifing);
 
     }//+++
   };//***

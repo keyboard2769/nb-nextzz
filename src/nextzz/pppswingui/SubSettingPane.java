@@ -20,15 +20,28 @@
 package nextzz.pppswingui;
 
 import java.awt.BorderLayout;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
+import javax.swing.JTextArea;
 import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
 import kosui.pppswingui.ScFactory;
+import kosui.pppswingui.ScList;
+import kosui.pppswingui.ScTable;
 import kosui.ppputil.VcTranslator;
+import nextzz.pppmodel.MainSettingManager;
+import nextzz.pppmodel.McAbstractSettingPartition;
+import nextzz.pppmodel.MiSettingItem;
+import nextzz.pppmodel.SubFeederFluxSetting;
 
 public final class SubSettingPane implements SiTabbable{
+  
+  public static final int C_DEFAULT_VALUE_COLUMN_W = 120;
+  
+  //===
 
   private static final SubSettingPane SELF = new SubSettingPane();
   public static final SubSettingPane ccRefer(){return SELF;}//+++
@@ -40,34 +53,80 @@ public final class SubSettingPane implements SiTabbable{
   
   public final JPanel cmPane = ScFactory.ccCreateBorderPanel();
   
+  public final JButton cmImportButton = ScFactory
+    .ccCreateCommandButton(VcTranslator.tr("_import"));
+  
+  public final JButton cmExportButton = ScFactory
+    .ccCreateCommandButton(VcTranslator.tr("_export"));
+  
+  public final JButton cmModifyButton = ScFactory
+    .ccCreateCommandButton(VcTranslator.tr("_mod"));
+  
+  public final ScList cmList
+    = new ScList(MainSettingManager.ccRefer(), 160, 160);
+  
+  public final ScTable cmTable
+    = new ScTable(SubFeederFluxSetting.ccRefer(), -1, -1);
+  
+  public final JTextArea cmDescriptor = new JTextArea("...", 3, 80);
+  
+  //===
+  
+  private final MouseAdapter cmListPressListener
+    = new MouseAdapter() {
+    @Override public void mousePressed(MouseEvent me) {
+      int lpIndex=cmList.ccGetCurrentIndex();
+      if(lpIndex<0){return;}
+      McAbstractSettingPartition lpModel
+        = MainSettingManager.ccRefer() .ccGetSelectedModel(lpIndex);
+      if(lpModel==null){return;}
+      cmTable.ccSetModel(lpModel);
+      cmTable.ccSetColumnWidth(0, C_DEFAULT_VALUE_COLUMN_W);
+      cmTable.ccRefresh();
+    }//+++
+  };//***
+  
+  private final MouseAdapter cmTablePressListener
+    = new MouseAdapter() {
+    @Override public void mousePressed(MouseEvent me) {
+      int lpListIndex = cmList.ccGetCurrentIndex();
+      int lpTableIndex = cmTable.ccGetSelectedRowIndex();
+      if(
+          (lpListIndex<0)
+        ||(lpTableIndex<0)
+      ){return;}//..?
+      MiSettingItem lpItem = MainSettingManager.ccRefer()
+        .ccGetSelectedItem(lpListIndex, lpTableIndex);
+      if(lpItem==null){return;}//..?
+      cmDescriptor.setText(lpItem.ccGetDescription());
+    }//+++
+  };//***
+  
   //===
   
   @Override public final void ccInit(){
     
-    //-- tool sw
-    JButton lpImportButton = ScFactory
-      .ccCreateCommandButton(VcTranslator.tr("_import"));
-    JButton lpExportButton = ScFactory
-      .ccCreateCommandButton(VcTranslator.tr("_export"));
-    JButton lpModifyButton = ScFactory
-      .ccCreateCommandButton(VcTranslator.tr("_mod"));
-    
     //-- tool bar
     JToolBar lpBar = ScFactory.ccCreateStuckedToolBar();
-    lpBar.add(lpImportButton);
-    lpBar.add(lpExportButton);
+    lpBar.add(cmImportButton);
+    lpBar.add(cmExportButton);
     lpBar.add(new JSeparator(SwingConstants.VERTICAL));
-    lpBar.add(lpModifyButton);
+    lpBar.add(cmModifyButton);
     
-    //-- list
+    //-- list n table
+    cmList.ccSetSelectedIndex(0);
+    cmList.ccAddMouseListener(cmListPressListener);
+    cmTable.ccSetColumnWidth(0, C_DEFAULT_VALUE_COLUMN_W);
+    cmTable.ccAddMouseListener(cmTablePressListener);
     
-    //[head]::.. well, now , what??
+    //-- area
+    ScFactory.ccSetupInfoArea(cmDescriptor);
     
     //-- pack
     cmPane.add(lpBar,BorderLayout.PAGE_START);
-    cmPane.add(new JButton("=d-list="),BorderLayout.LINE_START);
-    cmPane.add(new JButton("=d-table="),BorderLayout.CENTER);
-    cmPane.add(new JButton("=d-area="),BorderLayout.PAGE_END);
+    cmPane.add(cmList,BorderLayout.LINE_START);
+    cmPane.add(cmTable,BorderLayout.CENTER);
+    cmPane.add(cmDescriptor,BorderLayout.PAGE_END);
     
   }//..!
   
