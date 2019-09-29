@@ -28,10 +28,16 @@ import java.util.HashMap;
 import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
+import javax.swing.JSpinner;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import kosui.ppplogic.ZcRangedModel;
 import kosui.pppswingui.ScConst;
 import kosui.pppswingui.ScFactory;
+import kosui.ppputil.VcConst;
+import kosui.ppputil.VcNumericUtility;
 import kosui.ppputil.VcTranslator;
+import nextzz.pppdelegate.SubFeederDelegator;
 import nextzz.pppmodel.MainSpecificator;
 
 public final class SubFeederPane implements SiTabbable{
@@ -46,8 +52,8 @@ public final class SubFeederPane implements SiTabbable{
   
   public final JPanel cmPane = ScFactory.ccCreateBorderPanel();
   
-  private final HashMap<JButton,String> cmMapOfConfigSW
-    = new HashMap<JButton, String>();
+  private final HashMap<JButton,JSpinner> cmMapOfConfigSW
+    = new HashMap<JButton, JSpinner>();
   
   public final List<ScFeederBlock> cmDesVFeederBlock
     = Collections.unmodifiableList(Arrays.asList(
@@ -83,17 +89,39 @@ public final class SubFeederPane implements SiTabbable{
     = new ActionListener() {
     @Override public void actionPerformed(ActionEvent e) {
       Object lpSource = e.getSource();
-      
-      //[head]::try to make this stuff work
-      
-      if(SwingUtilities.isEventDispatchThread()){
-        System.out.println("yes");
-      }
-      
       if(lpSource instanceof JButton){
-        System.out.println(".cmFeederSpeedConfigListener::"
-          +cmMapOfConfigSW.get((JButton)lpSource));
-      }
+        JButton lpCurrentButton = (JButton)lpSource;  
+        JSpinner lpCurrentSpinner = cmMapOfConfigSW.get(lpCurrentButton);
+        String lpCurrentValue = Integer
+          .toString(VcNumericUtility.ccInteger(lpCurrentSpinner.getValue()));
+        String lpNewValueString = ScConst.ccGetStringByInputBox(
+          VcTranslator.tr("_feeder_speed"),
+          lpCurrentValue
+        );
+        if(!VcConst.ccIsValidString(lpNewValueString)){return;}
+        int lpNewValue=VcNumericUtility
+          .ccParseIntegerString(lpNewValueString);
+        lpCurrentSpinner.setValue(
+          ZcRangedModel.ccLimitInclude(
+            lpNewValue,
+            ScFeederBlock.C_SPEED_MIN, ScFeederBlock.C_SPEED_MAX
+          )
+        );
+      }//..?
+    }//+++
+  };//***
+  
+  private final ChangeListener cmFeederSpeedChangeListener
+    = new ChangeListener() {
+    @Override public void stateChanged(ChangeEvent ce) {
+      for(
+        int i=SubFeederDelegator.C_VF_INIT_ORDER;
+        i<=SubFeederDelegator.C_VF_VALID_MAX;
+        i++
+      ){
+        SubFeederDelegator
+          .ccSetVFeederSpeed(i, cmDesVFeederBlock.get(i).ccGetValue());
+      }//..~
     }//+++
   };//***
   
@@ -103,20 +131,29 @@ public final class SubFeederPane implements SiTabbable{
     
     JPanel lpVFeederPanel = ScFactory.ccCreateGridPanel(10,1);
     JPanel lpRFeederPanel = ScFactory.ccCreateGridPanel(10,1);
-    
     for(int i=1;i<=10;i++){
+      
+      //-- V
       lpVFeederPanel.add(cmDesVFeederBlock.get(i));
-      cmMapOfConfigSW.put(cmDesVFeederBlock.get(i)
-        .cmConfigSW, "VF"+Integer.toString(i));
+      cmMapOfConfigSW.put(
+        cmDesVFeederBlock.get(i) .cmConfigSW,
+        cmDesVFeederBlock.get(i) .cmSpinner
+      );
       cmDesVFeederBlock.get(i).cmConfigSW
         .addActionListener(cmFeederSpeedConfigListener);
+      cmDesVFeederBlock.get(i).cmSpinner
+        .addChangeListener(cmFeederSpeedChangeListener);
       if(i>=MainSpecificator.ccRefer().mnVFeederAmount){
         ScConst.ccHideComponent(cmDesVFeederBlock.get(i));
       }//..?
+      
+      //-- R
       lpRFeederPanel.add(cmDesRFeederBlock.get(i));
       ScConst.ccHideComponent(cmDesRFeederBlock.get(i));
-    }//+++
+      
+    }//..~
     
+    //--
     cmPane.add(lpVFeederPanel,BorderLayout.LINE_START);
     cmPane.add(lpRFeederPanel,BorderLayout.LINE_END);
     

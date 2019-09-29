@@ -33,12 +33,15 @@ import kosui.ppplocalui.EcShape;
 import kosui.ppplocalui.EcText;
 import kosui.ppplocalui.EcValueBox;
 import kosui.ppplocalui.EiGroup;
-import kosui.ppputil.VcConst;
+import kosui.ppplogic.ZcRangedValueModel;
 import kosui.ppputil.VcLocalConsole;
 import nextzz.pppmain.MainSketch;
 import nextzz.pppmodel.MainSpecificator;
+import nextzz.pppswingui.ScFeederBlock;
 
 public final class SubVFeederGroup implements EiGroup{
+  
+  public static final int C_FEEDER_ICON_MASK = 15;
   
   private static final SubVFeederGroup SELF = new SubVFeederGroup();
   public static SubVFeederGroup ccRefer(){return SELF;}//+++
@@ -158,14 +161,17 @@ public final class SubVFeederGroup implements EiGroup{
     cmPlate.ccSetBaseColor
       (EcConst.ccAdjustColor(MainSketch.C_COLOR_BACKGROUD, -8));
     
-    //-- reinit
+    //-- re styling
     for(EcValueBox it:cmDesFeederRPMBox){
       it.ccSetW(lpSingleHopperWidth-lpSingleInnerGap*2);
       it.ccSetH(lpSingleBoxH);
-      it.ccSetupColor(EcConst.C_DARK_YELLOW, EcConst.C_DARK_GRAY);
+      it.ccSetupColor(EcConst.C_YELLOW, EcConst.C_DARK_GRAY);
+      it.ccSetTextColor(EcConst.C_DIM_GRAY);
     }//..~
     for(EcGauge it:cmDesFeederRPMGauge){
       it.ccSetSize(cmDesFeederRPMBox.get(0).ccGetW(),lpSingleGaugeH);
+      it.ccSetupColor(EcConst.C_GRAY, EcConst.C_YELLOW);
+      it.ccSetIsVertical(false);
     }//..~
     for(EcText it:cmDesFeederText){
       it.ccSetTextColor(EcConst.C_BLACK);
@@ -276,6 +282,18 @@ public final class SubVFeederGroup implements EiGroup{
       (cmPlate,ConstLocalUI.C_INPANE_GAP, ConstLocalUI.C_INPANE_GAP);
     
   }//..!
+  
+  //===
+  
+  public final void ccSetFeederRPM(int pxIndex,int pxValue){
+    int lpFixedValue = ZcRangedValueModel.ccLimitInclude
+      (pxValue, ScFeederBlock.C_SPEED_MIN, ScFeederBlock.C_SPEED_MAX);
+    cmDesFeederRPMBox.get(pxIndex&0xF).ccSetValue(lpFixedValue);
+    cmDesFeederRPMGauge.get(pxIndex&0xF).ccSetPercentage
+      (lpFixedValue, ScFeederBlock.C_SPEED_MAX);
+  }//+++
+  
+  //===
 
   @Override public List<? extends EcShape> ccGiveShapeList(){
     List<EcShape> lpRes = new ArrayList<EcShape>();

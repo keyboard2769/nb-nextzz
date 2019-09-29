@@ -23,9 +23,11 @@ import java.util.Collections;
 import java.util.Arrays;
 import java.util.List;
 import kosui.ppplogic.ZcHookFlicker;
-import kosui.ppplogic.ZcRangedModel;
+import kosui.ppplogic.ZcOnDelayTimer;
+import kosui.ppplogic.ZcTimer;
 import kosui.ppplogic.ZiTask;
 import kosui.ppputil.VcLocalTagger;
+import nextzz.pppdelegate.SubFeederDelegator;
 import nextzz.pppdelegate.SubVPreparingDelegator;
 import nextzz.pppmodel.MainSpecificator;
 
@@ -46,7 +48,7 @@ public final class SubFeederTask implements ZiTask{
   private final ZcChainController cmVFeederChainCTRL
     = new ZcChainController(2, C_CONTROLLER_UPBOUND);
   
-  public final List<ZcMotor> dcDesVFedder
+  public final List<ZcMotor> dcDesVFeeder
     = Collections.unmodifiableList(Arrays.asList(
       new ZcMotor(4),//..0
       new ZcMotor(4),new ZcMotor(4),new ZcMotor(4),//..1-3
@@ -64,18 +66,26 @@ public final class SubFeederTask implements ZiTask{
       new ZcHookFlicker(),new ZcHookFlicker()
     ));
   
+  private final List<? extends ZcTimer> simDesVFeederSensorTM
+    = Collections.unmodifiableList(Arrays.asList(
+      new ZcOnDelayTimer(11),
+      new ZcOnDelayTimer(11),new ZcOnDelayTimer(11),new ZcOnDelayTimer(11),
+      new ZcOnDelayTimer(11),new ZcOnDelayTimer(11),new ZcOnDelayTimer(11),
+      new ZcOnDelayTimer(11),new ZcOnDelayTimer(11),
+      new ZcOnDelayTimer(11),new ZcOnDelayTimer(11)
+    ));
+  
   //===
   
   private boolean dcCAS=false;
-  private boolean[] dcDesVFSG = new boolean[dcDesVFedder.size()];
+  private final boolean[] dcDesVFSG = new boolean[16];
   
   public final boolean ccGetColdAggregateSensor(){
     return dcCAS;
   }//+++
   
   public final boolean ccGetVFeederStuckSensor(int pxOrder){
-    return
-      dcDesVFSG[ZcRangedModel.ccLimitInclude(pxOrder, 0, dcDesVFSG.length)];
+    return dcDesVFSG[pxOrder&0xF];
   }//+++
 
   //===
@@ -92,43 +102,48 @@ public final class SubFeederTask implements ZiTask{
     }//..?
     cmVFeederChainCTRL.ccSetConfirmedAt(C_CONTROLLER_UPBOUND, true);
     boolean lpVFeederStartFlag
-      = SubVPreparingDelegator.mnVFChainMSSW;
+      = SubFeederDelegator.mnVFChainMSSW;
     cmVFeederChainCTRL.ccTakePulse(lpVFeederStartFlag);
     cmVFeederChainCTRL.ccRun();
     
     //-- vf ** output
     for(int i=1;i<=8;i++){
       cmDesVFeederHOOK.get(i).ccHook(cmVFeederChainCTRL.ccGetPulseAt(i));
-      dcDesVFedder.get(i).ccContact(
+      dcDesVFeeder.get(i).ccContact(
         cmDesVFeederHOOK.get(i).ccIsHooked()
       );
     }//+++
     
     //-- vf ** feedback
-    SubVPreparingDelegator.mnVFChainMSPL
+    SubFeederDelegator.mnVFChainMSPL
       =cmVFeederChainCTRL.ccGetFlasher(MainSimulator.ccOneSecondClock());
-    SubVPreparingDelegator.mnVFRunningPLnI
-      =dcDesVFedder.get(1).ccIsContacted();
-    SubVPreparingDelegator.mnVFRunningPLnII
-      =dcDesVFedder.get(2).ccIsContacted();
-    SubVPreparingDelegator.mnVFRunningPLnIII
-      =dcDesVFedder.get(3).ccIsContacted();
-    SubVPreparingDelegator.mnVFRunningPLnIV
-      =dcDesVFedder.get(4).ccIsContacted();
-    SubVPreparingDelegator.mnVFRunningPLnV
-      =dcDesVFedder.get(5).ccIsContacted();
-    SubVPreparingDelegator.mnVFRunningPLnVI
-      =dcDesVFedder.get(6).ccIsContacted();
-    SubVPreparingDelegator.mnVFRunningPLnVII
-      =dcDesVFedder.get(7).ccIsContacted();
-    SubVPreparingDelegator.mnVFRunningPLnVIII
-      =dcDesVFedder.get(8).ccIsContacted();
+    for(
+      int i=SubFeederDelegator.C_VF_INIT_ORDER;
+      i<=SubFeederDelegator.C_VF_VALID_MAX;
+      i++
+    ){
+      SubFeederDelegator.ccSetVFeederRunning
+        (i,dcDesVFeeder.get(i).ccIsContacted());
+      SubFeederDelegator.ccSetVFeederStuck
+        (i, ccGetVFeederStuckSensor(i));
+    }//..~
     
   }//+++
 
   @Override public void ccSimulate() {
     
-    for(ZcMotor it:dcDesVFedder){it.ccSimulate(0.66f);}
+    for(ZcMotor it:dcDesVFeeder){it.ccSimulate(0.66f);}
+    for(
+      int i=SubFeederDelegator.C_VF_INIT_ORDER;
+      i<=SubFeederDelegator.C_VF_VALID_MAX;
+      i++
+    ){
+      simDesVFeederSensorTM.get(i).ccAct(
+            dcDesVFeeder.get(i).ccIsContacted()
+        && (SubFeederDelegator.ccGetVFeederSpeed(i)>192)
+      );
+      dcDesVFSG[i]=!simDesVFeederSensorTM.get(i).ccIsUp();
+    }//..~
     
   }//+++
   
@@ -136,12 +151,12 @@ public final class SubFeederTask implements ZiTask{
   
   @Deprecated static public final void tstTagVFeederSystem(){
     VcLocalTagger.ccTag("vf-ctrl", self.cmVFeederChainCTRL);
-    VcLocalTagger.ccTag("vf-1", self.dcDesVFedder.get(1));
-    VcLocalTagger.ccTag("vf-2", self.dcDesVFedder.get(2));
-    VcLocalTagger.ccTag("vf-3", self.dcDesVFedder.get(3));
-    VcLocalTagger.ccTag("vf-4", self.dcDesVFedder.get(4));
-    VcLocalTagger.ccTag("vf-5", self.dcDesVFedder.get(5));
-    VcLocalTagger.ccTag("vf-6", self.dcDesVFedder.get(6));
+    VcLocalTagger.ccTag("vf-1", self.dcDesVFeeder.get(1));
+    VcLocalTagger.ccTag("vf-2", self.dcDesVFeeder.get(2));
+    VcLocalTagger.ccTag("vf-3", self.dcDesVFeeder.get(3));
+    VcLocalTagger.ccTag("vf-4", self.dcDesVFeeder.get(4));
+    VcLocalTagger.ccTag("vf-5", self.dcDesVFeeder.get(5));
+    VcLocalTagger.ccTag("vf-6", self.dcDesVFeeder.get(6));
   }//+++
   
 }//***eof

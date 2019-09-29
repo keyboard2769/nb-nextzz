@@ -49,7 +49,6 @@ import nextzz.pppmodel.MainSpecificator;
 import nextzz.pppmodel.SubAnalogScalarManager;
 import nextzz.pppsimulate.MainSimulator;
 import nextzz.pppsimulate.SubFeederTask;
-import nextzz.pppsimulate.SubVPreparingTask;
 import nextzz.pppswingui.ConstSwingUI;
 import processing.core.PApplet;
 import processing.core.PFont;
@@ -312,7 +311,7 @@ public class MainSketch extends PApplet{
   }//+++
   
   public static final String ccGetLastLeavingStamp(){
-    return "_1909282236";
+    return "_1909291017";
   }//+++
 
 }//***eof

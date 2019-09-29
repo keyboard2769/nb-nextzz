@@ -19,8 +19,6 @@
 
 package nextzz.pppswingui;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.awt.FlowLayout;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -29,16 +27,25 @@ import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 import javax.swing.SpinnerNumberModel;
+import kosui.pppswingui.ScConst;
 import kosui.pppswingui.ScFactory;
+import kosui.ppputil.VcNumericUtility;
 import kosui.ppputil.VcStringUtility;
 
 public class ScFeederBlock extends JPanel{
+  
+  public static final int C_SPEED_MIN =    0;
+  public static final int C_SPEED_MAX = 1800;
+  public static final int C_STEP_MIN  =   50;
+  public static final int C_STEP_MAX  =  200;
+  
+  //===
   
   public final JSpinner cmSpinner
     = new JSpinner(new SpinnerNumberModel(900, 0, 1800, 50));
   
   public final JTextField cmField
-    = ScFactory.ccCreateTextLamp("000tph",64,22);
+    = ScFactory.ccCreateValueBox("000tph",64,22);
   private final JToggleButton cmForceSW
     = ScFactory.ccCreateCommandToggler("_force", 48, 22);
   private final JToggleButton cmDisableSW
@@ -46,15 +53,39 @@ public class ScFeederBlock extends JPanel{
   public final JButton cmConfigSW
     = ScFactory.ccCreateCommandButton("#", 22, 22);
   
+  //===
+  
   public ScFeederBlock(String pxTitle) {
+    
     super(new FlowLayout(FlowLayout.LEADING));
     setBorder(BorderFactory.createTitledBorder
       (VcStringUtility.ccNulloutString(pxTitle)));
+    
+    //--
+    cmSpinner.setBackground(ScConst.C_LIT_GRAY);
+    cmSpinner.setForeground(ScConst.C_DARK_GRAY);
+    
+    //--
     add(cmForceSW);
     add(cmDisableSW);
     add(cmSpinner);
     add(cmConfigSW);
     add(cmField);
+    
+  }//+++
+  
+  //===
+  
+  public final int ccGetValue(){
+    return VcNumericUtility.ccInteger(cmSpinner.getValue());
+  }//+++
+  
+  public final void ccSetStep(int pxStep){
+    Object lpModel = cmSpinner.getModel();
+    if(lpModel instanceof SpinnerNumberModel){
+      SpinnerNumberModel lpNumberModel = (SpinnerNumberModel)lpModel;
+      lpNumberModel.setStepSize(pxStep);
+    }//..?
   }//+++
   
 }//***eof

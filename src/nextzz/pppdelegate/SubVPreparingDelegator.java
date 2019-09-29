@@ -27,7 +27,7 @@ import nextzz.ppplocalui.SubVFeederGroup;
 import nextzz.ppplocalui.SubVSurgeGroup;
 
 public final class SubVPreparingDelegator {
-  
+    
   public static volatile boolean 
     
     //-- misc
@@ -44,21 +44,8 @@ public final class SubVPreparingDelegator {
     //-- ag ** tower bond
     mnAGChainMSSW,mnAGChainMSPL,
     mnVDryerPL,mnVInclinedBelconPL,mnVColdAggreageSensorPL,
-    
-    //-- ag ** feeder ** operate
-    mnVFChainMSSW,mnVFChainMSPL,
     mnVHorizontalBelconPL,
-    
-    //-- ag ** feeder ** ax
-    mnVFRunningPLnI,mnVFRunningPLnII,mnVFRunningPLnIII,mnVFRunningPLnIV,
-    mnVFRunningPLnV,mnVFRunningPLnVI,mnVFRunningPLnVII,mnVFRunningPLnVIII,
-    mnVFRunningPLnIX,mnVFRunningPLnX,
-    
-    //-- ag ** feeder ** stuck
-    mnVFStuckPLnI,mnVFStuckPLnII,mnVFStuckPLnIII,mnVFStuckPLnIV,
-    mnVFStuckPLnV,mnVFStuckPLnVI,mnVFStuckPLnVII,mnVFStuckPLnVIII,
-    mnVFStuckPLnIX,mnVFStuckPLnX,
-    
+
     //-- fr
     
     //-- fr ** bag filter
@@ -82,20 +69,13 @@ public final class SubVPreparingDelegator {
   ;//...
   
   public static volatile int
-        
-    //-- vf speed
-    mnVFSpeedADnI,mnVFSpeedADnII,mnVFSpeedADnIII,mnVFSpeedADnIV,
-    mnVFSpeedADnV,mnVFSpeedADnVI,mnVFSpeedADnVII,mnVFSpeedADnVIII,
-    mnVFSpeedADnIX,mnVFSpeedADnX,
-    
     //-- as tank selection
     mnASTankInWith,mnASTankOutWith
-    
   ;//...
   
   //=== 
   
-  public static final void ccWiring(){
+  public static final void ccWire(){
     /* 6 */throw new RuntimeException("NOT YET!!");
   }//+++
   
@@ -132,15 +112,10 @@ public final class SubVPreparingDelegator {
     //-- AG ** pc -> sim
     mnAGChainMSSW=SubOperativeGroup.ccRefer().cmDesMotorSW
       .get(4).ccIsMousePressed();
-    mnVFChainMSSW=SubOperativeGroup.ccRefer().cmDesMotorSW
-      .get(5).ccIsMousePressed();
-    //[todo]:: %vf speed??% 
     
     //-- AG ** sim -> pc
     SubOperativeGroup.ccRefer().cmDesMotorSW
       .get(4).ccSetIsActivated(mnAGChainMSPL);
-    SubOperativeGroup.ccRefer().cmDesMotorSW
-      .get(5).ccSetIsActivated(mnVFChainMSPL);
     SubVBondGroup.ccRefer().cmVDryerRollerA
       .ccSetIsActivated(mnVDryerPL);
     SubVBondGroup.ccRefer().cmVDryerRollerC
@@ -149,65 +124,7 @@ public final class SubVPreparingDelegator {
       .ccSetIsActivated(mnVInclinedBelconPL);
     SubVFeederGroup.ccRefer().cmBelconForwarPL
       .ccSetIsActivated(mnVHorizontalBelconPL);
-    
-    //-- v feeder
-    
-    //-- v feeder ** pc -> plc
-    mnVFChainMSSW=SubOperativeGroup.ccRefer().cmDesMotorSW
-      .get(5).ccIsMousePressed();
-    
-    //-- v feeder ** plc -> pc ** operative
-    SubOperativeGroup.ccRefer().cmDesMotorSW
-      .get(5).ccSetIsActivated(mnVFChainMSPL);
-    
-    //-- v feeder ** plc -> pc ** runnning
-    SubVFeederGroup.ccRefer().cmDesFeederRPMBox
-      .get(1).ccSetIsActivated(mnVFRunningPLnI);
-    SubVFeederGroup.ccRefer().cmDesFeederRPMBox
-      .get(2).ccSetIsActivated(mnVFRunningPLnII);
-    SubVFeederGroup.ccRefer().cmDesFeederRPMBox
-      .get(3).ccSetIsActivated(mnVFRunningPLnIII);
-    SubVFeederGroup.ccRefer().cmDesFeederRPMBox
-      .get(4).ccSetIsActivated(mnVFRunningPLnIV);
-    SubVFeederGroup.ccRefer().cmDesFeederRPMBox
-      .get(5).ccSetIsActivated(mnVFRunningPLnV);
-    SubVFeederGroup.ccRefer().cmDesFeederRPMBox
-      .get(6).ccSetIsActivated(mnVFRunningPLnVI);
-    //--
-    SubVFeederGroup.ccRefer().cmDesFeederRPMBox
-      .get(7).ccSetIsActivated(mnVFRunningPLnVII);
-    SubVFeederGroup.ccRefer().cmDesFeederRPMBox
-      .get(8).ccSetIsActivated(mnVFRunningPLnVIII);
-    //--
-    SubVFeederGroup.ccRefer().cmDesFeederRPMBox
-      .get(9).ccSetIsActivated(mnVFRunningPLnIX);
-    SubVFeederGroup.ccRefer().cmDesFeederRPMBox
-      .get(10).ccSetIsActivated(mnVFRunningPLnX);
-    
-    //-- v feeder ** plc -> pc **stuck
-    SubVFeederGroup.ccRefer().cmDesFeederRPMGauge
-      .get(1).ccSetIsActivated(mnVFStuckPLnI);
-    SubVFeederGroup.ccRefer().cmDesFeederRPMGauge
-      .get(2).ccSetIsActivated(mnVFStuckPLnII);
-    SubVFeederGroup.ccRefer().cmDesFeederRPMGauge
-      .get(3).ccSetIsActivated(mnVFStuckPLnIII);
-    SubVFeederGroup.ccRefer().cmDesFeederRPMGauge
-      .get(4).ccSetIsActivated(mnVFStuckPLnIV);
-    SubVFeederGroup.ccRefer().cmDesFeederRPMGauge
-      .get(5).ccSetIsActivated(mnVFStuckPLnV);
-    SubVFeederGroup.ccRefer().cmDesFeederRPMGauge
-      .get(6).ccSetIsActivated(mnVFStuckPLnVI);
-    //--
-    SubVFeederGroup.ccRefer().cmDesFeederRPMGauge
-      .get(7).ccSetIsActivated(mnVFStuckPLnVII);
-    SubVFeederGroup.ccRefer().cmDesFeederRPMGauge
-      .get(8).ccSetIsActivated(mnVFStuckPLnVIII);
-    //--
-    SubVFeederGroup.ccRefer().cmDesFeederRPMGauge
-      .get(9).ccSetIsActivated(mnVFStuckPLnVI);
-    SubVFeederGroup.ccRefer().cmDesFeederRPMGauge
-      .get(10).ccSetIsActivated(mnVFStuckPLnX);
-    
+
     //-- filler supply
     //-- filler supply ** pc -> plc
     mnFillerSystemSW=SubOperativeGroup.ccRefer().cmDesMotorSW
