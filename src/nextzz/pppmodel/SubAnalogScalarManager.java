@@ -24,7 +24,6 @@ import java.util.ArrayList;
 import java.util.List;
 import kosui.ppplogic.ZcScaledModel;
 import nextzz.pppdelegate.SubAnalogDelegator;
-import nextzz.pppswingui.SubMonitorPane;
 
 public final class SubAnalogScalarManager {
   
@@ -34,7 +33,6 @@ public final class SubAnalogScalarManager {
   public static final String Q_TYPE_TEMP = "temp";//.. celcius
   public static final String Q_TYPE_PRES = "pres";//.. kilo paska
   public static final String Q_TYPE_TPH  = "tph"; //.. ton
-  public static final String Q_TYPE_DTD  = "dtd"; //.. digital to digial
   public static final String Q_TYPE_MISC = "misc";//.. WTF??
   
 
@@ -48,6 +46,8 @@ public final class SubAnalogScalarManager {
   
   private final List<ZcScaledModel> cmListOfCTSlotModel
     = new ArrayList<ZcScaledModel>(32);
+  
+  //===
     
   public final void ccInit(){
     
@@ -60,9 +60,6 @@ public final class SubAnalogScalarManager {
   
   //=== Feeder Speed
   
-  
-  
-  
   //=== CT Slot
   
   synchronized public final int ccGetCTSlotSpan(int pxIndex){
@@ -70,83 +67,11 @@ public final class SubAnalogScalarManager {
   }//+++
   
   synchronized public final int ccGetScaledCTSlotValue(int pxIndex){
-    switch(pxIndex){
-      
-      case 0:return cmListOfCTSlotModel.get(0)
-        .ccToScaledIntegerValue(SubAnalogDelegator.mnCTSlotZ);
-      case 1:return cmListOfCTSlotModel.get(1)
-        .ccToScaledIntegerValue(SubAnalogDelegator.mnCTSlotI);
-      case 2:return cmListOfCTSlotModel.get(2)
-        .ccToScaledIntegerValue(SubAnalogDelegator.mnCTSlotII);
-      case 3:return cmListOfCTSlotModel.get(3)
-        .ccToScaledIntegerValue(SubAnalogDelegator.mnCTSlotIII);
-      
-      case 4:return cmListOfCTSlotModel.get(4)
-        .ccToScaledIntegerValue(SubAnalogDelegator.mnCTSlotIV);
-      case 5:return cmListOfCTSlotModel.get(5)
-        .ccToScaledIntegerValue(SubAnalogDelegator.mnCTSlotV);
-      case 6:return cmListOfCTSlotModel.get(6)
-        .ccToScaledIntegerValue(SubAnalogDelegator.mnCTSlotVI);
-      case 7:return cmListOfCTSlotModel.get(7)
-        .ccToScaledIntegerValue(SubAnalogDelegator.mnCTSlotVII);
-      
-      case  8:return cmListOfCTSlotModel.get( 8)
-        .ccToScaledIntegerValue(SubAnalogDelegator.mnCTSlotVIII);
-      case  9:return cmListOfCTSlotModel.get( 9)
-        .ccToScaledIntegerValue(SubAnalogDelegator.mnCTSlotIX);
-      case 10:return cmListOfCTSlotModel.get(10)
-        .ccToScaledIntegerValue(SubAnalogDelegator.mnCTSlotX);
-      case 11:return cmListOfCTSlotModel.get(11)
-        .ccToScaledIntegerValue(SubAnalogDelegator.mnCTSlotXI);
-      
-      case 12:return cmListOfCTSlotModel.get(12)
-        .ccToScaledIntegerValue(SubAnalogDelegator.mnCTSlotXII);
-      case 13:return cmListOfCTSlotModel.get(13)
-        .ccToScaledIntegerValue(SubAnalogDelegator.mnCTSlotXIII);
-      case 14:return cmListOfCTSlotModel.get(14)
-        .ccToScaledIntegerValue(SubAnalogDelegator.mnCTSlotXIV);
-      case 15:return cmListOfCTSlotModel.get(15)
-        .ccToScaledIntegerValue(SubAnalogDelegator.mnCTSlotXV);
-      
-      case 16:return cmListOfCTSlotModel.get(16)
-        .ccToScaledIntegerValue(SubAnalogDelegator.mnCTSlotXVI);
-      case 17:return cmListOfCTSlotModel.get(17)
-        .ccToScaledIntegerValue(SubAnalogDelegator.mnCTSlotXVII);
-      case 18:return cmListOfCTSlotModel.get(18)
-        .ccToScaledIntegerValue(SubAnalogDelegator.mnCTSlotXVIII);
-      case 19:return cmListOfCTSlotModel.get(19)
-        .ccToScaledIntegerValue(SubAnalogDelegator.mnCTSlotXIX);
-      
-      case 20:return cmListOfCTSlotModel.get(20)
-        .ccToScaledIntegerValue(SubAnalogDelegator.mnCTSlotXX);
-      case 21:return cmListOfCTSlotModel.get(21)
-        .ccToScaledIntegerValue(SubAnalogDelegator.mnCTSlotXXI);
-      case 22:return cmListOfCTSlotModel.get(22)
-        .ccToScaledIntegerValue(SubAnalogDelegator.mnCTSlotXXII);
-      case 23:return cmListOfCTSlotModel.get(23)
-        .ccToScaledIntegerValue(SubAnalogDelegator.mnCTSlotXXIII);
-      
-      case 24:return cmListOfCTSlotModel.get(24)
-        .ccToScaledIntegerValue(SubAnalogDelegator.mnCTSlotXXIV);
-      case 25:return cmListOfCTSlotModel.get(25)
-        .ccToScaledIntegerValue(SubAnalogDelegator.mnCTSlotXXV);
-      case 26:return cmListOfCTSlotModel.get(26)
-        .ccToScaledIntegerValue(SubAnalogDelegator.mnCTSlotXXVI);
-      case 27:return cmListOfCTSlotModel.get(27)
-        .ccToScaledIntegerValue(SubAnalogDelegator.mnCTSlotXXVII);
-      
-      case 28:return cmListOfCTSlotModel.get(28)
-        .ccToScaledIntegerValue(SubAnalogDelegator.mnCTSlotXXVIII);
-      case 29:return cmListOfCTSlotModel.get(29)
-        .ccToScaledIntegerValue(SubAnalogDelegator.mnCTSlotXXIX);
-      case 30:return cmListOfCTSlotModel.get(30)
-        .ccToScaledIntegerValue(SubAnalogDelegator.mnCTSlotXXX);
-      case 31:return cmListOfCTSlotModel.get(31)
-        .ccToScaledIntegerValue(SubAnalogDelegator.mnCTSlotXXXI);
-      
-      default:return 0;
-    
-    }//..?
+    int lpFixedIndex=pxIndex&0x1F;
+    return cmListOfCTSlotModel.get(lpFixedIndex)
+      .ccToScaledIntegerValue(
+        SubAnalogDelegator.ccGetCTSlotAD(lpFixedIndex)
+    );
   }//+++
   
  }//***eof

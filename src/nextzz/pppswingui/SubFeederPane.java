@@ -38,6 +38,7 @@ import kosui.ppputil.VcConst;
 import kosui.ppputil.VcNumericUtility;
 import kosui.ppputil.VcTranslator;
 import nextzz.pppdelegate.SubFeederDelegator;
+import nextzz.pppmain.MainActionManager;
 import nextzz.pppmodel.MainSpecificator;
 
 public final class SubFeederPane implements SiTabbable{
@@ -99,6 +100,7 @@ public final class SubFeederPane implements SiTabbable{
           lpCurrentValue
         );
         if(!VcConst.ccIsValidString(lpNewValueString)){return;}
+        if(lpNewValueString.equals(ScConst.C_M_CANCEL)){return;}
         int lpNewValue=VcNumericUtility
           .ccParseIntegerString(lpNewValueString);
         lpCurrentSpinner.setValue(
@@ -134,26 +136,38 @@ public final class SubFeederPane implements SiTabbable{
     for(int i=1;i<=10;i++){
       
       //-- V
+      
+      //-- V ** register
       lpVFeederPanel.add(cmDesVFeederBlock.get(i));
       cmMapOfConfigSW.put(
         cmDesVFeederBlock.get(i) .cmConfigSW,
         cmDesVFeederBlock.get(i) .cmSpinner
       );
+      //-- V ** event
+      cmDesVFeederBlock.get(i).cmForceSW
+        .addActionListener(MainActionManager.ccRefer().cmNotchListener);
+      cmDesVFeederBlock.get(i).cmDisableSW
+        .addActionListener(MainActionManager.ccRefer().cmNotchListener);
       cmDesVFeederBlock.get(i).cmConfigSW
         .addActionListener(cmFeederSpeedConfigListener);
       cmDesVFeederBlock.get(i).cmSpinner
         .addChangeListener(cmFeederSpeedChangeListener);
-      if(i>=MainSpecificator.ccRefer().mnVFeederAmount){
+      
+      //-- V ** hide
+      if(i>MainSpecificator.ccRefer().mnVFeederAmount){
         ScConst.ccHideComponent(cmDesVFeederBlock.get(i));
       }//..?
       
-      //-- R
+      //-- R 
+      //-- R ** register
       lpRFeederPanel.add(cmDesRFeederBlock.get(i));
+      //-- R ** event
+      //-- R ** hide
       ScConst.ccHideComponent(cmDesRFeederBlock.get(i));
       
     }//..~
     
-    //--
+    //-- pack
     cmPane.add(lpVFeederPanel,BorderLayout.LINE_START);
     cmPane.add(lpRFeederPanel,BorderLayout.LINE_END);
     

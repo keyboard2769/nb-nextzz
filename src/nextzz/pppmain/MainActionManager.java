@@ -31,10 +31,12 @@ import kosui.ppputil.VcLocalCoordinator;
 import kosui.ppputil.VcLocalTagger;
 import kosui.ppputil.VcNumericUtility;
 import kosui.ppputil.VcSwingCoordinator;
+import nextzz.pppdelegate.SubFeederDelegator;
 import nextzz.pppdelegate.SubVPreparingDelegator;
 import nextzz.ppplocalui.SubIndicativeGroup;
 import nextzz.pppswingui.SubAssistantPane;
 import static nextzz.pppmain.MainSketch.C_COLOR_BACKGROUD;
+import nextzz.pppswingui.SubFeederPane;
 
 public final class MainActionManager {
   
@@ -123,6 +125,18 @@ public final class MainActionManager {
       //-- tower
       SubVPreparingDelegator.mnTowerBlowerTGSW=
         SubAssistantPane.ccRefer().cmTowerBlowerNT.getSelectedIndex()==0;
+      
+      //-- feeder
+      for(
+        int i=SubFeederDelegator.C_VF_INIT_ORDER;
+        i<=SubFeederDelegator.C_VF_VALID_MAX;
+        i++
+      ){
+        SubFeederDelegator.ccSetVFeederForce(i,
+          SubFeederPane.ccRefer().cmDesVFeederBlock.get(i).ccGetIsForced());
+        SubFeederDelegator.ccSetVFeederDisable(i,
+          SubFeederPane.ccRefer().cmDesVFeederBlock.get(i).ccGetIsDisabled());
+      }//..~
       
       //-- aggregate
       

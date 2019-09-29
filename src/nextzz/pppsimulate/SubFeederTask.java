@@ -28,7 +28,6 @@ import kosui.ppplogic.ZcTimer;
 import kosui.ppplogic.ZiTask;
 import kosui.ppputil.VcLocalTagger;
 import nextzz.pppdelegate.SubFeederDelegator;
-import nextzz.pppdelegate.SubVPreparingDelegator;
 import nextzz.pppmodel.MainSpecificator;
 
 public final class SubFeederTask implements ZiTask{
@@ -109,9 +108,12 @@ public final class SubFeederTask implements ZiTask{
     //-- vf ** output
     for(int i=1;i<=8;i++){
       cmDesVFeederHOOK.get(i).ccHook(cmVFeederChainCTRL.ccGetPulseAt(i));
-      dcDesVFeeder.get(i).ccContact(
+      boolean lpPermmision = (!dcDesVFeeder.get(i).ccIsTripped())
+        && (!SubFeederDelegator.ccGetVFeederDisable(i));
+      boolean lpEngage = 
         cmDesVFeederHOOK.get(i).ccIsHooked()
-      );
+        ||SubFeederDelegator.ccGetVFeederForce(i);
+      dcDesVFeeder.get(i).ccContact(lpPermmision&&lpEngage);
     }//+++
     
     //-- vf ** feedback
@@ -132,7 +134,6 @@ public final class SubFeederTask implements ZiTask{
 
   @Override public void ccSimulate() {
     
-    for(ZcMotor it:dcDesVFeeder){it.ccSimulate(0.66f);}
     for(
       int i=SubFeederDelegator.C_VF_INIT_ORDER;
       i<=SubFeederDelegator.C_VF_VALID_MAX;
@@ -140,10 +141,11 @@ public final class SubFeederTask implements ZiTask{
     ){
       simDesVFeederSensorTM.get(i).ccAct(
             dcDesVFeeder.get(i).ccIsContacted()
-        && (SubFeederDelegator.ccGetVFeederSpeed(i)>192)
+        && (SubFeederDelegator.ccGetVFeederSpeed(i)>512)
       );
       dcDesVFSG[i]=!simDesVFeederSensorTM.get(i).ccIsUp();
     }//..~
+    for(ZcMotor it:dcDesVFeeder){it.ccSimulate(0.66f);}
     
   }//+++
   

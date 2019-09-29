@@ -46,9 +46,9 @@ public class ScFeederBlock extends JPanel{
   
   public final JTextField cmField
     = ScFactory.ccCreateValueBox("000tph",64,22);
-  private final JToggleButton cmForceSW
+  public final JToggleButton cmForceSW
     = ScFactory.ccCreateCommandToggler("_force", 48, 22);
-  private final JToggleButton cmDisableSW
+  public final JToggleButton cmDisableSW
     = ScFactory.ccCreateCommandToggler("_disab", 48, 22);
   public final JButton cmConfigSW
     = ScFactory.ccCreateCommandButton("#", 22, 22);
@@ -75,6 +75,14 @@ public class ScFeederBlock extends JPanel{
   }//+++
   
   //===
+  
+  public final boolean ccGetIsForced(){
+    return cmForceSW.isSelected();
+  }//+++
+  
+  public final boolean ccGetIsDisabled(){
+    return cmDisableSW.isSelected();
+  }//+++
   
   public final int ccGetValue(){
     return VcNumericUtility.ccInteger(cmSpinner.getValue());

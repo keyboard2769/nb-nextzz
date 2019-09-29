@@ -36,8 +36,18 @@ public class SubFeederDelegator {
   
   public static volatile boolean 
     
-    //-- vf ** operate
+    //-- vf ** chain
     mnVFChainMSSW,mnVFChainMSPL,
+    
+    //-- vf ** force
+    mnVFForceSWnI,mnVFForceSWnII,mnVFForceSWnIII,mnVFForceSWnIV,
+    mnVFForceSWnV,mnVFForceSWnVI,mnVFForceSWnVII,mnVFForceSWnVIII,
+    mnVFForceSWnIX,mnVFForceSWnX,
+    
+    //-- vf ** disable
+    mnVFDisableSWnI,mnVFDisableSWnII,mnVFDisableSWnIII,mnVFDisableSWnIV,
+    mnVFDisableSWnV,mnVFDisableSWnVI,mnVFDisableSWnVII,mnVFDisableSWnVIII,
+    mnVFDisableSWnIX,mnVFDisableSWnX,
     
     //-- vf ** ax
     mnVFRunningPLnI,mnVFRunningPLnII,mnVFRunningPLnIII,mnVFRunningPLnIV,
@@ -194,6 +204,74 @@ public class SubFeederDelegator {
       case  8: return mnVFRunningPLnVIII;
       case  9: return mnVFRunningPLnIX;
       case 10: return mnVFRunningPLnX;
+      default:return false;
+    }//..?
+  }//+++
+  
+  //===
+  
+  public static final void ccSetVFeederForce(int pxOrder, boolean pxVal){
+    switch(pxOrder){
+      case  1:mnVFForceSWnI=pxVal;break;
+      case  2:mnVFForceSWnII=pxVal;break;
+      case  3:mnVFForceSWnIII=pxVal;break;
+      case  4:mnVFForceSWnIV=pxVal;break;
+      case  5:mnVFForceSWnV=pxVal;break;
+      case  6:mnVFForceSWnVI=pxVal;break;
+      case  7:mnVFForceSWnVII=pxVal;break;
+      case  8:mnVFForceSWnVIII=pxVal;break;
+      case  9:mnVFForceSWnIX=pxVal;break;
+      case 10:mnVFForceSWnX=pxVal;break;
+      default:break;
+    }//..?
+  }//+++
+  
+  public static final boolean ccGetVFeederForce(int pxOrder){
+    switch(pxOrder){
+      case  1: return mnVFForceSWnI;
+      case  2: return mnVFForceSWnII;
+      case  3: return mnVFForceSWnIII;
+      case  4: return mnVFForceSWnIV;
+      case  5: return mnVFForceSWnV;
+      case  6: return mnVFForceSWnVI;
+      case  7: return mnVFForceSWnVII;
+      case  8: return mnVFForceSWnVIII;
+      case  9: return mnVFForceSWnIX;
+      case 10: return mnVFForceSWnX;
+      default:return false;
+    }//..?
+  }//+++
+  
+  //===
+  
+  public static final void ccSetVFeederDisable(int pxOrder, boolean pxVal){
+    switch(pxOrder){
+      case  1:mnVFDisableSWnI=pxVal;break;
+      case  2:mnVFDisableSWnII=pxVal;break;
+      case  3:mnVFDisableSWnIII=pxVal;break;
+      case  4:mnVFDisableSWnIV=pxVal;break;
+      case  5:mnVFDisableSWnV=pxVal;break;
+      case  6:mnVFDisableSWnVI=pxVal;break;
+      case  7:mnVFDisableSWnVII=pxVal;break;
+      case  8:mnVFDisableSWnVIII=pxVal;break;
+      case  9:mnVFDisableSWnIX=pxVal;break;
+      case 10:mnVFDisableSWnX=pxVal;break;
+      default:break;
+    }//..?
+  }//+++
+  
+  public static final boolean ccGetVFeederDisable(int pxOrder){
+    switch(pxOrder){
+      case  1: return mnVFDisableSWnI;
+      case  2: return mnVFDisableSWnII;
+      case  3: return mnVFDisableSWnIII;
+      case  4: return mnVFDisableSWnIV;
+      case  5: return mnVFDisableSWnV;
+      case  6: return mnVFDisableSWnVI;
+      case  7: return mnVFDisableSWnVII;
+      case  8: return mnVFDisableSWnVIII;
+      case  9: return mnVFDisableSWnIX;
+      case 10: return mnVFDisableSWnX;
       default:return false;
     }//..?
   }//+++

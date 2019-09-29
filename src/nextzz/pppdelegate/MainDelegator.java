@@ -20,7 +20,6 @@
 package nextzz.pppdelegate;
 
 import nextzz.ppplocalui.SubIndicativeGroup;
-import nextzz.ppplocalui.SubVBondGroup;
 import nextzz.pppmain.MainSketch;
 
 /**
@@ -57,7 +56,6 @@ public final class MainDelegator {
     SubVPreparingDelegator.ccBind();
     
     //-- r
-    
     
     //-- s
     
