@@ -268,12 +268,14 @@ public final class SubOperativeGroup implements EiGroup{
     cmRCZeroSW.ccHide();//..optionally disposed
     
     //-- mixture
+    lpPotentialW = 70;//[later]::.. move to constant holder 
+    lpPotentialH = ConstLocalUI.C_DEFAULT_SINGLELINE_H;
     //-- mixture ** anchor
     cmMixtureControlPane.ccSetLocation
       (cmZeroPane, ConstLocalUI.C_SIDE_MARGIN, 0);
     cmMixtureControlPane.ccSetH(cmMotorSwitchPane.ccGetH());
     //-- mixture ** resize
-    cmMixerGateHoldSW.ccSetW(70);
+    cmMixerGateHoldSW.ccSetSize(lpPotentialW,lpPotentialH);
     cmMixerGateAutoSW.ccSetSize(cmMixerGateHoldSW);
     cmMixerGateOpenSW.ccSetSize(cmMixerGateAutoSW);
     //-- mixture ** reallocate

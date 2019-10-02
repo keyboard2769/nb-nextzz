@@ -26,7 +26,6 @@ import java.util.List;
 import kosui.ppplocalui.EcButton;
 import kosui.ppplocalui.EcConst;
 import kosui.ppplocalui.EcElement;
-import kosui.ppplocalui.EcFactory;
 import kosui.ppplocalui.EcGauge;
 import kosui.ppplocalui.EcShape;
 import kosui.ppplocalui.EcText;
@@ -193,13 +192,6 @@ public final class SubWeigherGroup implements EiGroup{
     int lpPotentialW;
     int lpPotentialH;
     
-    //-- disposing ** zero lock
-    cmDesAGLockSW.get(0).ccHide();
-    cmDesFRLockSW.get(0).ccHide();
-    cmDesASLockSW.get(0).ccHide();
-    cmDesRCLockSW.get(0).ccHide();
-    cmDesADLockSW.get(0).ccHide();
-    
     //-- plate 
     //-- plate ** coloring
     final int lpPlateColor=(EcConst.ccAdjustColor(MainSketch.C_COLOR_BACKGROUD, -8));
@@ -234,7 +226,8 @@ public final class SubWeigherGroup implements EiGroup{
       MainSpecificator.ccRefer().mnAGCattegoryCount
     );
     ConstLocalUI.ccAssenbleCell(
-      cmAGCellLV, cmAGTargetCB, cmAGCellCB,cmDesAGWeighSW.get(0),
+      cmAGCellLV, cmAGTargetCB, cmAGCellCB,
+      cmDesAGLockSW.get(0),cmDesAGWeighSW.get(0),
       cmPlateAG.ccGetX()
         + (cmPlateAG.ccGetW()-lpSingleCellW)/2,
       cmPlateAG.ccEndY()-lpSingleCellH-ConstLocalUI.C_INPANE_GAP
@@ -247,7 +240,8 @@ public final class SubWeigherGroup implements EiGroup{
       3//.. always set by three, hiding is done separately
     );
     ConstLocalUI.ccAssenbleCell(
-      cmFRCellLV, cmFRTargetCB, cmFRCellCB,cmDesFRWeighSW.get(0),
+      cmFRCellLV, cmFRTargetCB, cmFRCellCB,
+      cmDesFRLockSW.get(0),cmDesFRWeighSW.get(0),
       cmPlateFR.ccGetX()+ConstLocalUI.C_INPANE_GAP,
       cmPlateFR.ccEndY()-lpSingleCellH-ConstLocalUI.C_INPANE_GAP
     );
@@ -259,7 +253,8 @@ public final class SubWeigherGroup implements EiGroup{
       3//.. always set by three, hiding is done separately
     );
     ConstLocalUI.ccAssenbleCell(
-      cmASCellLV, cmASTargetCB, cmASCellCB,cmDesASWeighSW.get(0),
+      cmASCellLV, cmASTargetCB, cmASCellCB,
+      cmDesASLockSW.get(0),cmDesASWeighSW.get(0),
       cmPlateAS.ccGetX()+ConstLocalUI.C_INPANE_GAP,
       cmPlateAS.ccEndY()-lpSingleCellH-ConstLocalUI.C_INPANE_GAP
     );
@@ -271,7 +266,8 @@ public final class SubWeigherGroup implements EiGroup{
       3//.. always set by three, hiding is done separately
     );
     ConstLocalUI.ccAssenbleCell(
-      cmRCCellLV, cmRCTargetCB, cmRCCellCB,cmDesRCWeighSW.get(0),
+      cmRCCellLV, cmRCTargetCB, cmRCCellCB,
+      cmDesRCLockSW.get(0),cmDesRCWeighSW.get(0),
       cmPlateRC.ccGetX()+ConstLocalUI.C_INPANE_GAP,
       cmPlateRC.ccEndY()-lpSingleCellH-ConstLocalUI.C_INPANE_GAP
     );
@@ -283,7 +279,8 @@ public final class SubWeigherGroup implements EiGroup{
       3//.. always set by three, hiding is done separately
     );
     ConstLocalUI.ccAssenbleCell(
-      cmADCellLV, cmADTargetCB, cmADCellCB,cmDesADWeighSW.get(0),
+      cmADCellLV, cmADTargetCB, cmADCellCB,
+      cmDesADWeighSW.get(0),cmDesADWeighSW.get(0),
       cmPlateAD.ccGetX()+ConstLocalUI.C_INPANE_GAP,
       cmPlateAD.ccEndY()-lpSingleCellH-ConstLocalUI.C_INPANE_GAP
     );

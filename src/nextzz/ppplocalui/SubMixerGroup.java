@@ -53,13 +53,13 @@ public final class SubMixerGroup implements EiGroup{
   
   //-- box
   public final EcValueBox
-    cmWetCountBox = new EcValueBox(VcTranslator.tr("_wet"), "00 S"),
-    cmDryCountBox = new EcValueBox(VcTranslator.tr("_dry"), "00 S"),
+    cmWetCountBox = new EcValueBox("_wet", "00 S"),
+    cmDryCountBox = new EcValueBox("_dry", "00 S"),
     cmMixerTemperatureBox = new EcValueBox("_mixer", "-000 'C")
   ;//...
   public final EcText
-    cmWetText = new EcText("_wet"),
-    cmDryText = new EcText("_dry")
+    cmWetText = new EcText(VcTranslator.tr("_wet")),
+    cmDryText = new EcText(VcTranslator.tr("_dry"))
   ;//...
   
   //===
@@ -101,6 +101,9 @@ public final class SubMixerGroup implements EiGroup{
     cmDryText.ccSetTextColor(EcConst.C_LIT_GRAY);
     cmWetText.ccSetLocation(cmWetCountBox,'l');
     cmWetText.ccSetTextColor(EcConst.C_LIT_GRAY);
+    ConstLocalUI.ccSetupClickableBoxColor(cmDryCountBox);
+    ConstLocalUI.ccSetupClickableBoxColor(cmWetCountBox);
+    ConstLocalUI.ccSetupTemperatureBoxColor(cmMixerTemperatureBox);
     
   }//..!
 

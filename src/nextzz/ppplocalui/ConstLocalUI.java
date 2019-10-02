@@ -325,7 +325,7 @@ public final class ConstLocalUI {
   
   public static final void ccAssenbleCell(
     EcGauge pxGauge, EcValueBox pxTarget, EcValueBox pxCell,
-    EcButton pxDischarger,
+    EcButton pxLocker,EcButton pxDischarger,
     int pxX, int pxY
   ){
     
@@ -336,20 +336,24 @@ public final class ConstLocalUI {
     if(pxDischarger==null){return;}
     
     //-- resizing
+    //   .. i dont know how to make this thing clean 
     final int lpGaugeWidth=4;
     pxGauge.ccSetW(lpGaugeWidth);
     pxGauge.ccSetH(pxTarget.ccGetH()+pxCell.ccGetH()-1);
     pxDischarger.ccSetW(pxGauge.ccGetW()+pxCell.ccGetW());
-    pxDischarger.ccSetH(pxCell.ccGetH());
+    pxLocker.ccSetW(pxDischarger.ccGetW());
+    pxLocker.ccSetH(C_DEFAULT_SINGLELINE_H*2/3);
+    pxDischarger.ccSetH(C_DEFAULT_SINGLELINE_H);
     
     //-- restyling
-    //[todo]::%target box color style%
-    //[todo]::%cell box color style%
+    ccSetupClickableBoxColor(pxTarget);
+    ccSetupPressureBoxColor(pxCell);
     
     //-- assemble
     int lpX=pxX&0x7FF;
     int lpY=pxY&0x7FF;
-    pxGauge.ccSetLocation(lpX, lpY);
+    pxLocker.ccSetLocation(lpX, lpY);
+    pxGauge.ccSetLocation(pxLocker,'b');
     pxTarget.ccSetLocation(
       pxGauge.ccEndX(),
       pxGauge.ccGetY()

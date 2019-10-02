@@ -145,10 +145,11 @@ public final class SubVSurgeGroup implements EiGroup{
       +ConstLocalUI.C_INPANE_GAP;
     lpPotentialY = cmPlate.ccGetY()+ConstLocalUI.C_INPANE_GAP;
     lpPotentialW = SubWeigherGroup.ccRefer().cmPlateAG.ccGetW()/4;
-    cmOverFlowedLV.ccSetW(lpPotentialW);
-    cmOverFlowedGateSW.ccSetW(lpPotentialW);
-    cmOverSizedLV.ccSetW(lpPotentialW);
-    cmOverSizedGateSW.ccSetW(lpPotentialW);
+    lpPotentialH = ConstLocalUI.C_DEFAULT_SINGLELINE_H;
+    cmOverFlowedLV.ccSetSize(lpPotentialW,lpPotentialH);
+    cmOverFlowedGateSW.ccSetSize(lpPotentialW,lpPotentialH);
+    cmOverSizedLV.ccSetSize(lpPotentialW,lpPotentialH);
+    cmOverSizedGateSW.ccSetSize(lpPotentialW,lpPotentialH);
     cmOverFlowedLV.ccSetLocation(lpPotentialX, lpPotentialY);
     cmOverSizedLV.ccSetLocation(cmOverFlowedLV, ConstLocalUI.C_INPANE_GAP,0);
     cmOverFlowedGateSW
@@ -163,6 +164,7 @@ public final class SubVSurgeGroup implements EiGroup{
       cmOverFlowedGateSW.ccCenterY()
     );
     cmSandTemperatueText.ccSetTextColor(EcConst.C_LIT_GRAY);
+    ConstLocalUI.ccSetupTemperatureBoxColor(cmSandTemperatureCB);
     
     //-- ag surge ** dispose
     cmDesHotbinLV.get(0).ccHide();
@@ -288,6 +290,7 @@ public final class SubVSurgeGroup implements EiGroup{
     cmTankOutPL.ccSetH(lpPotentialH);
     cmTankInPL.ccSetLocation(cmAsphaultTankShape, ConstLocalUI.C_INPANE_GAP,0);
     cmTankOutPL.ccSetLocation(cmTankInPL,0, ConstLocalUI.C_INPANE_GAP);
+    ConstLocalUI.ccSetupTemperatureBoxColor(cmPipeTemperatureCB);
     
   }//..!
   
