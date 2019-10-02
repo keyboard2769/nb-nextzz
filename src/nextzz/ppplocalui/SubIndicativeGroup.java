@@ -36,7 +36,7 @@ public final class SubIndicativeGroup implements EiGroup{
 
   //===
   
-  public final EcElement cmSystemPopSW = new EcElement("&pop", 0x9999);
+  public final EcElement cmSystemPopSW = new EcElement("_pop", 0x9999);
   public final EcElement cmRunningPL = new EcElement("Z");
   public final EcElement cmLinkageOKayPL = new EcElement("L");
   public final EcElement cmLinkageSendingPL = new EcElement("S");

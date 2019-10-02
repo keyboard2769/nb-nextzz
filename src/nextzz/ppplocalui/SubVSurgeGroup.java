@@ -35,6 +35,7 @@ import kosui.ppplocalui.EiGroup;
 import kosui.ppplogic.ZcRangedModel;
 import kosui.ppputil.VcConst;
 import kosui.ppputil.VcLocalConsole;
+import kosui.ppputil.VcTranslator;
 import nextzz.pppmain.MainSketch;
 import nextzz.pppmodel.MainSpecificator;
 
@@ -52,23 +53,23 @@ public final class SubVSurgeGroup implements EiGroup{
   public final EcGraph cmHotbinShape
     = new EcGraph(ConstLocalUI.O_HOT_BIN);
   public final EcElement
-    cmOverFlowedLV = new EcElement("_off"),
-    cmOverSizedLV = new EcElement("_oss")
+    cmOverFlowedLV = new EcElement(VcTranslator.tr("_ofbin")),
+    cmOverSizedLV = new EcElement(VcTranslator.tr("_osbin"))
   ;//...
   public final EcButton
-    cmOverFlowedGateSW = new EcButton("_dis", 0),
-    cmOverSizedGateSW = new EcButton("_dis", 0)
+    cmOverFlowedGateSW = new EcButton("_disc", 0x3711),
+    cmOverSizedGateSW = new EcButton("_disc", 0x3712)
   ;//..
   public final EcText cmSandTemperatueText
-    = new EcText("_sand");
+    = new EcText(VcTranslator.tr("_sandt"));
   public final EcValueBox cmSandTemperatureCB
     = new EcValueBox("_sand", "-000 'C");
   public final List<EcGauge> cmDesHotbinLV
     = Collections.unmodifiableList(Arrays.asList(
       new EcGauge("??"),
-      new EcGauge("_i"),new EcGauge("_n"),new EcGauge("_m"),
-      new EcGauge("_iv"),new EcGauge("_v"),new EcGauge("_vi"),
-      new EcGauge("_vn")
+      new EcGauge("ag1"),new EcGauge("ag2"),new EcGauge("ag3"),
+      new EcGauge("ag4"),new EcGauge("ag5"),new EcGauge("ag6"),
+      new EcGauge("ag7")
     ));//...
   
   //-- fr
@@ -76,40 +77,41 @@ public final class SubVSurgeGroup implements EiGroup{
   public final EcGauge cmDustSiloLV = new EcGauge("_fds");
     public final EcGraph cmDustSiloShape
       = new EcGraph(ConstLocalUI.O_BIN_CAN_TANK);
-    public final EcText cmDustSiloText = new EcText("_fds");
+    public final EcText cmDustSiloText = new EcText(VcTranslator.tr("_fds"));
   public final EcGauge cmFillerSiloLV = new EcGauge("_ffs");
     public final EcGraph cmFillerSiloShape
       = new EcGraph(ConstLocalUI.O_BIN_CAN_TANK);
-    public final EcText cmFillerSiloText = new EcText("_ffs");
+    public final EcText cmFillerSiloText = new EcText(VcTranslator.tr("_ffs"));
   public final EcGauge cmCementSiloLV = new EcGauge("_fcs");
     public final EcGraph cmCementSiloShape
       = new EcGraph(ConstLocalUI.O_BIN_CAN_TANK);
-    public final EcText cmCementSiloText = new EcText("_fcs");
+    public final EcText cmCementSiloText = new EcText(VcTranslator.tr("_fcs"));
   //-- fr ** bin
   public final EcGauge cmDustBinLV = new EcGauge("_fd");
     public final EcGraph cmDustBinShape
       = new EcGraph(ConstLocalUI.O_BIN_CAN_TANK);
-    public final EcText cmDustBinText = new EcText("_fd");
+    public final EcText cmDustBinText = new EcText(VcTranslator.tr("_fd"));
   public final EcGauge cmFillerBinLV = new EcGauge("_ff");
     public final EcGraph cmFillerBinShape
       = new EcGraph(ConstLocalUI.O_BIN_CAN_TANK);
-    public final EcText cmFillerBinText = new EcText("_ff");
+    public final EcText cmFillerBinText = new EcText(VcTranslator.tr("_ff"));
   public final EcGauge cmCementBinLV = new EcGauge("_fc");
     public final EcGraph cmCementBinShape
       = new EcGraph(ConstLocalUI.O_BIN_CAN_TANK);
-    public final EcText cmCementBinText = new EcText("_fc");
+    public final EcText cmCementBinText = new EcText(VcTranslator.tr("_fc"));
   
   //-- as
   public final EcGauge cmAsphaultTankLV = new EcGauge("_ast");
   public final EcGraph cmAsphaultTankShape
     = new EcGraph(ConstLocalUI.O_BIN_CAN_TANK);
-  public final EcText cmAsphaultTankText = new EcText("_ast");
+  public final EcText cmAsphaultTankText
+    = new EcText(VcTranslator.tr("_ast"));
   public final EcElement
     cmTankInPL  = new EcElement("< #"),
     cmTankOutPL = new EcElement("> #")
   ;//...
   public final EcText cmPipeTemperatueText
-    = new EcText("_pipe");
+    = new EcText(VcTranslator.tr("_pipet"));
   public final EcValueBox cmPipeTemperatureCB
     = new EcValueBox("_pipe", "-000 'C");
   

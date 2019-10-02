@@ -33,6 +33,7 @@ import kosui.ppplocalui.EcText;
 import kosui.ppplocalui.EcValueBox;
 import kosui.ppplocalui.EiGroup;
 import kosui.ppputil.VcConst;
+import kosui.ppputil.VcTranslator;
 import nextzz.pppmain.MainSketch;
 
 public final class SubVBondGroup implements EiGroup{
@@ -97,19 +98,21 @@ public final class SubVBondGroup implements EiGroup{
     = new EcIcon(ConstLocalUI.O_V_EXFAN_ON, ConstLocalUI.O_V_EXFAN_OFF);
   
   //-- operative
-  public final EcElement cmReadyPL = new EcElement("_ready");
-  public final EcButton cmStartSW = new EcButton("_start", 0x3621);
+  public final EcElement cmReadyPL
+    = new EcElement("_ready");
+  public final EcButton cmStartSW
+    = new EcButton("_start", 0x3621);
   public final EcValueBox cmBurnerDegreeCB = new EcValueBox("_vbo", "+000 %");
   public final EcValueBox cmExfanDegreeCB = new EcValueBox("_vdo", "+000 %");
   public final EcButton
     cmExfanCloseSW = new EcButton("-", 0x3631),
     cmExfanOpenSW  = new EcButton("+", 0x3632),
-    cmExfanAutoSW  = new EcButton("#", 0x3630)
+    cmExfanAutoSW  = new EcButton("_auto", 0x3630)
   ;//...
   public final EcButton
     cmBurnerCloseSW = new EcButton("-", 0x3641),
     cmBurnerOpenSW  = new EcButton("+", 0x3642),
-    cmBurnerAutoSW  = new EcButton("#", 0x3640)
+    cmBurnerAutoSW  = new EcButton("_auto", 0x3640)
   ;//...
   public final EcElement 
     cmOilPL = new EcElement("_oill"),
@@ -118,8 +121,8 @@ public final class SubVBondGroup implements EiGroup{
     cmFuelPL = new EcElement("_feuo")
   ;//...
   public final EcText
-    cmVExfanText = new EcText("_ve"),
-    cmVBurnerText = new EcText("_vb")
+    cmVExfanText = new EcText(VcTranslator.tr("_ve")),
+    cmVBurnerText = new EcText(VcTranslator.tr("_vb"))
   ;//...
   
   //-- motorative
@@ -129,8 +132,8 @@ public final class SubVBondGroup implements EiGroup{
     cmBelconBackwardPL = new EcLamp(">")
   ;//...
   public final EcElement
-    cmVDryerRollerA = new EcElement(),//.. A means burner side
-    cmVDryerRollerC = new EcElement() //.. C means belcon side
+    cmVDryerRollerA = new EcElement(" "),//.. A means burner side
+    cmVDryerRollerC = new EcElement(" ") //.. C means belcon side
   ;//...
   
   //===

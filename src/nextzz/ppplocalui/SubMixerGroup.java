@@ -28,6 +28,7 @@ import kosui.ppplocalui.EcShape;
 import kosui.ppplocalui.EcText;
 import kosui.ppplocalui.EcValueBox;
 import kosui.ppplocalui.EiGroup;
+import kosui.ppputil.VcTranslator;
 import nextzz.pppmain.MainSketch;
 
 public final class SubMixerGroup implements EiGroup{
@@ -52,8 +53,8 @@ public final class SubMixerGroup implements EiGroup{
   
   //-- box
   public final EcValueBox
-    cmWetCountBox = new EcValueBox("_wet", "00 S"),
-    cmDryCountBox = new EcValueBox("_dry", "00 S"),
+    cmWetCountBox = new EcValueBox(VcTranslator.tr("_wet"), "00 S"),
+    cmDryCountBox = new EcValueBox(VcTranslator.tr("_dry"), "00 S"),
     cmMixerTemperatureBox = new EcValueBox("_mixer", "-000 'C")
   ;//...
   public final EcText

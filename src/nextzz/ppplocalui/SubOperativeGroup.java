@@ -34,6 +34,7 @@ import kosui.ppplocalui.EcValueBox;
 import kosui.ppplocalui.EiGroup;
 import kosui.ppputil.VcLocalConsole;
 import kosui.ppputil.VcLocalCoordinator;
+import kosui.ppputil.VcTranslator;
 import nextzz.pppmain.MainActionManager;
 import nextzz.pppmain.MainSketch;
 
@@ -45,7 +46,8 @@ public final class SubOperativeGroup implements EiGroup{
   //===
   
   //-- motor pane
-  public final EcPane cmMotorSwitchPane = new EcPane("_motor");
+  public final EcPane cmMotorSwitchPane
+    = new EcPane(VcTranslator.tr("_motor"));
   public final List<EcButton> cmDesMotorSW
     = Collections.unmodifiableList(Arrays.asList(
     //--
@@ -77,61 +79,64 @@ public final class SubOperativeGroup implements EiGroup{
   ));//...
   
   //-- zero pane
-  public final EcPane cmZeroPane = new EcPane("&zero");
+  public final EcPane cmZeroPane
+    = new EcPane(VcTranslator.tr("_zero"));
   public final EcShape cmZeroPlate = new EcShape();
-  public final EcButton cmAGZeroSW = new EcButton("&ag", 0x3209);
-  public final EcButton cmFRZeroSW = new EcButton("&fr", 0x3209);
-  public final EcButton cmASZeroSW = new EcButton("&as", 0x3209);
-  public final EcButton cmRCZeroSW = new EcButton("&rc", 0x3209);
-  public final EcButton cmApplyZeroSW = new EcButton("&apply", 0x3209);
+  public final EcButton cmAGZeroSW = new EcButton("_ag", 0x3209);
+  public final EcButton cmFRZeroSW = new EcButton("_fr", 0x3209);
+  public final EcButton cmASZeroSW = new EcButton("_as", 0x3209);
+  public final EcButton cmRCZeroSW = new EcButton("_rc", 0x3209);
+  public final EcButton cmApplyZeroSW = new EcButton("_apply", 0x3209);
   
   //-- mixture pane
-  public final EcPane cmMixtureControlPane = new EcPane("&mixture");
-  public final EcButton cmMixerGateHoldSW = new EcButton("&hold", 0x3302);
-  public final EcButton cmMixerGateAutoSW = new EcButton("&auto", 0x3301);
-  public final EcButton cmMixerGateOpenSW = new EcButton("&open", 0x3303);
+  public final EcPane cmMixtureControlPane
+    = new EcPane(VcTranslator.tr("_mixd"));
+  public final EcButton cmMixerGateHoldSW = new EcButton("_mhold", 0x3302);
+  public final EcButton cmMixerGateAutoSW = new EcButton("_auto", 0x3301);
+  public final EcButton cmMixerGateOpenSW = new EcButton("_mopen", 0x3303);
   
   //-- booking pane
-  public final EcPane cmBookingPane = new EcPane("&book");
-  public final EcText cmRecipeText = new EcText("&recipe");
-  public final EcText cmNameText = new EcText("&name");
-  public final EcText cmKilogramText = new EcText("&kg");
-  public final EcText cmBatchText = new EcText("&batch");
+  public final EcPane cmBookingPane
+    = new EcPane(VcTranslator.tr("_book"));
+  public final EcText cmRecipeText = new EcText(VcTranslator.tr("_recipe"));
+  public final EcText cmNameText = new EcText(VcTranslator.tr("_name"));
+  public final EcText cmKilogramText = new EcText("kg");
+  public final EcText cmBatchText = new EcText(VcTranslator.tr("_batc"));
   public final EcShape cmBookingPlate = new EcShape();
-  public final EcButton cmWeighStartSW = new EcButton("&start", 0x34A1);
-  public final EcButton cmWeighPauseSW = new EcButton("&pause", 0x34A2);
-  public final EcButton cmWeighCancelSW = new EcButton("&cancel", 0x34A3);
+  public final EcButton cmWeighStartSW = new EcButton("_start", 0x34A1);
+  public final EcButton cmWeighPauseSW = new EcButton("_pause", 0x34A2);
+  public final EcButton cmWeighCancelSW = new EcButton("_cancel", 0x34A3);
   public final List<EcValueBox> cmDesRecipeTB
     = Collections.unmodifiableList(Arrays.asList(
-      new EcValueBox("&recipe", "000  ",0x3400),
-      new EcValueBox("&recipe", "000  ",0x3401),
-      new EcValueBox("&recipe", "000  ",0x3402),
-      new EcValueBox("&recipe", "000  ",0x3403),
-      new EcValueBox("&recipe", "000  ",0x3404)
+      new EcValueBox("_recipe", "000  ",0x3400),
+      new EcValueBox("_recipe", "000  ",0x3401),
+      new EcValueBox("_recipe", "000  ",0x3402),
+      new EcValueBox("_recipe", "000  ",0x3403),
+      new EcValueBox("_recipe", "000  ",0x3404)
   ));//...
   public final List<EcTextBox> cmDesNameCB
     = Collections.unmodifiableList(Arrays.asList(
-      new EcTextBox("&name", "--Z"),
-      new EcTextBox("&name", "--I"),
-      new EcTextBox("&name", "--II"),
-      new EcTextBox("&name", "--III"),
-      new EcTextBox("&name", "--IV")
+      new EcTextBox("_name", "--Z"),
+      new EcTextBox("_name", "--I"),
+      new EcTextBox("_name", "--II"),
+      new EcTextBox("_name", "--III"),
+      new EcTextBox("_name", "--IV")
   ));//...
   public final List<EcValueBox> cmDesKilogramTB
     = Collections.unmodifiableList(Arrays.asList(
-      new EcValueBox("&per", "0000 kg",0x3410),
-      new EcValueBox("&per", "0000 kg",0x3411),
-      new EcValueBox("&per", "0000 kg",0x3412),
-      new EcValueBox("&per", "0000 kg",0x3413),
-      new EcValueBox("&per", "0000 kg",0x3414)
+      new EcValueBox("_per", "0000 kg",0x3410),
+      new EcValueBox("_per", "0000 kg",0x3411),
+      new EcValueBox("_per", "0000 kg",0x3412),
+      new EcValueBox("_per", "0000 kg",0x3413),
+      new EcValueBox("_per", "0000 kg",0x3414)
   ));//...
   public final List<EcValueBox> cmDesBatchTB
     = Collections.unmodifiableList(Arrays.asList(
-      new EcValueBox("&batch", "0000 b",0x3420),
-      new EcValueBox("&batch", "0000 b",0x3421),
-      new EcValueBox("&batch", "0000 b",0x3422),
-      new EcValueBox("&batch", "0000 b",0x3423),
-      new EcValueBox("&batch", "0000 b",0x3424)
+      new EcValueBox("_batch", "0000 b",0x3420),
+      new EcValueBox("_batch", "0000 b",0x3421),
+      new EcValueBox("_batch", "0000 b",0x3422),
+      new EcValueBox("_batch", "0000 b",0x3423),
+      new EcValueBox("_batch", "0000 b",0x3424)
   ));//...
   
   //===

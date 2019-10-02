@@ -58,20 +58,70 @@
 <tr>,_ct31,S-SKIP,ｻｲﾛｽｷｯﾌﾟ,爬斗,[]
 ,,,,,
 ,,,,,
+<sep>,,* local-group-general *,,,
+<tr>,_ready,READY,準備,准备,[]
+<tr>,_start,START,運転,运行,[]
+<tr>,_pause,PAUSE,中断,暂停,[]
+<tr>,_cancel,CANCEL,取消,取消,[]
+<tr>,_ratio,RATIO,比例,比例,[]
+<tr>,_auto,AUTO,自動,自动,[]
+<tr>,_mann,MANN,手動,手动,[]
+<tr>,_disab,DISAB,ｰ切ｰ,禁用,[]
+<tr>,_disc,DISCHARGE,排出,排出,[]
+,,,,,
+,,,,,
+<sep>,,* local-group-vbond *,,,
+<tr>,_ve,VE,排風機,排风机,[]
+<tr>,_vb,VB,バーナ,燃烧器,[]
+<tr>,_gass,GAS,ｶﾞｽ,燃气,[]
+<tr>,_oill,OIO,ｵｲﾙ,燃油,[]
+<tr>,_feuo,F-OIL,軽油,柴油,[]
+<tr>,_hevo,H-OIL,重油,重油,[]
+,,,,,
+,,,,,
+<sep>,,* local-group-vsurge *,,,
+<tr>,_ofbin,O-FLOW,ｵｰﾊﾞﾌﾛ,溢料,[]
+<tr>,_osbin,O-SIZE,ｵｰﾊﾞｻｲｽﾞ,大料,[]
+<tr>,_sandt,SAND-T,砂ビン,砂仓温度,[]
+<tr>,_fds,D-SL,Dｻｲﾛ,废粉,[]
+<tr>,_ffs,F-SL,Fｻｲﾛ,矿粉,[]
+<tr>,_ast,AS-T,ｱｽﾀﾝｸ,沥青罐,[]
+<tr>,_pipet,PIPE-T,ｱｽ配管,管道温度,[]
+,,,,,
+,,,,,
+<sep>,,* local-group-weigh *,,,
+<tr>,_ag,AG,骨材,骨料,[]
+<tr>,_fr,FR,石粉,粉料,[]
+<tr>,_as,AS,アス,沥青,[]
+<tr>,_fd,FD,ﾀﾞｽﾄ,废,[]
+<tr>,_ff,FF,ﾌｨﾗ,矿,[]
+<tr>,_st,ST,ｽﾄｱｽ,普,[]
+,,,,,
+,,,,,
+<sep>,,* local-group-mixer *,,,
+<tr>,_dry,DRY,ドライ,干拌,[]
+<tr>,_wet,WET,ウェット,湿拌,[]
+,,,,,
+,,,,,
+<sep>,,* local-group-operative *,,,
+<tr>,_zero,Zero,ゼロ調整,调零,[]
+<tr>,_apply,Apply,適応,应用,[]
+<tr>,_mixd,M-DISCHARGE,合材放出,成品料出料,[]
+<tr>,_mhold,HOLD,ホールド,保持,[]
+<tr>,_mopen,OPEN,開,常开,[]
+<tr>,_book,BOOK,予約,预约,[]
+<tr>,_recipe,RECIPE,配合,配比,[]
+<tr>,_name,NAME,名称,名称,[]
+<tr>,_batc,BATCH,バッチ,盘数,[]
+<tr>,_motor,MOTOR,モータ,电机,[]
+,,,,,
+,,,,,
+<sep>,,* local-group-indicative *,,,
+<tr>,_pop,POP,サブ,操作,[]
+,,,,,
 ,,,,,
 <tr>,_hellow,Hellow,こんにちわ,你好,[]
 <E>,_,#,(),(),[]
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
 ,,,,,
 ,,,,,
 <EOF>,,,,,

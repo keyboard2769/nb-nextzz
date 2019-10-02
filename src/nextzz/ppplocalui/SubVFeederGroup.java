@@ -35,6 +35,7 @@ import kosui.ppplocalui.EcValueBox;
 import kosui.ppplocalui.EiGroup;
 import kosui.ppplogic.ZcRangedValueModel;
 import kosui.ppputil.VcLocalConsole;
+import kosui.ppputil.VcTranslator;
 import nextzz.pppmain.MainSketch;
 import nextzz.pppmodel.MainSpecificator;
 import nextzz.pppswingui.ScFeederBlock;
@@ -124,9 +125,9 @@ public final class SubVFeederGroup implements EiGroup{
     ));//...
   
   public final EcButton
-    cmRatioAutoSW  = new EcButton("_ratio", 0x3520),
-    cmRatioDownSW  = new EcButton("-",      0x3521),
-    cmRatioUpSW    = new EcButton("+",      0x3522)
+    cmRatioAutoSW  = new EcButton("_ratio",0x3520),
+    cmRatioDownSW  = new EcButton("-", 0x3521),
+    cmRatioUpSW    = new EcButton("+", 0x3522)
   ;//..?
   
   //===

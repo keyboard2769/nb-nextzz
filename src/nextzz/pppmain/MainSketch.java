@@ -49,7 +49,6 @@ import nextzz.pppmodel.MainPlantModel;
 import nextzz.pppmodel.MainSpecificator;
 import nextzz.pppmodel.SubAnalogScalarManager;
 import nextzz.pppsimulate.MainSimulator;
-import nextzz.pppsimulate.SubFeederTask;
 import nextzz.pppswingui.ConstSwingUI;
 import processing.core.PApplet;
 import processing.core.PFont;
@@ -124,7 +123,12 @@ public class MainSketch extends PApplet{
       (MainActionManager.ccRefer().cmSwingClickableRegisering);
     
     //-- translation
-    EcConst.ccTranslateText(SubOperativeGroup.ccRefer().cmDesMotorSW);
+    EcConst.ccTranslateText(SubIndicativeGroup.ccRefer());
+    EcConst.ccTranslateText(SubOperativeGroup.ccRefer());
+    EcConst.ccTranslateText(SubVFeederGroup.ccRefer());
+    EcConst.ccTranslateText(SubVBondGroup.ccRefer());
+    EcConst.ccTranslateText(SubVSurgeGroup.ccRefer());
+    EcConst.ccTranslateText(SubWeigherGroup.ccRefer());
     
     //-- custom
     MainActionManager.ccRefer().ccInit();
@@ -248,10 +252,12 @@ public class MainSketch extends PApplet{
     
     //-- translation
     VcTranslator.ccGetInstance().ccInit();
-    boolean lpCSV = VcTranslator.ccGetInstance().ccParseCSV
+    boolean lpIsCSVxOK = VcTranslator.ccGetInstance().ccParseCSV
       (MainSketch.class.getResourceAsStream("/nextzz/pppresource/tr.csv"));
     VcTranslator.ccGetInstance().ccSetMode('c');
-    if(!lpCSV){ScConst.ccMessage(".main()::faild to laod csv text resource.");}
+    if(!lpIsCSVxOK){
+      ScConst.ccMessage(".main()::faild to laod csv text resource.");
+    }//..?
     
     //-- resource finding
     MainFileManager.ccRefer().ccInit();
@@ -312,7 +318,7 @@ public class MainSketch extends PApplet{
   }//+++
   
   public static final String ccGetLastLeavingStamp(){
-    return "_1909292241";
+    return "_1910021105";
   }//+++
 
 }//***eof

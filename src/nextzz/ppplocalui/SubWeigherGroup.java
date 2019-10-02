@@ -32,6 +32,7 @@ import kosui.ppplocalui.EcShape;
 import kosui.ppplocalui.EcText;
 import kosui.ppplocalui.EcValueBox;
 import kosui.ppplocalui.EiGroup;
+import kosui.ppputil.VcTranslator;
 import nextzz.pppmain.MainSketch;
 import nextzz.pppmodel.MainSpecificator;
 
@@ -81,15 +82,18 @@ public final class SubWeigherGroup implements EiGroup{
   //-- control ** ag
   public final List<EcButton> cmDesAGWeighSW
     = Collections.unmodifiableList(Arrays.asList(
-      new EcButton("AG", 0x3810), new EcButton("+", 0x3811),
+      new EcButton("_ag", 0x3810), 
+      new EcButton("+", 0x3811),
       new EcButton("+", 0x3812), new EcButton("+", 0x3813),
 	  //--
-      new EcButton("+", 0x3814), new EcButton("+", 0x3815),
+      new EcButton("+", 0x3814),
+      new EcButton("+", 0x3815),
       new EcButton("+", 0x3816), new EcButton("+", 0x3817)
     ));//...
   public final List<EcButton> cmDesAGLockSW
     = Collections.unmodifiableList(Arrays.asList(
-      new EcButton("x", 0x3818), new EcButton("x", 0x3819),
+      new EcButton("x", 0x3818),
+      new EcButton("x", 0x3819),
       new EcButton("x", 0x381A), new EcButton("x", 0x381B),
 	  //--
       new EcButton("x", 0x381C), new EcButton("x", 0x381D),
@@ -98,14 +102,14 @@ public final class SubWeigherGroup implements EiGroup{
   public final List<EcText> cmDesAGText
     = Collections.unmodifiableList(Arrays.asList(
       new EcText("_??"),
-      new EcText("_i"),new EcText("_n"),new EcText("_m"),
-      new EcText("_iv"),new EcText("_v"),new EcText("_vi"),
-      new EcText("_vn")
+      new EcText("v1"),new EcText("v2"),new EcText("v3"),
+      new EcText("v4"),new EcText("v5"),new EcText("v6"),
+      new EcText("v7")
     ));
   //-- control ** fr
   public final List<EcButton> cmDesFRWeighSW
     = Collections.unmodifiableList(Arrays.asList(
-      new EcButton("FR", 0x3820), new EcButton("+", 0x3821),
+      new EcButton("_fr", 0x3820), new EcButton("+", 0x3821),
       new EcButton("+", 0x3822), new EcButton("+", 0x3823)
     ));//...
   public final List<EcButton> cmDesFRLockSW
@@ -116,12 +120,14 @@ public final class SubWeigherGroup implements EiGroup{
   public final List<EcText> cmDesFRText
     = Collections.unmodifiableList(Arrays.asList(
       new EcText("_??"),
-      new EcText("_fc"),new EcText("_ff"),new EcText("_fd")
+      new EcText(VcTranslator.tr("_fc")),
+      new EcText(VcTranslator.tr("_ff")),
+      new EcText(VcTranslator.tr("_fd"))
     ));
   //-- control ** as
   public final List<EcButton> cmDesASWeighSW
     = Collections.unmodifiableList(Arrays.asList(
-      new EcButton("AS", 0x3830), new EcButton("+", 0x3831),
+      new EcButton("_as", 0x3830),new EcButton("+", 0x3831),
       new EcButton("+", 0x3832), new EcButton("+", 0x3833)
     ));//...
   public final List<EcButton> cmDesASLockSW
@@ -132,12 +138,14 @@ public final class SubWeigherGroup implements EiGroup{
   public final List<EcText> cmDesASText
     = Collections.unmodifiableList(Arrays.asList(
       new EcText("_??"),
-      new EcText("_sv"),new EcText("_st"),new EcText("_sc")
+      new EcText(VcTranslator.tr("_sv")),
+      new EcText(VcTranslator.tr("_st")),
+      new EcText(VcTranslator.tr("_sc"))
     ));
   //-- control ** rc
   public final List<EcButton> cmDesRCWeighSW
     = Collections.unmodifiableList(Arrays.asList(
-      new EcButton("RC", 0x3840), new EcButton("+", 0x3841),
+      new EcButton("_rc", 0x3840), new EcButton("+", 0x3841),
       new EcButton("+", 0x3842), new EcButton("+", 0x3843)
     ));//...
   public final List<EcButton> cmDesRCLockSW
@@ -148,12 +156,14 @@ public final class SubWeigherGroup implements EiGroup{
   public final List<EcText> cmDesRCText
     = Collections.unmodifiableList(Arrays.asList(
       new EcText("_??"),
-      new EcText("_ri"),new EcText("_rn"),new EcText("_rm")
+      new EcText("_rx"),
+      new EcText(VcTranslator.tr("_rc")),
+      new EcText("_rx")
     ));
   //-- control ** ad
   public final List<EcButton> cmDesADWeighSW
     = Collections.unmodifiableList(Arrays.asList(
-      new EcButton("AD", 0x3850), new EcButton("+", 0x3851),
+      new EcButton("_ad", 0x3850), new EcButton("+", 0x3851),
       new EcButton("+", 0x3852), new EcButton("+", 0x3853)
     ));//...
   public final List<EcButton> cmDesADLockSW
@@ -164,7 +174,7 @@ public final class SubWeigherGroup implements EiGroup{
   public final List<EcText> cmDesADText
     = Collections.unmodifiableList(Arrays.asList(
       new EcText("_??"),
-      new EcText("_ri"),new EcText("_rn"),new EcText("_rm")
+      new EcText("_add"),new EcText("_add"),new EcText("_add")
     ));
   
   //===
