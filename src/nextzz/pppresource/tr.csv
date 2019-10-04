@@ -64,6 +64,7 @@
 <tr>,_pause,PAUSE,中断,暂停,[]
 <tr>,_cancel,CANCEL,取消,取消,[]
 <tr>,_ratio,RATIO,比例,比例,[]
+<tr>,_apply,Apply,適応,应用,[]
 <tr>,_auto,AUTO,自動,自动,[]
 <tr>,_mann,MANN,手動,手动,[]
 <tr>,_disab,DISAB,ｰ切ｰ,禁用,[]
@@ -96,6 +97,9 @@
 <tr>,_fd,FD,ﾀﾞｽﾄ,废,[]
 <tr>,_ff,FF,ﾌｨﾗ,矿,[]
 <tr>,_st,ST,ｽﾄｱｽ,普,[]
+<tr>,_x_ag,AG-LOCK,AGﾛｯｸ,骨料锁,[]
+<tr>,_x_fr,FR-LOCK,FRﾛｯｸ,粉料锁,[]
+<tr>,_x_as,AS-LOCK,ASﾛｯｸ,沥青锁,[]
 ,,,,,
 ,,,,,
 <sep>,,* local-group-mixer *,,,
@@ -105,10 +109,12 @@
 ,,,,,
 <sep>,,* local-group-operative *,,,
 <tr>,_zero,Zero,ゼロ調整,调零,[]
-<tr>,_apply,Apply,適応,应用,[]
+<tr>,_cell,Cell,セル操作,称操作,[]
 <tr>,_mixd,M-DISCHARGE,合材放出,成品料出料,[]
 <tr>,_mhold,HOLD,ホールド,保持,[]
 <tr>,_mopen,OPEN,開,常开,[]
+<tr>,_bell,BELL,ﾍﾞﾙ,出车铃,[]
+<tr>,_siren,SIREN,ｻｲﾚﾝ,扬声器,[]
 <tr>,_book,BOOK,予約,预约,[]
 <tr>,_recipe,RECIPE,配合,配比,[]
 <tr>,_name,NAME,名称,名称,[]

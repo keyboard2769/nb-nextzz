@@ -110,7 +110,7 @@ public class MainSketch extends PApplet{
     VcLocalCoordinator.ccAddGroup
       (SubVBondGroup.ccRefer());//.. might depends on vf group
     VcLocalCoordinator.ccAddGroup
-      (SubWeigherGroup.ccRefer());//.. might depands on v-bond group
+      (SubWeigherGroup.ccRefer());//.. might depands on v-bond group & ope-g
     VcLocalCoordinator.ccAddGroup
       (SubVSurgeGroup.ccRefer());//.. might depands on weigher group
     VcLocalCoordinator.ccAddGroup
@@ -318,7 +318,7 @@ public class MainSketch extends PApplet{
   }//+++
   
   public static final String ccGetLastLeavingStamp(){
-    return "_1910021105";
+    return "_1910041052";
   }//+++
 
 }//***eof

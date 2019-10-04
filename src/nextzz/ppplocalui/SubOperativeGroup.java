@@ -79,21 +79,25 @@ public final class SubOperativeGroup implements EiGroup{
   ));//...
   
   //-- zero pane
-  public final EcPane cmZeroPane
-    = new EcPane(VcTranslator.tr("_zero"));
+  public final EcPane cmCellPane
+    = new EcPane(VcTranslator.tr("_cell"));
   public final EcShape cmZeroPlate = new EcShape();
   public final EcButton cmAGZeroSW = new EcButton("_ag", 0x3209);
   public final EcButton cmFRZeroSW = new EcButton("_fr", 0x3209);
   public final EcButton cmASZeroSW = new EcButton("_as", 0x3209);
   public final EcButton cmRCZeroSW = new EcButton("_rc", 0x3209);
-  public final EcButton cmApplyZeroSW = new EcButton("_apply", 0x3209);
+  public final EcButton cmApplyZeroSW = new EcButton("_zero", 0x3209);
   
   //-- mixture pane
   public final EcPane cmMixtureControlPane
     = new EcPane(VcTranslator.tr("_mixd"));
+  public final EcShape cmMixtureAnnouncementPlate
+    = new EcShape();
   public final EcButton cmMixerGateHoldSW = new EcButton("_mhold", 0x3302);
   public final EcButton cmMixerGateAutoSW = new EcButton("_auto", 0x3301);
   public final EcButton cmMixerGateOpenSW = new EcButton("_mopen", 0x3303);
+  public final EcButton cmBellSW = new EcButton("_bell", 0x3304);
+  public final EcButton cmSirenSW = new EcButton("_siren", 0x3305);
   
   //-- booking pane
   public final EcPane cmBookingPane
@@ -145,6 +149,7 @@ public final class SubOperativeGroup implements EiGroup{
     
     final int lpPlateColor = EcConst.ccAdjustColor(EcConst.C_BLACK, 23);
     
+    int lpPotentialX;
     int lpPotentialY;
     int lpPotentialW;
     int lpPotentialH;
@@ -226,45 +231,51 @@ public final class SubOperativeGroup implements EiGroup{
     cmAssistancePane.ccSetH
       (ConstLocalUI.C_ASSIST_SW_H+ConstLocalUI.C_INPANE_GAP*2);
     
-    //-- zero
-    //-- zero ** anchor
-    cmZeroPane.ccSetX(ConstLocalUI.C_SIDE_MARGIN);
-    cmZeroPane.ccSetY(cmMotorSwitchPane.ccGetY());
-    cmZeroPane.ccSetW(120);
-    cmZeroPane.ccSetH(cmMotorSwitchPane.ccGetH());
-    //-- zero ** la switch
-    cmApplyZeroSW.ccSetX(cmZeroPane.ccGetX()+ConstLocalUI.C_INPANE_MARGIN_S);
-    cmApplyZeroSW.ccSetH(cmApplyZeroSW.ccGetH()*2);
-    cmApplyZeroSW.ccSetW(cmZeroPane.ccGetW()
-      -ConstLocalUI.C_INPANE_MARGIN_S*2
-    );
-    cmApplyZeroSW.ccSetY(cmZeroPane.ccEndY()
-      -cmApplyZeroSW.ccGetH()-ConstLocalUI.C_INPANE_MARGIN_S
-    );
-    //-- zero ** plate
+    //-- cell ** pane
+    lpPotentialX=ConstLocalUI.C_SIDE_MARGIN;
+    lpPotentialY=cmMotorSwitchPane.ccGetY();
+    lpPotentialW=160;//[todo]::.. make this a constant value
+    lpPotentialH=cmMotorSwitchPane.ccGetH();
+    cmCellPane.ccSetLocation(lpPotentialX, lpPotentialY);
+    cmCellPane.ccSetSize(lpPotentialW, lpPotentialH);
+    //-- cell ** zero plate
     cmZeroPlate.ccSetBaseColor(lpPlateColor);
-    cmZeroPlate.ccSetLocation(cmZeroPane,
-      ConstLocalUI.C_INPANE_MARGIN_S,
-      ConstLocalUI.C_INPANE_MARGIN_U
+    cmZeroPlate.ccSetLocation(
+      cmCellPane.ccGetX()+ConstLocalUI.C_INPANE_MARGIN_S,
+      cmCellPane.ccCenterY()
     );
     cmZeroPlate.ccSetEndPoint(
-      cmZeroPane.ccEndX()-ConstLocalUI.C_INPANE_MARGIN_S,
-      cmApplyZeroSW.ccGetY()-ConstLocalUI.C_INPANE_MARGIN_S
+      cmCellPane.ccEndX()-ConstLocalUI.C_INPANE_MARGIN_S,
+      cmCellPane.ccEndY()-ConstLocalUI.C_INPANE_MARGIN_S
+    );
+    //-- zero ** la switch
+    cmApplyZeroSW.ccSetX(cmZeroPlate.ccGetX()+ConstLocalUI.C_INPANE_GAP);
+    cmApplyZeroSW.ccSetH(ConstLocalUI.C_DEFAULT_SINGLELINE_H);
+    cmApplyZeroSW.ccSetW(cmZeroPlate.ccGetW()-ConstLocalUI.C_INPANE_GAP*2);
+    cmApplyZeroSW.ccSetY(
+      cmZeroPlate.ccEndY()
+      -cmApplyZeroSW.ccGetH()-ConstLocalUI.C_INPANE_GAP
     );
     //-- zero ** des switch
+    final int lpCellElementWrap=3;
+    lpPotentialW
+      = (cmZeroPlate.ccGetW()-ConstLocalUI.C_INPANE_GAP*(lpCellElementWrap+1))
+        / lpCellElementWrap;
+    lpPotentialH=ConstLocalUI.C_DEFAULT_SINGLELINE_H;
     cmAGZeroSW.ccSetSize(
-      (cmZeroPlate.ccGetW()-ConstLocalUI.C_INPANE_GAP*2)/2,
-      (cmZeroPlate.ccGetH()-ConstLocalUI.C_INPANE_GAP*4)/3
+      lpPotentialW,lpPotentialH
     );
     cmFRZeroSW.ccSetSize(cmAGZeroSW);
     cmASZeroSW.ccSetSize(cmAGZeroSW);
     cmRCZeroSW.ccSetSize(cmAGZeroSW);
+    //[todo]::.. AD!!
     cmAGZeroSW.ccSetLocation
       (cmZeroPlate,ConstLocalUI.C_INPANE_GAP, ConstLocalUI.C_INPANE_GAP);
     cmFRZeroSW.ccSetLocation(cmAGZeroSW, ConstLocalUI.C_INPANE_GAP, 0);
-    cmASZeroSW.ccSetLocation(cmAGZeroSW, 0, ConstLocalUI.C_INPANE_GAP);
-    cmRCZeroSW.ccSetLocation(cmASZeroSW, ConstLocalUI.C_INPANE_GAP, 0);
-    //-- zero ** optional
+    cmASZeroSW.ccSetLocation(cmFRZeroSW, ConstLocalUI.C_INPANE_GAP, 0);
+    cmRCZeroSW.ccSetLocation(cmAGZeroSW, 0, ConstLocalUI.C_INPANE_GAP);
+    //[todo]::.. AD!!
+    //-- zero ** hide optional
     cmRCZeroSW.ccHide();//..optionally disposed
     
     //-- mixture
@@ -272,7 +283,7 @@ public final class SubOperativeGroup implements EiGroup{
     lpPotentialH = ConstLocalUI.C_DEFAULT_SINGLELINE_H;
     //-- mixture ** anchor
     cmMixtureControlPane.ccSetLocation
-      (cmZeroPane, ConstLocalUI.C_SIDE_MARGIN, 0);
+      (cmCellPane, ConstLocalUI.C_SIDE_MARGIN, 0);
     cmMixtureControlPane.ccSetH(cmMotorSwitchPane.ccGetH());
     //-- mixture ** resize
     cmMixerGateHoldSW.ccSetSize(lpPotentialW,lpPotentialH);
@@ -287,8 +298,32 @@ public final class SubOperativeGroup implements EiGroup{
       (cmMixerGateAutoSW, 0, ConstLocalUI.C_INPANE_GAP);
     cmMixerGateOpenSW.ccSetLocation
       (cmMixerGateHoldSW, 0, ConstLocalUI.C_INPANE_GAP);
-    //-- mixtrue ** pack
+    //-- mixture ** pack
     cmMixtureControlPane.ccSetEndPoint(cmMixerGateOpenSW, 5, 65536);
+    //-- mixture ** announcement ** plate
+    cmMixtureAnnouncementPlate.ccSetBaseColor(lpPlateColor);
+    cmMixtureAnnouncementPlate.ccSetW(
+      cmMixtureControlPane.ccGetW()-ConstLocalUI.C_INPANE_MARGIN_S*2
+    );
+    cmMixtureAnnouncementPlate.ccSetH(
+      ConstLocalUI.C_DEFAULT_SINGLELINE_H*2
+       + ConstLocalUI.C_INPANE_GAP*3
+    );
+    cmMixtureAnnouncementPlate.ccSetLocation(
+      cmMixtureControlPane.ccGetX()+ConstLocalUI.C_INPANE_MARGIN_S,
+      cmMixtureControlPane.ccEndY()-ConstLocalUI.C_INPANE_MARGIN_S
+       - cmMixtureAnnouncementPlate.ccGetH()
+    );
+    //-- mixture ** announcement ** switch
+    cmBellSW.ccSetSize(
+      cmMixtureAnnouncementPlate.ccGetW()-(ConstLocalUI.C_INPANE_GAP*2),
+      ConstLocalUI.C_DEFAULT_SINGLELINE_H
+    );
+    cmSirenSW.ccSetSize(cmBellSW);
+    cmBellSW.ccSetLocation(cmMixtureAnnouncementPlate,
+      ConstLocalUI.C_INPANE_GAP, ConstLocalUI.C_INPANE_GAP
+    );
+    cmSirenSW.ccSetLocation(cmBellSW, 0, ConstLocalUI.C_INPANE_GAP);
     
     //-- booking
     lpPotentialH=16;//..arbitrary
@@ -400,10 +435,9 @@ public final class SubOperativeGroup implements EiGroup{
   }//..!
   
   @Override public List<? extends EcShape> ccGiveShapeList(){
-    return Arrays.asList(
-      cmMotorSwitchPane,cmAssistancePane,
-      cmZeroPane,cmZeroPlate,
-      cmMixtureControlPane,
+    return Arrays.asList(cmMotorSwitchPane,cmAssistancePane,
+      cmCellPane,cmZeroPlate,
+      cmMixtureControlPane,cmMixtureAnnouncementPlate,
       cmBookingPane,cmBookingPlate,
       cmRecipeText,cmNameText,cmKilogramText,cmBatchText
     );//...
@@ -421,6 +455,7 @@ public final class SubOperativeGroup implements EiGroup{
       cmAGZeroSW,cmFRZeroSW,cmASZeroSW,cmRCZeroSW,
       cmApplyZeroSW,
       cmMixerGateHoldSW,cmMixerGateAutoSW,cmMixerGateOpenSW,
+      cmBellSW,cmSirenSW,
       cmWeighStartSW,cmWeighPauseSW,cmWeighCancelSW
     ));//...
     return lpRes;

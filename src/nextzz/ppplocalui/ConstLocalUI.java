@@ -325,7 +325,7 @@ public final class ConstLocalUI {
   
   public static final void ccAssenbleCell(
     EcGauge pxGauge, EcValueBox pxTarget, EcValueBox pxCell,
-    EcButton pxLocker,EcButton pxDischarger,
+    EcButton pxDischarger,
     int pxX, int pxY
   ){
     
@@ -341,8 +341,6 @@ public final class ConstLocalUI {
     pxGauge.ccSetW(lpGaugeWidth);
     pxGauge.ccSetH(pxTarget.ccGetH()+pxCell.ccGetH()-1);
     pxDischarger.ccSetW(pxGauge.ccGetW()+pxCell.ccGetW());
-    pxLocker.ccSetW(pxDischarger.ccGetW());
-    pxLocker.ccSetH(C_DEFAULT_SINGLELINE_H*2/3);
     pxDischarger.ccSetH(C_DEFAULT_SINGLELINE_H);
     
     //-- restyling
@@ -352,8 +350,7 @@ public final class ConstLocalUI {
     //-- assemble
     int lpX=pxX&0x7FF;
     int lpY=pxY&0x7FF;
-    pxLocker.ccSetLocation(lpX, lpY);
-    pxGauge.ccSetLocation(pxLocker,'b');
+    pxGauge.ccSetLocation(lpX,lpY);
     pxTarget.ccSetLocation(
       pxGauge.ccEndX(),
       pxGauge.ccGetY()
