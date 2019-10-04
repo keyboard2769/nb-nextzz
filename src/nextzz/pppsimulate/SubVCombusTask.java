@@ -82,8 +82,7 @@ public final class SubVCombusTask implements ZiTask{
   //===
   
   @Deprecated public final void tstTagg(){
-    VcLocalTagger.ccTag("hook?", SubVCombustDelegator.mnVExfanAutoSW);
-    VcLocalTagger.ccTag("vd?", cmVEAutoHOOK.ccIsHooked());
+    VcLocalTagger.ccTag("vd?", dcVExfanDegree);
   }//***
   
 }//***eof

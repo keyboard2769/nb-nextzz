@@ -20,6 +20,7 @@
 package nextzz.pppsimulate;
 
 import kosui.ppplogic.ZcRangedValueModel;
+import kosui.ppputil.VcStringUtility;
 
 public class ZcGate extends ZcRangedValueModel{
   
@@ -140,6 +141,24 @@ public class ZcGate extends ZcRangedValueModel{
   
   public final boolean ccGetIsClosing(){
     return dcClose;
+  }//+++
+  
+  //===
+
+  @Override public String toString(){
+    StringBuilder lpRes = new StringBuilder(ZcGate.class.getSimpleName());
+    lpRes.append('@');
+    lpRes.append(Integer.toHexString(this.hashCode()));
+    lpRes.append('$');
+    lpRes.append(VcStringUtility.ccPackupBoolTag("DN", dcClose));
+    lpRes.append(VcStringUtility.ccPackupBoolTag("UP", dcOpen));
+    lpRes.append('|');
+    lpRes.append(VcStringUtility.ccPackupBoolTag("CL", dcIsClosed));
+    lpRes.append(VcStringUtility.ccPackupBoolTag("OL", dcIsFullOpened));
+    lpRes.append('|');
+    lpRes.append(VcStringUtility.ccPackupParedTag("v", cmValue));
+    lpRes.append(VcStringUtility.ccPackupParedTag("SPD", cmSpeed));
+    return lpRes.toString();
   }//+++
   
 }//***eof

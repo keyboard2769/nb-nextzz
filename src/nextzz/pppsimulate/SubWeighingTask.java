@@ -61,11 +61,7 @@ public class SubWeighingTask implements ZiTask{
   //=== 
   
   @Deprecated public final void tstTagg(){
-    VcLocalTagger.ccTag("mg?", dcMixerGate.ccGetValue());
-    VcLocalTagger.ccTag("mg-h-sw?", SubWeighingDelegator.mnMixerGateHoldSW);
-    VcLocalTagger.ccTag("mg-o-sw?", SubWeighingDelegator.mnMixerGateOpenSW);
-    //[todo]::
-    VcLocalTagger.ccTag("mg-o?", dcMixerGate.ccGetIsOpening());
+    VcLocalTagger.ccTag("m-g?",dcMixerGate);
   }//+++
   
 }//***eof
