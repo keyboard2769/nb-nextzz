@@ -26,7 +26,15 @@ import nextzz.pppmodel.MainPlantModel;
 public class SubVCombustDelegator {
   
   public static volatile boolean
-    mnVColdAggreageSensorPL
+    mnVCombustReadyPL,mnVCombustRunSW,
+    mnVExfanCloseSW, mnVExfanOpenSW,mnVExfanAutoSW,
+    mnVExfanClosePL, mnVExfanOpenPL,mnVExfanAutoPL,
+    mnVBurnerCloseSW, mnVBurnerOpenSW,mnVBurnerAutoSW,
+    mnVBurnerClosePL, mnVBurnerOpenPL,mnVBurnerAutoPL,
+    mnVColdAggreageSensorPL,
+    mnVCombustSourceSW,mnVOilExchangeSW,
+    mnVCombustUsingGasPL,mnVCombustUsingOilPL,
+    mnVCombustUsingFuelPL,mnVCombustUsingHeavyPL
   ;//...
   
   //===
@@ -40,6 +48,26 @@ public class SubVCombustDelegator {
     //-- temperature
     SubVBondGroup.ccRefer().cmTargetTemperatureTB
       .ccSetValue(MainPlantModel.ccRefer().cmVTargetTemperature);
+    
+    //-- v combust operate
+    mnVCombustRunSW=SubVBondGroup.ccRefer().cmRunSW.ccIsMousePressed();
+    SubVBondGroup.ccRefer().cmReadyPL.ccSetIsActivated(mnVCombustReadyPL);
+    
+    //-- v burner operate
+    mnVBurnerCloseSW=SubVBondGroup.ccRefer().cmBurnerCloseSW.ccIsMousePressed();
+    mnVBurnerOpenSW=SubVBondGroup.ccRefer().cmBurnerOpenSW.ccIsMousePressed();
+    mnVBurnerAutoSW=SubVBondGroup.ccRefer().cmBurnerAutoSW.ccIsMousePressed();
+    SubVBondGroup.ccRefer().cmBurnerCloseSW.ccSetIsActivated(mnVBurnerClosePL);
+    SubVBondGroup.ccRefer().cmBurnerOpenSW.ccSetIsActivated(mnVBurnerOpenPL);
+    SubVBondGroup.ccRefer().cmBurnerAutoSW.ccSetIsActivated(mnVBurnerAutoPL);
+    
+    //-- v exfan operate
+    mnVExfanCloseSW=SubVBondGroup.ccRefer().cmExfanCloseSW.ccIsMousePressed();
+    mnVExfanOpenSW=SubVBondGroup.ccRefer().cmExfanOpenSW.ccIsMousePressed();
+    mnVExfanAutoSW=SubVBondGroup.ccRefer().cmExfanAutoSW.ccIsMousePressed();
+    SubVBondGroup.ccRefer().cmExfanCloseSW.ccSetIsActivated(mnVExfanClosePL);
+    SubVBondGroup.ccRefer().cmExfanOpenSW.ccSetIsActivated(mnVExfanOpenPL);
+    SubVBondGroup.ccRefer().cmExfanAutoSW.ccSetIsActivated(mnVExfanAutoPL);
     
     //-- cas
     SubVBondGroup.ccRefer().cmBelconFluxCB

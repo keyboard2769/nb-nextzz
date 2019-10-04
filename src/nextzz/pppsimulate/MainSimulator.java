@@ -49,12 +49,14 @@ public final class MainSimulator {
     ssRoll();
     
     //-- scan
-    SubVProvisionTask.ccRefer().ccScan();
     SubFeederTask.ccRefer().ccScan();
+    SubVProvisionTask.ccRefer().ccScan();
+    SubVCombusTask.ccRefer().ccScan();
     
     //-- simulate
-    SubVProvisionTask.ccRefer().ccSimulate();
     SubFeederTask.ccRefer().ccSimulate();
+    SubVProvisionTask.ccRefer().ccSimulate();
+    SubVCombusTask.ccRefer().ccSimulate();
   
   }//+++
   

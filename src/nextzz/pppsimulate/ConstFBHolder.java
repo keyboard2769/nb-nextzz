@@ -22,13 +22,22 @@ package nextzz.pppsimulate;
 
 import kosui.ppplogic.ZcHookFlicker;
 
-public final class ConstFunctionBlockHolder {
+public final class ConstFBHolder {
 
   public static final
   boolean ccMoterFeedBackLamp(ZcHookFlicker pxHolder, ZcMotor pxMotor){
     return
       pxHolder.ccIsHooked()
        && (MainSimulator.ccOneSecondClock()||pxMotor.ccIsContacted());
+  }//+++
+  
+  public static final
+  boolean ccSelectAutoMode(
+    boolean pxPermmision, boolean pxAuto,
+    boolean pxSwitch, boolean pxFlag
+  ){
+    if(!pxPermmision){return false;}
+    return pxAuto?pxFlag:pxSwitch;
   }//+++
   
  }//***eof

@@ -93,7 +93,7 @@ public final class SubVProvisionTask implements ZiTask{
       (SubVProvisionDelegator.mnVCompressorMSSW,dcVCompressor.ccIsTripped());
     dcVCompressor.ccContact(cmVCompressorHOOK.ccIsHooked());
     SubVProvisionDelegator.mnVCompressorMSPL
-      = ConstFunctionBlockHolder.ccMoterFeedBackLamp
+      = ConstFBHolder.ccMoterFeedBackLamp
           (cmVCompressorHOOK, dcVCompressor);
     SubAnalogDelegator.mnCTSlotZ=dcVCompressor.ccGetCT();
     
@@ -102,8 +102,8 @@ public final class SubVProvisionTask implements ZiTask{
       (SubVProvisionDelegator.mnMixerMSSW,dcMixer.ccIsTripped());
     dcMixer.ccContact(cmMixerHOOK.ccIsHooked());
     SubVProvisionDelegator.mnMixerMSPL
-      = ConstFunctionBlockHolder.ccMoterFeedBackLamp
-          (cmMixerHOOK, dcMixer);
+      = ConstFBHolder.ccMoterFeedBackLamp
+        (cmMixerHOOK, dcMixer);
     SubAnalogDelegator.mnCTSlotI=dcMixer.ccGetCT();
     SubVProvisionDelegator.mnMixerIconPL=dcMixer.ccIsContacted();
     
@@ -112,7 +112,7 @@ public final class SubVProvisionTask implements ZiTask{
       (SubVProvisionDelegator.mnVExfanMSSW,dcVExFan.ccIsTripped());
     dcVExFan.ccContact(cmVExFanHooker.ccIsHooked());
     SubVProvisionDelegator.mnVExfanMSPL
-      = ConstFunctionBlockHolder.ccMoterFeedBackLamp
+      = ConstFBHolder.ccMoterFeedBackLamp
         (cmVExFanHooker, dcVExFan);
     SubAnalogDelegator.mnCTSlotII=dcVExFan.ccGetCT();
     SubVProvisionDelegator.mnVExfanIconPL=dcVExFan.ccIsContacted();

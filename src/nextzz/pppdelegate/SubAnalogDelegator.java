@@ -19,7 +19,9 @@
 
 package nextzz.pppdelegate;
 
+import nextzz.ppplocalui.SubVBondGroup;
 import nextzz.ppplocalui.SubVSurgeGroup;
+import nextzz.pppmodel.SubAnalogScalarManager;
 
 public final class SubAnalogDelegator {
   
@@ -57,6 +59,12 @@ public final class SubAnalogDelegator {
     SubVSurgeGroup.ccRefer().cmFillerSiloLV.ccSetPercentage(mnFillerSiloLV);
     SubVSurgeGroup.ccRefer().cmCementSiloLV.ccSetPercentage(mnCementSiloLV);
     SubVSurgeGroup.ccRefer().cmDustSiloLV.ccSetPercentage(mnDustSiloLV);
+    
+    //-- vbond
+    SubVBondGroup.ccRefer().cmBurnerDegreeCB
+      .ccSetValue(SubAnalogScalarManager.ccRefer().ccGetScaledVBDegreeValue());
+    SubVBondGroup.ccRefer().cmExfanDegreeCB
+      .ccSetValue(SubAnalogScalarManager.ccRefer().ccGetScaledVEDegreeValue());
     
   }//+++
   

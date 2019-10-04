@@ -49,6 +49,7 @@ import nextzz.pppmodel.MainPlantModel;
 import nextzz.pppmodel.MainSpecificator;
 import nextzz.pppmodel.SubAnalogScalarManager;
 import nextzz.pppsimulate.MainSimulator;
+import nextzz.pppsimulate.SubVCombusTask;
 import nextzz.pppswingui.ConstSwingUI;
 import processing.core.PApplet;
 import processing.core.PFont;
@@ -172,6 +173,7 @@ public class MainSketch extends PApplet{
     
     //-- debug
     /* 4 */
+    SubVCombusTask.ccRefer().tstTag();
     VcLocalTagger.ccTag("roll",nf(cmRoller,2));
     VcLocalTagger.ccTag
       ("latency",VcNumericUtility.ccFormatPointTwoFloat(17f-frameRate));
@@ -318,7 +320,7 @@ public class MainSketch extends PApplet{
   }//+++
   
   public static final String ccGetLastLeavingStamp(){
-    return "_1910041052";
+    return "_1910041620";
   }//+++
 
 }//***eof

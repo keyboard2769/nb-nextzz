@@ -100,7 +100,7 @@ public final class SubVBondGroup implements EiGroup{
   //-- operative
   public final EcElement cmReadyPL
     = new EcElement("_ready");
-  public final EcButton cmStartSW
+  public final EcButton cmRunSW
     = new EcButton("_start", 0x3621);
   public final EcValueBox cmBurnerDegreeCB = new EcValueBox("_vbo", "+000 %");
   public final EcValueBox cmExfanDegreeCB = new EcValueBox("_vdo", "+000 %");
@@ -309,8 +309,8 @@ public final class SubVBondGroup implements EiGroup{
       cmTargetTemperatureTB.ccGetX(),
       cmPlate.ccEndY()-lpPotentialH*2-ConstLocalUI.C_INPANE_GAP*2
     );
-    cmStartSW.ccSetSize(cmReadyPL);
-    cmStartSW.ccSetLocation(cmReadyPL, 0, ConstLocalUI.C_INPANE_GAP);
+    cmRunSW.ccSetSize(cmReadyPL);
+    cmRunSW.ccSetLocation(cmReadyPL, 0, ConstLocalUI.C_INPANE_GAP);
     //-- operative ** exfan
     cmExfanCloseSW.ccSetSize(lpPotentialH, lpPotentialH);
     cmExfanOpenSW.ccSetSize(cmExfanCloseSW);
@@ -330,6 +330,8 @@ public final class SubVBondGroup implements EiGroup{
     cmExfanDegreeCB.ccSetLocation(cmExfanAutoSW,ConstLocalUI.C_INPANE_GAP,0);
     cmBurnerDegreeCB.ccSetH(ConstLocalUI.C_DEFAULT_SINGLELINE_H);
     cmBurnerDegreeCB.ccSetLocation(cmBurnerAutoSW,ConstLocalUI.C_INPANE_GAP,0);
+    cmExfanDegreeCB.ccSetDigit(3);
+    cmBurnerDegreeCB.ccSetDigit(3);
     ConstLocalUI.ccSetupDegreeBoxColor(cmExfanDegreeCB);
     ConstLocalUI.ccSetupDegreeBoxColor(cmBurnerDegreeCB);
     
@@ -339,7 +341,7 @@ public final class SubVBondGroup implements EiGroup{
     lpPotentialX=cmReadyPL.ccEndX()+
       (cmExfanCloseSW.ccGetX()-cmReadyPL.ccEndX())*3/4;
     cmVExfanText.ccSetLocation(lpPotentialX, cmReadyPL.ccCenterY());
-    cmVBurnerText.ccSetLocation(lpPotentialX, cmStartSW.ccCenterY());
+    cmVBurnerText.ccSetLocation(lpPotentialX, cmRunSW.ccCenterY());
     
     //-- burning lamp
     cmGasPL.ccSetSize(cmExfanAutoSW);
@@ -386,8 +388,7 @@ public final class SubVBondGroup implements EiGroup{
   }//+++
 
   @Override public List<? extends EcElement> ccGiveElementList(){
-    return Arrays.asList(
-      cmTargetTemperatureTB,cmChuteTemperatureTB,
+    return Arrays.asList(cmTargetTemperatureTB,cmChuteTemperatureTB,
       cmTargetDecrementSW,cmTargetIncrementSW,
       cmVDryerRollerA,cmVDryerRollerC,
       cmVDContentLV,cmVDPressureCB,cmEntranceTemperatureCB,
@@ -396,7 +397,7 @@ public final class SubVBondGroup implements EiGroup{
       cmExfanPressurePL,cmBurnerPressurePL,
       cmBurnerIGPL,cmBurnerPVPL,cmBurnerMVPL,
       cmBelconForwarPL,cmBelconBackwardPL,cmBelconFluxCB,
-      cmReadyPL,cmStartSW,
+      cmReadyPL,cmRunSW,
       cmExfanCloseSW,cmExfanOpenSW,cmExfanAutoSW,cmExfanDegreeCB,
       cmBurnerCloseSW,cmBurnerOpenSW,cmBurnerAutoSW,cmBurnerDegreeCB,
       cmOilPL,cmGasPL,cmFuelPL,cmHeavyPL

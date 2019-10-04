@@ -49,6 +49,12 @@ public final class SubAnalogScalarManager {
   private final List<ZcScaledModel> cmListOfVFeederFluxScalar
     = new ArrayList<ZcScaledModel>(16);
   
+  private final ZcScaledModel cmVBurnerDegreeScalar
+    = new ZcScaledModel(400, 3600, 0, 100);
+  
+  private final ZcScaledModel cmVExfanDegreeScalar
+    = new ZcScaledModel(400, 3600, 0, 100);
+  
   //===
     
   public final void ccInit(){
@@ -118,6 +124,27 @@ public final class SubAnalogScalarManager {
       .ccToScaledIntegerValue(
         SubAnalogDelegator.ccGetCTSlotAD(pxIndex)
       );
+  }//+++
+  
+  //=== degree
+  //=== degree ** v 
+  //=== degree ** v ** vb
+  
+  //[todo]::.. % set vb span
+  //[todo]::.. % set vb offset
+  
+  synchronized public final int ccGetScaledVBDegreeValue(){
+    return cmVBurnerDegreeScalar.ccToScaledIntegerValue(
+      SubAnalogDelegator.mnVBDegreeAD
+    );
+  }//+++
+  
+  //=== degree ** v ** ve
+  
+  synchronized public final int ccGetScaledVEDegreeValue(){
+    return cmVExfanDegreeScalar.ccToScaledIntegerValue(
+      SubAnalogDelegator.mnVEDegreeAD
+    );
   }//+++
   
  }//***eof
