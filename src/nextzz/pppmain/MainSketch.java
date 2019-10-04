@@ -50,6 +50,7 @@ import nextzz.pppmodel.MainSpecificator;
 import nextzz.pppmodel.SubAnalogScalarManager;
 import nextzz.pppsimulate.MainSimulator;
 import nextzz.pppsimulate.SubVCombusTask;
+import nextzz.pppsimulate.SubWeighingTask;
 import nextzz.pppswingui.ConstSwingUI;
 import processing.core.PApplet;
 import processing.core.PFont;
@@ -173,7 +174,8 @@ public class MainSketch extends PApplet{
     
     //-- debug
     /* 4 */
-    SubVCombusTask.ccRefer().tstTag();
+    SubVCombusTask.ccRefer().tstTagg();
+    SubWeighingTask.ccRefer().tstTagg();
     VcLocalTagger.ccTag("roll",nf(cmRoller,2));
     VcLocalTagger.ccTag
       ("latency",VcNumericUtility.ccFormatPointTwoFloat(17f-frameRate));

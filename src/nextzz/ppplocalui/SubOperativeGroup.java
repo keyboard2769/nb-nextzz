@@ -290,14 +290,14 @@ public final class SubOperativeGroup implements EiGroup{
     cmMixerGateAutoSW.ccSetSize(cmMixerGateHoldSW);
     cmMixerGateOpenSW.ccSetSize(cmMixerGateAutoSW);
     //-- mixture ** reallocate
-    cmMixerGateAutoSW.ccSetLocation(cmMixtureControlPane,
+    cmMixerGateHoldSW.ccSetLocation(cmMixtureControlPane,
       ConstLocalUI.C_INPANE_MARGIN_S,
       ConstLocalUI.C_INPANE_MARGIN_U
     );
-    cmMixerGateHoldSW.ccSetLocation
-      (cmMixerGateAutoSW, 0, ConstLocalUI.C_INPANE_GAP);
-    cmMixerGateOpenSW.ccSetLocation
+    cmMixerGateAutoSW.ccSetLocation
       (cmMixerGateHoldSW, 0, ConstLocalUI.C_INPANE_GAP);
+    cmMixerGateOpenSW.ccSetLocation
+      (cmMixerGateAutoSW, 0, ConstLocalUI.C_INPANE_GAP);
     //-- mixture ** pack
     cmMixtureControlPane.ccSetEndPoint(cmMixerGateOpenSW, 5, 65536);
     //-- mixture ** announcement ** plate

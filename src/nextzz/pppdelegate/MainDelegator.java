@@ -43,6 +43,7 @@ public final class MainDelegator {
   public static final void ccBind(){
     
     //-- general
+    SubWeighingDelegator.ccBind();
     SubFeederDelegator.ccBind();
     SubAnalogDelegator.ccBind();
     

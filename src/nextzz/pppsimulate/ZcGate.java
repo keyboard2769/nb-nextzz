@@ -28,22 +28,33 @@ public class ZcGate extends ZcRangedValueModel{
   private boolean dcIsAtFull,dcIsAtMiddle,dcIsAtClosed;
   private int cmSpeed,cmAutoSwitchRange,cmLimitSwitchRange;
   
-  public ZcGate() {
+  public ZcGate(int pxSpeed, int pxAuto, int pxLimit) {
     super(400, 3200);
     dcOpen=false;
     dcClose=false;
-    cmSpeed=16;
-    cmAutoSwitchRange=50;
-    cmLimitSwitchRange=200;
+    ccSetSpeed(pxSpeed);
+    ccSetupRange(pxAuto, pxLimit);
   }//..!
   
-  public final void ccSimulate(){
+  public ZcGate(int pxSpeed){
+    this(pxSpeed,50,200);
+  }//..!
+  
+  public ZcGate(){
+    this(16);
+  }//..!
+  
+  //===
+  
+  public final void ccSimulate(boolean pxEnpowered){
     if(dcOpen&&dcClose){
       ccSetupAction(false, false);
       return;
     }//..?
-    if(dcClose){ccShift(-1*cmSpeed);}
-    if(dcOpen){ccShift(    cmSpeed);}
+    if(pxEnpowered){
+      if(dcClose){ccShift(-1*cmSpeed);}
+      if(dcOpen){ccShift(    cmSpeed);}
+    }//..?
     //--
     dcIsFullOpened = ccIsAbove(cmMax-cmLimitSwitchRange);
     dcIsClosed     = ccIsBelow(cmMin+cmLimitSwitchRange);
@@ -61,6 +72,12 @@ public class ZcGate extends ZcRangedValueModel{
       cmMin+cmLimitSwitchRange+cmAutoSwitchRange
     );
   }//+++
+  
+  public final void ccSimulate(){
+    ccSimulate(true);
+  }//+++
+  
+  //===
   
   public final void ccSetSpeed(int pxSpeed){
     cmSpeed=pxSpeed&0xFF;
@@ -91,6 +108,10 @@ public class ZcGate extends ZcRangedValueModel{
     if(pxOpen&&pxClose){return;}
     ccSetClosing(pxClose);
     ccSetOpening(pxOpen);
+  }//+++
+  
+  public final void ccSetupAction(boolean pxOpen){
+    ccSetupAction(!pxOpen, pxOpen);
   }//+++
   
   public final boolean ccGetIsFullOpened(){

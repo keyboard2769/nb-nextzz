@@ -40,4 +40,14 @@ public final class ConstFBHolder {
     return pxAuto?pxFlag:pxSwitch;
   }//+++
   
+  public static final
+  boolean ccSelectForceOpen(
+    boolean pxForceClose, boolean pxForceOpen, boolean pxAutoFlag
+  ){
+    return 
+      pxForceClose?false
+        :pxForceOpen?true
+        :pxAutoFlag;
+  }//+++
+  
  }//***eof

@@ -36,11 +36,12 @@ import kosui.ppputil.VcSwingCoordinator;
 import kosui.ppputil.VcTranslator;
 import nextzz.pppdelegate.SubFeederDelegator;
 import nextzz.pppdelegate.SubVProvisionDelegator;
+import nextzz.pppdelegate.SubWeighingDelegator;
 import nextzz.ppplocalui.SubIndicativeGroup;
+import nextzz.ppplocalui.SubOperativeGroup;
 import nextzz.ppplocalui.SubVBondGroup;
 import nextzz.ppplocalui.SubVFeederGroup;
 import nextzz.pppswingui.SubAssistantPane;
-import static nextzz.pppmain.MainSketch.C_COLOR_BACKGROUD;
 import nextzz.pppmodel.MainPlantModel;
 import nextzz.pppmodel.MainSettingManager;
 import nextzz.pppmodel.MiSettingItem;
@@ -57,7 +58,7 @@ public final class MainActionManager {
   
   public final EiTriggerable cmBackgroundRefreshing = new EiTriggerable() {
     @Override public void ccTrigger(){
-      MainSketch.ccGetPApplet().background(C_COLOR_BACKGROUD);
+      MainSketch.ccGetPApplet().background(MainSketch.C_COLOR_BACKGROUD);
       VcLocalCoordinator.ccUpdatePassive();
     }//+++
   };//***
@@ -118,6 +119,29 @@ public final class MainActionManager {
   };//***
   
   //=== trigger ** operative
+  
+  //=== trigger ** operative ** mixer gate
+  
+  public final EiTriggerable cmMixerGateHoldClicking = new EiTriggerable() {
+    @Override public void ccTrigger() {
+      SubWeighingDelegator.mnMixerGateHoldSW=true;
+      SubWeighingDelegator.mnMixerGateOpenSW=false;
+    }//+++
+  };//***
+  
+  public final EiTriggerable cmMixerGateAutoClicking = new EiTriggerable() {
+    @Override public void ccTrigger() {
+      SubWeighingDelegator.mnMixerGateHoldSW=false;
+      SubWeighingDelegator.mnMixerGateOpenSW=false;
+    }//+++
+  };//***
+  
+  public final EiTriggerable cmMixerGateOpenClicking = new EiTriggerable() {
+    @Override public void ccTrigger() {
+      SubWeighingDelegator.mnMixerGateHoldSW=false;
+      SubWeighingDelegator.mnMixerGateOpenSW=true;
+    }//+++
+  };//***
   
   //=== trigger ** operative ** v feeder group
   
@@ -291,6 +315,14 @@ public final class MainActionManager {
     //-- sketch ** operative
     
     //-- sketch ** floatting
+    
+    //-- sketch ** floatting ** mixer gate control
+    VcLocalCoordinator.ccRegisterMouseTrigger
+      (SubOperativeGroup.ccRefer().cmMixerGateHoldSW, cmMixerGateHoldClicking);
+    VcLocalCoordinator.ccRegisterMouseTrigger
+      (SubOperativeGroup.ccRefer().cmMixerGateAutoSW, cmMixerGateAutoClicking);
+    VcLocalCoordinator.ccRegisterMouseTrigger
+      (SubOperativeGroup.ccRefer().cmMixerGateOpenSW, cmMixerGateOpenClicking);
     
     //-- sketch ** floatting ** v feeder group
     VcLocalCoordinator.ccRegisterMouseTrigger
