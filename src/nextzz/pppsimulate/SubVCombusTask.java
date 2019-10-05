@@ -43,11 +43,18 @@ public final class SubVCombusTask implements ZiTask{
   private final ZcHookFlicker cmVEAutoHOOK = new ZcHookFlicker();
 
   @Override public void ccScan() {
-  
+    
+    //-- combust controll
+    SubVCombustDelegator.mnVCombustReadyPL
+      = SubVProvisionTask.ccRefer().dcVExFan.ccIsContacted()
+      &&SubVProvisionTask.ccRefer().dcInclinedBelcon.ccIsContacted()
+      &&SubVProvisionTask.ccRefer().dcVBCompressor.ccIsContacted();
+    
     //-- output ** vb
     cmVBAutoHOOK.ccHook(SubVCombustDelegator.mnVBurnerAutoSW);
     SubVCombustDelegator.mnVBurnerAutoPL=cmVBAutoHOOK.ccIsHooked();
-    dcVBunerDegree.ccSetupAction(MainSimulator.ccSelectAutoMode(true, cmVBAutoHOOK.ccIsHooked(),
+    dcVBunerDegree.ccSetupAction(
+      MainSimulator.ccSelectAutoMode(true, cmVBAutoHOOK.ccIsHooked(),
         SubVCombustDelegator.mnVBurnerCloseSW, false),
       MainSimulator.ccSelectAutoMode(true, cmVBAutoHOOK.ccIsHooked(),
         SubVCombustDelegator.mnVBurnerOpenSW, false)
@@ -59,7 +66,8 @@ public final class SubVCombusTask implements ZiTask{
     //-- output ** ve
     cmVEAutoHOOK.ccHook(SubVCombustDelegator.mnVExfanAutoSW);
     SubVCombustDelegator.mnVExfanAutoPL=cmVEAutoHOOK.ccIsHooked();
-    dcVExfanDegree.ccSetupAction(MainSimulator.ccSelectAutoMode(true, cmVEAutoHOOK.ccIsHooked(),
+    dcVExfanDegree.ccSetupAction(
+      MainSimulator.ccSelectAutoMode(true, cmVEAutoHOOK.ccIsHooked(),
         SubVCombustDelegator.mnVExfanCloseSW, false),
       MainSimulator.ccSelectAutoMode(true, cmVEAutoHOOK.ccIsHooked(),
         SubVCombustDelegator.mnVExfanOpenSW, false)
@@ -71,7 +79,8 @@ public final class SubVCombusTask implements ZiTask{
   }//+++
 
   @Override public void ccSimulate() {
-  
+    
+    //-- damper
     dcVBunerDegree.ccSimulate();
     dcVExfanDegree.ccSimulate();
   

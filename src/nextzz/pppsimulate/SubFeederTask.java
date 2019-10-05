@@ -102,12 +102,12 @@ public final class SubFeederTask implements ZiTask{
     
     //-- vf ** controller
     if(!lpVFeederIL){
-      cmVFeederChainCTRL.ccAllStop();
+      cmVFeederChainCTRL.ccForceStop();
     }//..?
     cmVFeederChainCTRL.ccSetConfirmedAt(C_CONTROLLER_UPBOUND, true);
     boolean lpVFeederStartFlag
       = SubFeederDelegator.mnVFChainMSSW;
-    cmVFeederChainCTRL.ccTakePulse(lpVFeederStartFlag);
+    cmVFeederChainCTRL.ccSetRun(lpVFeederStartFlag);
     cmVFeederChainCTRL.ccRun();
     
     //-- vf ** output

@@ -41,14 +41,18 @@ public final class SubVProvisionTask implements ZiTask{
   //===
   
   //-- misc ** motor
+  //-- misc ** motor ** v comporessor
   public final ZcMotor dcVCompressor = new ZcMotor(32);
   private final ZcHookFlicker cmVCompressorHOOK = new ZcHookFlicker();
-  
+  //-- misc ** motor ** mixer
   public final ZcMotor dcMixer = new ZcMotor(48);
   private final ZcHookFlicker cmMixerHOOK = new ZcHookFlicker();
-  
+  //-- motor ** v exfan
   public final ZcMotor dcVExFan = new ZcMotor(36);
   private final ZcHookFlicker cmVExFanHooker = new ZcHookFlicker();
+  //-- motor ** v b comp
+  public final ZcMotor dcVBCompressor = new ZcMotor(17);
+  private final ZcHookFlicker cmVBCompressorHooker = new ZcHookFlicker();
   
   //-- ag chain ** motor
   private final ZcChainController cmAGChainCTRL = new ZcChainController(3, 6);
@@ -88,34 +92,40 @@ public final class SubVProvisionTask implements ZiTask{
   
   @Override public void ccScan(){
     
-    //-- misc ** v comprssor
+    //-- misc ** motor 
+    //-- misc ** motor ** v comprssor
     cmVCompressorHOOK.ccHook
       (SubVProvisionDelegator.mnVCompressorMSSW,dcVCompressor.ccIsTripped());
     dcVCompressor.ccContact(cmVCompressorHOOK.ccIsHooked());
     SubVProvisionDelegator.mnVCompressorMSPL
-      = MainSimulator.ccMoterFeedBackLamp
-          (cmVCompressorHOOK, dcVCompressor);
+      = MainSimulator.ccMoterFeedBackLamp(cmVCompressorHOOK, dcVCompressor);
     SubAnalogDelegator.mnCTSlotZ=dcVCompressor.ccGetCT();
     
-    //-- misc ** mixer
+    //-- misc ** motor ** mixer
     cmMixerHOOK.ccHook
       (SubVProvisionDelegator.mnMixerMSSW,dcMixer.ccIsTripped());
     dcMixer.ccContact(cmMixerHOOK.ccIsHooked());
     SubVProvisionDelegator.mnMixerMSPL
-      = MainSimulator.ccMoterFeedBackLamp
-        (cmMixerHOOK, dcMixer);
+      = MainSimulator.ccMoterFeedBackLamp(cmMixerHOOK, dcMixer);
     SubAnalogDelegator.mnCTSlotI=dcMixer.ccGetCT();
     SubVProvisionDelegator.mnMixerIconPL=dcMixer.ccIsContacted();
     
-    //-- misc ** exfan
+    //-- misc ** motor ** exfan
     cmVExFanHooker.ccHook
       (SubVProvisionDelegator.mnVExfanMSSW,dcVExFan.ccIsTripped());
     dcVExFan.ccContact(cmVExFanHooker.ccIsHooked());
     SubVProvisionDelegator.mnVExfanMSPL
-      = MainSimulator.ccMoterFeedBackLamp
-        (cmVExFanHooker, dcVExFan);
+      = MainSimulator.ccMoterFeedBackLamp(cmVExFanHooker, dcVExFan);
     SubAnalogDelegator.mnCTSlotII=dcVExFan.ccGetCT();
     SubVProvisionDelegator.mnVExfanIconPL=dcVExFan.ccIsContacted();
+    
+    //-- misc ** motor ** v burner compressor
+    cmVBCompressorHooker.ccHook
+      (SubVProvisionDelegator.mnVBCompressorMSSW,dcVBCompressor.ccIsTripped());
+    dcVBCompressor.ccContact(cmVBCompressorHooker.ccIsHooked());
+    SubVProvisionDelegator.mnVBCompressorMSPL
+      = MainSimulator.ccMoterFeedBackLamp(cmVBCompressorHooker, dcVBCompressor);
+    SubAnalogDelegator.mnCTSlotIII=dcVBCompressor.ccGetCT();
     
     //-- ag supply chain
     //-- ag supply chain ** takewith
@@ -130,14 +140,14 @@ public final class SubVProvisionTask implements ZiTask{
     cmAGChainCTRL.ccSetConfirmedAt(4, dcInclinedBelcon.ccIsContacted());
     cmAGChainCTRL.ccSetConfirmedAt(5, dcHorizontalBelcon.ccIsContacted());
     //-- ag supply chain ** run
-    cmAGChainCTRL.ccTakePulse(SubVProvisionDelegator.mnAGChainMSSW);
+    cmAGChainCTRL.ccSetRun(SubVProvisionDelegator.mnAGChainMSSW);
     cmAGChainCTRL.ccRun();
     //-- ag supply chain ** give ** mc
-    dcScreen.ccContact(cmAGChainCTRL.ccGetOutputAt(1));
-    dcHotElevator.ccContact(cmAGChainCTRL.ccGetOutputAt(2));
-    dcDryer.ccContact(cmAGChainCTRL.ccGetOutputAt(3));
-    dcInclinedBelcon.ccContact(cmAGChainCTRL.ccGetOutputAt(4));
-    dcHorizontalBelcon.ccContact(cmAGChainCTRL.ccGetOutputAt(5));
+    dcScreen.ccContact(cmAGChainCTRL.ccGetOutputFor(1));
+    dcHotElevator.ccContact(cmAGChainCTRL.ccGetOutputFor(2));
+    dcDryer.ccContact(cmAGChainCTRL.ccGetOutputFor(3));
+    dcInclinedBelcon.ccContact(cmAGChainCTRL.ccGetOutputFor(4));
+    dcHorizontalBelcon.ccContact(cmAGChainCTRL.ccGetOutputFor(5));
     //-- ag supply chain ** give ** pc ** pl
     SubVProvisionDelegator.mnAGChainMSPL
       = cmAGChainCTRL.ccGetFlasher(MainSimulator.ccOneSecondClock());
@@ -192,13 +202,13 @@ public final class SubVProvisionTask implements ZiTask{
       = dcDustSiloElevator.ccIsContacted()
        && cmDustExtractionHOOK.ccIsHooked()
        && (!cmDustSiloLevelDelayor.ccIsUp());
-    cmDustExtractionCTRL.ccTakeInput
+    cmDustExtractionCTRL.ccSetRun
       (lpDustExtractionStartHLD, !lpDustExtractionStartHLD);
     cmDustExtractionCTRL.ccRun();
     //-- dust extraction ** output
     dcDustSiloElevator.ccContact(cmDustSiloInputStopTM.ccIsUp());
-    dcDustExtractionScrew.ccContact(cmDustExtractionCTRL.ccGetOutputAt(1));
-    dcBagDustScrew.ccContact(cmDustExtractionCTRL.ccGetOutputAt(2));
+    dcDustExtractionScrew.ccContact(cmDustExtractionCTRL.ccGetOutputFor(1));
+    dcBagDustScrew.ccContact(cmDustExtractionCTRL.ccGetOutputFor(2));
     SubVProvisionDelegator.mnDustExtractionMSPL=
       cmDustSiloInputStopTM.ccIsUp()
         &&
@@ -219,10 +229,11 @@ public final class SubVProvisionTask implements ZiTask{
   
   @Override public void ccSimulate(){
     
-    //-- misc
+    //-- misc ** motor
     dcVCompressor.ccSimulate(0.76f);
     dcMixer.ccSimulate(0.65f);
     dcVExFan.ccSimulate(0.55f);
+    dcVBCompressor.ccSimulate(0.45f);
     
     //-- ag chain
     dcScreen.ccSimulate(0.66f);
@@ -242,7 +253,12 @@ public final class SubVProvisionTask implements ZiTask{
     );
     
     //--
-    if(dcVExFan.ccIsContacted()){dcBagHopper.ccCharge(8);}
+    if(dcVExFan.ccIsContacted()){
+      dcBagHopper.ccCharge(2);
+      if(SubFeederTask.ccRefer().ccGetColdAggregateSensor()){
+        dcBagHopper.ccCharge(8);
+      }//..?
+    }//..?
     if(dcDustSiloDischargeGateMV){dcDustSilo.ccDischarge(64);}
     dcDustSiloElevator.ccSimulate(0.45f);
     dcDustExtractionScrew.ccSimulate(0.47f);

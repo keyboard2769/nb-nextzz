@@ -33,7 +33,7 @@ public class ZcChainController extends ZcCheckedValueModel {
   private int cmCurrentLV;
   private int cmConfirmedLV=0;
   private final ZcPulser cmEngagePulser = new ZcPulser();
-
+  
   public ZcChainController(int pxIntervalS, int pxMaxLV) {
     super(0, EcConst.C_FPS*(pxIntervalS&0x1F)*ZcLevelComparator.C_LEVEL_MAX);
     cmMaxLV=pxMaxLV;
@@ -67,9 +67,19 @@ public class ZcChainController extends ZcCheckedValueModel {
     
   }//+++
   
+  public void ccRun(boolean pxRun, boolean pxStop){
+    ccSetRun(pxRun, pxStop);
+    ccRun();
+  }//+++
+  
+  public void ccRun(boolean pxPulse){
+    ccSetRun(pxPulse);
+    ccRun();
+  }//+++
+  
   //===
   
-  public final void ccTakeInput(boolean pxRun, boolean pxStop){
+  public final void ccSetRun(boolean pxRun, boolean pxStop){
     if(ccIsLevelAt(0)){
       if(pxRun){cmRunsUp=true;}
     }else{
@@ -80,8 +90,8 @@ public class ZcChainController extends ZcCheckedValueModel {
     }//..?
   }//+++
   
-  public final void ccTakePulse(boolean pxInput){
-    if(cmEngagePulser.ccUpPulse(pxInput)){
+  public final void ccSetRun(boolean pxPulse){
+    if(cmEngagePulser.ccUpPulse(pxPulse)){
       if(ccIsLevelAt(0)){
         cmRunsUp=true;
         cmRunsDown=false;
@@ -90,6 +100,12 @@ public class ZcChainController extends ZcCheckedValueModel {
         cmRunsDown=true;
       }//..?
     }//..?
+  }//+++
+  
+  public final void ccSetupRunStatus(boolean pxDown, boolean pxUp){
+    if(pxDown&&pxUp){return;}
+    cmRunsDown=pxDown;
+    cmRunsUp=pxUp;
   }//+++
   
   public final void ccSetTrippedAt(int pxLevel, boolean pxStatus){
@@ -102,8 +118,30 @@ public class ZcChainController extends ZcCheckedValueModel {
     if(pxStatus){cmConfirmedLV=pxLevel;}
   }//+++
   
-  public final boolean ccGetOutputAt(int pxLevel){
+  public final void ccClearConfirmedLevel(){
+    cmConfirmedLV=0;
+  }//+++
+  
+  public final void ccForceStop(){
+    cmRunsUp=false;
+    cmRunsDown=false;
+    ccClearConfirmedLevel();
+    ccSetValue(0);
+  }//+++
+  
+  //===
+  
+  public final boolean ccGetOutputFor(int pxLevel){
     return cmCurrentLV>=pxLevel;
+  }//+++
+  
+  public final boolean ccGetOutputAt(int pxLevel){
+    return cmCurrentLV==pxLevel;
+  }//+++
+  
+  public final boolean ccGetOutputWith(int pxLowLevel, int pxHighLevel){
+    if(pxHighLevel<=pxLowLevel){return false;}
+    return cmCurrentLV>=pxLowLevel && cmCurrentLV<=pxHighLevel;
   }//+++
   
   public final boolean ccGetPulseAt(int pxLevel){
@@ -111,12 +149,6 @@ public class ZcChainController extends ZcCheckedValueModel {
   }//+++
   
   //===
-  
-  public final void ccAllStop(){
-    cmRunsUp=false;
-    cmRunsDown=false;
-    ccSetValue(0);
-  }//+++
   
   public final boolean ccIsAllStopped(){
     return cmValue==0;
@@ -149,9 +181,9 @@ public class ZcChainController extends ZcCheckedValueModel {
     lpRes.append('@');
     lpRes.append(Integer.toHexString(this.hashCode()));
     lpRes.append('$');
-    lpRes.append(VcStringUtility.ccPackupParedTag("c-v", cmValue));
-    lpRes.append(VcStringUtility.ccPackupParedTag("c-l", cmCurrentLV));
-    lpRes.append(VcStringUtility.ccPackupParedTag("MAX", cmMaxLV));
+    lpRes.append(VcStringUtility.ccPackupParedTag("V", cmValue));
+    lpRes.append(VcStringUtility.ccPackupParedTag("L", cmCurrentLV));
+    lpRes.append(VcStringUtility.ccPackupParedTag("maxL", cmMaxLV));
     lpRes.append('|');
     lpRes.append(VcStringUtility.ccPackupParedTag("UP", cmRunsUp));
     lpRes.append(VcStringUtility.ccPackupParedTag("DN", cmRunsDown));

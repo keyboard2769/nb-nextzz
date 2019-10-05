@@ -32,12 +32,11 @@ public final class SubVProvisionDelegator {
     
     //-- misc
     mnVCompressorMSSW,mnVCompressorMSPL,
-    mnMixerMSSW,mnMixerMSPL,
-    mnMixerIconPL,
-    mnVExfanMSSW,mnVExfanMSPL,
-    mnVExfanIconPL,
+    mnMixerMSSW,mnMixerMSPL,mnMixerIconPL,
+    mnVExfanMSSW,mnVExfanMSPL,mnVExfanIconPL,
+    mnVBCompressorMSSW,mnVBCompressorMSPL,
     mnTowerBlowerTGSW,
-    mnWeighSystemTGSW,mnWeighSystemTGPL,
+    mnWeighSystemMSSW,mnWeighSystemMSPL,
     
     //-- ag
     
@@ -90,32 +89,38 @@ public final class SubVProvisionDelegator {
       .get(2).ccIsMousePressed();
     mnVExfanMSSW=SubOperativeGroup.ccRefer().cmDesMotorSW
       .get(3).ccIsMousePressed();
-    mnWeighSystemTGSW=SubOperativeGroup.ccRefer().cmDesMotorSW
+    mnWeighSystemMSSW=SubOperativeGroup.ccRefer().cmDesMotorSW
       .get(7).ccIsMousePressed();
+    mnVBCompressorMSSW=SubOperativeGroup.ccRefer().cmDesMotorSW
+      .get(10).ccIsMousePressed();
     
-    //-- misc ** sim -> pc
+    //-- misc ** sim -> pc ** mspl
     SubOperativeGroup.ccRefer().cmDesMotorSW
       .get(1).ccSetIsActivated(mnVCompressorMSPL);
     SubOperativeGroup.ccRefer().cmDesMotorSW
       .get(2).ccSetIsActivated(mnMixerMSPL);
+    SubOperativeGroup.ccRefer().cmDesMotorSW
+      .get(3).ccSetIsActivated(mnVExfanMSPL);
+    SubOperativeGroup.ccRefer().cmDesMotorSW
+      .get(7).ccSetIsActivated(mnWeighSystemMSPL);
+    SubOperativeGroup.ccRefer().cmDesMotorSW
+      .get(10).ccSetIsActivated(mnVBCompressorMSPL);
+    
+    //-- misc ** sim -> pc ** icon pl
     SubMixerGroup.ccRefer().cmMixerIcon
       .ccSetIsActivated(mnMixerIconPL);
     SubVBondGroup.ccRefer().cmExfanIcon
       .ccSetIsActivated(mnVExfanIconPL);
-    SubOperativeGroup.ccRefer().cmDesMotorSW
-      .get(3).ccSetIsActivated(mnVExfanMSPL);
-    SubOperativeGroup.ccRefer().cmDesMotorSW
-      .get(7).ccSetIsActivated(mnWeighSystemTGPL);
     
     //-- AG
     
-    //-- AG ** pc -> sim
+    //-- AG ** motoer switch
     mnAGChainMSSW=SubOperativeGroup.ccRefer().cmDesMotorSW
       .get(4).ccIsMousePressed();
-    
-    //-- AG ** sim -> pc
     SubOperativeGroup.ccRefer().cmDesMotorSW
       .get(4).ccSetIsActivated(mnAGChainMSPL);
+    
+    //-- AG ** sim -> pc
     SubVBondGroup.ccRefer().cmVDryerRollerA
       .ccSetIsActivated(mnVDryerPL);
     SubVBondGroup.ccRefer().cmVDryerRollerC

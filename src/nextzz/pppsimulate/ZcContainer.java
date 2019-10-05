@@ -33,6 +33,9 @@ public class ZcContainer extends ZcRangedValueModel{
     cmSpeedMag=1.0f;
   }//..!
   
+  /**
+   * @param cmMagnitude bigger is smaller
+   */
   public ZcContainer(float cmMagnitude){
     super(0,29999);
     cmSpeedMag=PApplet.constrain(cmMagnitude, 0.01f, 2.99f);

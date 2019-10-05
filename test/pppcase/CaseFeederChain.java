@@ -91,7 +91,7 @@ public class CaseFeederChain extends PApplet{
     
     //--
     cmController.ccSetConfirmedAt(10, true);
-    cmController.ccTakePulse(EcComponent.ccIsKeyPressed('r'));
+    cmController.ccSetRun(EcComponent.ccIsKeyPressed('r'));
     cmController.ccRun();
     
     //--

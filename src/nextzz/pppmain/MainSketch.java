@@ -61,8 +61,8 @@ public class MainSketch extends PApplet{
   
   public static final String C_WARE_TITLE = "Next ZZ v19a01";
   
-  static public final int C_COLOR_BACKGROUD=0xFF336633;
-  static public final int C_COLOR_PLATE    =0xFF225522;
+  static public final int C_COLOR_BACKGROUD = 0xFF336633;
+  static public final int C_COLOR_PLATE     = 0xFF225522;
   static public final int C_WIDTH_S  =  800;
   static public final int C_HEIGHT_S =  600;
   static public final int C_WIDTH_M  = 1024;
@@ -322,7 +322,7 @@ public class MainSketch extends PApplet{
   }//+++
   
   public static final String ccGetLastLeavingStamp(){
-    return "_1910051321";
+    return "_1910052209";
   }//+++
 
 }//***eof

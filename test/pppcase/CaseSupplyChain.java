@@ -31,9 +31,9 @@ import nextzz.pppsimulate.ZcChainController;
 import nextzz.pppsimulate.ZcMotor;
 import processing.core.PApplet;
 
-public class CaseChainController extends PApplet{
+public class CaseSupplyChain extends PApplet{
   
-  static private CaseChainController self=null;
+  static private CaseSupplyChain self=null;
   
   //===
   
@@ -77,7 +77,7 @@ public class CaseChainController extends PApplet{
   @Override public void setup() {
    
     size(320,240);
-    frame.setTitle(CaseChainController.class.getSimpleName());
+    frame.setTitle(CaseSupplyChain.class.getSimpleName());
     self=this;
     
     //--
@@ -147,13 +147,13 @@ public class CaseChainController extends PApplet{
     
     //--
     boolean lpSW=EcComponent.ccIsKeyPressed('r');
-    dcTheController.ccTakePulse(lpSW);
+    dcTheController.ccSetRun(lpSW);
     dcTheController.ccRun();
-    dcMotorI.ccContact(  dcTheController.ccGetOutputAt(1));
-    dcMotorII.ccContact( dcTheController.ccGetOutputAt(2));
-    dcMotorIII.ccContact(dcTheController.ccGetOutputAt(3));
-    dcMotorIV.ccContact( dcTheController.ccGetOutputAt(4));
-    dcMotorV.ccContact(  dcTheController.ccGetOutputAt(5));
+    dcMotorI.ccContact(  dcTheController.ccGetOutputFor(1));
+    dcMotorII.ccContact( dcTheController.ccGetOutputFor(2));
+    dcMotorIII.ccContact(dcTheController.ccGetOutputFor(3));
+    dcMotorIV.ccContact( dcTheController.ccGetOutputFor(4));
+    dcMotorV.ccContact(  dcTheController.ccGetOutputFor(5));
     cmRunPLB.ccSetIsActivated
       (dcTheController.ccGetFlasher(cmRoller.ccIsAbove(7)));
     
@@ -202,7 +202,7 @@ public class CaseChainController extends PApplet{
   //===
   
   public static void main(String[] args) {
-    PApplet.main(CaseChainController.class.getCanonicalName());
+    PApplet.main(CaseSupplyChain.class.getCanonicalName());
   }//+++ 
   
 }//***eof
