@@ -26,7 +26,7 @@ public final class SubWeighingDelegator {
   
   public static volatile boolean
     mnMixerGateHoldSW,mnMixerGateOpenSW,
-    mnMixerGateOpeningPL,mnMixerGateOpenedPL,mnMixerGateClosedPL
+    mnMixerGateFB,mnMixerGateClosedPL
   ;//...
   
   public static final void ccWire(){
@@ -42,8 +42,7 @@ public final class SubWeighingDelegator {
       .ccSetIsActivated(!mnMixerGateHoldSW && !mnMixerGateOpenSW);
     SubOperativeGroup.ccRefer().cmMixerGateOpenSW
       .ccSetIsActivated(mnMixerGateOpenSW);
-    SubMixerGroup.ccRefer().cmMixerGate.ccSetIsOpening(mnMixerGateOpeningPL);
-    SubMixerGroup.ccRefer().cmMixerGate.ccSetIsOpened(mnMixerGateOpenedPL);
+    SubMixerGroup.ccRefer().cmMixerGate.ccSetIsActivated(mnMixerGateFB);
     SubMixerGroup.ccRefer().cmMixerGate.ccSetIsClosed(mnMixerGateClosedPL);
     
   }//+++

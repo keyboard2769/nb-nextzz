@@ -47,28 +47,26 @@ public final class SubVCombusTask implements ZiTask{
     //-- output ** vb
     cmVBAutoHOOK.ccHook(SubVCombustDelegator.mnVBurnerAutoSW);
     SubVCombustDelegator.mnVBurnerAutoPL=cmVBAutoHOOK.ccIsHooked();
-    dcVBunerDegree.ccSetupAction(
-      ConstFBHolder.ccSelectAutoMode(true, cmVBAutoHOOK.ccIsHooked(),
+    dcVBunerDegree.ccSetupAction(MainSimulator.ccSelectAutoMode(true, cmVBAutoHOOK.ccIsHooked(),
         SubVCombustDelegator.mnVBurnerCloseSW, false),
-      ConstFBHolder.ccSelectAutoMode(true, cmVBAutoHOOK.ccIsHooked(),
+      MainSimulator.ccSelectAutoMode(true, cmVBAutoHOOK.ccIsHooked(),
         SubVCombustDelegator.mnVBurnerOpenSW, false)
     );
     SubAnalogDelegator.mnVBDegreeAD=dcVBunerDegree.ccGetValue();
-    SubVCombustDelegator.mnVBurnerClosePL=dcVBunerDegree.ccGetIsClosing();
-    SubVCombustDelegator.mnVBurnerOpenPL=dcVBunerDegree.ccGetIsOpening();
+    SubVCombustDelegator.mnVBurnerClosePL=dcVBunerDegree.ccIsClosing();
+    SubVCombustDelegator.mnVBurnerOpenPL=dcVBunerDegree.ccIsOpening();
     
     //-- output ** ve
     cmVEAutoHOOK.ccHook(SubVCombustDelegator.mnVExfanAutoSW);
     SubVCombustDelegator.mnVExfanAutoPL=cmVEAutoHOOK.ccIsHooked();
-    dcVExfanDegree.ccSetupAction(
-      ConstFBHolder.ccSelectAutoMode(true, cmVEAutoHOOK.ccIsHooked(),
+    dcVExfanDegree.ccSetupAction(MainSimulator.ccSelectAutoMode(true, cmVEAutoHOOK.ccIsHooked(),
         SubVCombustDelegator.mnVExfanCloseSW, false),
-      ConstFBHolder.ccSelectAutoMode(true, cmVEAutoHOOK.ccIsHooked(),
+      MainSimulator.ccSelectAutoMode(true, cmVEAutoHOOK.ccIsHooked(),
         SubVCombustDelegator.mnVExfanOpenSW, false)
     );
     SubAnalogDelegator.mnVEDegreeAD=dcVExfanDegree.ccGetValue();
-    SubVCombustDelegator.mnVExfanClosePL=dcVExfanDegree.ccGetIsClosing();
-    SubVCombustDelegator.mnVExfanOpenPL=dcVExfanDegree.ccGetIsOpening();
+    SubVCombustDelegator.mnVExfanClosePL=dcVExfanDegree.ccIsClosing();
+    SubVCombustDelegator.mnVExfanOpenPL=dcVExfanDegree.ccIsOpening();
     
   }//+++
 

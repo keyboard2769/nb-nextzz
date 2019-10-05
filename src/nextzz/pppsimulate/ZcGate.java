@@ -25,8 +25,8 @@ import kosui.ppputil.VcStringUtility;
 public class ZcGate extends ZcRangedValueModel{
   
   private boolean dcOpen,dcClose;
-  private boolean dcIsFullOpened,dcIsClosed;
-  private boolean dcIsAtFull,dcIsAtMiddle,dcIsAtClosed;
+  private boolean dcIsOpened,dcIsClosed;
+  private boolean dcIsAtOpened,dcIsAtMiddle,dcIsAtClosed;
   private int cmSpeed,cmAutoSwitchRange,cmLimitSwitchRange;
   
   public ZcGate(int pxSpeed, int pxAuto, int pxLimit) {
@@ -57,10 +57,10 @@ public class ZcGate extends ZcRangedValueModel{
       if(dcOpen){ccShift(    cmSpeed);}
     }//..?
     //--
-    dcIsFullOpened = ccIsAbove(cmMax-cmLimitSwitchRange);
+    dcIsOpened = ccIsAbove(cmMax-cmLimitSwitchRange);
     dcIsClosed     = ccIsBelow(cmMin+cmLimitSwitchRange);
     //--
-    dcIsAtFull = ccIsInRangeOf(
+    dcIsAtOpened = ccIsInRangeOf(
       cmMax-cmLimitSwitchRange-cmAutoSwitchRange,
       cmMax-cmLimitSwitchRange+cmAutoSwitchRange
     );
@@ -115,32 +115,38 @@ public class ZcGate extends ZcRangedValueModel{
     ccSetupAction(!pxOpen, pxOpen);
   }//+++
   
-  public final boolean ccGetIsFullOpened(){
-    return dcIsFullOpened;
+  //===
+  
+  public final boolean ccIsFullOpened(){
+    return dcIsOpened;
   }//+++
   
-  public final boolean ccGetIsClosed(){
+  public final boolean ccIsClosed(){
     return dcIsClosed;
   }//+++
   
-  public final boolean ccGetIsAtFull(){
-    return dcIsAtFull;
+  public final boolean ccIsAtFull(){
+    return dcIsAtOpened;
   }//+++
   
-  public final boolean ccGetIsAtMiddle(){
+  public final boolean ccIsAtMiddle(){
     return dcIsAtMiddle;
   }//+++
   
-  public final boolean ccGetIsAtClosed(){
+  public final boolean ccIsAtClosed(){
     return dcIsAtClosed;
   }//+++
   
-  public final boolean ccGetIsOpening(){
+  public final boolean ccIsOpening(){
     return dcOpen;
   }//+++
   
-  public final boolean ccGetIsClosing(){
+  public final boolean ccIsClosing(){
     return dcClose;
+  }//+++
+  
+  public final boolean ccIsMissing(){
+    return !dcIsOpened && !dcIsClosed;
   }//+++
   
   //===
@@ -154,7 +160,7 @@ public class ZcGate extends ZcRangedValueModel{
     lpRes.append(VcStringUtility.ccPackupBoolTag("UP", dcOpen));
     lpRes.append('|');
     lpRes.append(VcStringUtility.ccPackupBoolTag("CL", dcIsClosed));
-    lpRes.append(VcStringUtility.ccPackupBoolTag("OL", dcIsFullOpened));
+    lpRes.append(VcStringUtility.ccPackupBoolTag("OL", dcIsOpened));
     lpRes.append('|');
     lpRes.append(VcStringUtility.ccPackupParedTag("v", cmValue));
     lpRes.append(VcStringUtility.ccPackupParedTag("SPD", cmSpeed));

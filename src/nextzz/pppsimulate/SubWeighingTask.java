@@ -34,20 +34,23 @@ public class SubWeighingTask implements ZiTask{
   
   //===
   
-  public final ZcGate dcMixerGate = new ZcGate(64);
+  public final ZcGate dcMixerGate = new ZcGate(96);
 
   @Override public void ccScan() {
     
-    dcMixerGate.ccSetupAction(
-      ConstFBHolder.ccSelectForceOpen(
+    dcMixerGate.ccSetupAction(MainSimulator.ccSelectForceOpen(
         SubWeighingDelegator.mnMixerGateHoldSW,
         SubWeighingDelegator.mnMixerGateOpenSW,
         false
       )
     );
-    SubWeighingDelegator.mnMixerGateOpeningPL=dcMixerGate.ccGetIsOpening();
-    SubWeighingDelegator.mnMixerGateOpenedPL=dcMixerGate.ccGetIsFullOpened();
-    SubWeighingDelegator.mnMixerGateClosedPL=dcMixerGate.ccGetIsClosed();
+    //[head]**
+    SubWeighingDelegator.mnMixerGateFB
+      = (dcMixerGate.ccIsOpening()&&dcMixerGate.ccIsFullOpened())?true
+       :(!dcMixerGate.ccIsOpening()&&dcMixerGate.ccIsClosed())?true
+       :MainSimulator.ccHalfSecondClock();
+    SubWeighingDelegator.mnMixerGateClosedPL
+      = dcMixerGate.ccIsClosed() && !dcMixerGate.ccIsFullOpened();
     
   }//+++
 

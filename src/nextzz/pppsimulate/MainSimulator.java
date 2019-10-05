@@ -19,6 +19,9 @@
 
 package nextzz.pppsimulate;
 
+import kosui.ppplogic.ZcHookFlicker;
+import kosui.ppplogic.ZcRoller;
+
 public final class MainSimulator {
   
   private static MainSimulator self = null;
@@ -27,26 +30,60 @@ public final class MainSimulator {
     return self;
   }//+++
   private MainSimulator(){}//..!
-  
+
   //===
   
-  private static int cmRoller=11;
+  //=== clock
   
-  private static void ssRoll(){
-    cmRoller++;cmRoller&=0xF;
+  //=== clock ** 
+  
+  private static final ZcRoller O_HALFSEC_ROLLER
+    = new ZcRoller(7, 5);
+  
+  private static final ZcRoller O_ONESEC_ROLLER
+    = new ZcRoller(15, 11);
+  
+  private static final ZcRoller O_TWOSEC_ROLLER
+    = new ZcRoller(31, 27);
+  
+  //=== clock ** half
+  
+  public static boolean ccHalfSecondPLS(){
+    return O_HALFSEC_ROLLER.ccIsAt(3);
   }//+++
   
+  public static boolean ccHalfSecondClock(){
+    return O_HALFSEC_ROLLER.ccIsAbove(3);
+  }//+++
+  
+  //=== clock ** one
+  
   public static boolean ccOneSecondPLS(){
-    return cmRoller==7;
+    return O_ONESEC_ROLLER.ccIsAt(7);
   }//+++
   
   public static boolean ccOneSecondClock(){
-    return cmRoller>7;
+    return O_ONESEC_ROLLER.ccIsAbove(7);
   }//+++
+  
+  //=== clock ** two
+  
+  public static boolean ccTwoSecondPLS(){
+    return O_TWOSEC_ROLLER.ccIsAt(15);
+  }//+++
+  
+  public static boolean ccTwoSecondClock(){
+    return O_TWOSEC_ROLLER.ccIsAbove(15);
+  }//+++
+  
+  //=== loop
   
   static public final void ccSimulate(){
     
-    ssRoll();
+    //-- clock
+    O_HALFSEC_ROLLER.ccRoll();
+    O_ONESEC_ROLLER.ccRoll();
+    O_TWOSEC_ROLLER.ccRoll();
     
     //-- scan
     SubWeighingTask.ccRefer().ccScan();
@@ -60,6 +97,30 @@ public final class MainSimulator {
     SubVProvisionTask.ccRefer().ccSimulate();
     SubVCombusTask.ccRefer().ccSimulate();
   
+  }//+++
+  
+  //=== function block
+  
+  public static final boolean ccMoterFeedBackLamp(
+    ZcHookFlicker pxHolder, ZcMotor pxMotor
+  ){
+    return pxHolder
+       .ccIsHooked()&&(MainSimulator.ccOneSecondClock()
+      ||pxMotor.ccIsContacted());
+  }//+++
+
+  public static final boolean ccSelectForceOpen(
+    boolean pxForceClose, boolean pxForceOpen, boolean pxAutoFlag
+  ){
+    return pxForceClose?false:pxForceOpen?true:pxAutoFlag;
+  }//+++
+
+  public static final boolean ccSelectAutoMode(
+    boolean pxPermmision,
+    boolean pxAuto, boolean pxSwitch, boolean pxFlag
+  ){
+    if(!pxPermmision){return false;}
+    return pxAuto?pxFlag:pxSwitch;
   }//+++
   
  }//***eof

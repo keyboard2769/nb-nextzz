@@ -25,28 +25,21 @@ import processing.core.PConstants;
 
 public class EcMixerGate extends EcElement{
   
-  private boolean cmMV=false,cmMOL=false,cmMCL=false;
+  private boolean cmIsClosed=false;
   
   public EcMixerGate(){
     super();
+    ccSetColor(EcConst.C_YELLOW);
   }//+++ 
   
   @Override public void ccUpdate(){
     
+    //-- pre
     drawRect(SubMixerGroup.ccRefer().cmPlateColor);
     
-    //-- setup
-    cmOnColor=EcConst.C_GRAY;
-    int lpOffset=cmMCL?0:(cmW/8);
-    if(cmMOL&&cmMV){
-      cmOnColor=EcConst.C_YELLOW;  
-    }else{
-      if(cmMOL){cmOnColor=EcConst.C_LIT_ORANGE;}
-      if(cmMV){cmOnColor=EcConst.C_RED;}
-    }//..?
-    
     //-- draw
-    pbOwner.fill(cmOnColor);
+    ccActFill();
+    int lpOffset=cmIsClosed?0:(cmW/8);
     pbOwner.arc(
       ccCenterX()-lpOffset, ccCenterY(), cmW*3/4, cmH,
       PConstants.PI/2+0.1f, PConstants.PI*3/2-0.1f,
@@ -60,22 +53,8 @@ public class EcMixerGate extends EcElement{
     
   }//+++
   
-  public final void ccSetIsOpening(boolean pxStatus){
-    cmMV=pxStatus;
-  }//+++
-  
-  public final void ccSetIsOpened(boolean pxStatus){
-    cmMOL=pxStatus;
-  }//+++
-  
   public final void ccSetIsClosed(boolean pxStatus){
-    cmMCL=pxStatus;
-  }//+++
-  
-  public final void ccSetupStatus(boolean pxMV, boolean pxMOL, boolean pxMCL){
-    ccSetIsOpening(pxMV);
-    ccSetIsOpened(pxMOL);
-    ccSetIsClosed(pxMCL);
+    cmIsClosed=pxStatus;
   }//+++
  
 }//***eof

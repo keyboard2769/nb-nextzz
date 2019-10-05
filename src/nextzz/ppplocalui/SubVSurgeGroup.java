@@ -156,6 +156,7 @@ public final class SubVSurgeGroup implements EiGroup{
       .ccSetLocation(cmOverFlowedLV,0,ConstLocalUI.C_INPANE_GAP);
     cmOverSizedGateSW
       .ccSetLocation(cmOverSizedLV,0,ConstLocalUI.C_INPANE_GAP);
+    cmSandTemperatureCB.ccSetH(ConstLocalUI.C_DEFAULT_SINGLELINE_H);
     cmSandTemperatureCB.ccSetLocation(SubWeigherGroup.ccRefer().cmPlateAG.ccEndX()
        - cmSandTemperatureCB.ccGetW(),
       cmOverFlowedLV.ccGetY()
@@ -269,6 +270,7 @@ public final class SubVSurgeGroup implements EiGroup{
     
     //-- as surge 
     //-- as surge ** lowline
+    cmPipeTemperatureCB.ccSetH(ConstLocalUI.C_DEFAULT_SINGLELINE_H);
     cmPipeTemperatureCB.ccSetLocation(
       SubWeigherGroup.ccRefer().cmPlateAS.ccEndX()
        - cmPipeTemperatureCB.ccGetW(),

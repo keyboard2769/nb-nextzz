@@ -19,7 +19,7 @@
 
 package nextzz.pppmodel;
 
-import kosui.pppmodel.McLockedIntArray;
+import kosui.pppmodel.McLockedArray;
 import nextzz.pppdelegate.SubFeederDelegator;
 
 public final class MainPlantModel {
@@ -31,7 +31,7 @@ public final class MainPlantModel {
   //===
   
   //-- v combust
-  public final McLockedIntArray cmDesVFeederTPH = new McLockedIntArray(16);
+  public final McLockedArray cmDesVFeederTPH = new McLockedArray(16);
   public volatile int cmVSupplyTPH = 0;
   public volatile int cmVTargetTemperature = 160;
   public volatile int cmVTargetTempAdjustWidth = 5;
