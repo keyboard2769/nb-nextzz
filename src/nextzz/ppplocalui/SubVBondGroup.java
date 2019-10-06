@@ -70,18 +70,19 @@ public final class SubVBondGroup implements EiGroup{
     = new EcGauge();
   
   public final EcLamp
-    cmBagHighLV = new EcLamp(" "),
-    cmBagLowLV = new EcLamp(" ")
+    cmBagHighLV = new EcLamp(12),
+    cmBagLowLV  = new EcLamp(12)
   ;//...
   
   public final EcElement
     cmAirPulsePL = new EcElement("- - - -"),
-    cmExfanPressurePL = new EcElement(" "),
-    cmBurnerPressurePL = new EcElement(" "),
-    cmBurnerIGPL = new EcElement(" "),
-    cmBurnerPVPL = new EcElement(" "),
-    cmBurnerMVPL = new EcElement(" ")
+    cmExfanPressurePL = new EcElement(),
+    cmBurnerPressurePL = new EcElement(),
+    cmBurnerIGPL = new EcElement(),
+    cmBurnerPVPL = new EcElement(),
+    cmBurnerMVPL = new EcElement()
   ;//...
+  public final EcLamp cmFlamingPL = new EcLamp(8);
   
   //-- graphic 
   public final EcShape cmVDryerShape
@@ -132,8 +133,8 @@ public final class SubVBondGroup implements EiGroup{
     cmBelconBackwardPL = new EcLamp(">")
   ;//...
   public final EcElement
-    cmVDryerRollerA = new EcElement(" "),//.. A means burner side
-    cmVDryerRollerC = new EcElement(" ") //.. C means belcon side
+    cmVDryerRollerA = new EcElement(),//.. A means burner side
+    cmVDryerRollerC = new EcElement() //.. C means belcon side
   ;//...
   
   //===
@@ -218,13 +219,14 @@ public final class SubVBondGroup implements EiGroup{
       cmVDryerShape.ccGetY()
     );
     cmVDContentLV.ccSetLocation(cmVDryerShape, lpDryerCaseGap*2,lpDryerCaseGap);
+    cmVDPressureCB.ccSetDigit(3);
     cmVDPressureCB.ccSetH(ConstLocalUI.C_DEFAULT_SINGLELINE_H);
     cmVDPressureCB.ccSetLocation(cmVDContentLV,lpDryerGaugeGap,lpDryerGaugeGap);
     cmVDContentLV.ccSetSize(
       cmVDPressureCB.ccGetW()+lpDryerGaugeGap*2,
       cmVDPressureCB.ccGetH()+lpDryerGaugeGap*2
     );
-    cmVDContentLV.ccSetColor(EcConst.C_DARK_RED);
+    cmVDContentLV.ccSetColor(EcConst.C_ORANGE);
     cmEntranceTemperatureCB.ccSetH(ConstLocalUI.C_DEFAULT_SINGLELINE_H);
     cmEntranceTemperatureCB.ccSetLocation(
       cmVDryerShape.ccEndX()-cmEntranceTemperatureCB.ccGetW(),
@@ -244,10 +246,7 @@ public final class SubVBondGroup implements EiGroup{
     );
     
     //-- bag indicator
-    final int lpLevelLampScale=12;
-    final int lpLevelLampGap=11;
-    cmBagHighLV.ccSetSize(lpLevelLampScale, lpLevelLampScale);
-    cmBagLowLV.ccSetSize(cmBagHighLV);
+    final int lpLevelLampGap=10;
     cmBagHighLV.ccSetLocation(
       cmBagFilterShape.ccGetX()+ConstLocalUI.C_INPANE_GAP*4,
       cmBagFilterShape.ccCenterY()
@@ -300,6 +299,16 @@ public final class SubVBondGroup implements EiGroup{
     );
     cmBurnerPVPL.ccSetLocation(cmBurnerIGPL, 1, 0);
     cmBurnerMVPL.ccSetLocation(cmBurnerPVPL, 1, 0);
+    cmFlamingPL.ccSetLocation(
+      cmVDryerShape.ccGetX()+ConstLocalUI.C_INPANE_GAP,
+      cmVDryerShape.ccEndY()-ConstLocalUI.C_INPANE_GAP-cmFlamingPL.ccGetH()*2
+    );
+    cmBurnerIGPL.ccSetColor(EcConst.C_WHITE_PURE);
+    cmBurnerPVPL.ccSetColor(EcConst.C_LIT_BLUE);
+    cmBurnerMVPL.ccSetColor(EcConst.C_RED);
+    cmExfanPressurePL.ccSetColor(EcConst.C_WHITE);
+    cmBurnerPressurePL.ccSetColor(EcConst.C_WHITE);
+    cmFlamingPL.ccSetColor(EcConst.C_LIT_ORANGE);
     
     //-- operative
     //-- operative ** ready-start
@@ -343,7 +352,7 @@ public final class SubVBondGroup implements EiGroup{
     cmVExfanText.ccSetLocation(lpPotentialX, cmReadyPL.ccCenterY());
     cmVBurnerText.ccSetLocation(lpPotentialX, cmRunSW.ccCenterY());
     
-    //-- burning lamp
+    //-- combust source lamp
     cmGasPL.ccSetSize(cmExfanAutoSW);
     cmOilPL.ccSetSize(cmGasPL);
     cmFuelPL.ccSetSize(cmGasPL);
@@ -395,7 +404,7 @@ public final class SubVBondGroup implements EiGroup{
       cmBagHighLV,cmBagLowLV,cmAirPulsePL,
       cmExfanIcon,cmBurnerIcon,
       cmExfanPressurePL,cmBurnerPressurePL,
-      cmBurnerIGPL,cmBurnerPVPL,cmBurnerMVPL,
+      cmBurnerIGPL,cmBurnerPVPL,cmBurnerMVPL,cmFlamingPL,
       cmBelconForwarPL,cmBelconBackwardPL,cmBelconFluxCB,
       cmReadyPL,cmRunSW,
       cmExfanCloseSW,cmExfanOpenSW,cmExfanAutoSW,cmExfanDegreeCB,

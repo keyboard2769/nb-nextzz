@@ -55,16 +55,18 @@ public final class SubAnalogDelegator {
   
   public static final void ccBind(){
     
-    //-- misc
+    //-- content
     SubVSurgeGroup.ccRefer().cmFillerSiloLV.ccSetPercentage(mnFillerSiloLV);
     SubVSurgeGroup.ccRefer().cmCementSiloLV.ccSetPercentage(mnCementSiloLV);
     SubVSurgeGroup.ccRefer().cmDustSiloLV.ccSetPercentage(mnDustSiloLV);
     
     //-- vbond
-    SubVBondGroup.ccRefer().cmBurnerDegreeCB
-      .ccSetValue(SubAnalogScalarManager.ccRefer().ccGetScaledVBDegreeValue());
-    SubVBondGroup.ccRefer().cmExfanDegreeCB
-      .ccSetValue(SubAnalogScalarManager.ccRefer().ccGetScaledVEDegreeValue());
+    SubVBondGroup.ccRefer().cmVDPressureCB.ccSetValue
+      (SubAnalogScalarManager.ccRefer().ccGetScaledVDPressureValue());
+    SubVBondGroup.ccRefer().cmBurnerDegreeCB.ccSetValue
+      (SubAnalogScalarManager.ccRefer().ccGetScaledVBDegreeValue());
+    SubVBondGroup.ccRefer().cmExfanDegreeCB.ccSetValue
+      (SubAnalogScalarManager.ccRefer().ccGetScaledVEDegreeValue());
     
   }//+++
   

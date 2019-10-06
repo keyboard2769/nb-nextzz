@@ -21,20 +21,29 @@ package nextzz.pppdelegate;
 
 import kosui.ppputil.VcNumericUtility;
 import nextzz.ppplocalui.SubVBondGroup;
+import nextzz.pppmain.MainSketch;
 import nextzz.pppmodel.MainPlantModel;
 
 public class SubVCombustDelegator {
   
   public static volatile boolean
-    mnVCombustReadyPL,mnVCombustRunSW,
+    mnVBunnerFanPL,
+    //--
     mnVExfanCloseSW, mnVExfanOpenSW,mnVExfanAutoSW,
     mnVExfanClosePL, mnVExfanOpenPL,mnVExfanAutoPL,
     mnVBurnerCloseSW, mnVBurnerOpenSW,mnVBurnerAutoSW,
     mnVBurnerClosePL, mnVBurnerOpenPL,mnVBurnerAutoPL,
-    mnVColdAggreageSensorPL,
+    //--
+    mnVBFlamingPL,
+    mnVBFanHasPressurePL,mnVBIgnitionPL,mnVBPilotValvePL,mnVBMainValvePL,
+    mnVEFanHasPressurePL,
+    //--
+    mnVCombustReadyPL,mnVCombustRunPL,mnVCombustRunSW,
     mnVCombustSourceSW,mnVOilExchangeSW,
     mnVCombustUsingGasPL,mnVCombustUsingOilPL,
-    mnVCombustUsingFuelPL,mnVCombustUsingHeavyPL
+    mnVCombustUsingFuelPL,mnVCombustUsingHeavyPL,
+    //--
+    mnVColdAggreageSensorPL
   ;//...
   
   //===
@@ -49,9 +58,25 @@ public class SubVCombustDelegator {
     SubVBondGroup.ccRefer().cmTargetTemperatureTB
       .ccSetValue(MainPlantModel.ccRefer().cmVTargetTemperature);
     
+    //-- pressure pl
+    SubVBondGroup.ccRefer().cmBurnerPressurePL
+      .ccSetIsActivated(mnVBFanHasPressurePL);
+    SubVBondGroup.ccRefer().cmExfanPressurePL
+      .ccSetIsActivated(mnVEFanHasPressurePL);
+    
     //-- v combust operate
     mnVCombustRunSW=SubVBondGroup.ccRefer().cmRunSW.ccIsMousePressed();
+    SubVBondGroup.ccRefer().cmRunSW.ccSetIsActivated(mnVCombustRunPL);
     SubVBondGroup.ccRefer().cmReadyPL.ccSetIsActivated(mnVCombustReadyPL);
+    
+    //-- v combust indicate
+    SubVBondGroup.ccRefer().cmBurnerIcon.ccSetIsActivated(mnVBunnerFanPL);
+    SubVBondGroup.ccRefer().cmBurnerIGPL.ccSetIsActivated(mnVBIgnitionPL);
+    SubVBondGroup.ccRefer().cmBurnerPVPL.ccSetIsActivated(mnVBPilotValvePL);
+    SubVBondGroup.ccRefer().cmBurnerMVPL.ccSetIsActivated(mnVBMainValvePL);
+    SubVBondGroup.ccRefer().cmVDContentLV.ccSetIsActivated(mnVBFlamingPL);
+    SubVBondGroup.ccRefer().cmFlamingPL
+      .ccSetIsActivated(mnVBFlamingPL&&MainSketch.ccIsRollingAccrose(4,1));
     
     //-- v burner operate
     mnVBurnerCloseSW=SubVBondGroup.ccRefer().cmBurnerCloseSW.ccIsMousePressed();

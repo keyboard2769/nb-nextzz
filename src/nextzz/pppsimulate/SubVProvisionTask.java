@@ -232,7 +232,8 @@ public final class SubVProvisionTask implements ZiTask{
     //-- misc ** motor
     dcVCompressor.ccSimulate(0.76f);
     dcMixer.ccSimulate(0.65f);
-    dcVExFan.ccSimulate(0.55f);
+    dcVExFan.ccSimulate(SubVCombusTask.ccRefer()
+      .dcVExfanDegree.ccGetProportion()/2f+0.44f);
     dcVBCompressor.ccSimulate(0.45f);
     
     //-- ag chain

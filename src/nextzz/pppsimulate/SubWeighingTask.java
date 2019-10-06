@@ -38,7 +38,7 @@ public class SubWeighingTask implements ZiTask{
 
   @Override public void ccScan() {
     
-    dcMixerGate.ccSetupAction(MainSimulator.ccSelectForceOpen(
+    dcMixerGate.ccSetupAction(MainSimulator.ccSelectModeForce(
         SubWeighingDelegator.mnMixerGateHoldSW,
         SubWeighingDelegator.mnMixerGateOpenSW,
         false

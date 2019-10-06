@@ -28,16 +28,18 @@ public class ZcMotor extends ZcRangedValueModel{
   
   private boolean cmMC,cmAN, cmAL;
   private final ZcTimer cmContactDelay;
+  private float cmLoad;
   
   public ZcMotor(int pxContactDelay){
     super(0, 5000);
     cmMC=cmAN=cmAL=false;
     cmContactDelay=new ZcOnDelayTimer(pxContactDelay);
-  }//++!
+    cmLoad=0.66f;
+  }//..!
   
   //===
   
-  public final void ccSimulate(float pxLoad){
+  public final void ccSimulate(){
     
     //--
     cmContactDelay.ccAct(cmMC);
@@ -48,7 +50,7 @@ public class ZcMotor extends ZcRangedValueModel{
       ccSetValue(1);
     }else{
       ccSetValue(PApplet.ceil(
-        pxLoad*5000f+VcNumericUtility.ccRandom(200f)
+        cmLoad*5000f+VcNumericUtility.ccRandom(200f)
       ));
     }//..?
     
@@ -59,6 +61,11 @@ public class ZcMotor extends ZcRangedValueModel{
       ccSetValue(1);
     }//..?
     
+  }//+++
+  
+  public void ccSimulate(float pxLoad){
+    ccSetLoad(pxLoad);
+    ccSimulate();
   }//+++
   
   //===
@@ -79,11 +86,23 @@ public class ZcMotor extends ZcRangedValueModel{
     cmAL=false;
   }//+++
   
+  public final void ccSetLoad(float pxLoad){
+    cmLoad=pxLoad<0f?0.1f:pxLoad;
+  }//+++
+  
   //===
   
-  public final boolean ccIsTripped(){return cmAL;}
-  public final boolean ccIsContacted(){return cmAN;}
-  public final int ccGetCT(){return cmValue;}
+  public final boolean ccIsTripped(){
+    return cmAL;
+  }//+++
+  
+  public final boolean ccIsContacted(){
+    return cmAN;
+  }//+++
+  
+  public final int ccGetCT(){
+    return cmValue;
+  }//+++
   
   //===
 
@@ -96,9 +115,8 @@ public class ZcMotor extends ZcRangedValueModel{
     lpRes.append(VcStringUtility.ccPackupPairedTag("AN", cmAN));
     lpRes.append(VcStringUtility.ccPackupPairedTag("MC", cmMC));
     lpRes.append(VcStringUtility.ccPackupPairedTag("CT", cmValue));
-    lpRes.append(VcStringUtility.ccPackupPairedTag(
-      "%delay%", cmContactDelay.ccGetValue()
-    ));
+    lpRes.append(VcStringUtility.ccPackupPairedTag
+      ("tm", cmContactDelay.ccGetValue()));
     return lpRes.toString();
   }//+++
   

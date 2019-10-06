@@ -49,6 +49,9 @@ public final class SubAnalogScalarManager {
   private final List<ZcScaledModel> cmListOfVFeederFluxScalar
     = new ArrayList<ZcScaledModel>(16);
   
+  private final ZcScaledModel cmVDryerPressureScalar
+    = new ZcScaledModel(1500, 2500, 0, 200);
+  
   private final ZcScaledModel cmVBurnerDegreeScalar
     = new ZcScaledModel(400, 3600, 0, 100);
   
@@ -125,6 +128,17 @@ public final class SubAnalogScalarManager {
         SubAnalogDelegator.ccGetCTSlotAD(pxIndex)
       );
   }//+++
+  
+  //=== pressure
+  //=== pressure ** v
+  
+  synchronized public final int ccGetScaledVDPressureValue(){
+    return cmVDryerPressureScalar.ccToScaledIntegerValue(
+      SubAnalogDelegator.mnVDPressureAD
+    );
+  }//+++
+  
+  //=== pressure ** r
   
   //=== degree
   //=== degree ** v 

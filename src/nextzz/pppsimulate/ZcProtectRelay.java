@@ -124,6 +124,7 @@ public final class ZcProtectRelay{
     if(cmDrum.ccGetOutputWith(C_S_II_FSTART,C_STAGE_MAX)){
       cmDoesStep&=pxInput;
       if(cmDrum.ccGetOutputWith(C_S_II_FSTART,C_STAGE_MAX) && !pxInput){
+        System.out.println("i did it!!");
         ccForceLock();
       }//..?
     }//..?
@@ -199,7 +200,7 @@ public final class ZcProtectRelay{
   }//+++
   
   public final boolean ccGetPilotValveSignal(){
-    return cmDrum.ccGetOutputAt(C_S_VI_PILOTV);
+    return cmDrum.ccGetOutputWith(C_S_VI_PILOTV,C_S_VII_MAINV);
   }//+++
   
   public final boolean ccGetMainValveSignal(){

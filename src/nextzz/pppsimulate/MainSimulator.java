@@ -109,18 +109,30 @@ public final class MainSimulator {
       ||pxMotor.ccIsContacted());
   }//+++
 
-  public static final boolean ccSelectForceOpen(
+  public static final boolean ccSelectModeForce(
     boolean pxForceClose, boolean pxForceOpen, boolean pxAutoFlag
   ){
     return pxForceClose?false:pxForceOpen?true:pxAutoFlag;
   }//+++
 
-  public static final boolean ccSelectAutoMode(
+  public static final boolean ccSelectModeSolo(
     boolean pxPermmision,
-    boolean pxAuto, boolean pxSwitch, boolean pxFlag
+    boolean pxModeA, boolean pxInputA, boolean pxInputB
   ){
     if(!pxPermmision){return false;}
-    return pxAuto?pxFlag:pxSwitch;
+    return pxModeA?pxInputA:pxInputB;
+  }//+++
+  
+  public static final boolean ccSelectModeDuo(
+    boolean pxPermmision,
+    boolean pxModeA, boolean pxInputA,
+    boolean pxModeB, boolean pxInputB
+  ){
+    if(!pxPermmision){return false;}
+    return
+      pxModeA?pxInputA:
+      pxModeB?pxInputB:
+      false;
   }//+++
   
  }//***eof

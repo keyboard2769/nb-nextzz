@@ -175,7 +175,6 @@ public class MainSketch extends PApplet{
     //-- debug
     /* 4 */
     SubVCombusTask.ccRefer().tstTagg();
-    SubWeighingTask.ccRefer().tstTagg();
     VcLocalTagger.ccTag("roll",nf(cmRoller,2));
     VcLocalTagger.ccTag
       ("latency",VcNumericUtility.ccFormatPointTwoFloat(17f-frameRate));
@@ -228,6 +227,10 @@ public class MainSketch extends PApplet{
   
   static public boolean ccIsRollingAt(int pxZeroToFifteen){
     return cmRoller==pxZeroToFifteen;
+  }//+++
+  
+  static public boolean ccIsRollingAccrose(int pxMod,int pxInt){
+    return (cmRoller % pxMod) == pxInt;
   }//+++
   
   //=== selfie
@@ -322,7 +325,7 @@ public class MainSketch extends PApplet{
   }//+++
   
   public static final String ccGetLastLeavingStamp(){
-    return "_1910061437";
+    return "_1910062355";
   }//+++
 
 }//***eof
