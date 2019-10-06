@@ -92,11 +92,11 @@ public class ZcMotor extends ZcRangedValueModel{
     lpRes.append('@');
     lpRes.append(Integer.toHexString(this.hashCode()));
     lpRes.append('$');
-    lpRes.append(VcStringUtility.ccPackupParedTag("AL", cmAL));
-    lpRes.append(VcStringUtility.ccPackupParedTag("AN", cmAN));
-    lpRes.append(VcStringUtility.ccPackupParedTag("MC", cmMC));
-    lpRes.append(VcStringUtility.ccPackupParedTag("CT", cmValue));
-    lpRes.append(VcStringUtility.ccPackupParedTag(
+    lpRes.append(VcStringUtility.ccPackupPairedTag("AL", cmAL));
+    lpRes.append(VcStringUtility.ccPackupPairedTag("AN", cmAN));
+    lpRes.append(VcStringUtility.ccPackupPairedTag("MC", cmMC));
+    lpRes.append(VcStringUtility.ccPackupPairedTag("CT", cmValue));
+    lpRes.append(VcStringUtility.ccPackupPairedTag(
       "%delay%", cmContactDelay.ccGetValue()
     ));
     return lpRes.toString();

@@ -19,8 +19,11 @@
 
 package pppcase;
 
+import java.util.Arrays;
 import kosui.ppplocalui.EcComponent;
 import kosui.ppplocalui.EcConst;
+import kosui.ppplocalui.EcElement;
+import kosui.ppplocalui.EcRect;
 import kosui.ppplogic.ZcRoller;
 import kosui.ppputil.VcLocalCoordinator;
 import kosui.ppputil.VcLocalTagger;
@@ -34,16 +37,47 @@ public class CaseProtectRelay extends PApplet{
   
   private final ZcProtectRelay cmController = new ZcProtectRelay();
   
+  private final EcElement
+    cmReadyPL = new EcElement("ready"),
+    cmRunPL = new EcElement("run"),
+    cmLockedOutPL = new EcElement("RSI"),
+    cmFanStartPL = new EcElement("BM"),
+    cmDamperOpenPL = new EcElement("BUO"),
+    cmDamperClosePL = new EcElement("BUC"),
+    cmIngitionPL = new EcElement("IG"),
+    cmPilotPL = new EcElement("PV"),
+    cmMainValvePL = new EcElement("MMV")
+  ;//...
+  
   boolean cmRunSW,cmResetSW;
   boolean dcExfanPressure,dcBurnerHasPressure,dcBurnerIsOpened,dcBurnerIsClosed;
   boolean dcUltraVision;
   
   @Override public void setup() {
+    
+    //--
     size(320,240);
     frame.setTitle(CaseProtectRelay.class.getSimpleName());
     EcConst.ccSetupSketch(this);
     VcLocalCoordinator.ccGetInstance().ccInit(this);
     VcLocalTagger.ccGetInstance().ccInit(this, 9);
+    
+    //--
+    cmReadyPL.ccSetLocation(5, 170);
+    EcRect.ccFlowLayout(Arrays.asList(
+      cmReadyPL,cmRunPL,cmLockedOutPL
+    ));
+    cmFanStartPL.ccSetLocation(cmReadyPL, 0, 5);
+    EcRect.ccFlowLayout(Arrays.asList(
+      cmFanStartPL,cmDamperOpenPL,cmDamperClosePL,
+      cmIngitionPL,cmPilotPL,cmMainValvePL
+    ));
+    VcLocalCoordinator.ccAddElement(Arrays.asList(
+      cmReadyPL,cmRunPL,cmLockedOutPL,
+      cmFanStartPL,cmDamperOpenPL,cmDamperClosePL,
+      cmIngitionPL,cmPilotPL,cmMainValvePL
+    ));
+    
   }//+++
   
   @Override public void draw() {
@@ -65,51 +99,38 @@ public class CaseProtectRelay extends PApplet{
     cmController.ccClearLock(cmResetSW);
     cmController.ccRun(cmRunSW);
     
+    //-- bind
+    cmReadyPL.ccSetIsActivated(cmController
+      .ccGetReadyLamp(cmRoller.ccIsAbove(7)));
+    cmRunPL.ccSetIsActivated(cmController
+      .ccGetRunLamp(cmRoller.ccIsAbove(7)));
+    cmLockedOutPL.ccSetIsActivated(cmController.ccGetLockedOutLamp());
+    cmFanStartPL.ccSetIsActivated(cmController.ccGetFanStartSignal());
+    cmDamperClosePL.ccSetIsActivated(cmController.ccGetDamperCloseSignal());
+    cmDamperOpenPL.ccSetIsActivated(cmController.ccGetDamperOpenSignal());
+    cmIngitionPL.ccSetIsActivated(cmController.ccGetIgnitionSignal());
+    cmPilotPL.ccSetIsActivated(cmController.ccGetPilotValveSignal());
+    cmMainValvePL.ccSetIsActivated(cmController.ccGetMainValveSignal());
+    
     //-- show
+    VcLocalCoordinator.ccUpdate();
     fill(0xFF);
     text(
       "prt-"+
       VcStringUtility.ccBreakObject(cmController),
-      180,120
+      160,5
     );
     
     //-- tag
     //-- tag ** input
-    VcLocalTagger.ccTag("[0]l1-2", VcStringUtility
-      .ccToString(dcExfanPressure));
-    VcLocalTagger.ccTag("[r]RUN", VcStringUtility
-      .ccToString(cmRunSW));
-    VcLocalTagger.ccTag("[ ]RST", VcStringUtility
-      .ccToString(cmResetSW));
-    VcLocalTagger.ccTag("[1]bcc", VcStringUtility
-      .ccToString(dcBurnerIsClosed));
-    VcLocalTagger.ccTag("[2]gp", VcStringUtility
-      .ccToString(dcBurnerHasPressure));
-    VcLocalTagger.ccTag("[3]boo", VcStringUtility
-      .ccToString(dcBurnerIsOpened));
-    VcLocalTagger.ccTag("[f]fire!!", VcStringUtility
-      .ccToString(dcUltraVision));
-    //-- tag ** output
-    VcLocalTagger.ccTag("-ready-", VcStringUtility
-      .ccToString(cmController.ccGetReadyLamp()));
-    VcLocalTagger.ccTag("-run-", VcStringUtility
-      .ccToString(cmController.ccGetRunLamp(cmRoller.ccIsAbove(7))));
-    VcLocalTagger.ccTag("-rsi-", VcStringUtility
-      .ccToString(cmController.ccIsLockedOut()));
-    VcLocalTagger.ccTag("-bm-", VcStringUtility
-      .ccToString(cmController.ccGetFanStartSignal()));
-    VcLocalTagger.ccTag("-buo-", VcStringUtility
-      .ccToString(cmController.ccIsAtBUO()));
-    VcLocalTagger.ccTag("-buc-", VcStringUtility
-      .ccToString(cmController.ccIsAtBUC()));
-    VcLocalTagger.ccTag("-ig-", VcStringUtility
-      .ccToString(cmController.ccIsAtIG()));
-    VcLocalTagger.ccTag("-pv-", VcStringUtility
-      .ccToString(cmController.ccIsAtPV()));
-    VcLocalTagger.ccTag("-mmv-", VcStringUtility
-      .ccToString(cmController.ccIsAtMV()));
+    VcLocalTagger.ccTag("[0]l1-2", dcExfanPressure);
+    VcLocalTagger.ccTag("[r]RUN", cmRunSW);
+    VcLocalTagger.ccTag("[ ]RST", cmResetSW);
+    VcLocalTagger.ccTag("[1]bcc", dcBurnerIsClosed);
+    VcLocalTagger.ccTag("[2]gp", dcBurnerHasPressure);
+    VcLocalTagger.ccTag("[3]boo", dcBurnerIsOpened);
+    VcLocalTagger.ccTag("[f]fire!!", dcUltraVision);
     //-- tag ** system
-    VcLocalTagger.ccTag("[r]Run", VcStringUtility.ccToString(cmRunSW));
     VcLocalTagger.ccTag("roll", cmRoller.ccGetValue());
     VcLocalTagger.ccStabilize();
     

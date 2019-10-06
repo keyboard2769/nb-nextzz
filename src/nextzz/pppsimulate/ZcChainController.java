@@ -181,12 +181,12 @@ public class ZcChainController extends ZcCheckedValueModel {
     lpRes.append('@');
     lpRes.append(Integer.toHexString(this.hashCode()));
     lpRes.append('$');
-    lpRes.append(VcStringUtility.ccPackupParedTag("V", cmValue));
-    lpRes.append(VcStringUtility.ccPackupParedTag("L", cmCurrentLV));
-    lpRes.append(VcStringUtility.ccPackupParedTag("maxL", cmMaxLV));
+    lpRes.append(VcStringUtility.ccPackupPairedTag("V", cmValue));
+    lpRes.append(VcStringUtility.ccPackupPairedTag("L", cmCurrentLV));
+    lpRes.append(VcStringUtility.ccPackupPairedTag("maxL", cmMaxLV));
     lpRes.append('|');
-    lpRes.append(VcStringUtility.ccPackupParedTag("UP", cmRunsUp));
-    lpRes.append(VcStringUtility.ccPackupParedTag("DN", cmRunsDown));
+    lpRes.append(VcStringUtility.ccPackupPairedTag("UP", cmRunsUp));
+    lpRes.append(VcStringUtility.ccPackupPairedTag("DN", cmRunsDown));
     return lpRes.toString();
   }//+++
   

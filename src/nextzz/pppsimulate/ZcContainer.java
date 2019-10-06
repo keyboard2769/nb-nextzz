@@ -82,11 +82,11 @@ public class ZcContainer extends ZcRangedValueModel{
     lpRes.append('@');
     lpRes.append(Integer.toHexString(this.hashCode()));
     lpRes.append('$');
-    lpRes.append(VcStringUtility.ccPackupParedTag("con", cmValue));
-    lpRes.append(VcStringUtility.ccPackupParedTag("E", ccIsEmpty()));
-    lpRes.append(VcStringUtility.ccPackupParedTag("L", ccIsLow()));
-    lpRes.append(VcStringUtility.ccPackupParedTag("M", ccIsMiddle()));
-    lpRes.append(VcStringUtility.ccPackupParedTag("H", ccIsFull()));
+    lpRes.append(VcStringUtility.ccPackupPairedTag("con", cmValue));
+    lpRes.append(VcStringUtility.ccPackupPairedTag("E", ccIsEmpty()));
+    lpRes.append(VcStringUtility.ccPackupPairedTag("L", ccIsLow()));
+    lpRes.append(VcStringUtility.ccPackupPairedTag("M", ccIsMiddle()));
+    lpRes.append(VcStringUtility.ccPackupPairedTag("H", ccIsFull()));
     return lpRes.toString();
   }//+++
   

@@ -26,13 +26,30 @@ import kosui.ppputil.VcStringUtility;
 
 public final class ZcProtectRelay{
   
-  private final ZcChainController cmDrum = new ZcChainController(1, 10);
+  public static final int C_STAGE_INTERVAL_S = 1;
+  public static final int C_STAGE_MAX        = 10;
+  //--
+  public static final int C_S_Z_STOP    = 0;
+  public static final int C_S_I_REMAIN  = 1;
+  public static final int C_S_II_FSTART = 2;
+  public static final int C_S_III_DOPEN = 3;
+  public static final int C_S_IV_DCLOSE = 4;
+  public static final int C_S_V_INITION = 5;
+  public static final int C_S_VI_PILOTV = 6;
+  public static final int C_S_VII_MAINV = 7;
+  public static final int C_S_VIII_HOLD = 8;
+  
+  //===
+  
+  private final ZcChainController cmDrum
+    = new ZcChainController(C_STAGE_INTERVAL_S, C_STAGE_MAX);
+  
   private final ZcTimer cmPostPurgeTimer = new ZcOnDelayTimer(40);
   private final ZcPulser cmStartPLS = new ZcPulser();
   private final ZcPulser cmLockoutPLS = new ZcPulser();
   
+  private int cmLastDrumStage = 0;
   private boolean
-    cmIsRunning=false,
     cmIsReady=false,
     cmDoesStep=false,
     cmIsLockedOut=false,
@@ -43,36 +60,20 @@ public final class ZcProtectRelay{
   
   public final void ccRun(){
     
-    //-- **
-    
+    //-- lock out
     if(cmLockoutPLS.ccUpPulse(cmIsLockedOut)){
       ccStop();
     }//..?
     
+    //-- run drum
     cmDrum.ccSetupRunStatus(false, cmDoesStep);
     cmDrum.ccRun();
     
-    //-- 0..stop
-    
-    //-- 1..remain
-    
-    //-- 2..fan start 
-    
-    //-- 3..fan open
-    
-    //-- 4..fan close
-    
-    //-- 5..ignition
-    
-    //-- 6..pilot
-    
-    //-- 7..valve
-    
-    //-- 8..holding
-    
     //-- post purge
-    //[head]:: now what...and how?
-    
+    cmPostPurgeTimer.ccAct(cmIsPosting);
+    if(cmPostPurgeTimer.ccIsUp()){
+      cmIsPosting=false;
+    }//+++
     
   }//+++
   
@@ -89,15 +90,12 @@ public final class ZcProtectRelay{
     boolean lpPLS=cmStartPLS.ccUpPulse(pxInput);
     if(cmDrum.ccIsAllStopped()){
       if(lpPLS){
-        cmIsRunning=true;
         cmDoesStep=true;
-        cmDrum.ccSetConfirmedAt(10, true);
+        cmDrum.ccSetConfirmedAt(C_STAGE_MAX, true);
       }//..?
     }else{
       if(lpPLS){
-        cmIsRunning=false;
-        cmDoesStep=false;
-        cmDrum.ccForceStop();
+        ccStop();
         cmIsPosting=true;
       }//..?
     }//..?
@@ -105,48 +103,57 @@ public final class ZcProtectRelay{
   
   public final void ccSetReadyCondition(boolean pxInput){
     cmIsReady=pxInput;
+    if(!cmDrum.ccIsAllStopped() && !cmIsReady){
+      ccForceLock();
+    }//..?
   }//+++
   
   public final void ccSetDamperCloseConfirm(boolean pxInput){
-    if(ccIsAtBUC()){
+    if(cmDrum.ccGetOutputAt(C_S_IV_DCLOSE)){
       cmDoesStep=pxInput;
     }//..?
   }//+++
   
   public final void ccSetDamperOpenConfirm(boolean pxInput){
-    if(ccIsAtBUO()){
+    if(cmDrum.ccGetOutputAt(C_S_III_DOPEN)){
       cmDoesStep=pxInput;
     }//..?
   }//+++
   
   public final void ccSetFanStartConfirm(boolean pxInput){
-    if(cmDrum.ccIsInRangeOf(2,9)){
-      cmDoesStep=pxInput;
-      cmIsLockedOut=!pxInput;
+    if(cmDrum.ccGetOutputWith(C_S_II_FSTART,C_STAGE_MAX)){
+      cmDoesStep&=pxInput;
+      if(cmDrum.ccGetOutputWith(C_S_II_FSTART,C_STAGE_MAX) && !pxInput){
+        ccForceLock();
+      }//..?
     }//..?
   }//+++
   
   public final void ccSetFlameConfirm(boolean pxInput){
-    if(cmDrum.ccGetOutputFor(8)){
-      if(!pxInput){cmIsLockedOut=true;}
+    if(cmDrum.ccGetOutputFor(C_S_VIII_HOLD)){
+      if(!pxInput){ccForceLock();}
     }else
-    if(cmDrum.ccGetOutputWith(2, 4)){
-      if(pxInput){cmIsLockedOut=true;}
+    if(cmDrum.ccGetOutputWith(C_S_II_FSTART, C_S_IV_DCLOSE)){
+      if(pxInput){ccForceLock();}
     }//..?
   }//+++
   
   public final void ccClearLock(boolean pxPullButton){
     if(pxPullButton){
-      if(cmIsLockedOut){cmIsLockedOut=false;}//..?
+      if(cmIsLockedOut){
+        cmIsLockedOut=false;
+        cmLastDrumStage=0;
+      }//..?
     }//..?
   }//+++
   
   public final void ccForceLock(){
+    cmLastDrumStage=cmDrum.ccGetCurrentLevel();
     cmIsLockedOut=true;
+    cmIsPosting=true;
   }//+++
   
   public final void ccStop(){
-    cmIsRunning=false;
     cmDoesStep=false;
     cmDrum.ccForceStop();
   }//+++
@@ -154,43 +161,49 @@ public final class ZcProtectRelay{
   //===
   
   public final boolean ccGetReadyLamp(){
-    return false;
+    return ccGetReadyLamp(MainSimulator.ccOneSecondClock());
+  }//+++
+  
+  public final boolean ccGetReadyLamp(boolean pxClock){
+    return cmIsPosting?pxClock:(cmIsReady&&cmDrum.ccIsAllStopped());
   }//+++
   
   public final boolean ccGetRunLamp(boolean pxClock){
-    return false;
+    return cmDrum.ccIsAllStopped()?false
+      :cmDrum.ccIsAllEngaged()?true
+      :pxClock;
   }//+++
   
   public final boolean ccGetRunLamp(){
     return ccGetRunLamp(MainSimulator.ccOneSecondClock());
   }//+++
   
-  public final boolean ccGetFanStartSignal(){
-    return cmDrum.ccGetOutputWith(1,9);
-  }//+++
-  
-  public final boolean ccIsAtBUO(){
-    return cmDrum.ccGetOutputAt(3);
-  }//+++
-  
-  public final boolean ccIsAtBUC(){
-    return cmDrum.ccGetOutputAt(4);
-  }//+++
-  
-  public final boolean ccIsAtIG(){
-    return cmDrum.ccGetOutputWith(5, 6);
-  }//+++
-  
-  public final boolean ccIsAtPV(){
-    return cmDrum.ccGetOutputAt(6);
-  }//+++
-  
-  public final boolean ccIsAtMV(){
-    return cmDrum.ccGetOutputAt(7);
-  }//+++
-  
-  public final boolean ccIsLockedOut(){
+  public final boolean ccGetLockedOutLamp(){
     return cmIsLockedOut;
+  }//+++
+  
+  public final boolean ccGetFanStartSignal(){
+    return cmDrum.ccGetOutputWith(C_S_I_REMAIN,C_STAGE_MAX)||cmIsPosting;
+  }//+++
+  
+  public final boolean ccGetDamperOpenSignal(){
+    return cmDrum.ccGetOutputAt(C_S_III_DOPEN);
+  }//+++
+  
+  public final boolean ccGetDamperCloseSignal(){
+    return cmDrum.ccGetOutputAt(C_S_IV_DCLOSE);
+  }//+++
+  
+  public final boolean ccGetIgnitionSignal(){
+    return cmDrum.ccGetOutputWith(C_S_V_INITION, C_S_VI_PILOTV);
+  }//+++
+  
+  public final boolean ccGetPilotValveSignal(){
+    return cmDrum.ccGetOutputAt(C_S_VI_PILOTV);
+  }//+++
+  
+  public final boolean ccGetMainValveSignal(){
+    return cmDrum.ccGetOutputFor(C_S_VII_MAINV);
   }//+++
   
   //===
@@ -203,6 +216,8 @@ public final class ZcProtectRelay{
     lpRes.append('$');
     lpRes.append(VcStringUtility.ccPackupBoolTag("ready", cmIsReady));
     lpRes.append(VcStringUtility.ccPackupBoolTag("run", cmDoesStep));
+    lpRes.append('|');
+    lpRes.append(VcStringUtility.ccPackupPairedTag("lock", cmLastDrumStage));
     lpRes.append('$');
     lpRes.append(cmDrum.toString());
     return lpRes.toString();

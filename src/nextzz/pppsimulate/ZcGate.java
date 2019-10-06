@@ -162,8 +162,8 @@ public class ZcGate extends ZcRangedValueModel{
     lpRes.append(VcStringUtility.ccPackupBoolTag("CL", dcIsClosed));
     lpRes.append(VcStringUtility.ccPackupBoolTag("OL", dcIsOpened));
     lpRes.append('|');
-    lpRes.append(VcStringUtility.ccPackupParedTag("v", cmValue));
-    lpRes.append(VcStringUtility.ccPackupParedTag("SPD", cmSpeed));
+    lpRes.append(VcStringUtility.ccPackupPairedTag("v", cmValue));
+    lpRes.append(VcStringUtility.ccPackupPairedTag("SPD", cmSpeed));
     return lpRes.toString();
   }//+++
   
