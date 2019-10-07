@@ -29,10 +29,13 @@ public class SubVCombustDelegator {
   public static volatile boolean
     mnVBunnerFanPL,
     //--
-    mnVExfanCloseSW, mnVExfanOpenSW,mnVExfanAutoSW,
-    mnVExfanClosePL, mnVExfanOpenPL,mnVExfanAutoPL,
+    mnVExfanCloseSW,  mnVExfanOpenSW, mnVExfanAutoSW,
+    mnVExfanClosePL,  mnVExfanOpenPL, mnVExfanAutoPL,
     mnVBurnerCloseSW, mnVBurnerOpenSW,mnVBurnerAutoSW,
     mnVBurnerClosePL, mnVBurnerOpenPL,mnVBurnerAutoPL,
+    //--
+    mnVExfanCloseFLG, mnVExfanOpenFLG,
+    mnVBurnerCloseFLG,mnVBurnerOpenFLG,
     //--
     mnVBFlamingPL,
     mnVBFanHasPressurePL,mnVBIgnitionPL,mnVBPilotValvePL,mnVBMainValvePL,

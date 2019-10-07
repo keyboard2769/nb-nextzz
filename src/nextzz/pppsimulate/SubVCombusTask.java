@@ -103,12 +103,12 @@ public final class SubVCombusTask implements ZiTask{
         !cmVBAutoHOOK.ccIsHooked(),SubVCombustDelegator.mnVBurnerCloseSW,
         MainSimulator.ccSelectModeSolo(true,
           !dcVOilPump.ccIsOnFire(),cmLFL.ccGetDamperCloseSignal(),
-          /* 4 */ false)),
+          SubVCombustDelegator.mnVBurnerCloseFLG)),
       MainSimulator.ccSelectModeSolo(true,
         !cmVBAutoHOOK.ccIsHooked(),SubVCombustDelegator.mnVBurnerOpenSW,
         MainSimulator.ccSelectModeSolo(true,
           !dcVOilPump.ccIsOnFire(),cmLFL.ccGetDamperOpenSignal(), 
-          /* 4 */ false))
+          SubVCombustDelegator.mnVBurnerOpenFLG))
     );
     SubAnalogDelegator.mnVBDegreeAD=dcVBunerDegree.ccGetValue();
     SubVCombustDelegator.mnVBurnerClosePL=dcVBunerDegree.ccIsClosing();
@@ -118,10 +118,12 @@ public final class SubVCombusTask implements ZiTask{
     cmVEAutoHOOK.ccHook(SubVCombustDelegator.mnVExfanAutoSW);
     SubVCombustDelegator.mnVExfanAutoPL=cmVEAutoHOOK.ccIsHooked();
     dcVExfanDegree.ccSetupAction(
-      MainSimulator.ccSelectModeSolo(true, cmVEAutoHOOK.ccIsHooked(),
-        false, SubVCombustDelegator.mnVExfanCloseSW),
-      MainSimulator.ccSelectModeSolo(true, cmVEAutoHOOK.ccIsHooked(),
-        false, SubVCombustDelegator.mnVExfanOpenSW)
+      MainSimulator.ccSelectModeSolo(true,
+        cmVEAutoHOOK.ccIsHooked(),SubVCombustDelegator.mnVExfanCloseFLG,
+        SubVCombustDelegator.mnVExfanCloseSW),
+      MainSimulator.ccSelectModeSolo(true, 
+        cmVEAutoHOOK.ccIsHooked(),SubVCombustDelegator.mnVExfanOpenFLG,
+        SubVCombustDelegator.mnVExfanOpenSW)
     );
     SubAnalogDelegator.mnVEDegreeAD=dcVExfanDegree.ccGetValue();
     SubVCombustDelegator.mnVExfanClosePL=dcVExfanDegree.ccIsClosing();

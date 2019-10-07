@@ -76,7 +76,10 @@ public final class SubAnalogScalarManager {
       //.. 500d -> 50.0f [ton]
     }//+++
     
-  }//..!
+  }//++!
+  
+  //[todo]::..? public final void ccLogic(){}//++~
+  //[todo]::..or public final void ccCalculateFeeder(){}//++~
   
   //=== 
   

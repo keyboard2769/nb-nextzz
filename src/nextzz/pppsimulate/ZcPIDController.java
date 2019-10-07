@@ -38,7 +38,8 @@ public class ZcPIDController {
   }//..!
   
   public ZcPIDController(float pxTarget, float pxProportion, float pxDead){
-    ccSetupProportion(pxTarget, pxProportion, pxDead);
+    ccSetTarget(pxTarget);
+    ccSetProportion(pxProportion, pxDead);
     ssApplyProportion();
     ccResetShiftedTarget();
     //--
@@ -49,9 +50,15 @@ public class ZcPIDController {
   
   //=== 
   
+  /* 1 */ public void ccRun(float pxTarget, float pxCurrent){
+    ccSetTarget(pxTarget);
+    ccResetShiftedTarget();
+    ccSetProcessValue(pxCurrent);
+    ccRun();
+  }//+++
+  
   /* 1 */ public void ccRun(float pxCurrent){
     ccSetProcessValue(pxCurrent);
-    ccResetShiftedTarget();
     ccRun();
   }//+++
   
@@ -84,10 +91,17 @@ public class ZcPIDController {
   }//+++
   
   private void ssApplyProportion(){
-    cmDeadZoneN   = cmShiftedTarget*(1f - cmDeadZone);
-    cmDeadZoneP   = cmShiftedTarget*(1f + cmDeadZone);
-    cmProportionN = cmShiftedTarget*(1f - cmProportion);
-    cmProportionP = cmShiftedTarget*(1f + cmProportion);
+    if(cmShiftedTarget==0){
+      cmDeadZoneN=-cmDeadZone;
+      cmDeadZoneP=cmDeadZone;
+      cmProportionN=-cmProportion;
+      cmProportionP=cmProportion;
+    }else{
+      cmDeadZoneN   = cmShiftedTarget*(1f - cmDeadZone);
+      cmDeadZoneP   = cmShiftedTarget*(1f + cmDeadZone);
+      cmProportionN = cmShiftedTarget*(1f - cmProportion);
+      cmProportionP = cmShiftedTarget*(1f + cmProportion);
+    }//..?
   }//+++
   
   public final void ccAdjustTarget(boolean pxPulse){
@@ -109,10 +123,13 @@ public class ZcPIDController {
     cmProsessValue=pxValue;
   }//+++
   
-  public final void ccSetupProportion(
-    float pxTarget, float pxProportion, float pxDead
-  ){
+  public final void ccSetTarget(float pxTarget){
     cmTarget=pxTarget;
+  }//+++
+  
+  public final void ccSetProportion(
+    float pxProportion, float pxDead
+  ){
     cmProportion=PApplet.constrain(pxProportion, 0f, 1f);
     cmDeadZone=PApplet.constrain(pxDead, 0f, 1f);
     if(cmDeadZone>cmProportion){cmDeadZone=cmProportion;}
@@ -129,12 +146,22 @@ public class ZcPIDController {
   
   //===
   
+  public final float ccGetShiftedTarget(){
+    return cmShiftedTarget;
+  }//+++
+  
   public final float ccGetAnalogOutput(){
     return cmAnalogOutput;
   }//+++
   
-  public final float ccGetShiftedTarget(){
-    return cmShiftedTarget;
+  public final float ccGetMinusTrimmed(){
+    if(cmAnalogOutput<=0.0f){return 0.0f;}
+    else{return cmAnalogOutput;}
+  }//+++
+  
+  public final float ccGetReverselyTrimmed(){
+    if(cmAnalogOutput>=0.0f){return 0.0f;}
+    else{return PApplet.abs(cmAnalogOutput);}
   }//+++
   
   public final boolean ccGetPositiveOutput(){
@@ -162,11 +189,12 @@ public class ZcPIDController {
       VcNumericUtility.ccFormatPointTwoFloat(cmTarget)));
     lpRes.append(VcStringUtility.ccPackupPairedTag("svi", 
       VcNumericUtility.ccFormatPointTwoFloat(cmShiftedTarget)));
-    lpRes.append('|');
-    lpRes.append(VcStringUtility.ccPackupPairedTag("d", 
-      VcNumericUtility.ccFormatPointTwoFloat(cmDeadZone)));
-    lpRes.append(VcStringUtility.ccPackupPairedTag("p", 
-      VcNumericUtility.ccFormatPointTwoFloat(cmProportion)));
+    //[fortest]::delete them later
+    //lpRes.append('|');
+    //lpRes.append(VcStringUtility.ccPackupPairedTag("d", 
+    //  VcNumericUtility.ccFormatPointTwoFloat(cmDeadZone)));
+    //lpRes.append(VcStringUtility.ccPackupPairedTag("p", 
+    //  VcNumericUtility.ccFormatPointTwoFloat(cmProportion)));
     lpRes.append('|');
     lpRes.append(VcStringUtility.ccPackupPairedTag("dN", 
       VcNumericUtility.ccFormatPointTwoFloat(cmDeadZoneN)));

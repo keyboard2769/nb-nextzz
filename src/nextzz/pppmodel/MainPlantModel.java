@@ -44,6 +44,10 @@ public final class MainPlantModel {
   
   public final void ccLogic(){
     
+    //-- v pressure control
+    SubDegreeControlManager.ccRefer().ccLogic();
+    
+    //-- v feeder tph
     cmVSupplyTPH=0;
     for(
       int i=SubFeederDelegator.C_VF_INIT_ORDER;
@@ -54,8 +58,6 @@ public final class MainPlantModel {
         cmVSupplyTPH+=cmDesVFeederTPH.ccGet(i);
       }//..? 
     }//..~
-    
-    //cmDesVFeederTPH.ccSum();
   
   }//+++
   

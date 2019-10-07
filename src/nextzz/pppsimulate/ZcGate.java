@@ -60,15 +60,15 @@ public class ZcGate extends ZcRangedValueModel{
     dcIsOpened = ccIsAbove(cmMax-cmLimitSwitchRange);
     dcIsClosed     = ccIsBelow(cmMin+cmLimitSwitchRange);
     //--
-    dcIsAtOpened = ccIsInRangeOf(
+    dcIsAtOpened = ccIsWith(
       cmMax-cmLimitSwitchRange-cmAutoSwitchRange,
       cmMax-cmLimitSwitchRange+cmAutoSwitchRange
     );
-    dcIsAtMiddle = ccIsInRangeOf(
+    dcIsAtMiddle = ccIsWith(
       (cmMax+cmMin)/2-cmAutoSwitchRange,
       (cmMax+cmMin)/2+cmAutoSwitchRange
     );
-    dcIsAtClosed = ccIsInRangeOf(
+    dcIsAtClosed = ccIsWith(
       cmMin+cmLimitSwitchRange-cmAutoSwitchRange,
       cmMin+cmLimitSwitchRange+cmAutoSwitchRange
     );
