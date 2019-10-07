@@ -22,7 +22,6 @@ package pppcase;
 import kosui.ppplocalui.EcComponent;
 import kosui.ppplocalui.EcConst;
 import kosui.ppplocalui.EcElement;
-import kosui.ppplocalui.EiTriggerable;
 import kosui.ppplogic.ZcRoller;
 import kosui.ppputil.VcLocalCoordinator;
 import kosui.ppputil.VcLocalTagger;
@@ -32,10 +31,6 @@ import nextzz.pppsimulate.ZcMotor;
 import processing.core.PApplet;
 
 public class CaseSupplyChain extends PApplet{
-  
-  static private CaseSupplyChain self=null;
-  
-  //===
   
   private final ZcRoller cmRoller = new ZcRoller(15, 2);
   
@@ -61,34 +56,18 @@ public class CaseSupplyChain extends PApplet{
   private final EcElement cmAlartIVxPL  = new EcElement("4", 0xAAA4);
   private final EcElement cmAlartVxPL   = new EcElement("5", 0xAAA5);
   
-  private final EiTriggerable cmQuitting = new EiTriggerable() {
-    @Override public void ccTrigger() {
-      if(self==null){
-        System.out.println(".cmQuitting::this should never happen!");
-        return;
-      }//..?
-      PApplet.println(".cmQuitting::call exit");
-      self.exit();
-    }//+++
-  };//***
-  
   //===
   
   @Override public void setup() {
    
     size(320,240);
     frame.setTitle(CaseSupplyChain.class.getSimpleName());
-    self=this;
     
     //--
     EcConst.ccSetupSketch(this);
     VcLocalTagger.ccGetInstance().ccInit(this);
     VcLocalCoordinator.ccGetInstance().ccInit(this);
     EcElement.ccSetTextAdjust(0, -2);
-    
-    //--
-    VcLocalCoordinator.ccRegisterKeyTrigger
-      (java.awt.event.KeyEvent.VK_Q, cmQuitting);
     
     //--
     cmAlartIxPL.ccSetLocation(160, 120);
@@ -118,13 +97,6 @@ public class CaseSupplyChain extends PApplet{
     dcAlartIII=EcComponent.ccIsKeyPressed('3');
     dcAlartIV=EcComponent.ccIsKeyPressed('4');
     dcAlartV=EcComponent.ccIsKeyPressed('5');
-    
-    //--
-    cmAlartIxPL.ccSetIsActivated(dcAlartI);
-    cmAlartIIxPL.ccSetIsActivated(dcAlartII);
-    cmAlartIIIxPL.ccSetIsActivated(dcAlartIII);
-    cmAlartIVxPL.ccSetIsActivated(dcAlartIV);
-    cmAlartVxPL.ccSetIsActivated(dcAlartV);
     
     //--
     dcMotorI.ccTestTrip(dcAlartI);
@@ -165,6 +137,11 @@ public class CaseSupplyChain extends PApplet{
     dcMotorV.ccSimulate(0.5f);
     
     //--
+    cmAlartIxPL.ccSetIsActivated(dcAlartI);
+    cmAlartIIxPL.ccSetIsActivated(dcAlartII);
+    cmAlartIIIxPL.ccSetIsActivated(dcAlartIII);
+    cmAlartIVxPL.ccSetIsActivated(dcAlartIV);
+    cmAlartVxPL.ccSetIsActivated(dcAlartV);
     VcLocalCoordinator.ccUpdate();
     
     //--
@@ -186,7 +163,7 @@ public class CaseSupplyChain extends PApplet{
   }//+++
 
   @Override public void keyPressed() {
-    VcLocalCoordinator.ccKeyPressed(keyCode);
+    if(key=='q'){exit();}
   }//+++
   
   //===

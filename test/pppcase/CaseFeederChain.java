@@ -26,7 +26,6 @@ import kosui.ppplocalui.EcConst;
 import kosui.ppplocalui.EcElement;
 import kosui.ppplogic.ZcHookFlicker;
 import kosui.ppplogic.ZcRoller;
-import kosui.ppplogic.ZcTimer;
 import kosui.ppputil.VcLocalCoordinator;
 import kosui.ppputil.VcLocalTagger;
 import kosui.ppputil.VcStringUtility;
@@ -101,9 +100,9 @@ public class CaseFeederChain extends PApplet{
       cmListOfHook.get(i).ccHook(lpPulse);
       cmListOfFeeder.get(i).ccSetIsActivated(cmListOfHook.get(i).ccIsHooked());
     }//~
-    cmRunPL.ccSetIsActivated(cmController.ccGetFlasher(cmRoller.ccIsAbove(7)));
     
     //--
+    cmRunPL.ccSetIsActivated(cmController.ccGetFlasher(cmRoller.ccIsAbove(7)));
     VcLocalCoordinator.ccUpdate();
     
     //--
@@ -124,9 +123,7 @@ public class CaseFeederChain extends PApplet{
   }//+++
 
   @Override public void keyPressed() {
-    if(key=='q'){
-      exit();
-    }//..?
+    if(key=='q'){exit();}
   }//+++
 
   //===

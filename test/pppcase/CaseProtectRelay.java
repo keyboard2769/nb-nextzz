@@ -99,7 +99,7 @@ public class CaseProtectRelay extends PApplet{
     cmController.ccClearLock(cmResetSW);
     cmController.ccRun(cmRunSW);
     
-    //-- bind
+    //-- local
     cmReadyPL.ccSetIsActivated(cmController
       .ccGetReadyLamp(cmRoller.ccIsAbove(7)));
     cmRunPL.ccSetIsActivated(cmController
@@ -111,9 +111,9 @@ public class CaseProtectRelay extends PApplet{
     cmIngitionPL.ccSetIsActivated(cmController.ccGetIgnitionSignal());
     cmPilotPL.ccSetIsActivated(cmController.ccGetPilotValveSignal());
     cmMainValvePL.ccSetIsActivated(cmController.ccGetMainValveSignal());
-    
-    //-- show
     VcLocalCoordinator.ccUpdate();
+    
+    //-- inspect
     fill(0xFF);
     text(
       "prt-"+

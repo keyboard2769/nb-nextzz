@@ -61,16 +61,11 @@ public class CaseContainer extends PApplet{
 
   @Override public void draw() {
     
+    //-- pre
     background(0);
     cmRoller.ccRoll();
     
-    //--
-    cmChargeKEY.ccSetIsActivated(EcComponent.ccIsKeyPressed('w'));
-    cmTransferKEY.ccSetIsActivated(EcComponent.ccIsKeyPressed('s'));
-    cmResetKEY.ccSetIsActivated(EcComponent.ccIsKeyPressed('a'));
-    cmDischargeKEY.ccSetIsActivated(EcComponent.ccIsKeyPressed('d'));
-    
-    //--
+    //--logic
     if(cmResetKEY.ccIsActivated()){
       cmSource.ccSetValue(0);
       cmTarget.ccSetValue(0);
@@ -80,22 +75,26 @@ public class CaseContainer extends PApplet{
     ZcContainer.ccTransfer
       (cmSource, cmTarget, cmTransferKEY.ccIsActivated(), 0x16);
     
-    //--
+    //-- local
+    cmChargeKEY.ccSetIsActivated(EcComponent.ccIsKeyPressed('w'));
+    cmTransferKEY.ccSetIsActivated(EcComponent.ccIsKeyPressed('s'));
+    cmResetKEY.ccSetIsActivated(EcComponent.ccIsKeyPressed('a'));
+    cmDischargeKEY.ccSetIsActivated(EcComponent.ccIsKeyPressed('d'));
     VcLocalCoordinator.ccUpdate();
     
-    //--
+    //-- inspect
     fill(0xFF);
     text(
       "src"+VcConst.C_V_NEWLINE+VcStringUtility.ccBreakObject(cmSource),
-      160,5
+      120,5
     );
     text(
       "tgt"+VcConst.C_V_NEWLINE+VcStringUtility.ccBreakObject(cmTarget)
        + VcConst.C_V_NEWLINE+PApplet.nf(cmTarget.ccGetScaledValue(3600),4),
-      160, 120
+      120, 120
     );
     
-    //--
+    //-- tag
     VcLocalTagger.ccTag("roll", cmRoller.ccGetValue());
     VcLocalTagger.ccStabilize();
     

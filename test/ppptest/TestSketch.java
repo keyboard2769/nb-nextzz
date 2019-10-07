@@ -16,33 +16,30 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301  USA
  */
+
 package ppptest;
 
+import processing.core.PApplet;
 import kosui.ppplocalui.EcComponent;
 import kosui.ppplocalui.EcConst;
 import kosui.ppplogic.ZcRoller;
 import kosui.ppputil.VcLocalCoordinator;
 import kosui.ppputil.VcLocalTagger;
-import processing.core.PApplet;
 
 public class TestSketch extends PApplet{
   
   private final ZcRoller cmRoller=new ZcRoller();
   
   @Override public void setup() {
-    
-    //--
     size(320,240);
     EcConst.ccSetupSketch(this);
     VcLocalCoordinator.ccGetInstance().ccInit(this);
     VcLocalTagger.ccGetInstance().ccInit(this);
-    
-    //--
-  
   }//+++
 
   @Override public void draw() {
     
+    //--
     background(0);
     cmRoller.ccRoll();
     
@@ -58,8 +55,9 @@ public class TestSketch extends PApplet{
   }//+++
 
   @Override public void keyPressed() {
-    if(key=='q'){
-      exit();
+    if(key=='q'){exit();}
+    switch(key){
+      default:break;
     }//..?
   }//+++
   
