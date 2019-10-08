@@ -45,8 +45,6 @@ public final class MainPlantModel {
   //-- v combust
   public final McPipedChannel cmDesVFeederTPH = new McPipedChannel();
   public volatile int cmVSupplyTPH = 0;
-  public volatile int cmVTargetTemperature = 160;
-  public volatile int cmVTargetTempAdjustWidth = 5;
   
   //===
   

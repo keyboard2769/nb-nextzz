@@ -23,6 +23,7 @@ import kosui.ppputil.VcNumericUtility;
 import nextzz.ppplocalui.SubVBondGroup;
 import nextzz.pppmain.MainSketch;
 import nextzz.pppmodel.MainPlantModel;
+import nextzz.pppmodel.SubDegreeControlManager;
 
 public class SubVCombustDelegator {
   
@@ -59,7 +60,7 @@ public class SubVCombustDelegator {
     
     //-- temperature
     SubVBondGroup.ccRefer().cmTargetTemperatureTB
-      .ccSetValue(MainPlantModel.ccRefer().cmVTargetTemperature);
+      .ccSetValue(SubDegreeControlManager.ccRefer().mnVTargetCELC);
     
     //-- pressure pl
     SubVBondGroup.ccRefer().cmBurnerPressurePL

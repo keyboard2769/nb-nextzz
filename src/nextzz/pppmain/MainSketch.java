@@ -175,8 +175,7 @@ public class MainSketch extends PApplet{
     
     //-- debug
     /* 4 */
-    SubVCombusTask.ccRefer().tstTagg();
-    SubAnalogScalarManager.ccRefer().tstTagg();
+    SubDegreeControlManager.ccRefer().tstTagg();
     VcLocalTagger.ccTag("roll",nf(cmRoller,2));
     VcLocalTagger.ccTag
       ("latency",VcNumericUtility.ccFormatPointTwoFloat(17f-frameRate));
@@ -327,7 +326,7 @@ public class MainSketch extends PApplet{
   }//+++
   
   public static final String ccGetLastLeavingStamp(){
-    return "_1910081902";
+    return "_1910082208";
   }//+++
 
 }//***eof

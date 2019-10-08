@@ -32,7 +32,6 @@ import nextzz.pppdelegate.SubFeederDelegator;
 import nextzz.pppdelegate.SubVCombustDelegator;
 import nextzz.pppmodel.MainPlantModel;
 import nextzz.pppmodel.MainSpecificator;
-import nextzz.pppswingui.ScFeederBlock;
 import processing.core.PApplet;
 
 public final class SubFeederTask implements ZiTask{

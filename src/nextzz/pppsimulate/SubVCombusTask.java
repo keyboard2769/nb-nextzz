@@ -46,8 +46,8 @@ public final class SubVCombusTask implements ZiTask{
   private boolean dcCoolingDamperMV;
   public final ZcGate dcVBunerDegree = new ZcGate();
   public final ZcGate dcVExfanDegree = new ZcGate();
-  private final ZcHookFlicker cmVBAutoHOOK = new ZcHookFlicker();
-  private final ZcHookFlicker cmVEAutoHOOK = new ZcHookFlicker();
+  private final ZcHookFlicker cmVBAutoHOOK = new ZcHookFlicker(true);
+  private final ZcHookFlicker cmVEAutoHOOK = new ZcHookFlicker(true);
   
   //-- controller
   private final ZcProtectRelay cmLFL = new ZcProtectRelay();

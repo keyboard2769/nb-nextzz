@@ -29,6 +29,22 @@ import nextzz.pppdelegate.SubFeederDelegator;
 
 public final class SubAnalogScalarManager {
   
+  public static final int C_I_TH_CHUTE    = 1;
+  public static final int C_I_TH_ENTRANCE = 2;
+  public static final int C_I_TH_PIPE     = 3;
+  public static final int C_I_TH_SAND     = 4;
+  public static final int C_I_TH_MIXER    = 6;
+  
+  //[todo]::C_I_RH_ENTRANCE
+  //[todo]::C_I_RH_GAS
+  //[todo]::C_I_RH_SURGE
+  //[todo]::C_I_RH_RECYCLE
+  
+  //[todo]::C_I_TH_SILO_I
+  //[todo]::C_I_TH_SILO_II
+  
+  //===
+  
   public static final String Q_TYPE_CT   = "ct";  //.. current
   public static final String Q_TYPE_CELL = "cell";//.. weight
   public static final String Q_TYPE_DEG  = "deg"; //.. percetage
@@ -36,6 +52,8 @@ public final class SubAnalogScalarManager {
   public static final String Q_TYPE_PRES = "pres";//.. kilo paska
   public static final String Q_TYPE_TPH  = "tph"; //.. ton
   public static final String Q_TYPE_MISC = "misc";//.. WTF??
+  
+  //===
   
   private static final SubAnalogScalarManager SELF
     = new SubAnalogScalarManager();

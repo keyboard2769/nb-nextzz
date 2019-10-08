@@ -19,7 +19,9 @@
 
 package nextzz.pppmodel;
 
+import kosui.ppplogic.ZcOnDelayTimer;
 import kosui.ppplogic.ZcRangedValueModel;
+import kosui.ppplogic.ZcTimer;
 import kosui.ppputil.VcLocalTagger;
 import nextzz.pppdelegate.SubAnalogDelegator;
 import nextzz.pppdelegate.SubVCombustDelegator;
@@ -35,15 +37,21 @@ public final class SubDegreeControlManager {
   
   //===
   
-  public volatile float mnVExfanDegreeForIgnition = 30f;
-  
   //-- v
   
+  public volatile int mnVTargetCELC = 160;
+  
+  public volatile int mnVTargetAdjustWidth = 5;
+  
+  public volatile int mnVPreHeatingPT = 15;
+  
+  public volatile int mnVExfanIgnitionPT = 15;
+    
   private final ZcPIDController 
     cmVTemperatureCTRL   = new ZcPIDController( 160f, 0.8f, 0.1f ),
-    cmVBurnerDegreeCTRL  = new ZcPIDController(   1f, 0.5f, 0.05f),
+    cmVBurnerDegreeCTRL  = new ZcPIDController(   1f, 0.5f, 0.03f),
     cmVPressureCTRL      = new ZcPIDController(1111f, 0.95f,0.2f ),
-    cmVExfanDegreeCTRL   = new ZcPIDController(   1f, 0.5f, 0.05f)
+    cmVExfanDegreeCTRL   = new ZcPIDController(   1f, 0.5f, 0.03f)
   ;//,,,
   
   private final ZcRangedValueModel
@@ -54,6 +62,14 @@ public final class SubDegreeControlManager {
   ;//,,,
   
   //-- r
+  //[todo]::cmRTemperatureCTRL
+  //[todo]::cmRBurnerDegreeCTRL
+  //[todo]::cmRPressureCTRL
+  //[todo]::cmRExfanDegreeCTRL
+  //[todo]::cmRTemperatureAdjustTM
+  //[todo]::cmRTemperatureSamplingTM
+  //[todo]::cmRPressureAdjustTM
+  //[todo]::cmRPressureSamplingTM
   
   public final void ccLogic(){
     
@@ -61,27 +77,50 @@ public final class SubDegreeControlManager {
     
     //-- vb
     //-- vb ** timing
-    //[head]:: later !!
+    cmVTemperatureAdjustTM.ccRoll(1);
+    cmVTemperatureSamplingTM.ccRoll(1);
     //-- vb ** controller
+    cmVTemperatureCTRL.ccSetTarget(mnVTargetCELC);
+    cmVTemperatureCTRL.ccRun(
+      SubAnalogScalarManager.ccRefer().cmDesVThermoCelcius
+        .ccGet(SubAnalogScalarManager.C_I_TH_CHUTE),
+      cmVTemperatureAdjustTM.ccIsAt(1)
+        && SubVCombustDelegator.mnVColdAggreageSensorPL,
+      cmVTemperatureSamplingTM.ccIsAt(1)
+    );
+    cmVBurnerDegreeCTRL.ccRun(
+      !SubVCombustDelegator.mnVBFlamingPL
+        ? 0f
+        : (SubVCombustDelegator.mnVColdAggreageSensorPL
+            ? cmVTemperatureCTRL.ccGetMinusTrimmed()*100f
+            : ((float)mnVPreHeatingPT)),
+      (float)SubAnalogScalarManager.ccRefer().ccGerVBurnerPercentage()
+    );
     //-- vb ** to plc
+    SubVCombustDelegator.mnVBurnerCloseFLG
+      = cmVBurnerDegreeCTRL.ccGetNegativeOutput();
+    SubVCombustDelegator.mnVBurnerOpenFLG
+      = cmVBurnerDegreeCTRL.ccGetPositiveOutput();
     
     //-- ve
     //-- ve ** timing
     cmVPressureAdjustTM.ccRoll(1);
     cmVPressureSamplingTM.ccRoll(1);
     //-- ve ** controller
+    //[todo]:: % set target 
     cmVPressureCTRL.ccRun(
       SubAnalogDelegator.mnVDPressureAD,
       cmVPressureAdjustTM.ccIsAt(1) && SubVCombustDelegator.mnVBFlamingPL,
       cmVPressureSamplingTM.ccIsAt(1)
     );
     cmVExfanDegreeCTRL.ccRun(
-      !SubVProvisionDelegator.mnVExfanIconPL?0f
-         : (!SubVCombustDelegator.mnVBFlamingPL?mnVExfanDegreeForIgnition
-           : cmVPressureCTRL.ccGetReverselyTrimmed()*100f),
+      !SubVProvisionDelegator.mnVExfanIconPL
+        ? 0f
+        : (SubVCombustDelegator.mnVBFlamingPL
+            ? cmVPressureCTRL.ccGetReverselyTrimmed()*100f
+            : ((float)mnVExfanIgnitionPT)),
       (float)SubAnalogScalarManager.ccRefer().ccGetVExfanPercentage()
     );
-    
     //-- ve ** to plc
     SubVCombustDelegator.mnVExfanCloseFLG
       = cmVExfanDegreeCTRL.ccGetNegativeOutput();
@@ -103,9 +142,10 @@ public final class SubDegreeControlManager {
   //===
 
   @Deprecated public final void tstTagg(){
-    VcLocalTagger.ccTag("vp-ctrl", SELF.cmVPressureCTRL);
-    VcLocalTagger.ccTag("vp-rvs", SELF.cmVPressureCTRL.ccGetReverselyTrimmed());
-    VcLocalTagger.ccTag("ve-ctrl", SELF.cmVExfanDegreeCTRL);
+    VcLocalTagger.ccTag("vt-ctrl", cmVTemperatureCTRL);
+    VcLocalTagger.ccTag("vb-ctrl", cmVBurnerDegreeCTRL);
+    VcLocalTagger.ccTag("vp-ctrl", cmVPressureCTRL);
+    VcLocalTagger.ccTag("ve-ctrl", cmVExfanDegreeCTRL);
   }//+++
   
  }//***eof

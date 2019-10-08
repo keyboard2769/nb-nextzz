@@ -45,6 +45,7 @@ import nextzz.pppswingui.SubAssistantPane;
 import nextzz.pppmodel.MainPlantModel;
 import nextzz.pppmodel.MainSettingManager;
 import nextzz.pppmodel.MiSettingItem;
+import nextzz.pppmodel.SubDegreeControlManager;
 import nextzz.pppswingui.SubFeederPane;
 import nextzz.pppswingui.SubSettingPane;
 
@@ -175,7 +176,7 @@ public final class MainActionManager {
         @Override public void run() {
           String lpInput = ScConst.ccGetStringByInputBox(
             VcTranslator.tr("_m_adjust_vb_target_temperature"),
-            Integer.toString(MainPlantModel.ccRefer().cmVTargetTemperature)
+            Integer.toString(SubDegreeControlManager.ccRefer().mnVTargetCELC)
           );
           if(!VcConst.ccIsValidString(lpInput)){return;}
           if(lpInput.equals(ScConst.C_M_CANCEL)){return;}
@@ -183,7 +184,7 @@ public final class MainActionManager {
             ScConst.ccErrorBox(VcTranslator.tr("_m_general_format_error"));
             return;
           }//..!
-          MainPlantModel.ccRefer().cmVTargetTemperature
+          SubDegreeControlManager.ccRefer().mnVTargetCELC
             = VcNumericUtility.ccParseIntegerString(lpInput)&0xFF;
         }//+++
       });//***
@@ -193,18 +194,18 @@ public final class MainActionManager {
   public final EiTriggerable cmVTargetTemperatureDecrementing
     = new EiTriggerable() {
     @Override public void ccTrigger() {
-      MainPlantModel.ccRefer().cmVTargetTemperature
-        -= MainPlantModel.ccRefer().cmVTargetTempAdjustWidth;
-      MainPlantModel.ccRefer().cmVTargetTemperature &= 0xFF;
+      SubDegreeControlManager.ccRefer().mnVTargetCELC
+        -= SubDegreeControlManager.ccRefer().mnVTargetAdjustWidth;
+      SubDegreeControlManager.ccRefer().mnVTargetCELC &= 0xFF;
     }//+++
   };//***
   
   public final EiTriggerable cmVTargetTemperatureIncrementing
     = new EiTriggerable() {
     @Override public void ccTrigger() {
-      MainPlantModel.ccRefer().cmVTargetTemperature
-        += MainPlantModel.ccRefer().cmVTargetTempAdjustWidth;
-      MainPlantModel.ccRefer().cmVTargetTemperature &= 0xFF;
+      SubDegreeControlManager.ccRefer().mnVTargetCELC
+        += SubDegreeControlManager.ccRefer().mnVTargetAdjustWidth;
+      SubDegreeControlManager.ccRefer().mnVTargetCELC &= 0xFF;
     }//+++
   };//***
   
