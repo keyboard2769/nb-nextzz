@@ -29,6 +29,7 @@ import kosui.pppswingui.ScTitledWindow;
 import kosui.ppputil.VcConst;
 import kosui.ppputil.VcNumericUtility;
 import kosui.ppputil.VcStampUtility;
+import nextzz.pppmodel.MainPlantModel;
 import nextzz.pppmodel.SubAnalogScalarManager;
 import nextzz.pppswingui.SiTabbable;
 import nextzz.pppswingui.SubAssistantPane;
@@ -49,8 +50,8 @@ public final class MainWindow {
     @Override public void run() {
     
       //-- current
-      for(int i=0;i<SubMonitorPane.C_CTSLOT_MAX;i++){
-        int lpValue=SubAnalogScalarManager.ccRefer().ccGetScaledCTSlotValue(i);
+      for(int i=0;i<MainPlantModel.C_CTSLOT_CHANNEL_MAX;i++){
+        int lpValue=SubAnalogScalarManager.ccRefer().ccGetCTSlotAMPR(i);
         int lpSpan=SubAnalogScalarManager.ccRefer().ccGetCTSlotSpan(i);
         SubMonitorPane.ccRefer().cmDesCurrentCTSlot.get(i)
           .ccSetFloatValueForOneAfter(

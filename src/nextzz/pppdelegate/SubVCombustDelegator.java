@@ -105,7 +105,7 @@ public class SubVCombustDelegator {
     SubVBondGroup.ccRefer().cmBelconFluxCB
       .ccSetIsActivated(mnVColdAggreageSensorPL);
     SubVBondGroup.ccRefer().cmVDContentLV
-      .ccSetPercentage(MainPlantModel.ccRefer().cmVSupplyTPH, 4000);
+      .ccSetProportion(MainPlantModel.ccRefer().cmVSupplyTPH, 4000);
   
   }//+++
   

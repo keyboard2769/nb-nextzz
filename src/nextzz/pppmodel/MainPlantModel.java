@@ -23,6 +23,18 @@ import kosui.pppmodel.McPipedChannel;
 import nextzz.pppdelegate.SubFeederDelegator;
 
 public final class MainPlantModel {
+  
+  public static final int C_CTSLOT_CHANNEL_SINGLE = 16;
+  public static final int C_CTSLOT_CHANNEL_MAX    = 32;
+  public static final int C_CTSLOT_CHANNEL_MASK   = 31;
+  
+  public static final int C_THERMO_CHANNEL_HEAD = 1;
+  public static final int C_THERMO_CHANNEL_TAIL = 8;
+  
+  public static final int C_FEEDER_RPM_MIN =    0;
+  public static final int C_FEEDER_RPM_MAX = 1800;
+  
+  //===
 
   private static final MainPlantModel SELF = new MainPlantModel();
   public static final MainPlantModel ccRefer(){return SELF;}//+++
@@ -40,12 +52,16 @@ public final class MainPlantModel {
   
   public final void ccInit(){
     
-  }//..!
+    //-- manager
+    SubAnalogScalarManager.ccRefer().ccInit();
+    
+  }//++!
   
   public final void ccLogic(){
     
-    //-- v pressure control
+    //-- manager
     SubDegreeControlManager.ccRefer().ccLogic();
+    SubAnalogScalarManager.ccRefer().ccLogic();
     
     //-- v feeder tph
     cmVSupplyTPH=0;
@@ -59,7 +75,7 @@ public final class MainPlantModel {
       }//..? 
     }//..~
   
-  }//+++
+  }//++~
   
   //===
   

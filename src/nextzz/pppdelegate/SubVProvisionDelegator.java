@@ -138,7 +138,7 @@ public final class SubVProvisionDelegator {
     SubOperativeGroup.ccRefer().cmDesMotorSW
       .get(8).ccSetIsActivated(mnFillerSystemPL);
     SubVSurgeGroup.ccRefer().cmFillerBinLV
-      .ccSetPercentage(ConstLocalUI.ccLeverage
+      .ccSetProportion(ConstLocalUI.ccLeverage
         (mnFillerBinHLVPL, mnFillerBinMLVPL, mnFillerBinLLVPL));
     
     //-- dust extraction

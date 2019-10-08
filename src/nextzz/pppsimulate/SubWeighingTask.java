@@ -44,7 +44,6 @@ public class SubWeighingTask implements ZiTask{
         false
       )
     );
-    //[head]**
     SubWeighingDelegator.mnMixerGateFB
       = (dcMixerGate.ccIsOpening()&&dcMixerGate.ccIsFullOpened())?true
        :(!dcMixerGate.ccIsOpening()&&dcMixerGate.ccIsClosed())?true

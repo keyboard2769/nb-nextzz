@@ -30,6 +30,7 @@ import kosui.ppplogic.ZiTask;
 import kosui.ppputil.VcLocalTagger;
 import nextzz.pppdelegate.SubFeederDelegator;
 import nextzz.pppdelegate.SubVCombustDelegator;
+import nextzz.pppmodel.MainPlantModel;
 import nextzz.pppmodel.MainSpecificator;
 import nextzz.pppswingui.ScFeederBlock;
 import processing.core.PApplet;
@@ -107,7 +108,7 @@ public final class SubFeederTask implements ZiTask{
     return PApplet.ceil(PApplet.map((float)lpSum,
       0f,
       (float)(MainSpecificator.ccRefer().mnVFeederAmount
-        * ScFeederBlock.C_SPEED_MAX), 
+        * MainPlantModel.C_FEEDER_RPM_MAX), 
       0f, 255f
     ));
   }//+++

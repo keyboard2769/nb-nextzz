@@ -100,8 +100,8 @@ public class MainSketch extends PApplet{
     /* 6 */VcLocalTagger.ccGetInstance().ccInit(this,false);
     /* 6 */VcLocalTagger.ccGetInstance().ccSetColor(0xFF111111, 0xFFEEEEEE);
     
-    //-- manager
-    SubAnalogScalarManager.ccRefer().ccInit();
+    //-- modeling
+    MainPlantModel.ccRefer().ccInit();
     
     //-- local ui group
     VcLocalCoordinator.ccAddGroup
@@ -176,6 +176,7 @@ public class MainSketch extends PApplet{
     //-- debug
     /* 4 */
     SubVCombusTask.ccRefer().tstTagg();
+    SubAnalogScalarManager.ccRefer().tstTagg();
     VcLocalTagger.ccTag("roll",nf(cmRoller,2));
     VcLocalTagger.ccTag
       ("latency",VcNumericUtility.ccFormatPointTwoFloat(17f-frameRate));
@@ -326,7 +327,7 @@ public class MainSketch extends PApplet{
   }//+++
   
   public static final String ccGetLastLeavingStamp(){
-    return "_1910081627";
+    return "_1910081902";
   }//+++
 
 }//***eof

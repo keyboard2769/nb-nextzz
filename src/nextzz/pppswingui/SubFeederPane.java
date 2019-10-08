@@ -108,7 +108,7 @@ public final class SubFeederPane implements SiTabbable{
         lpCurrentSpinner.setValue(
           ZcRangedModel.ccLimitInclude(
             lpNewValue,
-            ScFeederBlock.C_SPEED_MIN, ScFeederBlock.C_SPEED_MAX
+            MainPlantModel.C_FEEDER_RPM_MIN,MainPlantModel.C_FEEDER_RPM_MAX
           )
         );
       }//..?
@@ -125,7 +125,7 @@ public final class SubFeederPane implements SiTabbable{
       ){
         SubFeederDelegator.ccSetVFeederSpeed
           (i, cmDesVFeederBlock.get(i).ccGetValue());
-        int lpTPH=SubAnalogScalarManager.ccRefer().ccGetVFeederFluxTPHValue(i);
+        int lpTPH=SubAnalogScalarManager.ccRefer().ccGetVFeederFluxTPH(i);
         MainPlantModel.ccRefer().cmDesVFeederTPH.ccSet(i, lpTPH);
         cmDesVFeederBlock.get(i).cmTPHField
           .setText(VcNumericUtility.ccFormatFloatForOneAfter(lpTPH)+"tph");

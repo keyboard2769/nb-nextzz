@@ -32,18 +32,21 @@ import kosui.pppswingui.ScConst;
 import kosui.pppswingui.ScFactory;
 import kosui.ppputil.VcNumericUtility;
 import kosui.ppputil.VcStringUtility;
+import nextzz.pppmodel.MainPlantModel;
 
 public class ScFeederBlock extends JPanel{
   
-  public static final int C_SPEED_MIN =    0;
-  public static final int C_SPEED_MAX = 1800;
   public static final int C_STEP_MIN  =   50;
   public static final int C_STEP_MAX  =  200;
   
   //===
   
   public final JSpinner cmRPMSpinner
-    = new JSpinner(new SpinnerNumberModel(0, 0, 1800, 50));
+    = new JSpinner(new SpinnerNumberModel(0,
+      MainPlantModel.C_FEEDER_RPM_MIN,
+      MainPlantModel.C_FEEDER_RPM_MAX,
+      C_STEP_MIN)
+    );
   
   public final JTextField cmTPHField
     = ScFactory.ccCreateValueBox("000tph",64,22);
@@ -91,7 +94,11 @@ public class ScFeederBlock extends JPanel{
   
   public final void ccSetValue(int pxVal){
     cmRPMSpinner.setValue(ZcRangedModel
-      .ccLimitInclude(pxVal, C_SPEED_MIN, C_SPEED_MAX));
+      .ccLimitInclude(pxVal,
+        MainPlantModel.C_FEEDER_RPM_MIN,
+        MainPlantModel.C_FEEDER_RPM_MAX
+      )
+    );
   }//+++
   
   public final void ccSetStep(int pxStep){

@@ -29,13 +29,11 @@ import javax.swing.JTabbedPane;
 import kosui.pppswingui.ScFactory;
 import kosui.pppswingui.ScGauge;
 import kosui.ppputil.VcTranslator;
+import nextzz.pppmodel.MainPlantModel;
 import nextzz.pppmodel.MainSpecificator;
 
 public final class SubMonitorPane implements SiTabbable{
   
-  public static final int C_CTSLOT_MAX = 32;
-  public static final int C_CTSLOT_MASK = 31;
-
   private static final SubMonitorPane SELF = new SubMonitorPane();
   public static final SubMonitorPane ccRefer(){return SELF;}//+++
   private SubMonitorPane(){}//++!
@@ -78,11 +76,15 @@ public final class SubMonitorPane implements SiTabbable{
   @Override public final void ccInit(){
     
     //-- ctslot
-    JPanel lpSlotGroupI  = ScFactory.ccCreateGridPanel(16, 1);
-    JPanel lpSlotGroupII = ScFactory.ccCreateGridPanel(16, 1);
-    for(int i=0;i<16;i++){
-      lpSlotGroupI.add(cmDesCurrentCTSlot.get(i));
-      lpSlotGroupII.add(cmDesCurrentCTSlot.get(i+16));
+    JPanel lpSlotGroupI  = ScFactory
+      .ccCreateGridPanel(MainPlantModel.C_CTSLOT_CHANNEL_SINGLE, 1);
+    JPanel lpSlotGroupII = ScFactory
+      .ccCreateGridPanel(MainPlantModel.C_CTSLOT_CHANNEL_SINGLE, 1);
+    for(int i=0;i<MainPlantModel.C_CTSLOT_CHANNEL_SINGLE;i++){
+      lpSlotGroupI.add(cmDesCurrentCTSlot
+        .get(i));
+      lpSlotGroupII.add(cmDesCurrentCTSlot
+        .get(i+MainPlantModel.C_CTSLOT_CHANNEL_SINGLE));
     }////~
     JTabbedPane lpLeftWing = new JTabbedPane();
     lpLeftWing.add(VcTranslator.tr("_vact"),lpSlotGroupI);
@@ -90,21 +92,21 @@ public final class SubMonitorPane implements SiTabbable{
       {lpLeftWing.add(VcTranslator.tr("_rsct"),lpSlotGroupII);}
     for(ScGauge it : cmDesCurrentCTSlot){
        it.ccSetText(VcTranslator.tr(it.ccGetKey()));
-       it.ccSetPercentage(4);
+       it.ccSetPercentage(4);//..arbitrary
     }//..~
     
     //-- pack
     cmPane.add(lpLeftWing,BorderLayout.LINE_START);
     cmPane.add(new JButton("=Dweigh="),BorderLayout.CENTER);
     
-  }//..!
+  }//++!
   
   @Override public final String ccGetTitle() {
     return C_TAB_NAME;
-  }//+++
+  }//++>
 
   @Override public final JPanel ccGetPane() {
     return cmPane;
-  }//+++
+  }//++>
   
  }//***eof

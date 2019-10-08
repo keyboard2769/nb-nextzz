@@ -61,7 +61,7 @@ public final class SubDegreeControlManager {
     
     //-- vb
     //-- vb ** timing
-    //[head]::
+    //[head]:: later !!
     //-- vb ** controller
     //-- vb ** to plc
     
@@ -79,7 +79,7 @@ public final class SubDegreeControlManager {
       !SubVProvisionDelegator.mnVExfanIconPL?0f
          : (!SubVCombustDelegator.mnVBFlamingPL?mnVExfanDegreeForIgnition
            : cmVPressureCTRL.ccGetReverselyTrimmed()*100f),
-      (float)SubAnalogScalarManager.ccRefer().ccGetScaledVEDegree()
+      (float)SubAnalogScalarManager.ccRefer().ccGetVExfanPercentage()
     );
     
     //-- ve ** to plc

@@ -26,7 +26,6 @@ import kosui.ppputil.VcLocalTagger;
 import kosui.ppputil.VcNumericUtility;
 import nextzz.pppdelegate.SubAnalogDelegator;
 import nextzz.pppdelegate.SubVCombustDelegator;
-import processing.core.PApplet;
 
 public final class SubVCombusTask implements ZiTask{
   
@@ -151,7 +150,8 @@ public final class SubVCombusTask implements ZiTask{
     //-- temperature ** output
     SubAnalogDelegator.mnTHnII
       = MainSimulator.ccDecodeTemperature(simBagEntranceCELC.ccGet());
-    //[head]::let's have more!!
+    SubAnalogDelegator.mnTHnI
+      = MainSimulator.ccDecodeTemperature(simDryerChuteCELC.ccGet());
     
   }//+++
 
@@ -178,7 +178,7 @@ public final class SubVCombusTask implements ZiTask{
         (-320f*dcVExfanDegree.ccGetProportion()-10f)
         :simAtomsphereKPA.ccGet()
     );
-    ZcReal.ccTransfer(simVDryerKPA, simAtomsphereKPA);
+    ZcReal.ccTransfer(simVDryerKPA, simAtomsphereKPA, 128);
     ZcReal.ccTransfer(simVDryerKPA, simVBurnerKPA);
     ZcReal.ccTransfer(simVDryerKPA, simVExfanKPA);
     dcVExfanPressureLS=simVExfanKPA.ccGet() < (-7f);
@@ -210,14 +210,14 @@ public final class SubVCombusTask implements ZiTask{
       ZcReal.ccTransfer(simDryerBodyCELC, simDryerChuteCELC);
     }//..?
     //[todo]::ZcReal.ccTransfer(simDryerChuteCELC, simSandBinCELC);
-    
-    //[head]:: now what??
-    
+        
   }//+++
   
   //===
   
   @Deprecated public final void tstTagg(){
+    VcLocalTagger.ccTag("@vse", simVDryerKPA.ccGet());
+    VcLocalTagger.ccTag("@vse-ad", SubAnalogDelegator.mnVDPressureAD);
     VcLocalTagger.ccTag("@th1", simDryerChuteCELC.ccGet());
     VcLocalTagger.ccTag("@th2", simBagEntranceCELC.ccGet());
     VcLocalTagger.ccTag("@th4", simSandBinCELC.ccGet());

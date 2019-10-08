@@ -22,6 +22,8 @@ package nextzz.pppmodel;
 import java.util.ArrayList;
 import java.util.List;
 import kosui.ppplogic.ZcScaledModel;
+import kosui.pppmodel.McPipedChannel;
+import kosui.ppputil.VcLocalTagger;
 import nextzz.pppdelegate.SubAnalogDelegator;
 import nextzz.pppdelegate.SubFeederDelegator;
 
@@ -58,8 +60,13 @@ public final class SubAnalogScalarManager {
   private final ZcScaledModel cmVExfanDegreeScalar
     = new ZcScaledModel(400, 3600, 0, 100);
   
+  //===
+  
   private final ZcScaledModel cmThermoCouplScalar
     = new ZcScaledModel(1000, 4680, 0, 1472);
+  
+  public final McPipedChannel cmDesVThermoCelcius = new McPipedChannel();
+  //[todo]::cmDesRThermoCelcius
   
   //===
     
@@ -81,7 +88,33 @@ public final class SubAnalogScalarManager {
     
   }//++!
   
-  //[todo]::..? public final void ccLogic(){}//++~
+  public final void ccLogic(){
+    
+    //-- ct
+    for(int i=0;i<MainPlantModel.C_CTSLOT_CHANNEL_MAX;i++){
+      cmListOfCTSlotScalar.get(i&31)
+        .ccRun(SubAnalogDelegator.ccGetCTSlotAD(i));
+    }//..~
+    
+    //-- th ** v
+    for(int i=1;i<=8;i++){
+      cmDesVThermoCelcius.ccSet(
+        i,
+        cmThermoCouplScalar
+          .ccToScaledIntegerValue(SubAnalogDelegator.ccGetVThermoAD(i))
+      );
+      //[todo]:: % cmDesRThermoCelcius.ccSet(...
+    }//..~
+    
+    //-- v
+    cmVBurnerDegreeScalar.ccRun(SubAnalogDelegator.mnVBDegreeAD);
+    cmVExfanDegreeScalar.ccRun(SubAnalogDelegator.mnVEDegreeAD);
+    cmVDryerPressureScalar.ccRun(SubAnalogDelegator.mnVDPressureAD);
+    
+    //-- r
+    
+  }//++~
+  
   //[todo]::..or public final void ccCalculateFeeder(){}//++~
   
   //=== 
@@ -109,7 +142,8 @@ public final class SubAnalogScalarManager {
   }//++>
   
   synchronized public final
-  int ccGetVFeederFluxTPHValue(int pxIndex){
+  int ccGetVFeederFluxTPH(int pxIndex){
+    //[tofix]::why have we leave this??
     return cmListOfVFeederFluxScalar.get(pxIndex&15)
       .ccToScaledIntegerValue(
         SubFeederDelegator.ccGetVFeederSpeed(pxIndex)
@@ -117,17 +151,11 @@ public final class SubAnalogScalarManager {
   }//++>
   
   //=== feeder flux ** R
-  
-  //=== temperature
-  
-  //=== temperature ** v
-  
-  synchronized public final int ccGetScaledVThermoCelcius(int pxIndex){
-    return cmThermoCouplScalar
-      .ccToScaledIntegerValue(SubAnalogDelegator.ccGetVThermoAD(pxIndex));
-  }//++>
-  
-  //=== temperature ** r
+  //[todo]::ccSetRFeederFluxRPMSpan
+  //[todo]::ccGetRFeederFluxRPMSpan
+  //[todo]::ccSetRFeederFluxTPHSpan
+  //[todo]::ccGetRFeederFluxTPHSpan
+  //[todo]::ccGetRFeederFluxTPH
   
   //=== CT Slot
   
@@ -139,17 +167,15 @@ public final class SubAnalogScalarManager {
     return cmListOfCTSlotScalar.get(pxIndex&31).ccGetOutputSpan();
   }//++>
   
-  synchronized public final int ccGetScaledCTSlotValue(int pxIndex){
-    return cmListOfCTSlotScalar.get(pxIndex&31)
-      .ccToScaledIntegerValue(SubAnalogDelegator.ccGetCTSlotAD(pxIndex));
+  synchronized public final int ccGetCTSlotAMPR(int pxIndex){
+    return cmListOfCTSlotScalar.get(pxIndex&31).ccGetScaledIntegerValue();
   }//++>
   
   //=== pressure
   //=== pressure ** v
   
-  synchronized public final int ccGetScaledVDryerKiloPascal(){
-    return cmVDryerPressureScalar
-      .ccToScaledIntegerValue(SubAnalogDelegator.mnVDPressureAD);
+  synchronized public final int ccGetVDryerKPA(){
+    return cmVDryerPressureScalar.ccGetScaledIntegerValue();
   }//++>
   
   //=== pressure ** r
@@ -161,16 +187,14 @@ public final class SubAnalogScalarManager {
   //[todo]::.. % set vb span
   //[todo]::.. % set vb offset
   
-  synchronized public final int ccGetScaledVBDegree(){
-    return cmVBurnerDegreeScalar
-      .ccToScaledIntegerValue(SubAnalogDelegator.mnVBDegreeAD);
+  synchronized public final int ccGerVBurnerPercentage(){
+    return cmVBurnerDegreeScalar.ccGetScaledIntegerValue();
   }//++>
   
   //=== degree ** v ** ve
   
-  synchronized public final int ccGetScaledVEDegree(){
-    return cmVExfanDegreeScalar
-      .ccToScaledIntegerValue(SubAnalogDelegator.mnVEDegreeAD);
+  synchronized public final int ccGetVExfanPercentage(){
+    return cmVExfanDegreeScalar.ccGetScaledIntegerValue();
   }//++>
   
   //=== utility
@@ -184,5 +208,12 @@ public final class SubAnalogScalarManager {
   //[todo]::.. static % get ad span (k)
   //[todo]::.. static % get real offset (k)
   //[todo]::.. static % get real span (k)
+  
+  //===
+  
+  @Deprecated public final void tstTagg(){
+    VcLocalTagger.ccTag("vdpp", cmVDryerPressureScalar);
+    VcLocalTagger.ccTag("vbpp", cmVBurnerDegreeScalar);
+  }//+++
   
  }//***eof

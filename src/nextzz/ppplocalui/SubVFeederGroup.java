@@ -37,6 +37,7 @@ import kosui.ppplogic.ZcRangedValueModel;
 import kosui.ppputil.VcLocalConsole;
 import kosui.ppputil.VcTranslator;
 import nextzz.pppmain.MainSketch;
+import nextzz.pppmodel.MainPlantModel;
 import nextzz.pppmodel.MainSpecificator;
 import nextzz.pppswingui.ScFeederBlock;
 
@@ -295,11 +296,13 @@ public final class SubVFeederGroup implements EiGroup{
   //===
   
   public final void ccSetFeederRPM(int pxIndex,int pxValue){
-    int lpFixedValue = ZcRangedValueModel.ccLimitInclude
-      (pxValue, ScFeederBlock.C_SPEED_MIN, ScFeederBlock.C_SPEED_MAX);
+    int lpFixedValue = ZcRangedValueModel.ccLimitInclude(pxValue,
+      MainPlantModel.C_FEEDER_RPM_MIN,
+      MainPlantModel.C_FEEDER_RPM_MAX
+    );
     cmDesFeederRPMBox.get(pxIndex&0xF).ccSetValue(lpFixedValue);
-    cmDesFeederRPMGauge.get(pxIndex&0xF).ccSetPercentage
-      (lpFixedValue, ScFeederBlock.C_SPEED_MAX);
+    cmDesFeederRPMGauge.get(pxIndex&0xF)
+      .ccSetProportion(lpFixedValue, MainPlantModel.C_FEEDER_RPM_MAX);
   }//+++
   
   //===

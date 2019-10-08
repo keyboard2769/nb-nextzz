@@ -61,20 +61,22 @@ public final class SubAnalogDelegator {
     
     //-- temperature
     SubVBondGroup.ccRefer().cmEntranceTemperatureCB.ccSetValue
-      (SubAnalogScalarManager.ccRefer().ccGetScaledVThermoCelcius(2));
+      (SubAnalogScalarManager.ccRefer().cmDesVThermoCelcius.ccGet(2));
+    SubVBondGroup.ccRefer().cmChuteTemperatureTB.ccSetValue
+      (SubAnalogScalarManager.ccRefer().cmDesVThermoCelcius.ccGet(1));
     
     //-- content
-    SubVSurgeGroup.ccRefer().cmFillerSiloLV.ccSetPercentage(mnFillerSiloLV);
-    SubVSurgeGroup.ccRefer().cmCementSiloLV.ccSetPercentage(mnCementSiloLV);
-    SubVSurgeGroup.ccRefer().cmDustSiloLV.ccSetPercentage(mnDustSiloLV);
+    SubVSurgeGroup.ccRefer().cmFillerSiloLV.ccSetProportion(mnFillerSiloLV);
+    SubVSurgeGroup.ccRefer().cmCementSiloLV.ccSetProportion(mnCementSiloLV);
+    SubVSurgeGroup.ccRefer().cmDustSiloLV.ccSetProportion(mnDustSiloLV);
     
     //-- vbond
     SubVBondGroup.ccRefer().cmVDPressureCB.ccSetValue
-      (SubAnalogScalarManager.ccRefer().ccGetScaledVDryerKiloPascal());
+      (SubAnalogScalarManager.ccRefer().ccGetVDryerKPA());
     SubVBondGroup.ccRefer().cmBurnerDegreeCB.ccSetValue
-      (SubAnalogScalarManager.ccRefer().ccGetScaledVBDegree());
+      (SubAnalogScalarManager.ccRefer().ccGerVBurnerPercentage());
     SubVBondGroup.ccRefer().cmExfanDegreeCB.ccSetValue
-      (SubAnalogScalarManager.ccRefer().ccGetScaledVEDegree());
+      (SubAnalogScalarManager.ccRefer().ccGetVExfanPercentage());
     
   }//+++
   
