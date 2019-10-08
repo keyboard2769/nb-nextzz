@@ -20,22 +20,25 @@
 package ppptest;
 
 import processing.core.PApplet;
-import kosui.ppplocalui.EcComponent;
 import kosui.ppplocalui.EcConst;
 import kosui.ppplogic.ZcRoller;
 import kosui.ppputil.VcLocalCoordinator;
 import kosui.ppputil.VcLocalTagger;
+import nextzz.pppsimulate.ZcGate;
 
 public class TestSketch extends PApplet{
   
   private final ZcRoller cmRoller=new ZcRoller();
   
+  ZcGate ttt = new ZcGate(26);
+  
   @Override public void setup() {
     size(320,240);
+    frame.setTitle(TestSketch.class.getSimpleName());
     EcConst.ccSetupSketch(this);
     VcLocalCoordinator.ccGetInstance().ccInit(this);
     VcLocalTagger.ccGetInstance().ccInit(this);
-  }//+++
+  }//++!
 
   @Override public void draw() {
     
@@ -44,15 +47,18 @@ public class TestSketch extends PApplet{
     cmRoller.ccRoll();
     
     //--
-    VcLocalTagger.ccTag("[W]", EcComponent.ccIsKeyPressed('w'));
-    VcLocalTagger.ccTag("[S]", EcComponent.ccIsKeyPressed('s'));
-    VcLocalTagger.ccTag("[A]", EcComponent.ccIsKeyPressed('a'));
-    VcLocalTagger.ccTag("[D]", EcComponent.ccIsKeyPressed('d'));
-    VcLocalTagger.ccTag("roll", cmRoller.ccGetValue());
     
+    ttt.ccSetupAction(mouseX>160);
+    ttt.ccSimulate();
+    
+    VcLocalTagger.ccTag("ad", ttt.ccGetValue());
+    VcLocalTagger.ccTag("real", ttt.ccGetProportion());
+    
+    VcLocalTagger.ccTag("$latency", 17f-frameRate);
+    VcLocalTagger.ccTag("$roller", cmRoller.ccGetValue());
     VcLocalTagger.ccStabilize();
     
-  }//+++
+  }//++~
 
   @Override public void keyPressed() {
     if(key=='q'){exit();}
@@ -63,6 +69,6 @@ public class TestSketch extends PApplet{
   
   public static void main(String[] args) {
     PApplet.main(TestSketch.class.getCanonicalName());
-  }//+++
+  }//!!!
   
 }//***eof

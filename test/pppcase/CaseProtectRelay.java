@@ -25,6 +25,7 @@ import kosui.ppplocalui.EcConst;
 import kosui.ppplocalui.EcElement;
 import kosui.ppplocalui.EcRect;
 import kosui.ppplogic.ZcRoller;
+import kosui.ppputil.VcConst;
 import kosui.ppputil.VcLocalCoordinator;
 import kosui.ppputil.VcLocalTagger;
 import kosui.ppputil.VcStringUtility;
@@ -37,7 +38,7 @@ public class CaseProtectRelay extends PApplet{
   
   private final ZcProtectRelay cmController = new ZcProtectRelay();
   
-  private final EcElement
+  public final EcElement
     cmReadyPL = new EcElement("ready"),
     cmRunPL = new EcElement("run"),
     cmLockedOutPL = new EcElement("RSI"),
@@ -72,11 +73,10 @@ public class CaseProtectRelay extends PApplet{
       cmFanStartPL,cmDamperOpenPL,cmDamperClosePL,
       cmIngitionPL,cmPilotPL,cmMainValvePL
     ));
-    VcLocalCoordinator.ccAddElement(Arrays.asList(
-      cmReadyPL,cmRunPL,cmLockedOutPL,
-      cmFanStartPL,cmDamperOpenPL,cmDamperClosePL,
-      cmIngitionPL,cmPilotPL,cmMainValvePL
-    ));
+    
+    //--
+    VcConst.ccSetDoseLog(true);
+    VcLocalCoordinator.ccAddAll(this);
     
   }//+++
   

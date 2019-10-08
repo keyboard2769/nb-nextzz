@@ -382,6 +382,10 @@ public final class SubVBondGroup implements EiGroup{
     );
     ConstLocalUI.ccSetupFluxBoxColor(cmBelconFluxCB);
     
+    //-- post
+    cmExfanAutoSW.ccSetIsActivated(true);
+    cmBurnerAutoSW.ccSetIsActivated(true);
+    
   }//..!
   
   //===

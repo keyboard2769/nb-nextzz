@@ -22,6 +22,7 @@ package pppcase;
 import kosui.ppplocalui.EcConst;
 import kosui.ppplocalui.EcElement;
 import kosui.ppplogic.ZcRoller;
+import kosui.ppputil.VcConst;
 import kosui.ppputil.VcLocalCoordinator;
 import kosui.ppputil.VcLocalTagger;
 import kosui.ppputil.VcStringUtility;
@@ -38,10 +39,10 @@ public final class CaseSimplePID extends PApplet{
   private final ZcPIDController cmController
     = new ZcPIDController(150f, C_PROPORTION, C_DEAD_ZONE);
   
-  private final EcElement cmAdjusttingPL = new EcElement("-I-");
-  private final EcElement cmSamplingPL = new EcElement("-D-");
-  private final EcElement cmUpRequestPL = new EcElement("UP");
-  private final EcElement cmDownRequestPL = new EcElement("DN");
+  public final EcElement cmAdjusttingPL  = new EcElement("-I-");
+  public final EcElement cmSamplingPL    = new EcElement("-D-");
+  public final EcElement cmUpRequestPL   = new EcElement("UP");
+  public final EcElement cmDownRequestPL = new EcElement("DN");
   
   private boolean cmAdjustFlag,cmSampleFlag;
   private float cmCurrentValue;
@@ -62,10 +63,10 @@ public final class CaseSimplePID extends PApplet{
       cmDownRequestPL.ccGetX(),
       cmDownRequestPL.ccGetY()-2-cmUpRequestPL.ccGetH()
     );
-    VcLocalCoordinator.ccAddElement(cmAdjusttingPL);
-    VcLocalCoordinator.ccAddElement(cmDownRequestPL);
-    VcLocalCoordinator.ccAddElement(cmSamplingPL);
-    VcLocalCoordinator.ccAddElement(cmUpRequestPL);
+    
+    //--
+    VcConst.ccSetDoseLog(true);
+    VcLocalCoordinator.ccAddAll(this);
     
   }//+++
 

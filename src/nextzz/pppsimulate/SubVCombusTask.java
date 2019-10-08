@@ -23,6 +23,7 @@ import kosui.ppplogic.ZcHookFlicker;
 import kosui.ppplogic.ZcReal;
 import kosui.ppplogic.ZiTask;
 import kosui.ppputil.VcLocalTagger;
+import kosui.ppputil.VcNumericUtility;
 import nextzz.pppdelegate.SubAnalogDelegator;
 import nextzz.pppdelegate.SubVCombustDelegator;
 import processing.core.PApplet;
@@ -34,7 +35,7 @@ public final class SubVCombusTask implements ZiTask{
     if(self==null){self=new SubVCombusTask();}
     return self;
   }//+++
-  private SubVCombusTask(){}//..!
+  private SubVCombusTask(){}//++!
   
   //===
   
@@ -43,22 +44,34 @@ public final class SubVCombusTask implements ZiTask{
   public final ZcCombustor dcVOilPump = new ZcCombustor();
   
   //-- damper
+  private boolean dcCoolingDamperMV;
   public final ZcGate dcVBunerDegree = new ZcGate();
   public final ZcGate dcVExfanDegree = new ZcGate();
   private final ZcHookFlicker cmVBAutoHOOK = new ZcHookFlicker();
   private final ZcHookFlicker cmVEAutoHOOK = new ZcHookFlicker();
   
-  //-- pressure
-  private boolean dcVBurnerPressureLS,dcVExfanPressureLS;
-  private final ZcReal 
-    simAtomsphere      = new ZcReal(0.6f,true),
-    simVBurnerPressure = new ZcReal(0.75f,true),
-    simVDryerPressure  = new ZcReal(1.2f),
-    simVExfanPressure  = new ZcReal(-0.75f,true)
-  ;//...
-  
   //-- controller
   private final ZcProtectRelay cmLFL = new ZcProtectRelay();
+  
+  //-- real 
+  //-- real ** pressure
+  private boolean dcVBurnerPressureLS,dcVExfanPressureLS;
+  private final ZcReal 
+    simAtomsphereKPA = new ZcReal( 0.6f,true),
+    simVBurnerKPA    = new ZcReal( 0.75f,true),
+    simVDryerKPA     = new ZcReal( 1.2f),
+    simVExfanKPA     = new ZcReal(-0.75f,true)
+  ;//,,,
+  //-- real ** temperature
+  private final ZcReal
+    simAtomsphereCELC  = new ZcReal(27f, true),
+    simBurnerBlastCELC = new ZcReal(32f, true),
+    simDryerBodyCELC   = new ZcReal(34f),
+    //--
+    simDryerChuteCELC  = new ZcReal(16f),
+    simBagEntranceCELC = new ZcReal(12f),
+    simSandBinCELC     = new ZcReal(14f)
+  ;//,,,
   
   //===
 
@@ -133,7 +146,12 @@ public final class SubVCombusTask implements ZiTask{
     SubVCombustDelegator.mnVBFanHasPressurePL=dcVBurnerPressureLS;
     SubVCombustDelegator.mnVEFanHasPressurePL=dcVExfanPressureLS;
     SubAnalogDelegator.mnVDPressureAD
-      = (int)(PApplet.map(simVDryerPressure.ccGet(), 0f, 200f, 1500f, 2500f));
+      = MainSimulator.ccDecodePressure(simVDryerKPA.ccGet());
+    
+    //-- temperature ** output
+    SubAnalogDelegator.mnTHnII
+      = MainSimulator.ccDecodeTemperature(simBagEntranceCELC.ccGet());
+    //[head]::let's have more!!
     
   }//+++
 
@@ -151,32 +169,58 @@ public final class SubVCombusTask implements ZiTask{
     );
     
     //-- pressure
-    simVBurnerPressure.ccEffect(
-      dcVBurnerFan.ccIsContacted()?
+    simAtomsphereKPA.ccEffect(VcNumericUtility.ccRandom(5f));
+    simVBurnerKPA.ccEffect(dcVBurnerFan.ccIsContacted()?
         ( 300f*dcVBunerDegree.ccGetProportion()+16f)
-        :simAtomsphere.ccGet()
+        :simAtomsphereKPA.ccGet()
     );
-    simVExfanPressure.ccEffect(
-      SubVProvisionTask.ccRefer().dcVExFan.ccIsContacted()?
+    simVExfanKPA.ccEffect(SubVProvisionTask.ccRefer().dcVExFan.ccIsContacted()?
         (-320f*dcVExfanDegree.ccGetProportion()-10f)
-        :simAtomsphere.ccGet()
+        :simAtomsphereKPA.ccGet()
     );
-    ZcReal.ccTransfer(simVDryerPressure, simAtomsphere);
-    ZcReal.ccTransfer(simVDryerPressure, simVBurnerPressure);
-    ZcReal.ccTransfer(simVDryerPressure, simVExfanPressure);
-    dcVExfanPressureLS=simVExfanPressure.ccGet() < (-7f);
-    dcVBurnerPressureLS=simVBurnerPressure.ccGet() > 3f;
+    ZcReal.ccTransfer(simVDryerKPA, simAtomsphereKPA);
+    ZcReal.ccTransfer(simVDryerKPA, simVBurnerKPA);
+    ZcReal.ccTransfer(simVDryerKPA, simVExfanKPA);
+    dcVExfanPressureLS=simVExfanKPA.ccGet() < (-7f);
+    dcVBurnerPressureLS=simVBurnerKPA.ccGet() > 3f;
+    
+    //-- temperature
+    simAtomsphereCELC.ccEffect(VcNumericUtility.ccRandom(-26f, 3f));
+    simBurnerBlastCELC.ccEffect(
+      dcVOilPump.ccIsOnFire()
+       ? dcVBunerDegree.ccGetProportion()*2900f
+       : simAtomsphereKPA.ccGet()
+    );
+    if(!dcVOilPump.ccIsOnFire()){
+      ZcReal.ccTransfer(simBurnerBlastCELC, simAtomsphereCELC);
+    }//..?
+    if(!dcVOilPump.ccIsOnFire() || dcCoolingDamperMV){
+      ZcReal.ccTransfer(simDryerBodyCELC, simAtomsphereCELC);
+    }//..?
+    ZcReal.ccTransfer(simDryerChuteCELC, simAtomsphereCELC);
+    ZcReal.ccTransfer(simBagEntranceCELC, simAtomsphereCELC);
+    ZcReal.ccTransfer(simSandBinCELC, simAtomsphereCELC);
+    ZcReal.ccTransfer(simBurnerBlastCELC, simDryerBodyCELC, 64);
+    ZcReal.ccTransfer(
+      simDryerBodyCELC,
+      simBagEntranceCELC,
+      SubFeederTask.ccRefer().ccGetVFeederConveyorScaleBYTE()/4+8
+    );
+    if(SubFeederTask.ccRefer().ccGetColdAggregateSensor()){
+      ZcReal.ccTransfer(simDryerBodyCELC, simDryerChuteCELC);
+    }//..?
+    //[todo]::ZcReal.ccTransfer(simDryerChuteCELC, simSandBinCELC);
+    
+    //[head]:: now what??
     
   }//+++
   
   //===
   
   @Deprecated public final void tstTagg(){
-    VcLocalTagger.ccTag("LFL?", cmLFL);
-    VcLocalTagger.ccTag("vb-p?", simVBurnerPressure.ccGet());
-    VcLocalTagger.ccTag("ve-p?", simVExfanPressure.ccGet());
-    VcLocalTagger.ccTag("vb-m", dcVBurnerFan);
-    VcLocalTagger.ccTag("fire?", dcVOilPump.ccIsOnFire());
+    VcLocalTagger.ccTag("@th1", simDryerChuteCELC.ccGet());
+    VcLocalTagger.ccTag("@th2", simBagEntranceCELC.ccGet());
+    VcLocalTagger.ccTag("@th4", simSandBinCELC.ccGet());
   }//***
   
 }//***eof

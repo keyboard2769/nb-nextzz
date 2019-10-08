@@ -20,7 +20,9 @@
 package nextzz.pppsimulate;
 
 import kosui.ppplogic.ZcHookFlicker;
+import kosui.ppplogic.ZcReal;
 import kosui.ppplogic.ZcRoller;
+import processing.core.PApplet;
 
 public final class MainSimulator {
   
@@ -133,6 +135,26 @@ public final class MainSimulator {
       pxModeA?pxInputA:
       pxModeB?pxInputB:
       false;
+  }//+++
+  
+  //=== decode
+  
+  public static final int ccDecodePressure(float pxReal){
+    return (int)(PApplet.map(pxReal, 0f, 200f, 1500f, 2500f));
+  }//+++
+  
+  public static final int ccDecodePressure(ZcReal pxReal){
+    if(pxReal == null){return 0;}
+    return ccDecodePressure(pxReal.ccGet());
+  }//+++
+  
+  public static final int ccDecodeTemperature(float pxReal){
+    return (int)(PApplet.map(pxReal, 0f, 1472f, 1000f, 4680f));
+  }//+++
+  
+  public static final int ccDecodeTemperature(ZcReal pxReal){
+    if(pxReal == null){return 0;}
+    return ccDecodeTemperature(pxReal.ccGet());
   }//+++
   
  }//***eof

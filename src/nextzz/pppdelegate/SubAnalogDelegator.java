@@ -38,6 +38,10 @@ public final class SubAnalogDelegator {
     mnCTSlotXXIV,mnCTSlotXXV,mnCTSlotXXVI,mnCTSlotXXVII,
     mnCTSlotXXVIII,mnCTSlotXXIX,mnCTSlotXXX,mnCTSlotXXXI,
     
+    //-- th
+    mnTHnI,mnTHnII,mnTHnIII,mnTHnIV,mnTHnV,mnTHnVI,mnTHnVII,mnTHnVIII,
+    mnRHnI,mnRHnII,mnRHnIII,mnRHnIV,mnRHnV,mnRHnVI,mnRHnVII,mnRHnVIII,
+    
     //-- deg
     mnVBDegreeAD, mnVEDegreeAD,
     
@@ -55,6 +59,10 @@ public final class SubAnalogDelegator {
   
   public static final void ccBind(){
     
+    //-- temperature
+    SubVBondGroup.ccRefer().cmEntranceTemperatureCB.ccSetValue
+      (SubAnalogScalarManager.ccRefer().ccGetScaledVThermoCelcius(2));
+    
     //-- content
     SubVSurgeGroup.ccRefer().cmFillerSiloLV.ccSetPercentage(mnFillerSiloLV);
     SubVSurgeGroup.ccRefer().cmCementSiloLV.ccSetPercentage(mnCementSiloLV);
@@ -62,11 +70,11 @@ public final class SubAnalogDelegator {
     
     //-- vbond
     SubVBondGroup.ccRefer().cmVDPressureCB.ccSetValue
-      (SubAnalogScalarManager.ccRefer().ccGetScaledVDPressureValue());
+      (SubAnalogScalarManager.ccRefer().ccGetScaledVDryerKiloPascal());
     SubVBondGroup.ccRefer().cmBurnerDegreeCB.ccSetValue
-      (SubAnalogScalarManager.ccRefer().ccGetScaledVBDegreeValue());
+      (SubAnalogScalarManager.ccRefer().ccGetScaledVBDegree());
     SubVBondGroup.ccRefer().cmExfanDegreeCB.ccSetValue
-      (SubAnalogScalarManager.ccRefer().ccGetScaledVEDegreeValue());
+      (SubAnalogScalarManager.ccRefer().ccGetScaledVEDegree());
     
   }//+++
   
@@ -112,7 +120,7 @@ public final class SubAnalogDelegator {
       //--
       default:break;
     }//..?
-  }//+++
+  }//++<
   
   public static final int ccGetCTSlotAD(int pxOrder){
     switch(pxOrder){
@@ -151,6 +159,70 @@ public final class SubAnalogDelegator {
       case 29:return mnCTSlotXXIX;
       case 30:return mnCTSlotXXX;
       case 31:return mnCTSlotXXXI;
+      //--
+      default:return 0;
+    }//..?
+  }//++>
+  
+   //===
+  
+  public static final void ccSetVThermoAD(int pxOrder, int pxVal){
+    switch(pxOrder){
+      case  1:mnTHnI=pxVal;break;
+      case  2:mnTHnII=pxVal;break;
+      case  3:mnTHnIII=pxVal;break;
+      case  4:mnTHnIV=pxVal;break;
+      case  5:mnTHnV=pxVal;break;
+      case  6:mnTHnVI=pxVal;break;
+      case  7:mnTHnVII=pxVal;break;
+      case  8:mnTHnVIII=pxVal;break;
+      //--
+      default:break;
+    }//..?
+  }//+++
+  
+  public static final int ccGetVThermoAD(int pxOrder){
+    switch(pxOrder){
+      case  1:return mnTHnI;
+      case  2:return mnTHnII;
+      case  3:return mnTHnIII;
+      case  4:return mnTHnIV;
+      case  5:return mnTHnV;
+      case  6:return mnTHnVI;
+      case  7:return mnTHnVII;
+      case  8:return mnTHnVIII;
+      //--
+      default:return 0;
+    }//..?
+  }//+++
+  
+  //===
+  
+  public static final void ccSetRThermoAD(int pxOrder, int pxVal){
+    switch(pxOrder){
+      case  1:mnRHnI=pxVal;break;
+      case  2:mnRHnII=pxVal;break;
+      case  3:mnRHnIII=pxVal;break;
+      case  4:mnRHnIV=pxVal;break;
+      case  5:mnRHnV=pxVal;break;
+      case  6:mnRHnVI=pxVal;break;
+      case  7:mnRHnVII=pxVal;break;
+      case  8:mnRHnVIII=pxVal;break;
+      //--
+      default:break;
+    }//..?
+  }//+++
+  
+  public static final int ccGetRThermoAD(int pxOrder){
+    switch(pxOrder){
+      case  1:return mnRHnI;
+      case  2:return mnRHnII;
+      case  3:return mnRHnIII;
+      case  4:return mnRHnIV;
+      case  5:return mnRHnV;
+      case  6:return mnRHnVI;
+      case  7:return mnRHnVII;
+      case  8:return mnRHnVIII;
       //--
       default:return 0;
     }//..?

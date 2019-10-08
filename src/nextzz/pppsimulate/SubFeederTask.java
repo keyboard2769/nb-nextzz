@@ -31,6 +31,8 @@ import kosui.ppputil.VcLocalTagger;
 import nextzz.pppdelegate.SubFeederDelegator;
 import nextzz.pppdelegate.SubVCombustDelegator;
 import nextzz.pppmodel.MainSpecificator;
+import nextzz.pppswingui.ScFeederBlock;
+import processing.core.PApplet;
 
 public final class SubFeederTask implements ZiTask{
   
@@ -90,6 +92,24 @@ public final class SubFeederTask implements ZiTask{
   
   public final boolean ccGetVFeederStuckSensor(int pxOrder){
     return dcDesVFSG[pxOrder&0xF];
+  }//+++
+  
+  public final int ccGetVFeederConveyorScaleBYTE(){
+    int lpSum=0;
+    for(
+      int i=SubFeederDelegator.C_VF_INIT_ORDER;
+      i<=MainSpecificator.ccRefer().mnVFeederAmount;
+      i++
+    ){
+      lpSum+=SubFeederDelegator.ccGetVFeederSpeed(i);
+    }//..~
+    if(lpSum<=100){return 0;}
+    return PApplet.ceil(PApplet.map((float)lpSum,
+      0f,
+      (float)(MainSpecificator.ccRefer().mnVFeederAmount
+        * ScFeederBlock.C_SPEED_MAX), 
+      0f, 255f
+    ));
   }//+++
 
   //===

@@ -23,6 +23,7 @@ import kosui.ppplocalui.EcComponent;
 import kosui.ppplocalui.EcConst;
 import kosui.ppplocalui.EcElement;
 import kosui.ppplogic.ZcRoller;
+import kosui.ppputil.VcConst;
 import kosui.ppputil.VcLocalCoordinator;
 import kosui.ppputil.VcLocalTagger;
 import kosui.ppputil.VcStringUtility;
@@ -43,18 +44,18 @@ public class CaseSupplyChain extends PApplet{
   private boolean dcAlartIV  = false;
   private boolean dcAlartV  = false;
   
-  private ZcMotor dcMotorI = new ZcMotor(10);
-  private ZcMotor dcMotorII = new ZcMotor(10);
-  private ZcMotor dcMotorIII = new ZcMotor(10);
-  private ZcMotor dcMotorIV = new ZcMotor(10);
-  private ZcMotor dcMotorV = new ZcMotor(10);
+  private final ZcMotor dcMotorI = new ZcMotor(10);
+  private final ZcMotor dcMotorII = new ZcMotor(10);
+  private final ZcMotor dcMotorIII = new ZcMotor(10);
+  private final ZcMotor dcMotorIV = new ZcMotor(10);
+  private final ZcMotor dcMotorV = new ZcMotor(10);
   
-  private final EcElement cmRunPLB = new EcElement("run", 0xAA0E);
-  private final EcElement cmAlartIxPL   = new EcElement("1", 0xAAA1);
-  private final EcElement cmAlartIIxPL  = new EcElement("2", 0xAAA2);
-  private final EcElement cmAlartIIIxPL = new EcElement("3", 0xAAA3);
-  private final EcElement cmAlartIVxPL  = new EcElement("4", 0xAAA4);
-  private final EcElement cmAlartVxPL   = new EcElement("5", 0xAAA5);
+  public final EcElement cmRunPLB = new EcElement("run", 0xAA0E);
+  public final EcElement cmAlartIxPL   = new EcElement("1", 0xAAA1);
+  public final EcElement cmAlartIIxPL  = new EcElement("2", 0xAAA2);
+  public final EcElement cmAlartIIIxPL = new EcElement("3", 0xAAA3);
+  public final EcElement cmAlartIVxPL  = new EcElement("4", 0xAAA4);
+  public final EcElement cmAlartVxPL   = new EcElement("5", 0xAAA5);
   
   //===
   
@@ -77,12 +78,10 @@ public class CaseSupplyChain extends PApplet{
     cmAlartVxPL.ccSetLocation(cmAlartIVxPL, 5, 0);
     cmRunPLB.ccSetLocation(cmAlartIVxPL, 0, 5);
     cmRunPLB.ccSetEndX(cmAlartVxPL.ccEndX());
-    VcLocalCoordinator.ccAddElement(cmAlartIxPL);
-    VcLocalCoordinator.ccAddElement(cmAlartIIxPL);
-    VcLocalCoordinator.ccAddElement(cmAlartIIIxPL);
-    VcLocalCoordinator.ccAddElement(cmAlartIVxPL);
-    VcLocalCoordinator.ccAddElement(cmAlartVxPL);
-    VcLocalCoordinator.ccAddElement(cmRunPLB);
+    
+    //--
+    VcConst.ccSetDoseLog(true);
+    VcLocalCoordinator.ccAddAll(this);
     
   }//+++
 

@@ -79,7 +79,7 @@ public final class SubDegreeControlManager {
       !SubVProvisionDelegator.mnVExfanIconPL?0f
          : (!SubVCombustDelegator.mnVBFlamingPL?mnVExfanDegreeForIgnition
            : cmVPressureCTRL.ccGetReverselyTrimmed()*100f),
-      (float)SubAnalogScalarManager.ccRefer().ccGetScaledVEDegreeValue()
+      (float)SubAnalogScalarManager.ccRefer().ccGetScaledVEDegree()
     );
     
     //-- ve ** to plc
@@ -102,7 +102,7 @@ public final class SubDegreeControlManager {
   
   //===
 
-  @Deprecated public static final void ccTagg(){
+  @Deprecated public final void tstTagg(){
     VcLocalTagger.ccTag("vp-ctrl", SELF.cmVPressureCTRL);
     VcLocalTagger.ccTag("vp-rvs", SELF.cmVPressureCTRL.ccGetReverselyTrimmed());
     VcLocalTagger.ccTag("ve-ctrl", SELF.cmVExfanDegreeCTRL);

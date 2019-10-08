@@ -38,10 +38,10 @@ public class CaseContainer extends PApplet{
   private final ZcContainer cmSource = new ZcContainer(1.1f);
   private final ZcContainer cmTarget = new ZcContainer(2.3f);
   
-  private final EcElement cmChargeKEY = new EcElement("W", 0xAA1);
-  private final EcElement cmTransferKEY = new EcElement("S", 0xAA2);
-  private final EcElement cmResetKEY = new EcElement("A", 0xAA3);
-  private final EcElement cmDischargeKEY = new EcElement("D", 0xAA4);
+  public final EcElement cmChargeKEY = new EcElement("W", 0xAA1);
+  public final EcElement cmTransferKEY = new EcElement("S", 0xAA2);
+  public final EcElement cmResetKEY = new EcElement("A", 0xAA3);
+  public final EcElement cmDischargeKEY = new EcElement("D", 0xAA4);
   
   @Override public void setup() {
     size(320,240);
@@ -53,10 +53,8 @@ public class CaseContainer extends PApplet{
     cmResetKEY.ccSetLocation(    lpG.ccGridX(1), lpG.ccGridY(2));
     cmTransferKEY.ccSetLocation( lpG.ccGridX(2), lpG.ccGridY(2));
     cmDischargeKEY.ccSetLocation(lpG.ccGridX(3), lpG.ccGridY(2));
-    VcLocalCoordinator.ccAddElement(cmChargeKEY);
-    VcLocalCoordinator.ccAddElement(cmTransferKEY);
-    VcLocalCoordinator.ccAddElement(cmResetKEY);
-    VcLocalCoordinator.ccAddElement(cmDischargeKEY);
+    VcConst.ccSetDoseLog(true);
+    VcLocalCoordinator.ccAddAll(this);
   }//+++
 
   @Override public void draw() {
