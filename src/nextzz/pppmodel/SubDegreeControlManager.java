@@ -47,6 +47,8 @@ public final class SubDegreeControlManager {
   
   public volatile int mnVPreHeatingPT = 15;//.. aka "YoNetsuOnnDo"
   
+  public volatile int mnVDryerTargetMinusKPA = 25;//.. aka "DoRaIiYaSeiAaTsu"
+  
   public volatile int mnVExfanIgnitionPT = 15;//.. aka "TyakKaKaiDo"
     
   private final ZcPIDController 

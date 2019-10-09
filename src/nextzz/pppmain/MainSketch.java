@@ -261,11 +261,14 @@ public class MainSketch extends PApplet{
     
     //-- translation
     VcTranslator.ccGetInstance().ccInit();
+    /* 4 *///VcConst.ccSetDoseLog(true);
     boolean lpIsCSVxOK = VcTranslator.ccGetInstance().ccParseCSV
       (MainSketch.class.getResourceAsStream("/nextzz/pppresource/tr.csv"));
-    /* 4 */VcTranslator.ccGetInstance().ccSetMode('c');//..later!
-    if(!lpIsCSVxOK){
-      ScConst.ccMessage(".main()::faild to laod csv text resource.");
+    boolean lpIsXMLxOK = VcTranslator.ccGetInstance().ccParseXML
+      (MainSketch.class.getResourceAsStream("/nextzz/pppresource/tr.xml"));
+    /* 7 */VcTranslator.ccGetInstance().ccSetMode('c');//..later!
+    if(!(lpIsCSVxOK&&lpIsXMLxOK)){
+      ScConst.ccMessage("faild to laod text resource from archiver.");
     }//..?
     
     //-- file finding
@@ -327,7 +330,7 @@ public class MainSketch extends PApplet{
   }//+++
   
   public static final String ccGetLastLeavingStamp(){
-    return "_1910091137";
+    return "_1910091619";
   }//+++
 
 }//***eof

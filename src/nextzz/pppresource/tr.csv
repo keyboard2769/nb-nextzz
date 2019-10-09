@@ -1,12 +1,12 @@
 #type,key,en,jp,zh,add
-<E>,_,#,(),(),[]
+<E>,_,#,(：),(：),[]
 <E>,_,:,：,：,[]
 ,,,,,
 ,,,,,
-<sep>,,* section *,,,
+<sep>,,*-section-*,,,
 ,,,,,
 ,,,,,
-<sep>,,* motor switch *,,,
+<sep>,,*-motor-switch-*,,,
 <tr>,_m01,Vcomp,(),主<ln>空压机,[]
 <tr>,_m02,Mixer,(),搅拌缸,[]
 <tr>,_m03,Exfan,(),排风机,[]
@@ -24,7 +24,7 @@
 <tr>,_m15,RF<ln>CHAIN,(),再生料<ln>供料,[]
 ,,,,,
 ,,,,,
-<sep>,,* current slot *,,,
+<sep>,,*-current-slot-*,,,
 <tr>,_ct00,V-COMP,コンプレッサ電流,主机空压机,[]
 <tr>,_ct01,MIXER,ミキサ電流,搅拌缸,[]
 <tr>,_ct02,VE-FAN,排風機電流,主机排风机,[]
@@ -59,7 +59,7 @@
 <tr>,_ct31,S-SKIP,ｻｲﾛｽｷｯﾌﾟ,爬斗,[]
 ,,,,,
 ,,,,,
-<sep>,,* local-group-general *,,,
+<sep>,,*-local-group-general-*,,,
 <tr>,_ready,READY,準備,准备,[]
 <tr>,_start,START,運転,运行,[]
 <tr>,_pause,PAUSE,中断,暂停,[]
@@ -72,7 +72,7 @@
 <tr>,_disc,DISCHARGE,排出,排出,[]
 ,,,,,
 ,,,,,
-<sep>,,* local-group-vbond *,,,
+<sep>,,*-local-group-vbond-*,,,
 <tr>,_ve,VE,排風機,排风机,[]
 <tr>,_vb,VB,バーナ,燃烧器,[]
 <tr>,_gass,GAS,ｶﾞｽ,燃气,[]
@@ -81,7 +81,7 @@
 <tr>,_hevo,H-OIL,重油,重油,[]
 ,,,,,
 ,,,,,
-<sep>,,* local-group-vsurge *,,,
+<sep>,,*-local-group-vsurge-*,,,
 <tr>,_ofbin,O-FLOW,ｵｰﾊﾞﾌﾛ,溢料,[]
 <tr>,_osbin,O-SIZE,ｵｰﾊﾞｻｲｽﾞ,大料,[]
 <tr>,_sandt,SAND-T,砂ビン,砂仓温度,[]
@@ -91,7 +91,7 @@
 <tr>,_pipet,PIPE-T,ｱｽ配管,管道温度,[]
 ,,,,,
 ,,,,,
-<sep>,,* local-group-weigh *,,,
+<sep>,,*-local-group-weigh-*,,,
 <tr>,_ag,AG,骨材,骨料,[]
 <tr>,_fr,FR,石粉,粉料,[]
 <tr>,_as,AS,アス,沥青,[]
@@ -103,12 +103,12 @@
 <tr>,_x_as,AS-LOCK,ASﾛｯｸ,沥青锁,[]
 ,,,,,
 ,,,,,
-<sep>,,* local-group-mixer *,,,
+<sep>,,*-local-group-mixer-*,,,
 <tr>,_dry,DRY,ドライ,干拌,[]
 <tr>,_wet,WET,ウェット,湿拌,[]
 ,,,,,
 ,,,,,
-<sep>,,* local-group-operative *,,,
+<sep>,,*-local-group-operative-*,,,
 <tr>,_zero,Zero,ゼロ調整,调零,[]
 <tr>,_cell,Cell,セル操作,称操作,[]
 <tr>,_mixd,M-DISCHARGE,合材放出,成品料出料,[]
@@ -123,11 +123,11 @@
 <tr>,_motor,MOTOR,モータ,电机,[]
 ,,,,,
 ,,,,,
-<sep>,,* local-group-indicative *,,,
+<sep>,,*-local-group-indicative-*,,,
 <tr>,_pop,POP,サブ,操作,[]
 ,,,,,
 ,,,,,
-<sep>,,* swing-general *,,,
+<sep>,,*-swing-general-*,,,
 <tr>,_quit,QUIT,終了,退出,[]
 <tr>,_hide,HIDE,隠し,隐藏,[]
 <tr>,_monitor,Monitor,運転,运行,[]
@@ -137,13 +137,13 @@
 <tr>,_error,Error,異常,异常,[]
 ,,,,,
 ,,,,,
-<sep>,,* swing-pane-assistant-tower *,,,
+<sep>,,*-swing-pane-assistant-tower-*,,,
 <tr>,_aptower:,Tower:,AP本体：,主楼：,[]
 <tr>,_tblower:a,BLOWER:AUTO,本体ﾌﾞﾛｱ：自動,辅助风机：自动,[]
 <tr>,_tblower:d,BLOWER:DISAB,本体ﾌﾞﾛｱ：切,辅助风机：禁用,[]
 ,,,,,
 ,,,,,
-<sep>,,* swing-pane-assistant-ag *,,,
+<sep>,,*-swing-pane-assistant-ag-*,,,
 <tr>,_vergin:,Vergin:,新材：,新料：,[]
 <tr>,_apulseo:u,PULSE:USE,ｴｱﾊﾟﾙｽ：入,除尘脉冲：使用,[]
 <tr>,_apulseo:d,PULSE:DISAB,ｴｱﾊﾟﾙｽ：切,除尘脉冲：禁用,[]
@@ -158,7 +158,7 @@
 <tr>,_vfuele:c,VC-OIL:CONST,Ｖ二流体：固定,柴重切换：固定,[]
 <tr>,_vfuele:x,VC-OIL:EXCHANGE,Ｖ二流体：切替,柴重切换：切换,[]
 ,,,,,
-<sep>,,* swing-pane-assistant-fras *,,,
+<sep>,,*-swing-pane-assistant-fras-*,,,
 <tr>,_powder:,Power:,石粉：,粉料：,[]
 <tr>,_fsair:a,FS-AIR:AUTO,石粉ｻｲﾛｴｱ：自動,矿粉气爆：自动,[]
 <tr>,_fsair:d,FS-AIR:DISAB,石粉ｻｲﾛｴｱ：切,矿粉气爆：禁用,[]
@@ -175,14 +175,21 @@
 <tr>,_assupp:r,AS-SUP:REVERSE,ｱｽ供給ﾎﾟﾝﾌﾟ：逆転,沥青供给泵：反转,[]
 ,,,,,
 ,,,,,
-<sep>,,* swing-pane-assistant-rcad *,,,
+<sep>,,*-swing-pane-assistant-rcad-*,,,
 <tr>,_recycle:,Recycle:,再生材：,再生料：,[]
 <tr>,_additive:,Additive:,添加剤：,添加料：,[]
 ,,,,,
-<sep>,,* swing-pane-assistant-misc *,,,
+<sep>,,*-swing-pane-assistant-misc-*,,,
 <tr>,_misc:,MISC:,その他：,其他：,[]
 ,,,,,
-<sep>,,* dummy-dummy *,,,
+,,,,,
+<sep>,,*-swing-pane-setting-combust-*,,,
+<tr>,_combust_setting,COMBUST,燃焼設定,燃烧设置,[]
+<tr>,_entrance_cool_down_temp,Etrance<bk>cool<bk>down<bk>temperature,バグ入口上限,除尘器入口冷却温度,[]
+<tr>,_entrance_melt_down_temp,Etrance<bk>melt<bk>down<bk>temperature,バグ入口上上限,除尘器入口停火温度,[]
+,,,,,
+,,,,,
+<sep>,,*-dummy-dummy-*,,,
 <tr>,_hellow,Hellow,こんにちわ,你好,[]
 ,,,,,
 ,,,,,

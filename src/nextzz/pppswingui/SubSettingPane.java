@@ -1,16 +1,16 @@
-/*
+/* 
  * Copyright (C) 2019 Key Parker from K.I.C.
- *
+ * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- *
+ * 
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- *
+ * 
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
@@ -31,22 +31,24 @@ import javax.swing.SwingConstants;
 import kosui.pppswingui.ScFactory;
 import kosui.pppswingui.ScList;
 import kosui.pppswingui.ScTable;
+import kosui.ppputil.VcConst;
+import kosui.ppputil.VcStringUtility;
 import kosui.ppputil.VcTranslator;
 import nextzz.pppsetting.MainSettingManager;
 import nextzz.pppsetting.McAbstractSettingPartition;
 import nextzz.pppsetting.MiSettingItem;
-import nextzz.pppsetting.SubFeederFluxSetting;
+import nextzz.pppsetting.SubCombustSetting;
 
 public final class SubSettingPane implements SiTabbable{
   
-  public static final int C_DEFAULT_VALUE_COLUMN_W = 120;
+  public static final int C_DEFAULT_VALUE_COLUMN_W = 120;//..pix
   
   //===
-
+  
   private static final SubSettingPane SELF = new SubSettingPane();
   public static final SubSettingPane ccRefer(){return SELF;}//+++
   private SubSettingPane(){}//++!
-
+  
   //===
   
   public static final String C_TAB_NAME = VcTranslator.tr("_setting");
@@ -66,7 +68,7 @@ public final class SubSettingPane implements SiTabbable{
     = new ScList(MainSettingManager.ccRefer(), 160, 160);
   
   public final ScTable cmTable
-    = new ScTable(SubFeederFluxSetting.ccRefer(), -1, -1);
+    = new ScTable(SubCombustSetting.ccRefer(), -1, -1);//..needa fit manually
   
   public final JTextArea cmDescriptor = new JTextArea("...", 3, 80);
   
@@ -88,13 +90,16 @@ public final class SubSettingPane implements SiTabbable{
   
   private final MouseAdapter cmTablePressListener
     = new MouseAdapter() {
-    @Override public void mousePressed(MouseEvent me) {
+    @Override public void mouseReleased(MouseEvent me) {
       int lpListIndex = cmList.ccGetCurrentIndex();
       int lpTableIndex = cmTable.ccGetSelectedRowIndex();
-      if(
-          (lpListIndex<0)
-        ||(lpTableIndex<0)
+      if((lpListIndex<0)
+       ||(lpTableIndex<0)
       ){return;}//..?
+      /* 4 */VcConst.ccLogln(
+        VcStringUtility.ccPackupPairedTag("l", lpListIndex),
+        VcStringUtility.ccPackupPairedTag("t", lpTableIndex)
+      );
       MiSettingItem lpItem = MainSettingManager.ccRefer()
         .ccGetSelectedItem(lpListIndex, lpTableIndex);
       if(lpItem==null){return;}//..?
@@ -138,6 +143,6 @@ public final class SubSettingPane implements SiTabbable{
     return cmPane;
   }//+++
   
-  //=== 
+  //===
   
  }//***eof

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Copyright (C) 2019 Key Parker from K.I.C.
+
+This library is free software; you can redistribute it and/or
+modify it under the terms of the GNU Lesser General Public
+License as published by the Free Software Foundation; either
+version 2.1 of the License, or (at your option) any later version.
+
+This library is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public
+License along with this library; if not, write to the Free Software
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+MA 02110-1301  USA
+-->
+
+
+<root>
+  
+  <tr key="_dummy">
+    <en>Dummy</en>
+    <jp>仮</jp>
+    <zh>假</zh>
+  </tr>
+  
+  <!--message-->
+  
+  <tr key="_m_help_info">
+    <en>
+CAST IN THE NAME OF TEST
+YA NOT GUILTY
+    </en>
+    <jp>
+出荷品の名に賭けて
+おまえに罪なし
+    </jp>
+    <zh>
+出事我不管
+你敢用你用
+    </zh>
+  </tr>
+  
+  <!--message-->
+  
+  <!--desciption-->
+  
+  <tr key="_dscp_entrance_cool_down_temp">
+    <en>
+The cooling damper will open when the actual temperature is higher than 
+the given one.
+    </en>
+    <jp>
+冷却ﾀﾞﾝﾊﾟ自動時実測温度が設定値より高ければﾀﾞﾝﾊﾟが開く。
+    </jp>
+    <zh>
+当冷却风门模式为自动时温度若高于设定值则风门打开。
+    </zh>
+  </tr>
+  
+  <tr key="_dscp_entrance_melt_down_temp">
+    <en>
+The burner will get shutdown forcedly if the actual temperature is higher than 
+the given one.
+    </en>
+    <jp>
+測温度が設定値より高ければ強制消火させる。
+    </jp>
+    <zh>
+若测定温度高于设定值则将强行使燃烧器停火。
+    </zh>
+  </tr>
+  
+</root><!--EOF-->

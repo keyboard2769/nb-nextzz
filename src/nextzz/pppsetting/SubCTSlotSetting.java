@@ -25,10 +25,11 @@ import nextzz.pppmodel.SubAnalogScalarManager;
 
 public final class SubCTSlotSetting extends McAbstractSettingPartition{
   
-  public static final String C_KEY_TITLE = "_ct_slot";
+  public static final String C_KEY_TITLE = "_ct_slot_setting";
 
   private static final SubCTSlotSetting SELF = new SubCTSlotSetting();
-  public static final SubCTSlotSetting ccRefer(){return SELF;}//+++
+  public static final SubCTSlotSetting ccRefer(){return SELF;}//++>
+  private SubCTSlotSetting(){}//++!
 
   //=== inner
   
@@ -63,18 +64,14 @@ public final class SubCTSlotSetting extends McAbstractSettingPartition{
   
   //===
   
-  private SubCTSlotSetting(){
-    
+  @Override public void ccInit() {
     for(int i=0;i<32;i++){
       cmListOfItem.add(new McCTSlotSpanItem(i));
     }//..~
-    
   }//++!
   
-  //===
-
   @Override public String ccGetTile() {
     return VcTranslator.tr(C_KEY_TITLE);
-  }//+++
+  }//++>
   
  }//***eof

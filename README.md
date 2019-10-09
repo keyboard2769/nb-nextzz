@@ -16,6 +16,7 @@ but hey, dose it sounds stupid if you make it DOUBLE-ZEUS ??
 - [ ] $ tre
 - [ ] $ dos
 - [ ] $ uno
+- [ ] $ the pressure controller is targeting AD value!! fix it !!
 - [ ] $ the coarse dust screw ct showing is missing
 - [ ] $ the feeder chain controller just does not stop
         after the conveyor is down .. make it a confirm issue!!
@@ -25,7 +26,7 @@ but hey, dose it sounds stupid if you make it DOUBLE-ZEUS ??
 
 #### heading
 
-- [ ] $ refactor setting mechanism
+- none
 
 #### last
 
@@ -33,6 +34,7 @@ but hey, dose it sounds stupid if you make it DOUBLE-ZEUS ??
 - [x] $ fix dryer body and other none motor device color
 - [x] $ a combust resource exchange controller
 - [x] $ the cooling damper .. and value input?
+- [x] $ refactorred setting mechanism
 
 - none
 

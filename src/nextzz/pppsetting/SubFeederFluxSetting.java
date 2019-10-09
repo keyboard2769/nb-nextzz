@@ -26,10 +26,11 @@ import nextzz.pppmodel.SubAnalogScalarManager;
 
 public final class SubFeederFluxSetting extends McAbstractSettingPartition{
   
-  public static final String C_KEY_TITLE = "_feeder_flux";
+  public static final String C_KEY_TITLE = "_feeder_flux_setting";
 
   private static final SubFeederFluxSetting SELF = new SubFeederFluxSetting();
-  public static final SubFeederFluxSetting ccRefer(){return SELF;}//+++
+  public static final SubFeederFluxSetting ccRefer(){return SELF;}//++>
+  private SubFeederFluxSetting(){}//++!
 
   //=== inner 
   
@@ -92,18 +93,16 @@ public final class SubFeederFluxSetting extends McAbstractSettingPartition{
   }//***
   
   //===
-  
-  private SubFeederFluxSetting(){
-    
+
+  @Override public void ccInit() {
     for(int i=0;i<=MainSpecificator.ccRefer().mnVFeederAmount;i++){
       cmListOfItem.add(new McFeederRPMSpanItem('v', i));
       cmListOfItem.add(new McFeederTPHSpanItem('v', i));
     }//..~
-  
-  }//..!
+  }//++!
   
   @Override public String ccGetTile() {
     return VcTranslator.tr(C_KEY_TITLE);
-  }//+++
+  }//++>
   
  }//***eof

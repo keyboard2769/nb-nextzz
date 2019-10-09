@@ -19,10 +19,13 @@
 
 package nextzz.pppsetting;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 import kosui.ppplogic.ZcRangedModel;
 import kosui.pppmodel.McTableAdapter;
+import kosui.ppputil.VcConst;
 import kosui.ppputil.VcTranslator;
 
 public abstract class McAbstractSettingPartition extends McTableAdapter{
@@ -33,6 +36,8 @@ public abstract class McAbstractSettingPartition extends McTableAdapter{
   //===
   
   public abstract String ccGetTile();
+  
+  public abstract void ccInit();
   
   public final MiSettingItem ccGetItem(int pxIndex){
     if(cmListOfItem.isEmpty()){return null;}
@@ -69,5 +74,38 @@ public abstract class McAbstractSettingPartition extends McTableAdapter{
       default:return "<?>";
     }//...?
   }//+++
+  
+  //===
+  
+  public static final void ccRegisterAll(McAbstractSettingPartition pxPartition){
+  
+    /*
+    
+    Field[] lpDesField = SELF.getClass().getDeclaredFields();
+    for(Field it:lpDesField){
+      int m = it.getModifiers();
+      if(Modifier.isStatic(m) || Modifier.isPrivate(m)){continue;}
+      Object lpSource = VcConst.ccRetrieveField(it, SELF);
+      if(lpSource instanceof MiSettingItem){
+        VcConst.ccPrintln(it.getName(), ((MiSettingItem) lpSource).ccGetName());
+      }//..?
+    }//..~
+    */
+    if(pxPartition==null){return;}
+    Field[] lpDesField = pxPartition.getClass().getDeclaredFields();
+    if(lpDesField==null){return;}
+    if(lpDesField.length==0){return;}
+    for(Field it:lpDesField){
+      if(it==null){continue;}
+      int lpMod = it.getModifiers();
+      if(Modifier.isStatic(lpMod) || Modifier.isPrivate(lpMod)){continue;}
+      Object lpSource = VcConst.ccRetrieveField(it, pxPartition);
+      if(lpSource==null){continue;}
+      if(lpSource instanceof MiSettingItem){
+        pxPartition.cmListOfItem.add((MiSettingItem)lpSource);
+      }//..?
+    }//..~
+  }//+++
+  
   
 }//***eof

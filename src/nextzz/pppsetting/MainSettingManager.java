@@ -38,11 +38,16 @@ public final class MainSettingManager implements ListModel<String>{
     = new ArrayList<McAbstractSettingPartition>();
   
   private MainSettingManager(){
-    
-    cmListOfPartition.add(SubFeederFluxSetting.ccRefer());
-    cmListOfPartition.add(SubCTSlotSetting.ccRefer());
+    ssAdd(SubCombustSetting.ccRefer());
+    ssAdd(SubFeederFluxSetting.ccRefer());
+    ssAdd(SubCTSlotSetting.ccRefer());
+  }//++!
   
-  }//..!
+  private void ssAdd(McAbstractSettingPartition pxChild){
+    if(pxChild==null){return;}
+    pxChild.ccInit();
+    cmListOfPartition.add(pxChild);
+  }//++!
   
   //===
   
@@ -52,35 +57,35 @@ public final class MainSettingManager implements ListModel<String>{
     if(lpModel==null){return null;}
     MiSettingItem lpItem = lpModel.ccGetItem(pxItemIndex);
     return lpItem;
-  }//+++
+  }//++>
   
   public final McAbstractSettingPartition ccGetSelectedModel(int pxIndex){
     if(cmListOfPartition.isEmpty()){return null;}
     int lpFixed=ZcRangedModel
       .ccLimitInclude(pxIndex, 0,cmListOfPartition.size());
     return cmListOfPartition.get(lpFixed);
-  }//+++
+  }//++>
   
   //===
 
   @Override public int getSize() {
     return cmListOfPartition.size();
-  }//+++
+  }//++>
 
   @Override public String getElementAt(int pxIndex) {
     return cmListOfPartition.get(pxIndex).ccGetTile();
-  }//+++
+  }//++>
 
   @Override public void addListDataListener(ListDataListener pxL) {
     cmListDataListenerCounter++;
-  }//+++
+  }//+<>
 
   @Override public void removeListDataListener(ListDataListener pxL) {
     cmListDataListenerCounter--;
-  }//+++
+  }//+<>
   
   public final int ccGetListDataListenerCounter(){
     return cmListDataListenerCounter;
-  }//+++
+  }//+<>
   
  }//***eof
