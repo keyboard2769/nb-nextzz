@@ -377,7 +377,7 @@ public final class ConstLocalUI {
     if(pxPullyR==null){return;}
     
     //-- styling
-    pxBody.ccSetBaseColor(C_COLOR_POWERDEVICE_OFF);
+    pxBody.ccSetBaseColor(C_COLOR_CONTAINER);
     pxPullyL.ccSetupColor(C_COLOR_POWERDEVICE_ON, C_COLOR_POWERDEVICE_OFF);
     pxPullyR.ccSetupColor(C_COLOR_POWERDEVICE_ON, C_COLOR_POWERDEVICE_OFF);
     
@@ -501,7 +501,7 @@ public final class ConstLocalUI {
     //-- bond
     ccDrawDuctShape(O_FIRST_DUCT, 'b', 4, 4, C_COLOR_DUCT);
     ccDrawDuctShape(O_SECOND_DUCT, 'c', 4, 4, C_COLOR_DUCT);
-    ccDrawDryerShape(O_V_DRYER, 3, C_COLOR_POWERDEVICE_OFF);
+    ccDrawDryerShape(O_V_DRYER, 3, C_COLOR_CONTAINER);
     ccDrawHopperShape(O_BAGFILTER, 20, C_COLOR_CONTAINER);
     ccDrawBlowerShape(O_V_BURNER_OFF, 'r', C_COLOR_POWERDEVICE_OFF);
     ccDrawBlowerShape(O_V_BURNER_ON, 'r', C_COLOR_POWERDEVICE_ON);

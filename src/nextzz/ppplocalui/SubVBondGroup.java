@@ -220,6 +220,9 @@ public final class SubVBondGroup implements EiGroup{
     );
     cmVDContentLV.ccSetLocation(cmVDryerShape, lpDryerCaseGap*2,lpDryerCaseGap);
     cmVDPressureCB.ccSetDigit(3);
+    cmVDPressureCB.ccSetW(
+      cmVDPressureCB.ccGetW()+lpDryerGaugeGap*4
+    );
     cmVDPressureCB.ccSetH(ConstLocalUI.C_DEFAULT_SINGLELINE_H);
     cmVDPressureCB.ccSetLocation(cmVDContentLV,lpDryerGaugeGap,lpDryerGaugeGap);
     cmVDContentLV.ccSetSize(
@@ -353,6 +356,8 @@ public final class SubVBondGroup implements EiGroup{
     cmVBurnerText.ccSetLocation(lpPotentialX, cmRunSW.ccCenterY());
     
     //-- combust source lamp
+    cmGasPL.ccSetColor(EcConst.C_LIT_GREEN);
+    cmOilPL.ccSetColor(EcConst.C_LIT_GREEN);
     cmGasPL.ccSetSize(cmExfanAutoSW);
     cmOilPL.ccSetSize(cmGasPL);
     cmFuelPL.ccSetSize(cmGasPL);

@@ -35,6 +35,7 @@ import kosui.ppputil.VcNumericUtility;
 import kosui.ppputil.VcSwingCoordinator;
 import kosui.ppputil.VcTranslator;
 import nextzz.pppdelegate.SubFeederDelegator;
+import nextzz.pppdelegate.SubVCombustDelegator;
 import nextzz.pppdelegate.SubVProvisionDelegator;
 import nextzz.pppdelegate.SubWeighingDelegator;
 import nextzz.ppplocalui.SubIndicativeGroup;
@@ -42,7 +43,6 @@ import nextzz.ppplocalui.SubOperativeGroup;
 import nextzz.ppplocalui.SubVBondGroup;
 import nextzz.ppplocalui.SubVFeederGroup;
 import nextzz.pppswingui.SubAssistantPane;
-import nextzz.pppmodel.MainPlantModel;
 import nextzz.pppmodel.MainSettingManager;
 import nextzz.pppmodel.MiSettingItem;
 import nextzz.pppmodel.SubDegreeControlManager;
@@ -217,7 +217,7 @@ public final class MainActionManager {
     }//+++
   };//***
   
-  public final EiTriggerable cmSettingModifing = new EiTriggerable() {
+  public final EiTriggerable ccSettingModifying = new EiTriggerable() {
     @Override public void ccTrigger() {
       int lpListIndex = SubSettingPane.ccRefer()
         .cmList.ccGetCurrentIndex();
@@ -254,6 +254,9 @@ public final class MainActionManager {
   public final ActionListener cmNotchListener = new ActionListener() {
     @Override public void actionPerformed(ActionEvent e) {
       
+      //[tofigure]::VcConst.ccPrintln("aha!!");
+      //            .. how many time will this thing get called??
+      
       //-- tower
       SubVProvisionDelegator.mnTowerBlowerTGSW=
         SubAssistantPane.ccRefer().cmTowerBlowerNT.getSelectedIndex()==0;
@@ -271,6 +274,12 @@ public final class MainActionManager {
       }//..~
       
       //-- aggregate
+      
+      //-- aggregate ** v combust
+      SubVCombustDelegator.mnVCombustSourceSW=SubAssistantPane
+        .ccRefer().cmVCombustSourceNT.getSelectedIndex()==0;
+      SubVCombustDelegator.mnVFuelExchangeSW=SubAssistantPane
+        .ccRefer().cmVFuelExchangeNT.getSelectedIndex()==0;
       
       //-- filler
       
@@ -300,7 +309,7 @@ public final class MainActionManager {
       VcSwingCoordinator.ccRegisterAction
         (MainWindow.ccRefer().cmHideButton, cmHiding);
       VcSwingCoordinator.ccRegisterAction
-        (SubSettingPane.ccRefer().cmModifyButton, cmSettingModifing);
+        (SubSettingPane.ccRefer().cmModifyButton, ccSettingModifying);
 
     }//+++
   };//***

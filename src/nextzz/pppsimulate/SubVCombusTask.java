@@ -51,6 +51,7 @@ public final class SubVCombusTask implements ZiTask{
   
   //-- controller
   private final ZcProtectRelay cmLFL = new ZcProtectRelay();
+  private final ZcFuelExchanger cmFEX = new ZcFuelExchanger();
   
   //-- real 
   //-- real ** pressure
@@ -101,6 +102,21 @@ public final class SubVCombusTask implements ZiTask{
     dcVOilPump.ccContact(SubVCombustDelegator.mnVBMainValvePL);
     //[todo]::..%err_xxx% = ccGetLockedout
     
+    //-- combust source exchange
+    cmFEX.ccRun(
+      SubVCombustDelegator.mnVFuelExchangeSW,
+      dcVOilPump.ccIsContacted(),
+      SubFeederTask.ccRefer().ccGetVFeederStartFlag()
+    );
+    SubVCombustDelegator.mnVCombustUsingGasPL
+      = SubVCombustDelegator.mnVCombustSourceSW;
+    SubVCombustDelegator.mnVCombustUsingOilPL
+      = !SubVCombustDelegator.mnVCombustSourceSW;
+    SubVCombustDelegator.mnVCombustOilingFuelPL=cmFEX.ccGetFuelValveOutput()
+      && /* 7 */!SubVCombustDelegator.mnVCombustUsingGasPL;
+    SubVCombustDelegator.mnVCombustOilingHeavyPL=cmFEX.ccGetHeavyValveOutput()
+      && /* 7 */!SubVCombustDelegator.mnVCombustUsingGasPL;
+    
     //-- feedback ** vb
     SubVCombustDelegator.mnVBFlamingPL=dcVOilPump.ccIsOnFire();
     SubVCombustDelegator.mnVBunnerFanPL=dcVBurnerFan.ccIsContacted();
@@ -141,17 +157,21 @@ public final class SubVCombusTask implements ZiTask{
     SubVCombustDelegator.mnVExfanClosePL=dcVExfanDegree.ccIsClosing();
     SubVCombustDelegator.mnVExfanOpenPL=dcVExfanDegree.ccIsOpening();
     
-    //-- pressure ** output
+    //-- pressure ** feedback
     SubVCombustDelegator.mnVBFanHasPressurePL=dcVBurnerPressureLS;
     SubVCombustDelegator.mnVEFanHasPressurePL=dcVExfanPressureLS;
     SubAnalogDelegator.mnVDPressureAD
       = MainSimulator.ccDecodePressure(simVDryerKPA.ccGet());
     
-    //-- temperature ** output
+    //-- temperature ** feedback
     SubAnalogDelegator.mnTHnII
       = MainSimulator.ccDecodeTemperature(simBagEntranceCELC.ccGet());
     SubAnalogDelegator.mnTHnI
       = MainSimulator.ccDecodeTemperature(simDryerChuteCELC.ccGet());
+    
+    //-- ampere ** feedback
+    SubAnalogDelegator.mnCTSlotIV=dcVBurnerFan.ccGetCT();
+    SubAnalogDelegator.mnCTSlotV=dcVOilPump.ccGetCT();
     
   }//+++
 
@@ -216,11 +236,10 @@ public final class SubVCombusTask implements ZiTask{
   //===
   
   @Deprecated public final void tstTagg(){
-    VcLocalTagger.ccTag("@vse", simVDryerKPA.ccGet());
-    VcLocalTagger.ccTag("@vse-ad", SubAnalogDelegator.mnVDPressureAD);
     VcLocalTagger.ccTag("@th1", simDryerChuteCELC.ccGet());
     VcLocalTagger.ccTag("@th2", simBagEntranceCELC.ccGet());
     VcLocalTagger.ccTag("@th4", simSandBinCELC.ccGet());
+    VcLocalTagger.ccTag(".fex", cmFEX);
   }//***
   
 }//***eof

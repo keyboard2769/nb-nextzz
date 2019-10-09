@@ -21,8 +21,8 @@ package nextzz.pppmodel;
 
 import java.io.File;
 import kosui.pppmodel.McConst;
-import kosui.pppswingui.ScConst;
 import kosui.ppputil.VcConst;
+import nextzz.pppswingui.SubAssistantPane;
 
 public final class MainFileManager {
   
@@ -56,6 +56,16 @@ public final class MainFileManager {
   
   //===
   
+  public final Runnable cmNotchStateInitiating = new Runnable() {
+    @Override public void run() {
+      
+      SubAssistantPane.ccRefer().cmVCombustSourceNT.setSelectedIndex(1);
+      
+    }//+++
+  };//***
+  
+  //===
+  
   private File cmFontFile=null;
   
   public final void ccInit(){
@@ -65,7 +75,7 @@ public final class MainFileManager {
     //[todo]::validate configfile
     //[todo]::validate ...
     
-  }//..!
+  }//++!
   
   private void ssValidateFontFile(){
     
@@ -108,6 +118,6 @@ public final class MainFileManager {
   
   //===
   
-  public final File ccGetFontFile(){return cmFontFile;}//+++
+  public final File ccGetFontFile(){return cmFontFile;}//++>
   
  }//***eof

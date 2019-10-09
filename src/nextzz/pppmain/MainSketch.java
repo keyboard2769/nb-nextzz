@@ -124,6 +124,8 @@ public class MainSketch extends PApplet{
       (MainWindow.ccRefer().cmInitiating);
     SwingUtilities.invokeLater
       (MainActionManager.ccRefer().cmSwingClickableRegisering);
+    SwingUtilities.invokeLater
+      (MainFileManager.ccRefer().cmNotchStateInitiating);
     
     //-- translation
     EcConst.ccTranslateText(SubIndicativeGroup.ccRefer());
@@ -174,8 +176,7 @@ public class MainSketch extends PApplet{
     }//..?
     
     //-- debug
-    /* 4 */
-    SubDegreeControlManager.ccRefer().tstTagg();
+    /* 4 */ SubVCombusTask.ccRefer().tstTagg();
     VcLocalTagger.ccTag("roll",nf(cmRoller,2));
     VcLocalTagger.ccTag
       ("latency",VcNumericUtility.ccFormatPointTwoFloat(17f-frameRate));
@@ -262,12 +263,12 @@ public class MainSketch extends PApplet{
     VcTranslator.ccGetInstance().ccInit();
     boolean lpIsCSVxOK = VcTranslator.ccGetInstance().ccParseCSV
       (MainSketch.class.getResourceAsStream("/nextzz/pppresource/tr.csv"));
-    VcTranslator.ccGetInstance().ccSetMode('c');
+    /* 4 */VcTranslator.ccGetInstance().ccSetMode('c');//..later!
     if(!lpIsCSVxOK){
       ScConst.ccMessage(".main()::faild to laod csv text resource.");
     }//..?
     
-    //-- resource finding
+    //-- file finding
     MainFileManager.ccRefer().ccInit();
     if(MainFileManager.ccRefer().ccGetFontFile()==null){
       VcTranslator.ccGetInstance().ccSetMode('e');

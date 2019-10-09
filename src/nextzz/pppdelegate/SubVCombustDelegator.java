@@ -43,9 +43,9 @@ public class SubVCombustDelegator {
     mnVEFanHasPressurePL,
     //--
     mnVCombustReadyPL,mnVCombustRunPL,mnVCombustRunSW,
-    mnVCombustSourceSW,mnVOilExchangeSW,
+    mnVCombustSourceSW,mnVFuelExchangeSW,
     mnVCombustUsingGasPL,mnVCombustUsingOilPL,
-    mnVCombustUsingFuelPL,mnVCombustUsingHeavyPL,
+    mnVCombustOilingFuelPL,mnVCombustOilingHeavyPL,
     //--
     mnVColdAggreageSensorPL
   ;//...
@@ -81,6 +81,12 @@ public class SubVCombustDelegator {
     SubVBondGroup.ccRefer().cmVDContentLV.ccSetIsActivated(mnVBFlamingPL);
     SubVBondGroup.ccRefer().cmFlamingPL
       .ccSetIsActivated(mnVBFlamingPL&&MainSketch.ccIsRollingAccrose(4,1));
+    
+    //-- v combust source
+    SubVBondGroup.ccRefer().cmGasPL.ccSetIsActivated(mnVCombustUsingGasPL);
+    SubVBondGroup.ccRefer().cmOilPL.ccSetIsActivated(mnVCombustUsingOilPL);
+    SubVBondGroup.ccRefer().cmFuelPL.ccSetIsActivated(mnVCombustOilingFuelPL);
+    SubVBondGroup.ccRefer().cmHeavyPL.ccSetIsActivated(mnVCombustOilingHeavyPL);
     
     //-- v burner operate
     mnVBurnerCloseSW=SubVBondGroup.ccRefer().cmBurnerCloseSW.ccIsMousePressed();

@@ -97,9 +97,9 @@ public final class SubAssistantPane implements SiTabbable{
   
   public final JComboBox<String> cmVFuelExchangeNT
     = ScFactory.ccCreateNotch(
-      VcTranslator.tr("_vfuele:c"),//..continuouse
+      VcTranslator.tr("_vfuele:x"),//..exchange
       null,
-      VcTranslator.tr("_vfuele:x") //..exchange
+      VcTranslator.tr("_vfuele:c") //..continuouse
     );
   
   //--

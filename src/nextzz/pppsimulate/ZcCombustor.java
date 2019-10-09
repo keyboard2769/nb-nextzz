@@ -19,6 +19,9 @@
 
 package nextzz.pppsimulate;
 
+/**
+ * aka 'NennSyouSouChi'
+ */
 public class ZcCombustor extends ZcMotor{
   
   private boolean cmIsOnFire;

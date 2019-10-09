@@ -81,6 +81,8 @@ public final class SubFeederTask implements ZiTask{
       new ZcOnDelayTimer(11),new ZcOnDelayTimer(11)
     ));
   
+  private boolean  simVFeederCutout;
+  
   //===
   
   private boolean dcCAS=false;
@@ -88,11 +90,11 @@ public final class SubFeederTask implements ZiTask{
   
   public final boolean ccGetColdAggregateSensor(){
     return dcCAS;
-  }//+++
+  }//++>
   
   public final boolean ccGetVFeederStuckSensor(int pxOrder){
     return dcDesVFSG[pxOrder&0xF];
-  }//+++
+  }//++>
   
   public final int ccGetVFeederConveyorScaleBYTE(){
     int lpSum=0;
@@ -110,7 +112,11 @@ public final class SubFeederTask implements ZiTask{
         * MainPlantModel.C_FEEDER_RPM_MAX), 
       0f, 255f
     ));
-  }//+++
+  }//++>
+  
+  public final boolean ccGetVFeederStartFlag(){
+    return simVFeederCutout;
+  }//++>
 
   //===
   
@@ -161,7 +167,7 @@ public final class SubFeederTask implements ZiTask{
   @Override public void ccSimulate() {
     
     //-- v feeder
-    boolean lpBeforCAS=false;
+    simVFeederCutout=false;
     for(
       int i=SubFeederDelegator.C_VF_INIT_ORDER;
       i<=SubFeederDelegator.C_VF_VALID_MAX;
@@ -172,13 +178,12 @@ public final class SubFeederTask implements ZiTask{
         && (SubFeederDelegator.ccGetVFeederSpeed(i)>512)
       );
       dcDesVFSG[i]=!simDesVFeederSensorTM.get(i).ccIsUp();
-      lpBeforCAS|=simDesVFeederSensorTM.get(i).ccIsUp();
+      simVFeederCutout|=simDesVFeederSensorTM.get(i).ccIsUp();
     }//..~
     for(ZcMotor it:dcDesVFeeder){it.ccSimulate(0.66f);}
     
     //-- v cas
-    simColdAggregateSensorTM.ccAct(
-      lpBeforCAS
+    simColdAggregateSensorTM.ccAct(simVFeederCutout
         && SubVProvisionTask.ccRefer().dcHorizontalBelcon.ccIsContacted()
     );
     dcCAS=simColdAggregateSensorTM.ccIsUp()
@@ -188,7 +193,7 @@ public final class SubFeederTask implements ZiTask{
   
   //===
   
-  @Deprecated static public final void tstTagVFeederSystem(){
+  @Deprecated public final void tstTagg(){
     VcLocalTagger.ccTag("vf-ctrl", self.cmVFeederChainCTRL);
     VcLocalTagger.ccTag("vf-1", self.dcDesVFeeder.get(1));
     VcLocalTagger.ccTag("vf-2", self.dcDesVFeeder.get(2));
