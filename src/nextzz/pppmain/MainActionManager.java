@@ -258,22 +258,20 @@ public final class MainActionManager {
       //            .. how many time will this thing get called??
       
       //-- tower
-      SubVProvisionDelegator.mnTowerBlowerTGSW=
-        SubAssistantPane.ccRefer().cmTowerBlowerNT.getSelectedIndex()==0;
-      
-      //-- feeder
-      for(
-        int i=SubFeederDelegator.C_VF_INIT_ORDER;
-        i<=SubFeederDelegator.C_VF_VALID_MAX;
-        i++
-      ){
-        SubFeederDelegator.ccSetVFeederForce(i,
-          SubFeederPane.ccRefer().cmDesVFeederBlock.get(i).ccGetIsForced());
-        SubFeederDelegator.ccSetVFeederDisable(i,
-          SubFeederPane.ccRefer().cmDesVFeederBlock.get(i).ccGetIsDisabled());
-      }//..~
+      SubVProvisionDelegator.mnTowerBlowerTGSW=SubAssistantPane
+        .ccRefer().cmTowerBlowerNT.getSelectedIndex()==0;
       
       //-- aggregate
+      
+      //-- aggregate ** air pulse
+      SubVProvisionDelegator.mnAirPulseDisableTGSW=SubAssistantPane
+        .ccRefer().cmAirPulseOperateNT.getSelectedIndex()==1;
+      SubVProvisionDelegator.mnAirPulseWithAirTGSW=SubAssistantPane
+        .ccRefer().cmAirPulseModeNT.getSelectedIndex()==0;
+      SubVProvisionDelegator.mnAirPulseWithFeederTGSW=SubAssistantPane
+        .ccRefer().cmAirPulseModeNT.getSelectedIndex()==1;
+      SubVProvisionDelegator.mnAirPulseForceTGSW=SubAssistantPane
+        .ccRefer().cmAirPulseModeNT.getSelectedIndex()==2;
       
       //-- aggregate ** v combust
       SubVCombustDelegator.mnVCombustSourceSW=SubAssistantPane
@@ -296,6 +294,18 @@ public final class MainActionManager {
       //-- additive
       
       //-- misc
+      
+      //-- feeder
+      for(
+        int i=SubFeederDelegator.C_VF_INIT_ORDER;
+        i<=SubFeederDelegator.C_VF_VALID_MAX;
+        i++
+      ){
+        SubFeederDelegator.ccSetVFeederForce(i,
+          SubFeederPane.ccRefer().cmDesVFeederBlock.get(i).ccGetIsForced());
+        SubFeederDelegator.ccSetVFeederDisable(i,
+          SubFeederPane.ccRefer().cmDesVFeederBlock.get(i).ccGetIsDisabled());
+      }//..~
       
     }//+++
   };//***
@@ -378,6 +388,6 @@ public final class MainActionManager {
       }//+++
     });
   
-  }//..!
+  }//++!
   
 }//***eof

@@ -29,6 +29,7 @@ import kosui.pppswingui.ScTitledWindow;
 import kosui.ppputil.VcConst;
 import kosui.ppputil.VcNumericUtility;
 import kosui.ppputil.VcStampUtility;
+import kosui.ppputil.VcTranslator;
 import nextzz.pppmodel.MainPlantModel;
 import nextzz.pppmodel.SubAnalogScalarManager;
 import nextzz.pppswingui.SiTabbable;
@@ -73,9 +74,11 @@ public final class MainWindow {
   
   public final ScTitledWindow cmWindow=new ScTitledWindow(null);
   
-  public final JButton cmQuitButton = new JButton("_quit");
+  public final JButton cmQuitButton
+    = new JButton(VcTranslator.tr("_quit"));
   
-  public final JButton cmHideButton = new JButton("_hide");
+  public final JButton cmHideButton
+    = new JButton(VcTranslator.tr("_hide"));
   
   public final Runnable cmInitiating = new Runnable() {
     @Override public void run() {

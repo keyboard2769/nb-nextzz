@@ -255,6 +255,7 @@ public final class SubVBondGroup implements EiGroup{
       cmBagFilterShape.ccCenterY()
     );
     cmBagLowLV.ccSetLocation(cmBagHighLV, lpLevelLampGap, lpLevelLampGap);
+    cmAirPulsePL.ccSetColor(EcConst.C_LIT_WATER);
     cmAirPulsePL.ccSetH(6);
     cmAirPulsePL.ccSetLocation(cmBagFilterShape,
       ConstLocalUI.C_INPANE_GAP,

@@ -50,6 +50,7 @@ public final class SubVProvisionDelegator {
     //-- fr ** bag filter
     mnAirPulseDisableTGSW,mnAirPulseForceTGSW,
     mnAirPulseWithFeederTGSW,mnAirPulseWithAirTGSW,
+    mnAirPulsingPL,
     mnDustExtractionMSSW,mnDustExtractionMSPL,
     mnBagHopperHLV,mnBagHopperLLV,
     
@@ -129,6 +130,9 @@ public final class SubVProvisionDelegator {
       .ccSetIsActivated(mnVInclinedBelconPL);
     SubVFeederGroup.ccRefer().cmBelconForwarPL
       .ccSetIsActivated(mnVHorizontalBelconPL);
+    
+    //-- filter
+    SubVBondGroup.ccRefer().cmAirPulsePL.ccSetIsActivated(mnAirPulsingPL);
 
     //-- filler supply
     //-- filler supply ** pc -> plc

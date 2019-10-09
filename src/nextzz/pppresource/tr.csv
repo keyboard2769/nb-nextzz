@@ -1,5 +1,6 @@
 #type,key,en,jp,zh,add
 <E>,_,#,(),(),[]
+<E>,_,:,：,：,[]
 ,,,,,
 ,,,,,
 <sep>,,* section *,,,
@@ -126,39 +127,63 @@
 <tr>,_pop,POP,サブ,操作,[]
 ,,,,,
 ,,,,,
-<sep>,,* swing-pane-assistant *,,,
+<sep>,,* swing-general *,,,
+<tr>,_quit,QUIT,終了,退出,[]
+<tr>,_hide,HIDE,隠し,隐藏,[]
+<tr>,_monitor,Monitor,運転,运行,[]
+<tr>,_assistant,Assitant,補助,辅助,[]
+<tr>,_feeder,Feeder,供給,上料,[]
+<tr>,_setting,Setting,設定,设置,[]
+<tr>,_error,Error,異常,异常,[]
+,,,,,
+,,,,,
+<sep>,,* swing-pane-assistant-tower *,,,
+<tr>,_aptower:,Tower:,AP本体：,主楼：,[]
+<tr>,_tblower:a,BLOWER:AUTO,本体ﾌﾞﾛｱ：自動,辅助风机：自动,[]
+<tr>,_tblower:d,BLOWER:DISAB,本体ﾌﾞﾛｱ：切,辅助风机：禁用,[]
+,,,,,
+,,,,,
+<sep>,,* swing-pane-assistant-ag *,,,
+<tr>,_vergin:,Vergin:,新材：,新料：,[]
+<tr>,_apulseo:u,PULSE:USE,ｴｱﾊﾟﾙｽ：入,除尘脉冲：使用,[]
+<tr>,_apulseo:d,PULSE:DISAB,ｴｱﾊﾟﾙｽ：切,除尘脉冲：禁用,[]
+<tr>,_apulsem:c,PULSE:COMP,ﾊﾟﾙｽ動作：通常,脉冲启动：气压,[]
+<tr>,_apulsem:r,PULSE:RF,ﾊﾟﾙｽ動作：ＲＦ,脉冲启动：供料,[]
+<tr>,_apulsem:f,PULSE:FORCE,ﾊﾟﾙｽ動作：強制,脉冲启动：强制,[]
+<tr>,_cdamper:a,COOL-D:AUTO,冷却ﾀﾞﾝﾊﾟ：自動,冷却风门：自动,[]
+<tr>,_cdamper:c,COOL-D:CLOSE,冷却ﾀﾞﾝﾊﾟ：閉,冷却风门：常关,[]
+<tr>,_cdamper:o,COOL-D:OPEN,冷却ﾀﾞﾝﾊﾟ：開,冷却风门：常开,[]
 <tr>,_vcombs:g,VC-SRC:GAS,Ｖ燃料：ガス,新料燃料：燃气,[]
 <tr>,_vcombs:o,VC-SRC:OIL,Ｖ燃料：オイル,新料燃料：燃油,[]
 <tr>,_vfuele:c,VC-OIL:CONST,Ｖ二流体：固定,柴重切换：固定,[]
 <tr>,_vfuele:x,VC-OIL:EXCHANGE,Ｖ二流体：切替,柴重切换：切换,[]
 ,,,,,
+<sep>,,* swing-pane-assistant-fras *,,,
+<tr>,_powder:,Power:,石粉：,粉料：,[]
+<tr>,_fsair:a,FS-AIR:AUTO,石粉ｻｲﾛｴｱ：自動,矿粉气爆：自动,[]
+<tr>,_fsair:d,FS-AIR:DISAB,石粉ｻｲﾛｴｱ：切,矿粉气爆：禁用,[]
+<tr>,_fssel:u,FS-SEL:UNO,石粉ｻｲﾛ選択：壱側,供粉选择：壹侧,[]
+<tr>,_fssel:m,FS-SEL:MIX,石粉ｻｲﾛ選択：混合,供粉选择：混用,[]
+<tr>,_fssel:d,FS-SEL:DOS,石粉ｻｲﾛ選択：弐側,供粉选择：贰侧,[]
+<tr>,_csair:a,CS-AIR:AUTO,ｾﾒﾝﾄｻｲﾛｴｱ：自動,水泥气爆：自动,[]
+<tr>,_csair:d,CS-AIR:DISAB,ｾﾒﾝﾄｻｲﾛｴｱ：切,水泥气爆：禁用,[]
+<tr>,_dsair:a,DS-AIR:AUTO,ﾀﾞｽﾄｻｲﾛｴｱ：自動,废粉气爆：自动,[]
+<tr>,_dsair:d,DS-AIR:DISAB,ﾀﾞｽﾄｻｲﾛｴｱ：切,废粉气爆：禁用,[]
+<tr>,_dsdis,DS-DISCHARGE,ﾀﾞｽﾄｻｲﾛ排出Ｇ,废粉仓排料门,[]
+<tr>,_asphalt:,Asphalt:,アスファルト：,沥青：,[]
+<tr>,_assupp:f,AS-SUP:FORE,ｱｽ供給ﾎﾟﾝﾌﾟ：正転,沥青供给泵：正转,[]
+<tr>,_assupp:r,AS-SUP:REVERSE,ｱｽ供給ﾎﾟﾝﾌﾟ：逆転,沥青供给泵：反转,[]
 ,,,,,
 ,,,,,
+<sep>,,* swing-pane-assistant-rcad *,,,
+<tr>,_recycle:,Recycle:,再生材：,再生料：,[]
+<tr>,_additive:,Additive:,添加剤：,添加料：,[]
 ,,,,,
+<sep>,,* swing-pane-assistant-misc *,,,
+<tr>,_misc:,MISC:,その他：,其他：,[]
 ,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
+<sep>,,* dummy-dummy *,,,
 <tr>,_hellow,Hellow,こんにちわ,你好,[]
-<E>,_,#,(),(),[]
 ,,,,,
 ,,,,,
 <EOF>,,,,,

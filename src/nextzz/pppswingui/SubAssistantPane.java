@@ -53,13 +53,6 @@ public final class SubAssistantPane implements SiTabbable{
       VcTranslator.tr("_tblower:d") //..disable
     );
   
-  public final JComboBox<String> cmAirPulseModeNT
-    = ScFactory.ccCreateNotch(
-      VcTranslator.tr("_apulsem:c"),//..compressor
-      VcTranslator.tr("_apulsem:rf"),//..rf
-      VcTranslator.tr("_apulsem:f") //..force
-    );
-  
   public final JComboBox<String> cmAirPulseOperateNT
     = ScFactory.ccCreateNotch(
       VcTranslator.tr("_apulseo:u"),//..use
@@ -67,13 +60,21 @@ public final class SubAssistantPane implements SiTabbable{
       VcTranslator.tr("_apulseo:d") //..disable
     );
   
-  public final JComboBox<String> cmCoolingDamperNT
+  public final JComboBox<String> cmAirPulseModeNT
     = ScFactory.ccCreateNotch(
-      VcTranslator.tr("_cdamper:auto"),
-      VcTranslator.tr("_cdamper:d"),
-      VcTranslator.tr("_cdamper:m")
+      VcTranslator.tr("_apulsem:c"),//..compressor
+      VcTranslator.tr("_apulsem:r"),//..rf
+      VcTranslator.tr("_apulsem:f") //..force
     );
   
+  public final JComboBox<String> cmCoolingDamperNT
+    = ScFactory.ccCreateNotch(
+      VcTranslator.tr("_cdamper:a"),//..auto
+      VcTranslator.tr("_cdamper:c"),//..close
+      VcTranslator.tr("_cdamper:o") //..open
+    );
+  
+  //[todo]::move to feeder pane
   public final JComboBox<String> cmVFeederIxVibratorNT
     = ScFactory.ccCreateNotch(
       VcTranslator.tr("_vf1vib:auto"),
@@ -81,6 +82,7 @@ public final class SubAssistantPane implements SiTabbable{
       VcTranslator.tr("_vf1vib:m")
     );
   
+  //[todo]::move to feeder pane
   public final JComboBox<String> cmVFeederIIxVibratorNT
     = ScFactory.ccCreateNotch(
       VcTranslator.tr("_vf2vib:auto"),
@@ -133,7 +135,8 @@ public final class SubAssistantPane implements SiTabbable{
     );
   
   public final JToggleButton cmDustSiloDischargeSW
-    = ScFactory.ccCreateCommandToggler("_dsdis");
+    = ScFactory.ccCreateCommandToggler
+        (VcTranslator.tr("_dsdis"));
   
   //--
   
