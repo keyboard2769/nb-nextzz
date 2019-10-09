@@ -17,10 +17,12 @@
  * MA 02110-1301  USA
  */
 
-package nextzz.pppmodel;
+package nextzz.pppsetting;
 
 import kosui.ppputil.VcNumericUtility;
 import kosui.ppputil.VcTranslator;
+import nextzz.pppmodel.MainSpecificator;
+import nextzz.pppmodel.SubAnalogScalarManager;
 
 public final class SubFeederFluxSetting extends McAbstractSettingPartition{
   

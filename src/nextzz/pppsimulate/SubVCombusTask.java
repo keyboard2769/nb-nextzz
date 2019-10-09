@@ -20,7 +20,9 @@
 package nextzz.pppsimulate;
 
 import kosui.ppplogic.ZcHookFlicker;
+import kosui.ppplogic.ZcOffDelayTimer;
 import kosui.ppplogic.ZcReal;
+import kosui.ppplogic.ZcTimer;
 import kosui.ppplogic.ZiTask;
 import kosui.ppputil.VcLocalTagger;
 import kosui.ppputil.VcNumericUtility;
@@ -44,6 +46,7 @@ public final class SubVCombusTask implements ZiTask{
   
   //-- damper
   private boolean dcCoolingDamperMV;
+  private final ZcTimer cmCoolingDamperExtendTM = new ZcOffDelayTimer(32);
   public final ZcGate dcVBunerDegree = new ZcGate();
   public final ZcGate dcVExfanDegree = new ZcGate();
   private final ZcHookFlicker cmVBAutoHOOK = new ZcHookFlicker(true);
@@ -156,6 +159,15 @@ public final class SubVCombusTask implements ZiTask{
     SubAnalogDelegator.mnVEDegreeAD=dcVExfanDegree.ccGetValue();
     SubVCombustDelegator.mnVExfanClosePL=dcVExfanDegree.ccIsClosing();
     SubVCombustDelegator.mnVExfanOpenPL=dcVExfanDegree.ccIsOpening();
+    
+    //-- cool down
+    cmCoolingDamperExtendTM.ccAct(SubVCombustDelegator.mnCoolingDamperAutoFLG);
+    dcCoolingDamperMV=MainSimulator
+      .ccSelectModeForce(
+        SubVCombustDelegator.mnCoolingDamperCloseSW,
+        SubVCombustDelegator.mnCoolingDamperOpenSW,
+        cmCoolingDamperExtendTM.ccIsUp()
+      );
     
     //-- pressure ** feedback
     SubVCombustDelegator.mnVBFanHasPressurePL=dcVBurnerPressureLS;

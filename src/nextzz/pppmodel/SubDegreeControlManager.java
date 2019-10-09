@@ -19,9 +19,7 @@
 
 package nextzz.pppmodel;
 
-import kosui.ppplogic.ZcOnDelayTimer;
 import kosui.ppplogic.ZcRangedValueModel;
-import kosui.ppplogic.ZcTimer;
 import kosui.ppputil.VcLocalTagger;
 import nextzz.pppdelegate.SubAnalogDelegator;
 import nextzz.pppdelegate.SubVCombustDelegator;
@@ -39,13 +37,17 @@ public final class SubDegreeControlManager {
   
   //-- v
   
-  public volatile int mnVTargetCELC = 160;
+  public volatile int mnVTargetCELC = 160;//.. aka "MoKuHyouOnnDo"
   
-  public volatile int mnVTargetAdjustWidth = 5;
+  public volatile int mnVCoolDownCELC = 200;//.. aka "JyouGenn"
   
-  public volatile int mnVPreHeatingPT = 15;
+  public volatile int mnVMeltDownCELC = 240;//.. aka "JyouJyouGenn"
   
-  public volatile int mnVExfanIgnitionPT = 15;
+  public volatile int mnVTargetAdjustWidth = 5;//.. aka "TyouSeiKannDo"
+  
+  public volatile int mnVPreHeatingPT = 15;//.. aka "YoNetsuOnnDo"
+  
+  public volatile int mnVExfanIgnitionPT = 15;//.. aka "TyakKaKaiDo"
     
   private final ZcPIDController 
     cmVTemperatureCTRL   = new ZcPIDController( 160f, 0.8f, 0.1f ),

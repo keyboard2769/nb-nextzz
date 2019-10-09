@@ -17,7 +17,7 @@
  * MA 02110-1301  USA
  */
 
-package nextzz.pppmodel;
+package nextzz.pppsetting;
 
 public interface MiSettingItem {
   

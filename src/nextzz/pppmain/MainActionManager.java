@@ -43,8 +43,8 @@ import nextzz.ppplocalui.SubOperativeGroup;
 import nextzz.ppplocalui.SubVBondGroup;
 import nextzz.ppplocalui.SubVFeederGroup;
 import nextzz.pppswingui.SubAssistantPane;
-import nextzz.pppmodel.MainSettingManager;
-import nextzz.pppmodel.MiSettingItem;
+import nextzz.pppsetting.MainSettingManager;
+import nextzz.pppsetting.MiSettingItem;
 import nextzz.pppmodel.SubDegreeControlManager;
 import nextzz.pppswingui.SubFeederPane;
 import nextzz.pppswingui.SubSettingPane;
@@ -263,7 +263,7 @@ public final class MainActionManager {
       
       //-- aggregate
       
-      //-- aggregate ** air pulse
+      //-- aggregate **filter ** air pulse
       SubVProvisionDelegator.mnAirPulseDisableTGSW=SubAssistantPane
         .ccRefer().cmAirPulseOperateNT.getSelectedIndex()==1;
       SubVProvisionDelegator.mnAirPulseWithAirTGSW=SubAssistantPane
@@ -273,13 +273,17 @@ public final class MainActionManager {
       SubVProvisionDelegator.mnAirPulseForceTGSW=SubAssistantPane
         .ccRefer().cmAirPulseModeNT.getSelectedIndex()==2;
       
+      //-- aggregate **filter ** cooling damper
+      SubVCombustDelegator.mnCoolingDamperCloseSW=SubAssistantPane
+        .ccRefer().cmCoolingDamperNT.getSelectedIndex()==1;
+      SubVCombustDelegator.mnCoolingDamperOpenSW=SubAssistantPane
+        .ccRefer().cmCoolingDamperNT.getSelectedIndex()==2;
+      
       //-- aggregate ** v combust
       SubVCombustDelegator.mnVCombustSourceSW=SubAssistantPane
         .ccRefer().cmVCombustSourceNT.getSelectedIndex()==0;
       SubVCombustDelegator.mnVFuelExchangeSW=SubAssistantPane
         .ccRefer().cmVFuelExchangeNT.getSelectedIndex()==0;
-      
-      //-- filler
       
       //-- dust
       SubVProvisionDelegator.mnDustSiloAirAutoSW

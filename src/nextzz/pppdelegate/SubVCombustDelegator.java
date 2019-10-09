@@ -23,6 +23,7 @@ import kosui.ppputil.VcNumericUtility;
 import nextzz.ppplocalui.SubVBondGroup;
 import nextzz.pppmain.MainSketch;
 import nextzz.pppmodel.MainPlantModel;
+import nextzz.pppmodel.SubAnalogScalarManager;
 import nextzz.pppmodel.SubDegreeControlManager;
 
 public class SubVCombustDelegator {
@@ -47,6 +48,7 @@ public class SubVCombustDelegator {
     mnVCombustUsingGasPL,mnVCombustUsingOilPL,
     mnVCombustOilingFuelPL,mnVCombustOilingHeavyPL,
     //--
+    mnCoolingDamperOpenSW,mnCoolingDamperCloseSW,mnCoolingDamperAutoFLG,
     mnVColdAggreageSensorPL
   ;//...
   
@@ -103,6 +105,13 @@ public class SubVCombustDelegator {
     SubVBondGroup.ccRefer().cmExfanCloseSW.ccSetIsActivated(mnVExfanClosePL);
     SubVBondGroup.ccRefer().cmExfanOpenSW.ccSetIsActivated(mnVExfanOpenPL);
     SubVBondGroup.ccRefer().cmExfanAutoSW.ccSetIsActivated(mnVExfanAutoPL);
+    
+    //-- cooldown ** pc -> plc
+    mnCoolingDamperAutoFLG=SubAnalogScalarManager.ccRefer()
+      .cmDesVThermoCelcius.ccGet(SubAnalogScalarManager.C_I_TH_ENTRANCE)
+       > ((float)SubDegreeControlManager.ccRefer().mnVCoolDownCELC);
+    SubVBondGroup.ccRefer().cmEntranceTemperatureCB
+      .ccSetIsActivated(mnCoolingDamperAutoFLG);
     
     //-- cas
     SubVBondGroup.ccRefer().cmBelconFluxCB

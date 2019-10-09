@@ -17,7 +17,7 @@
  * MA 02110-1301  USA
  */
 
-package nextzz.pppmodel;
+package nextzz.pppsetting;
 
 import java.util.ArrayList;
 import java.util.List;

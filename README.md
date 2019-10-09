@@ -9,7 +9,7 @@ but hey, dose it sounds stupid if you make it DOUBLE-ZEUS ??
 - ya not guilty
 
 ---
-## todo list 
+## todo list
 
 #### plan
 
@@ -20,18 +20,19 @@ but hey, dose it sounds stupid if you make it DOUBLE-ZEUS ??
 - [ ] $ the feeder chain controller just does not stop
         after the conveyor is down .. make it a confirm issue!!
 - [ ] $ v burner and oil pump ct current showing is missing
-- [ ] $ the pid controller seems malfunctioning 
+- [ ] $ the pid controller seems malfunctioning
         while doing negative action .. make a debug sketch!!
 
 #### heading
 
-- [ ] $ the cooling damper
+- [ ] $ refactor setting mechanism
 
 #### last
 
 - [x] $ bag air pulse
 - [x] $ fix dryer body and other none motor device color
 - [x] $ a combust resource exchange controller
+- [x] $ the cooling damper .. and value input?
 
 - none
 

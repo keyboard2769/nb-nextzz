@@ -32,10 +32,10 @@ import kosui.pppswingui.ScFactory;
 import kosui.pppswingui.ScList;
 import kosui.pppswingui.ScTable;
 import kosui.ppputil.VcTranslator;
-import nextzz.pppmodel.MainSettingManager;
-import nextzz.pppmodel.McAbstractSettingPartition;
-import nextzz.pppmodel.MiSettingItem;
-import nextzz.pppmodel.SubFeederFluxSetting;
+import nextzz.pppsetting.MainSettingManager;
+import nextzz.pppsetting.McAbstractSettingPartition;
+import nextzz.pppsetting.MiSettingItem;
+import nextzz.pppsetting.SubFeederFluxSetting;
 
 public final class SubSettingPane implements SiTabbable{
   
