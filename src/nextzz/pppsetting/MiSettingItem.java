@@ -29,4 +29,6 @@ public interface MiSettingItem {
   
   String ccGetDescription();
   
+  String ccGetLimitationInfo();
+  
 }//***eof

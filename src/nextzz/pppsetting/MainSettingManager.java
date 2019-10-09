@@ -19,11 +19,14 @@
 
 package nextzz.pppsetting;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.ListModel;
 import javax.swing.event.ListDataListener;
 import kosui.ppplogic.ZcRangedModel;
+import kosui.pppswingui.ScConst;
+import nextzz.pppmodel.SubAnalogScalarManager;
 
 public final class MainSettingManager implements ListModel<String>{
 
@@ -47,6 +50,30 @@ public final class MainSettingManager implements ListModel<String>{
     if(pxChild==null){return;}
     pxChild.ccInit();
     cmListOfPartition.add(pxChild);
+  }//++!
+  
+  public final void ccLoadFromFile(File pxFile){
+    if(pxFile==null){ScConst.ccMessage("failed to load setting file.");}
+    /* 7 */SubAnalogScalarManager.ccRefer().ccSetCTSlotSpan(0,  750);
+    /* 7 */SubAnalogScalarManager.ccRefer().ccSetCTSlotSpan(1, 3000);
+    /* 7 */SubAnalogScalarManager.ccRefer().ccSetCTSlotSpan(2, 2600);
+    /* 7 */SubAnalogScalarManager.ccRefer().ccSetCTSlotSpan(3,  300);
+    //--
+    /* 7 */SubAnalogScalarManager.ccRefer().ccSetCTSlotSpan(4,  900);
+    /* 7 */SubAnalogScalarManager.ccRefer().ccSetCTSlotSpan(5,  220);
+    /* 7 */SubAnalogScalarManager.ccRefer().ccSetCTSlotSpan(6,  750);
+    /* 7 */SubAnalogScalarManager.ccRefer().ccSetCTSlotSpan(7,  900);
+    //--
+    /* 7 */SubAnalogScalarManager.ccRefer().ccSetCTSlotSpan( 8,  160);
+    /* 7 */SubAnalogScalarManager.ccRefer().ccSetCTSlotSpan( 9,  150);
+    /* 7 */SubAnalogScalarManager.ccRefer().ccSetCTSlotSpan(10,  150);
+    /* 7 */SubAnalogScalarManager.ccRefer().ccSetCTSlotSpan(11,   80);
+    //--
+    /* 7 */SubAnalogScalarManager.ccRefer().ccSetCTSlotSpan(12,  150);
+    /* 7 */SubAnalogScalarManager.ccRefer().ccSetCTSlotSpan(13,  380);
+    /* 7 */SubAnalogScalarManager.ccRefer().ccSetCTSlotSpan(14,  450);
+    /* 7 */SubAnalogScalarManager.ccRefer().ccSetCTSlotSpan(15,  110);
+    return;
   }//++!
   
   //===

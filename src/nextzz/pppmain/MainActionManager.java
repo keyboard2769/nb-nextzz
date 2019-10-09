@@ -176,7 +176,7 @@ public final class MainActionManager {
         @Override public void run() {
           String lpInput = ScConst.ccGetStringByInputBox(
             VcTranslator.tr("_m_adjust_vb_target_temperature"),
-            Integer.toString(SubDegreeControlManager.ccRefer().mnVTargetCELC)
+            Integer.toString(SubDegreeControlManager.ccRefer().vmVTargetCELC)
           );
           if(!VcConst.ccIsValidString(lpInput)){return;}
           if(lpInput.equals(ScConst.C_M_CANCEL)){return;}
@@ -184,7 +184,7 @@ public final class MainActionManager {
             ScConst.ccErrorBox(VcTranslator.tr("_m_general_format_error"));
             return;
           }//..!
-          SubDegreeControlManager.ccRefer().mnVTargetCELC
+          SubDegreeControlManager.ccRefer().vmVTargetCELC
             = VcNumericUtility.ccParseIntegerString(lpInput)&0xFF;
         }//+++
       });//***
@@ -194,18 +194,18 @@ public final class MainActionManager {
   public final EiTriggerable cmVTargetTemperatureDecrementing
     = new EiTriggerable() {
     @Override public void ccTrigger() {
-      SubDegreeControlManager.ccRefer().mnVTargetCELC
-        -= SubDegreeControlManager.ccRefer().mnVTargetAdjustWidth;
-      SubDegreeControlManager.ccRefer().mnVTargetCELC &= 0xFF;
+      SubDegreeControlManager.ccRefer().vmVTargetCELC
+        -= SubDegreeControlManager.ccRefer().vmVTargetAdjustWidth;
+      SubDegreeControlManager.ccRefer().vmVTargetCELC &= 0xFF;
     }//+++
   };//***
   
   public final EiTriggerable cmVTargetTemperatureIncrementing
     = new EiTriggerable() {
     @Override public void ccTrigger() {
-      SubDegreeControlManager.ccRefer().mnVTargetCELC
-        += SubDegreeControlManager.ccRefer().mnVTargetAdjustWidth;
-      SubDegreeControlManager.ccRefer().mnVTargetCELC &= 0xFF;
+      SubDegreeControlManager.ccRefer().vmVTargetCELC
+        += SubDegreeControlManager.ccRefer().vmVTargetAdjustWidth;
+      SubDegreeControlManager.ccRefer().vmVTargetCELC &= 0xFF;
     }//+++
   };//***
   
@@ -237,7 +237,7 @@ public final class MainActionManager {
         return;
       }//..?
       String lpInput = ScConst.ccGetStringByInputBox(
-        lpItem.ccGetName(),
+        lpItem.ccGetLimitationInfo(),
         lpItem.ccGetValue()
       );
       if(!VcConst.ccIsValidString(lpInput)){return;}

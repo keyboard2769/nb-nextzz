@@ -22,6 +22,7 @@ package nextzz.pppsetting;
 import kosui.ppputil.VcNumericUtility;
 import kosui.ppputil.VcTranslator;
 import nextzz.pppmodel.SubAnalogScalarManager;
+import processing.core.PApplet;
 
 public final class SubCTSlotSetting extends McAbstractSettingPartition{
   
@@ -38,13 +39,16 @@ public final class SubCTSlotSetting extends McAbstractSettingPartition{
     public McCTSlotSpanItem(int pxIndex) {
       cmIndex=pxIndex;
     }//..!
-    @Override public String ccGetDescription() {
-      return VcTranslator.tr("_m_ct_span");
-    }//+++
     @Override public String ccGetName() {
       return "[A]:"
         +VcTranslator.tr(String.format("_ct%02d", cmIndex))
         +VcTranslator.tr("_ct_span");
+    }//+++
+    @Override public String ccGetDescription() {
+      return VcTranslator.tr("_m_ct_span");
+    }//+++
+    @Override public String ccGetLimitationInfo() {
+      return "[1 ~ 999]";
     }//+++
     @Override public String ccGetValue() {
       return VcNumericUtility
@@ -52,13 +56,10 @@ public final class SubCTSlotSetting extends McAbstractSettingPartition{
           (SubAnalogScalarManager.ccRefer().ccGetCTSlotSpan(cmIndex));
     }//+++
     @Override public void ccSetValue(String pxVal) {
+      float lpFixed = VcNumericUtility.ccParseFloatString(pxVal);
+      lpFixed=PApplet.constrain(lpFixed, 1f, 999f);
       SubAnalogScalarManager.ccRefer()
-        .ccSetCTSlotSpan(
-          cmIndex,
-          VcNumericUtility.ccInteger(
-            VcNumericUtility.ccParseFloatString(pxVal),10f
-          )
-        );
+        .ccSetCTSlotSpan(cmIndex,VcNumericUtility.ccInteger(lpFixed,10f));
     }//+++
   }//***
   

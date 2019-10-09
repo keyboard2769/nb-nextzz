@@ -16,17 +16,17 @@ but hey, dose it sounds stupid if you make it DOUBLE-ZEUS ??
 - [ ] $ tre
 - [ ] $ dos
 - [ ] $ uno
-- [ ] $ the pressure controller is targeting AD value!! fix it !!
-- [ ] $ the coarse dust screw ct showing is missing
+- [ ] $ dont you forget that temperatur need to be revised!!?
 - [ ] $ the feeder chain controller just does not stop
         after the conveyor is down .. make it a confirm issue!!
-- [ ] $ v burner and oil pump ct current showing is missing
-- [ ] $ the pid controller seems malfunctioning
-        while doing negative action .. make a debug sketch!!
 
 #### heading
 
-- none
+- [ ] $ the pid controller seems malfunctioning
+        while doing negative action
+        .. make a debug sketch!!
+        .. well, i know you made it, it didnt work!!
+        .. maybe we still need the relative-absolute mode there
 
 #### last
 
@@ -35,6 +35,9 @@ but hey, dose it sounds stupid if you make it DOUBLE-ZEUS ??
 - [x] $ a combust resource exchange controller
 - [x] $ the cooling damper .. and value input?
 - [x] $ refactorred setting mechanism
+- [x] $ v burner and oil pump ct current showing is missing
+- [x] $ the pressure controller is targeting AD value!! fix it !!
+- [x] $ the coarse dust screw ct showing is missing
 
 - none
 

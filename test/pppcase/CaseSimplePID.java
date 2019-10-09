@@ -37,7 +37,7 @@ public final class CaseSimplePID extends PApplet{
   private final ZcRoller cmRoller=new ZcRoller();
   
   private final ZcPIDController cmController
-    = new ZcPIDController(150f, C_PROPORTION, C_DEAD_ZONE);
+    = new ZcPIDController(100f, C_PROPORTION, C_DEAD_ZONE);
   
   public final EcElement cmAdjusttingPL  = new EcElement("-I-");
   public final EcElement cmSamplingPL    = new EcElement("-D-");

@@ -49,6 +49,7 @@ import nextzz.pppmodel.MainPlantModel;
 import nextzz.pppmodel.MainSpecificator;
 import nextzz.pppmodel.SubAnalogScalarManager;
 import nextzz.pppmodel.SubDegreeControlManager;
+import nextzz.pppsetting.MainSettingManager;
 import nextzz.pppsimulate.MainSimulator;
 import nextzz.pppsimulate.SubVCombusTask;
 import nextzz.pppsimulate.SubWeighingTask;
@@ -102,6 +103,7 @@ public class MainSketch extends PApplet{
     
     //-- modeling
     MainPlantModel.ccRefer().ccInit();
+    MainSettingManager.ccRefer().ccLoadFromFile(null);
     
     //-- local ui group
     VcLocalCoordinator.ccAddGroup
@@ -176,7 +178,7 @@ public class MainSketch extends PApplet{
     }//..?
     
     //-- debug
-    /* 4 */ SubVCombusTask.ccRefer().tstTagg();
+    /* 4 */ SubDegreeControlManager.ccRefer().tstTagg();
     VcLocalTagger.ccTag("roll",nf(cmRoller,2));
     VcLocalTagger.ccTag
       ("latency",VcNumericUtility.ccFormatPointTwoFloat(17f-frameRate));
@@ -277,8 +279,6 @@ public class MainSketch extends PApplet{
       VcTranslator.ccGetInstance().ccSetMode('e');
     }//..?
     
-    //-- load congfiurration
-    
     //-- screen stuff
     ScConst.ccInitMonitorInformation();
     int lpMonitorHeight = ScConst.ccGetMinimalBound().height;
@@ -330,7 +330,7 @@ public class MainSketch extends PApplet{
   }//+++
   
   public static final String ccGetLastLeavingStamp(){
-    return "_1910091619";
+    return "_1910092307";
   }//+++
 
 }//***eof

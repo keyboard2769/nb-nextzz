@@ -42,25 +42,29 @@ public final class MainSpecificator {
   
   public final int mnMixtureSiloType;
   
+  //===
+  
+  private boolean cmIsVerificated=false;
+  
   private MainSpecificator(){
-    
-    ssInit();
-    
-    //-- a
+     
+    //-- const 
+      
+    //-- const ** a
     mnAGCattegoryCount=ccGetValue("mnAGCattegoryCount", 6);
     mnFRCattegoryCount=ccGetValue("mnFRCattegoryCount", 2);
     mnASCattegoryCount=ccGetValue("mnASCattegoryCount", 1);
     mnRCCattegoryCount=ccGetValue("mnRCCattegoryCount", 0);
     mnADCattegoryCount=ccGetValue("mnADCattegoryCount", 0);
-  
-    //-- v
+
+    //-- const ** v
     mnVFeederAmount=ccGetValue("mnVFeederAmount", 6);
-    
-    //-- v ** f
+
+    //-- const ** v ** f
     mnFillerSiloCount=ccGetValue("mnFillerSiloCount", 1);
     mnDustBinSeparated=ccGetValue("mnDustBinSeparated", false);
     mnDustSiloExists=ccGetValue("mnDustSiloExists", true);
-    
+
     //-- s
     //.. [ 0 ]none
     //.. [ 1 ]beside tower
@@ -68,15 +72,19 @@ public final class MainSpecificator {
     //.. [ 3 ]below mixer
     /* 7 */mnMixtureSiloType = ccGetValue("mnMixtureSiloType", 0);
     
-    //-- r
+    //-- const ** r
     
-    //-- a
+    //-- var
     
-  }//..!
+    //-- vat ** ct
+    
+    //-- vat ** a 
+    
+    //-- vat ** v
+    
+  }//+++!
   
-  private void ssInit(){
-    VcConst.ccPrintln("MainSpecification.%file loading%::not yet");
-  }//..!
+  //===
   
   private int ccGetValue(String pxKey,int pxOrDefault){
     //[notyet]::
@@ -92,8 +100,12 @@ public final class MainSpecificator {
   
   public final boolean ccVerify(){
     //[notyet]::
-    return false;
+    cmIsVerificated=(false);
+    VcConst.ccPrintln("MainSpecification.%file loading%::not yet");
+    return cmIsVerificated;
   }//+++
+  
+  //===
   
   public final boolean ccNeedsExtendsCurrentSlot(){
     return

@@ -31,6 +31,8 @@ public final class MainPlantModel {
   public static final int C_THERMO_CHANNEL_HEAD = 1;
   public static final int C_THERMO_CHANNEL_TAIL = 8;
   
+  public static final float C_PRESSURE_CONTOL_OFFSET = 500f;
+  
   public static final int C_FEEDER_RPM_MIN =    0;
   public static final int C_FEEDER_RPM_MAX = 1800;
   

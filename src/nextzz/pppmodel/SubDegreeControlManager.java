@@ -19,9 +19,9 @@
 
 package nextzz.pppmodel;
 
+import kosui.ppplogic.ZcPulser;
 import kosui.ppplogic.ZcRangedValueModel;
 import kosui.ppputil.VcLocalTagger;
-import nextzz.pppdelegate.SubAnalogDelegator;
 import nextzz.pppdelegate.SubVCombustDelegator;
 import nextzz.pppdelegate.SubVProvisionDelegator;
 import nextzz.pppsimulate.ZcPIDController;
@@ -37,26 +37,28 @@ public final class SubDegreeControlManager {
   
   //-- v
   
-  public volatile int mnVTargetCELC = 160;//.. aka "MoKuHyouOnnDo"
+  public volatile int vmVTargetCELC = 160;//.. aka "MoKuHyouOnnDo"
   
-  public volatile int mnVCoolDownCELC = 200;//.. aka "JyouGenn"
+  public volatile int vmVCoolDownCELC = 200;//.. aka "JyouGenn"
   
-  public volatile int mnVMeltDownCELC = 240;//.. aka "JyouJyouGenn"
+  public volatile int vmVMeltDownCELC = 240;//.. aka "JyouJyouGenn"
   
-  public volatile int mnVTargetAdjustWidth = 5;//.. aka "TyouSeiKannDo"
+  public volatile int vmVTargetAdjustWidth = 5;//.. aka "TyouSeiKannDo"
   
-  public volatile int mnVPreHeatingPT = 15;//.. aka "YoNetsuOnnDo"
+  public volatile int vmVPreHeatingPT = 15;//.. aka "YoNetsuOnnDo"
   
-  public volatile int mnVDryerTargetMinusKPA = 25;//.. aka "DoRaIiYaSeiAaTsu"
+  public volatile int vmVDryerTargetMinusKPA = 25;//.. aka "DoRaIiYaSeiAaTsu"
   
-  public volatile int mnVExfanIgnitionPT = 15;//.. aka "TyakKaKaiDo"
+  public volatile int vmVExfanIgnitionPT = 15;//.. aka "TyakKaKaiDo"
     
   private final ZcPIDController 
-    cmVTemperatureCTRL   = new ZcPIDController( 160f, 0.8f, 0.1f ),
-    cmVBurnerDegreeCTRL  = new ZcPIDController(   1f, 0.5f, 0.03f),
-    cmVPressureCTRL      = new ZcPIDController(1111f, 0.95f,0.2f ),
-    cmVExfanDegreeCTRL   = new ZcPIDController(   1f, 0.5f, 0.03f)
+    cmVTemperatureCTRL   = new ZcPIDController(100f,0.8f,0.10f),
+    cmVBurnerDegreeCTRL  = new ZcPIDController(100f,0.5f,0.02f),
+    cmVPressureCTRL      = new ZcPIDController(100f,0.8f,0.10f),
+    cmVExfanDegreeCTRL   = new ZcPIDController(100f,0.5f,0.02f)
   ;//,,,
+  
+  private final ZcPulser cmVShiftResetPLS = new ZcPulser();
   
   private final ZcRangedValueModel
     cmVTemperatureAdjustTM = new ZcRangedValueModel(0, 63),
@@ -79,12 +81,18 @@ public final class SubDegreeControlManager {
     
     //-- v
     
+    //-- v ** shift reset
+    if(cmVShiftResetPLS.ccUpPulse(SubVCombustDelegator.mnVBFlamingPL)){
+      cmVTemperatureCTRL.ccResetShiftedTarget();
+      cmVPressureCTRL.ccResetShiftedTarget();
+    }//..?
+    
     //-- vb
     //-- vb ** timing
     cmVTemperatureAdjustTM.ccRoll(1);
     cmVTemperatureSamplingTM.ccRoll(1);
     //-- vb ** controller
-    cmVTemperatureCTRL.ccSetTarget(mnVTargetCELC);
+    cmVTemperatureCTRL.ccSetTarget(vmVTargetCELC);
     cmVTemperatureCTRL.ccRun(
       SubAnalogScalarManager.ccRefer().cmDesVThermoCelcius
         .ccGet(SubAnalogScalarManager.C_I_TH_CHUTE),
@@ -92,12 +100,11 @@ public final class SubDegreeControlManager {
         && SubVCombustDelegator.mnVColdAggreageSensorPL,
       cmVTemperatureSamplingTM.ccIsAt(1)
     );
-    cmVBurnerDegreeCTRL.ccRun(
-      !SubVCombustDelegator.mnVBFlamingPL
+    cmVBurnerDegreeCTRL.ccRun(!SubVCombustDelegator.mnVBFlamingPL
         ? 0f
         : (SubVCombustDelegator.mnVColdAggreageSensorPL
             ? cmVTemperatureCTRL.ccGetMinusTrimmed()*100f
-            : ((float)mnVPreHeatingPT)),
+            : ((float)vmVPreHeatingPT)),
       (float)SubAnalogScalarManager.ccRefer().ccGerVBurnerPercentage()
     );
     //-- vb ** to plc
@@ -111,18 +118,19 @@ public final class SubDegreeControlManager {
     cmVPressureAdjustTM.ccRoll(1);
     cmVPressureSamplingTM.ccRoll(1);
     //-- ve ** controller
-    //[todo]:: % set target 
+    cmVPressureCTRL.ccSetTarget(MainPlantModel.C_PRESSURE_CONTOL_OFFSET
+      - ((float)vmVDryerTargetMinusKPA));
     cmVPressureCTRL.ccRun(
-      SubAnalogDelegator.mnVDPressureAD,
+      MainPlantModel.C_PRESSURE_CONTOL_OFFSET
+        + ((float)SubAnalogScalarManager.ccRefer().ccGetVDryerKPA()),
       cmVPressureAdjustTM.ccIsAt(1) && SubVCombustDelegator.mnVBFlamingPL,
       cmVPressureSamplingTM.ccIsAt(1)
     );
-    cmVExfanDegreeCTRL.ccRun(
-      !SubVProvisionDelegator.mnVExfanIconPL
+    cmVExfanDegreeCTRL.ccRun(!SubVProvisionDelegator.mnVExfanIconPL
         ? 0f
         : (SubVCombustDelegator.mnVBFlamingPL
             ? cmVPressureCTRL.ccGetReverselyTrimmed()*100f
-            : ((float)mnVExfanIgnitionPT)),
+            : ((float)vmVExfanIgnitionPT)),
       (float)SubAnalogScalarManager.ccRefer().ccGetVExfanPercentage()
     );
     //-- ve ** to plc

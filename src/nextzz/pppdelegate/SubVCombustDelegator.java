@@ -62,7 +62,7 @@ public class SubVCombustDelegator {
     
     //-- temperature
     SubVBondGroup.ccRefer().cmTargetTemperatureTB
-      .ccSetValue(SubDegreeControlManager.ccRefer().mnVTargetCELC);
+      .ccSetValue(SubDegreeControlManager.ccRefer().vmVTargetCELC);
     
     //-- pressure pl
     SubVBondGroup.ccRefer().cmBurnerPressurePL
@@ -109,7 +109,7 @@ public class SubVCombustDelegator {
     //-- cooldown ** pc -> plc
     mnCoolingDamperAutoFLG=SubAnalogScalarManager.ccRefer()
       .cmDesVThermoCelcius.ccGet(SubAnalogScalarManager.C_I_TH_ENTRANCE)
-       > ((float)SubDegreeControlManager.ccRefer().mnVCoolDownCELC);
+       > ((float)SubDegreeControlManager.ccRefer().vmVCoolDownCELC);
     SubVBondGroup.ccRefer().cmEntranceTemperatureCB
       .ccSetIsActivated(mnCoolingDamperAutoFLG);
     

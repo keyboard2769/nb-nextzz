@@ -53,6 +53,9 @@ public final class SubVProvisionTask implements ZiTask{
   //-- misc ** motor ** v b comp
   public final ZcMotor dcVBCompressor = new ZcMotor(17);
   private final ZcHookFlicker cmVBCompressorHooker = new ZcHookFlicker();
+  //-- misc ** motor ** coarse dust
+  public final ZcMotor dcCoarseDustScrew = new ZcMotor(4);
+  private final ZcTimer cmCoarseDustScrewStartTM = new ZcOnDelayTimer(40);
 
   //-- ag chain ** motor
   private final ZcChainController cmAGChainCTRL = new ZcChainController(3, 6);
@@ -164,6 +167,12 @@ public final class SubVProvisionTask implements ZiTask{
     SubAnalogDelegator.mnCTSlotIX=dcInclinedBelcon.ccGetCT();
     SubAnalogDelegator.mnCTSlotX=dcHorizontalBelcon.ccGetCT();
     
+    //-- coarse dust
+    cmCoarseDustScrewStartTM.ccAct(SubFeederTask
+      .ccRefer().ccGetVFeederStartFlag());
+    dcCoarseDustScrew.ccContact(cmCoarseDustScrewStartTM.ccIsUp());
+    SubAnalogDelegator.mnCTSlotXI=dcCoarseDustScrew.ccGetCT();
+    
     //-- bag filter air pulse
     /* 7 */SubVProvisionDelegator.mnAirPulsingPL
       = MainSimulator.ccSelectModeDuo(
@@ -249,6 +258,7 @@ public final class SubVProvisionTask implements ZiTask{
     dcVExFan.ccSimulate(SubVCombusTask.ccRefer()
       .dcVExfanDegree.ccGetProportion()/2f+0.44f);
     dcVBCompressor.ccSimulate(0.45f);
+    dcCoarseDustScrew.ccSimulate(0.67f);
 
     //-- ag chain
     dcScreen.ccSimulate(0.66f);

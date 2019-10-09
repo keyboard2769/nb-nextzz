@@ -19,6 +19,7 @@
 
 package nextzz.pppsetting;
 
+import kosui.ppplogic.ZcRangedModel;
 import kosui.ppputil.VcNumericUtility;
 import kosui.ppputil.VcTranslator;
 import nextzz.pppmodel.MainSpecificator;
@@ -40,27 +41,27 @@ public final class SubFeederFluxSetting extends McAbstractSettingPartition{
     public McFeederRPMSpanItem(char pxSystem_vr, int pxIndex) {
       cmSystem=pxSystem_vr;
       cmIndex=pxIndex;
-    }//..!
-    @Override public String ccGetDescription() {
-      return VcTranslator.tr("_feeder_rpm_span");
-    }//+++
+    }//++!
     @Override public String ccGetName() {
       return "[rpm]:"+VcTranslator
         .tr(String.format("_rpm_span_%cf%02d", cmSystem,cmIndex));
-    }//+++
+    }//++>
+    @Override public String ccGetDescription() {
+      return VcTranslator.tr("_feeder_rpm_span");
+    }//++>
+    @Override public String ccGetLimitationInfo() {
+      return "[1 ~ 1800]";
+    }//++>
     @Override public String ccGetValue() {
-      //[todo]::fix this!
-      String lpD;
-      lpD=Integer.toString
-        (SubAnalogScalarManager.ccRefer().ccGetVFeederFluxRPMSpan(cmIndex));
-      return lpD;
-    }//+++
+      return Integer.toString(SubAnalogScalarManager.ccRefer()
+        .ccGetVFeederFluxRPMSpan(cmIndex));
+    }//++>
     @Override public void ccSetValue(String pxVal) {
-      //[todo]::fix this!
-      int lpD;
-      lpD=VcNumericUtility.ccParseIntegerString(pxVal);
-      SubAnalogScalarManager.ccRefer().ccSetVFeederFluxRPMSpan(cmIndex, lpD);
-    }//+++
+      int lpFixed=VcNumericUtility.ccParseIntegerString(pxVal);
+      lpFixed=ZcRangedModel.ccLimitInclude(lpFixed, 1, 1800);
+      SubAnalogScalarManager.ccRefer()
+        .ccSetVFeederFluxRPMSpan(cmIndex, lpFixed);
+    }//++<
   }//***
   
   private class McFeederTPHSpanItem implements MiSettingItem{
@@ -69,27 +70,27 @@ public final class SubFeederFluxSetting extends McAbstractSettingPartition{
     public McFeederTPHSpanItem(char pxSystem_vr, int pxIndex) {
       cmSystem=pxSystem_vr;
       cmIndex=pxIndex;
-    }//..!
-    @Override public String ccGetDescription() {
-      return VcTranslator.tr("_feeder_tph_span");
-    }//+++
+    }//++!
     @Override public String ccGetName() {
       return "[tph]:"+VcTranslator
         .tr(String.format("_tph_span_%cf%02d", cmSystem,cmIndex));
-    }//+++
+    }//++>
+    @Override public String ccGetDescription() {
+      return VcTranslator.tr("_feeder_tph_span");
+    }//++>
+    @Override public String ccGetLimitationInfo() {
+      return "[1 ~ 200]";
+    }//++>
     @Override public String ccGetValue() {
-      //[todo]::fix this!
-      String lpD;
-      lpD=Integer.toString
-        (SubAnalogScalarManager.ccRefer().ccGetVFeederFluxTPHSpan(cmIndex));
-      return lpD;
-    }//+++
+      return Integer.toString(SubAnalogScalarManager.ccRefer()
+        .ccGetVFeederFluxTPHSpan(cmIndex));
+    }//++>
     @Override public void ccSetValue(String pxVal) {
-      //[todo]::fix this!
-      int lpD;
-      lpD=VcNumericUtility.ccParseIntegerString(pxVal);
-      SubAnalogScalarManager.ccRefer().ccSetVFeederFluxTPHSpan(cmIndex, lpD);
-    }//+++
+      int lpFixed=VcNumericUtility.ccParseIntegerString(pxVal);
+      lpFixed=ZcRangedModel.ccLimitInclude(lpFixed, 1, 200);
+      SubAnalogScalarManager.ccRefer()
+        .ccSetVFeederFluxTPHSpan(cmIndex, lpFixed);
+    }//++<
   }//***
   
   //===

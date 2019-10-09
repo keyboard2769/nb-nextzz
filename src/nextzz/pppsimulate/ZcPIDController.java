@@ -27,26 +27,36 @@ public class ZcPIDController {
   
   private float
     cmProsessValue,
-    cmTarget,cmShiftedTarget,cmAdjustRatio,
+    cmTarget,cmBaseTarget,cmShiftedTarget,cmAdjustRatio,
     cmDeadZone,cmDeadZoneP,cmDeadZoneN,
     cmProportion,cmProportionP,cmProportionN,
     cmAnalogOutput
   ;//...
   
-  public ZcPIDController(){
-    this(100f, 0.2f, 0.02f);
-  }//..!
-  
-  public ZcPIDController(float pxTarget, float pxProportion, float pxDead){
-    ccSetTarget(pxTarget);
+  public ZcPIDController(
+    float pxInit, float pxBase,
+    float pxProportion, float pxDead
+  ){
+    ccSetTarget(pxInit);
+    ccSetBaseTarget(pxBase);
     ccSetProportion(pxProportion, pxDead);
-    ssApplyProportion();
+    ssApplyAbsoluteProportion();
     ccResetShiftedTarget();
-    //--
     cmProsessValue=0f;
     cmAnalogOutput=0f;
     cmAdjustRatio=4f;
-  }//..!
+  }//++!
+  
+  public ZcPIDController(
+    float pxBase,
+    float pxProportion, float pxDead
+  ){
+    this(pxBase, pxBase, pxProportion, pxDead);
+  }//++!
+  
+  public ZcPIDController(){
+    this(50f,100f, 0.2f, 0.02f);
+  }//++!
   
   //=== 
   
@@ -55,12 +65,12 @@ public class ZcPIDController {
     ccResetShiftedTarget();
     ccSetProcessValue(pxCurrent);
     ccRun();
-  }//+++
+  }//++~
   
   /* 1 */ public void ccRun(float pxCurrent){
     ccSetProcessValue(pxCurrent);
     ccRun();
-  }//+++
+  }//++~
   
   /* 1 */ public void ccRun(
     float pxCurrent,boolean pxAdjustPLS, boolean pxSamplePLS
@@ -68,12 +78,12 @@ public class ZcPIDController {
     ccSetProcessValue(pxCurrent, pxSamplePLS);
     ccAdjustTarget(pxAdjustPLS);
     ccRun();
-  }//+++
+  }//++~
   
   public final void ccRun(){
     
     //--
-    ssApplyProportion();
+    ssApplyAbsoluteProportion();
     
     //--
     cmAnalogOutput=0.0f;
@@ -85,24 +95,20 @@ public class ZcPIDController {
       cmAnalogOutput=PApplet
         .map(cmProsessValue,cmDeadZoneP,cmProportionP,0.001f,-0.999f);
     }//..?
+    cmAnalogOutput=VcNumericUtility.ccRoundForTwoAfter(cmAnalogOutput);
     if(cmProsessValue<cmProportionN){cmAnalogOutput=1.0f;}
     if(cmProsessValue>cmProportionP){cmAnalogOutput=-1.0f;}
   
+  }//++~
+  
+  private void ssApplyAbsoluteProportion(){
+    cmDeadZoneN   = cmShiftedTarget-(cmBaseTarget*  cmDeadZone);
+    cmDeadZoneP   = cmShiftedTarget+(cmBaseTarget*  cmDeadZone);
+    cmProportionN = cmShiftedTarget-(cmBaseTarget*cmProportion);
+    cmProportionP = cmShiftedTarget+(cmBaseTarget*cmProportion);
   }//+++
   
-  private void ssApplyProportion(){
-    if(cmShiftedTarget==0){
-      cmDeadZoneN=-cmDeadZone;
-      cmDeadZoneP=cmDeadZone;
-      cmProportionN=-cmProportion;
-      cmProportionP=cmProportion;
-    }else{
-      cmDeadZoneN   = cmShiftedTarget*(1f - cmDeadZone);
-      cmDeadZoneP   = cmShiftedTarget*(1f + cmDeadZone);
-      cmProportionN = cmShiftedTarget*(1f - cmProportion);
-      cmProportionP = cmShiftedTarget*(1f + cmProportion);
-    }//..?
-  }//+++
+  //[todo]::apply relative proportion
   
   public final void ccAdjustTarget(boolean pxPulse){
     if(!pxPulse){return;}
@@ -116,16 +122,20 @@ public class ZcPIDController {
   
   public final void ccSetProcessValue(float pxValue){
     cmProsessValue=pxValue;
-  }//+++
+  }//++<
   
   public final void ccSetProcessValue(float pxValue, boolean pxPulse){
     if(!pxPulse){return;}
     cmProsessValue=pxValue;
-  }//+++
+  }//++<
   
   public final void ccSetTarget(float pxTarget){
-    cmTarget=pxTarget;
-  }//+++
+    cmTarget=pxTarget>=0f?pxTarget:1f;
+  }//++<
+  
+  public final void ccSetBaseTarget(float pxBase){
+    cmBaseTarget=pxBase>=0f?pxBase:1f;
+  }//++<
   
   public final void ccSetProportion(
     float pxProportion, float pxDead
@@ -138,39 +148,39 @@ public class ZcPIDController {
   public final void ccSetAdjustRatio(int pxRatio){
     int lpFixed=pxRatio&0xFF;
     cmAdjustRatio=lpFixed==0?1f:((float)lpFixed);
-  }//+++
+  }//++<
   
   public final void ccResetShiftedTarget(){
     cmShiftedTarget=cmTarget;
-  }//+++
+  }//++<
   
   //===
   
   public final float ccGetShiftedTarget(){
     return cmShiftedTarget;
-  }//+++
+  }//++<
   
   public final float ccGetAnalogOutput(){
     return cmAnalogOutput;
-  }//+++
+  }//++<
   
   public final float ccGetMinusTrimmed(){
     if(cmAnalogOutput<=0.0f){return 0.0f;}
     else{return cmAnalogOutput;}
-  }//+++
+  }//++<
   
   public final float ccGetReverselyTrimmed(){
     if(cmAnalogOutput>=0.0f){return 0.0f;}
     else{return PApplet.abs(cmAnalogOutput);}
-  }//+++
+  }//++<
   
   public final boolean ccGetPositiveOutput(){
     return cmAnalogOutput>0f;
-  }//+++
+  }//++<
   
   public final boolean ccGetNegativeOutput(){
     return cmAnalogOutput<0f;
-  }//+++
+  }//++<
   
   //=== 
 
@@ -205,6 +215,6 @@ public class ZcPIDController {
     lpRes.append(VcStringUtility.ccPackupPairedTag("pP",
       VcNumericUtility.ccFormatPointTwoFloat(cmProportionP)));
     return lpRes.toString();
-  }//+++
+  }//++>
   
 }//***eof

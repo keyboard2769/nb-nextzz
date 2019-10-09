@@ -37,123 +37,141 @@ public final class SubCombustSetting extends McAbstractSettingPartition{
   
   public final MiSettingItem cmVEntranceCoolDownCelciusItem
     = new MiSettingItem() {
-    @Override public String ccGetDescription() {
-      return VcTranslator.tr("_dscp_entrance_cool_down_temp");
-    }//++>
     @Override public String ccGetName() {
       return "['C]"+VcTranslator.tr("_entrance_cool_down_temp");
     }//++>
+    @Override public String ccGetDescription() {
+      return VcTranslator.tr("_dscp_entrance_cool_down_temp");
+    }//++>
+    @Override public String ccGetLimitationInfo() {
+      return "[150 ~ 800]";
+    }//++>
     @Override public String ccGetValue() {
       return Integer.toString
-        (SubDegreeControlManager.ccRefer().mnVCoolDownCELC);
+        (SubDegreeControlManager.ccRefer().vmVCoolDownCELC);
     }//++>
     @Override public void ccSetValue(String pxVal) {
       int lpFixed = VcNumericUtility.ccParseIntegerString(pxVal);
       lpFixed=ZcRangedValueModel.ccLimitInclude(lpFixed, 150, 800);
-      if(lpFixed>SubDegreeControlManager.ccRefer().mnVMeltDownCELC){
+      if(lpFixed>SubDegreeControlManager.ccRefer().vmVMeltDownCELC){
         ScConst.ccErrorBox(VcTranslator.tr("_m_v_down_temp_setting_error"));
         return;
       }//..?
-      SubDegreeControlManager.ccRefer().mnVCoolDownCELC=lpFixed;
+      SubDegreeControlManager.ccRefer().vmVCoolDownCELC=lpFixed;
     }//++<
   };//***
   
   public final MiSettingItem cmVEntranceMeltDownCelciusItem
     = new MiSettingItem() {
-    @Override public String ccGetDescription() {
-      return VcTranslator.tr("_dscp_entrance_melt_down_temp");
-    }//++>
     @Override public String ccGetName() {
       return "['C]"+VcTranslator.tr("_entrance_melt_down_temp");
     }//++>
+    @Override public String ccGetDescription() {
+      return VcTranslator.tr("_dscp_entrance_melt_down_temp");
+    }//++>
+    @Override public String ccGetLimitationInfo() {
+      return "[150 ~ 800]";
+    }//++>
     @Override public String ccGetValue() {
       return Integer.toString
-        (SubDegreeControlManager.ccRefer().mnVMeltDownCELC);
+        (SubDegreeControlManager.ccRefer().vmVMeltDownCELC);
     }//++>
     @Override public void ccSetValue(String pxVal) {
       int lpFixed = VcNumericUtility.ccParseIntegerString(pxVal);
       lpFixed=ZcRangedValueModel.ccLimitInclude(lpFixed, 150, 800);
-      if(lpFixed<SubDegreeControlManager.ccRefer().mnVCoolDownCELC){
+      if(lpFixed<SubDegreeControlManager.ccRefer().vmVCoolDownCELC){
         ScConst.ccErrorBox(VcTranslator.tr("_m_v_down_temp_setting_error"));
         return;
       }//..?
-      SubDegreeControlManager.ccRefer().mnVMeltDownCELC=lpFixed;
+      SubDegreeControlManager.ccRefer().vmVMeltDownCELC=lpFixed;
     }//++<
   };//***
   
   public final MiSettingItem cmVTargetAdjustWidthItem
     = new MiSettingItem() {
-    @Override public String ccGetDescription() {
-      return VcTranslator.tr("_dscp_v_target_adjust_width");
-    }//++>
     @Override public String ccGetName() {
       return "['C]"+VcTranslator.tr("_v_target_adjust_width");
     }//++>
+    @Override public String ccGetDescription() {
+      return VcTranslator.tr("_dscp_v_target_adjust_width");
+    }//++>
+    @Override public String ccGetLimitationInfo() {
+      return "[1 ~ 20]";
+    }//++>
     @Override public String ccGetValue() {
       return Integer.toString
-        (SubDegreeControlManager.ccRefer().mnVTargetAdjustWidth);
+        (SubDegreeControlManager.ccRefer().vmVTargetAdjustWidth);
     }//++>
     @Override public void ccSetValue(String pxVal) {
       int lpFixed = VcNumericUtility.ccParseIntegerString(pxVal);
       lpFixed=ZcRangedValueModel.ccLimitInclude(lpFixed, 1, 20);
-      SubDegreeControlManager.ccRefer().mnVTargetAdjustWidth=lpFixed;
+      SubDegreeControlManager.ccRefer().vmVTargetAdjustWidth=lpFixed;
     }//++<
   };//***
   
   public final MiSettingItem cmVPreHeatingPercentageItem
     = new MiSettingItem() {
-    @Override public String ccGetDescription() {
-      return VcTranslator.tr("_dscp_v_pre_heating_percentage");
-    }//++>
     @Override public String ccGetName() {
       return "[%]"+VcTranslator.tr("_v_pre_heating_percentage");
     }//++>
+    @Override public String ccGetDescription() {
+      return VcTranslator.tr("_dscp_v_pre_heating_percentage");
+    }//++>
+    @Override public String ccGetLimitationInfo() {
+      return "[1 ~ 99]";
+    }//++>
     @Override public String ccGetValue() {
       return Integer.toString
-        (SubDegreeControlManager.ccRefer().mnVPreHeatingPT);
+        (SubDegreeControlManager.ccRefer().vmVPreHeatingPT);
     }//++>
     @Override public void ccSetValue(String pxVal) {
       int lpFixed = VcNumericUtility.ccParseIntegerString(pxVal);
       lpFixed=ZcRangedValueModel.ccLimitInclude(lpFixed, 1, 99);
-      SubDegreeControlManager.ccRefer().mnVPreHeatingPT=lpFixed;
+      SubDegreeControlManager.ccRefer().vmVPreHeatingPT=lpFixed;
     }//++<
   };//***
   
   public final MiSettingItem cmVDryerTargetPressureItem
     = new MiSettingItem() {
-    @Override public String ccGetDescription() {
-      return VcTranslator.tr("_dscp_v_tryer_target_pres");
-    }//++>
     @Override public String ccGetName() {
       return "[-kpa]"+VcTranslator.tr("_v_tryer_target_pres");
     }//++>
+    @Override public String ccGetDescription() {
+      return VcTranslator.tr("_dscp_v_tryer_target_pres");
+    }//++>
+    @Override public String ccGetLimitationInfo() {
+      return "[1 ~ 199]";
+    }//++>
     @Override public String ccGetValue() {
       return Integer.toString
-        (SubDegreeControlManager.ccRefer().mnVDryerTargetMinusKPA);
+        (SubDegreeControlManager.ccRefer().vmVDryerTargetMinusKPA);
     }//++>
     @Override public void ccSetValue(String pxVal) {
       int lpFixed = VcNumericUtility.ccParseIntegerString(pxVal);
       lpFixed=ZcRangedValueModel.ccLimitInclude(lpFixed, 1, 199);
-      SubDegreeControlManager.ccRefer().mnVDryerTargetMinusKPA=lpFixed;
+      SubDegreeControlManager.ccRefer().vmVDryerTargetMinusKPA=lpFixed;
     }//++<
   };//***
   
   public final MiSettingItem cmVExfanIgnitionPercentageItem
     = new MiSettingItem() {
-    @Override public String ccGetDescription() {
-      return VcTranslator.tr("_dscp_v_exfan_ignition_percentage");
-    }//++>
     @Override public String ccGetName() {
       return "[%]"+VcTranslator.tr("_v_exfan_ignition_percentage");
     }//++>
+    @Override public String ccGetDescription() {
+      return VcTranslator.tr("_dscp_v_exfan_ignition_percentage");
+    }//++>
+    @Override public String ccGetLimitationInfo() {
+      return "[1 ~ 99]";
+    }//++>
     @Override public String ccGetValue() {
       return Integer.toString
-        (SubDegreeControlManager.ccRefer().mnVExfanIgnitionPT);
+        (SubDegreeControlManager.ccRefer().vmVExfanIgnitionPT);
     }//++>
     @Override public void ccSetValue(String pxVal) {
       int lpFixed = VcNumericUtility.ccParseIntegerString(pxVal);
       lpFixed=ZcRangedValueModel.ccLimitInclude(lpFixed, 1, 99);
-      SubDegreeControlManager.ccRefer().mnVExfanIgnitionPT=lpFixed;
+      SubDegreeControlManager.ccRefer().vmVExfanIgnitionPT=lpFixed;
     }//++<
   };//***
   
