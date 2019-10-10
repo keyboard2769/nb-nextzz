@@ -108,6 +108,9 @@ public class MainSketch extends PApplet{
     MainSettingManager.ccRefer().ccLoadFromFile(null);
     SubErrorListModel.ccRefer().ccInit();
     
+    //-- simulator
+    MainSimulator.ccInit();
+    
     //-- local ui group
     VcLocalCoordinator.ccAddGroup
       (SubIndicativeGroup.ccRefer());//.. should have no dependency
@@ -182,6 +185,7 @@ public class MainSketch extends PApplet{
     
     //-- debug
     /* 4 */ SubErrorTask.ccRefer().tstTagg();
+    /* 4 */ MainPlantModel.ccRefer().tstTagg();
     VcLocalTagger.ccTag("roll",nf(cmRoller,2));
     VcLocalTagger.ccTag
       ("latency",VcNumericUtility.ccFormatPointTwoFloat(17f-frameRate));
@@ -197,7 +201,10 @@ public class MainSketch extends PApplet{
 
   @Override public void keyPressed(){
     VcLocalCoordinator.ccGuardEscKey(this);
-    if(VcLocalConsole.ccKeyTyped(key, keyCode)){return;}
+    if(VcLocalConsole.ccKeyTyped(key, keyCode)){
+      MainPlantModel.ccRefer().vmMessageBarBlockingFLG=true;
+      return;
+    }//..?
     VcLocalCoordinator.ccKeyPressed(keyCode);
   }//+++
 
@@ -342,7 +349,7 @@ public class MainSketch extends PApplet{
   }//+++
   
   public static final String ccGetLastLeavingStamp(){
-    return "_1910101627";
+    return "_1910102101";
   }//+++
 
 }//***eof

@@ -23,6 +23,8 @@ package nextzz.pppmodel;
 import javax.swing.ListModel;
 import javax.swing.event.ListDataListener;
 import kosui.ppputil.VcLocalConsole;
+import kosui.ppputil.VcTranslator;
+import processing.core.PApplet;
 
 public final class SubErrorListModel implements ListModel<String>{
 
@@ -36,7 +38,7 @@ public final class SubErrorListModel implements ListModel<String>{
   
   public final void ccInit(){
     
-    VcLocalConsole.ccSetMessage("[MSG]:from SubErrorListModel.ccInit()");
+    VcLocalConsole.ccSetMessageBarText("[MSG]:from SubErrorListModel.ccInit()");
     
   }//++!
   
@@ -47,11 +49,9 @@ public final class SubErrorListModel implements ListModel<String>{
   //===
   
   synchronized public final String ccGetMessage(int pxID){
-    //[todo]::fix this!!
-    String lpF = " ";
-    if(pxID<0){return lpF;}
-    if(pxID==0){lpF="all clear";}
-    return lpF;
+    if(pxID<0){return " ";}
+    if(pxID>0){return VcTranslator.tr("_m_errmsg_"+PApplet.nf(pxID, 3));}
+    return VcTranslator.tr("_m_no_fatal");
   }//+++
   
   //===

@@ -35,9 +35,14 @@ public class ZcMotor extends ZcRangedValueModel{
     cmMC=cmAN=cmAL=false;
     cmContactDelay=new ZcOnDelayTimer(pxContactDelay);
     cmLoad=0.66f;
-  }//..!
+  }//++!
   
   //===
+  
+  /* 1 */ public void ccSimulate(float pxLoad){
+    ccSetLoad(pxLoad);
+    ccSimulate();
+  }//++~
   
   public final void ccSimulate(){
     
@@ -61,48 +66,43 @@ public class ZcMotor extends ZcRangedValueModel{
       ccSetValue(1);
     }//..?
     
-  }//+++
-  
-  public void ccSimulate(float pxLoad){
-    ccSetLoad(pxLoad);
-    ccSimulate();
-  }//+++
+  }//++~
   
   //===
   
   public final void ccContact(boolean pxInput){
     cmMC=pxInput;
-  }//+++
+  }//++<
   
-  public final void ccTestTrip(boolean pxInput){
+  public final void ccSetTrip(boolean pxInput){
     cmAL=pxInput;
-  }//+++
+  }//++<
   
   public final void ccForceTrip(){
     cmAL=true;
-  }//+++
+  }//++<
   
   public final void ccResetTrip(){
     cmAL=false;
-  }//+++
+  }//++<
   
   public final void ccSetLoad(float pxLoad){
     cmLoad=pxLoad<0f?0.1f:pxLoad;
-  }//+++
+  }//++<
   
   //===
   
   public final boolean ccIsTripped(){
     return cmAL;
-  }//+++
+  }//++>
   
   public final boolean ccIsContacted(){
     return cmAN;
-  }//+++
+  }//++>
   
   public final int ccGetCT(){
     return cmValue;
-  }//+++
+  }//++>
   
   //===
 

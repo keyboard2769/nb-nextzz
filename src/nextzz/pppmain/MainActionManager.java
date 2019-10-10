@@ -47,6 +47,7 @@ import nextzz.pppswingui.SubAssistantPane;
 import nextzz.pppsetting.MainSettingManager;
 import nextzz.pppsetting.MiSettingItem;
 import nextzz.pppmodel.SubDegreeControlManager;
+import nextzz.pppsimulate.MainSimulator;
 import nextzz.pppswingui.SubFeederPane;
 import nextzz.pppswingui.SubSettingPane;
 
@@ -236,6 +237,12 @@ public final class MainActionManager {
     }//+++
   };//***
   
+  public final EiTriggerable cmErrorCleaning = new EiTriggerable() {
+    @Override public void ccTrigger() {
+      MainPlantModel.ccRefer().vmErrorClearHoldingFLG=true;
+    }//+++
+  };//***
+  
   public final EiTriggerable ccSettingModifying = new EiTriggerable() {
     @Override public void ccTrigger() {
       int lpListIndex = SubSettingPane.ccRefer()
@@ -341,6 +348,8 @@ public final class MainActionManager {
       VcSwingCoordinator.ccRegisterAction
         (MainWindow.ccRefer().cmHideButton, cmHiding);
       VcSwingCoordinator.ccRegisterAction
+        (MainWindow.ccRefer().cmErrorClearButton, cmErrorCleaning);
+      VcSwingCoordinator.ccRegisterAction
         (SubSettingPane.ccRefer().cmModifyButton, ccSettingModifying);
 
     }//+++
@@ -401,12 +410,23 @@ public final class MainActionManager {
     //-- skech ** command ** command
     VcLocalConsole.ccRegisterCommand
       ("quit", cmQuitting);
+    //[todo]::make an explicit instance!!
     VcLocalConsole.ccRegisterCommand
       ("debug", new EiTriggerable() {
       @Override public void ccTrigger(){
         MainSketch.pbDebugMode=!MainSketch.pbDebugMode;
         VcLocalTagger.ccGetInstance().ccSetIsVisible(MainSketch.pbDebugMode);
         VcConst.ccSetDoseLog(MainSketch.pbDebugMode);
+        VcLocalConsole.ccGetInstance().ccSetMessage("[echo]debug:"
+          + (MainSketch.pbDebugMode?"on":"off")
+        );
+      }//+++
+    });
+    VcLocalConsole.ccRegisterCommand
+      ("mrst", new EiTriggerable() {
+      @Override public void ccTrigger(){
+        MainSimulator.tstResetAllMotorTrip();
+        VcLocalConsole.ccGetInstance().ccSetMessage("[echo]mrst");
       }//+++
     });
   

@@ -16,15 +16,21 @@ but hey, dose it sounds stupid if you make it DOUBLE-ZEUS ??
 - [ ] $ tre
 - [ ] $ dos
 - [ ] $ uno
+- [ ] $ lock switch determine mechanism
+- [ ] $ fill v provision and combust motor load factor
+- [ ] $ move feeder assistance switch to feeder pane
+- [ ] $ feeder flux setting representation needs another floating point
+- [ ] $ current slot overwhelming color and setting
+- [ ] $ fill the error list and log mechanism
 - [ ] $ refine case test of pid controller to have target manipulation
+- [ ] $ asphalt supply pump start and slot and lock
 
 #### heading
 
-- [ ] $ build the error warning message mechanism first
+- [ ] $ hot bin leveler 
 
 #### last
 
-- [x] $ the cooling damper .. and value input?
 - [x] $ refactorred setting mechanism
 - [x] $ v burner and oil pump ct current showing is missing
 - [x] $ the pressure controller is targeting AD value!! fix it !!
@@ -32,5 +38,6 @@ but hey, dose it sounds stupid if you make it DOUBLE-ZEUS ??
 - [x] $ refactorred the pid controller implementation
 - [x] $ fiex the feeder chain controller interlock
 - [x] $ temperature setting folder added
+- [x] $ added the error message loop and clear mechanism
 
 <hr><!--EOF-->

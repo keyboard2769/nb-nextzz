@@ -177,7 +177,7 @@ public final class SubVProvisionTask implements ZiTask{
     /* 7 */SubVProvisionDelegator.mnAirPulsingPL
       = MainSimulator.ccSelectModeDuo(
         !SubVProvisionDelegator.mnAirPulseDisableTGSW
-          && MainSimulator.ccHalfSecondPLS(),
+          && MainSimulator.ccTwoSecondPLS(),
         SubVProvisionDelegator.mnAirPulseWithAirTGSW,
           (dcVCompressor.ccIsContacted()
             ||SubVProvisionDelegator.mnAirPulseForceTGSW),

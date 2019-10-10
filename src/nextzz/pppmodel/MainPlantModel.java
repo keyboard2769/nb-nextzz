@@ -19,7 +19,12 @@
 
 package nextzz.pppmodel;
 
+import kosui.ppplogic.ZcOnDelayPulser;
+import kosui.ppplogic.ZcTimer;
 import kosui.pppmodel.McPipedChannel;
+import kosui.ppputil.VcLocalConsole;
+import kosui.ppputil.VcLocalCoordinator;
+import kosui.ppputil.VcLocalTagger;
 import nextzz.pppdelegate.SubFeederDelegator;
 
 public final class MainPlantModel {
@@ -56,6 +61,13 @@ public final class MainPlantModel {
 
   //===
   
+  public volatile boolean vmMessageBarBlockingFLG = false;
+  private final ZcTimer cmMessageBarBlockingTM = new ZcOnDelayPulser(32);
+  
+  
+  public volatile boolean vmErrorClearHoldingFLG = false;
+  private final ZcTimer cmErrorClearHoldingTM = new ZcOnDelayPulser(16);
+  
   //-- v combust
   public final McPipedChannel cmDesVFeederTPH = new McPipedChannel();
   public volatile int cmVSupplyTPH = 0;
@@ -70,6 +82,17 @@ public final class MainPlantModel {
   }//++!
   
   public final void ccLogic(){
+    
+    //-- one shot ** message bar blocking
+    cmMessageBarBlockingTM.ccAct(vmMessageBarBlockingFLG);
+    if(cmMessageBarBlockingTM.ccIsUp()){
+      VcLocalConsole.ccClearMessageBarText();
+      vmMessageBarBlockingFLG=false;
+    }//..?
+    
+    //-- one shot ** error reset
+    cmErrorClearHoldingTM.ccAct(vmErrorClearHoldingFLG);
+    if(cmErrorClearHoldingTM.ccIsUp()){vmErrorClearHoldingFLG=false;}
     
     //-- manager
     SubDegreeControlManager.ccRefer().ccLogic();
@@ -90,5 +113,10 @@ public final class MainPlantModel {
   }//++~
   
   //===
+  
+  @Deprecated public final void tstTagg(){
+    VcLocalTagger.ccTag("-blk-", cmMessageBarBlockingTM.ccGetValue());
+    VcLocalTagger.ccTag("-clr-", cmErrorClearHoldingTM.ccGetValue());
+  }//+++
   
  }//***eof

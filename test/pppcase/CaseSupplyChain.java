@@ -98,11 +98,11 @@ public class CaseSupplyChain extends PApplet{
     dcAlartV=EcComponent.ccIsKeyPressed('5');
     
     //--
-    dcMotorI.ccTestTrip(dcAlartI);
-    dcMotorII.ccTestTrip(dcAlartII);
-    dcMotorIII.ccTestTrip(dcAlartIII);
-    dcMotorIV.ccTestTrip(dcAlartIV);
-    dcMotorV.ccTestTrip(dcAlartV);
+    dcMotorI.ccSetTrip(dcAlartI);
+    dcMotorII.ccSetTrip(dcAlartII);
+    dcMotorIII.ccSetTrip(dcAlartIII);
+    dcMotorIV.ccSetTrip(dcAlartIV);
+    dcMotorV.ccSetTrip(dcAlartV);
     
     //--
     dcTheController.ccSetTrippedAt(1, dcAlartI);

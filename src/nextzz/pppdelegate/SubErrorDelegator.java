@@ -19,13 +19,15 @@
 package nextzz.pppdelegate;
 
 import kosui.ppputil.VcLocalConsole;
+import nextzz.ppplocalui.SubIndicativeGroup;
+import nextzz.pppmodel.MainPlantModel;
 import nextzz.pppmodel.SubErrorListModel;
 
 public final class SubErrorDelegator {
   
   public static volatile int mnMessageCode;
   
-  public static volatile int dddd;
+  public static volatile boolean mnErrorPL,mnErrorClearSW;
   
   public static final void ccWire(){
     //[notyet]::
@@ -33,13 +35,11 @@ public final class SubErrorDelegator {
   
   public static final void ccBind(){
     
-    //[head]:: well, now what?!
+    mnErrorClearSW=MainPlantModel.ccRefer().vmErrorClearHoldingFLG;
     
-    dddd++;
-    
-    VcLocalConsole.ccSetMessage(
-      SubErrorListModel.ccRefer().ccGetMessage(mnMessageCode)
-    );
+    SubIndicativeGroup.ccRefer().cmErrorMessagePL.ccSetIsActivated(mnErrorPL);
+    VcLocalConsole.ccSetMessageBarText(SubErrorListModel.ccRefer()
+      .ccGetMessage(mnMessageCode));
     
   }//++~
   

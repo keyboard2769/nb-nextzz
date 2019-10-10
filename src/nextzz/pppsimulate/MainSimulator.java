@@ -26,15 +26,6 @@ import processing.core.PApplet;
 
 public final class MainSimulator {
   
-  private static MainSimulator self = null;
-  public static MainSimulator ccRefer() {
-    if(self==null){self=new MainSimulator();}
-    return self;
-  }//+++
-  private MainSimulator(){}//..!
-
-  //===
-  
   //=== clock
   
   //=== clock ** 
@@ -78,7 +69,11 @@ public final class MainSimulator {
     return O_TWOSEC_ROLLER.ccIsAbove(15);
   }//+++
   
-  //=== loop
+  //=== body
+  
+  static public final void ccInit(){
+    /* 0 */SubErrorTask.ccRefer().ccSetErrorBit(77, true);
+  }//++!
   
   static public final void ccSimulate(){
     
@@ -99,8 +94,9 @@ public final class MainSimulator {
     SubFeederTask.ccRefer().ccSimulate();
     SubVProvisionTask.ccRefer().ccSimulate();
     SubVCombusTask.ccRefer().ccSimulate();
+    SubErrorTask.ccRefer().ccSimulate();
   
-  }//+++
+  }//++~
   
   //=== function block
   
@@ -156,6 +152,12 @@ public final class MainSimulator {
   public static final int ccDecodeTemperature(ZcReal pxReal){
     if(pxReal == null){return 0;}
     return ccDecodeTemperature(pxReal.ccGet());
+  }//+++
+  
+  //===
+  
+  @Deprecated public static final void tstResetAllMotorTrip(){
+    SubVProvisionTask.ccRefer().dcVExFan.ccResetTrip();
   }//+++
   
  }//***eof

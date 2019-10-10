@@ -41,8 +41,12 @@ public final class SubIndicativeGroup implements EiGroup{
   public final EcElement cmLinkageOKayPL = new EcElement("L");
   public final EcElement cmLinkageSendingPL = new EcElement("S");
   public final EcElement cmLinkageRecievingPL = new EcElement("R");
+  public final EcElement cmErrorMessagePL = new EcElement("!");
   
   private SubIndicativeGroup(){
+    
+    final int lpPotentialColor = EcConst
+      .ccAdjustColor(MainSketch.C_COLOR_BACKGROUD,0x20);
     
     //-- switch
     cmSystemPopSW.ccSetW(64);
@@ -50,23 +54,27 @@ public final class SubIndicativeGroup implements EiGroup{
     cmSystemPopSW.ccSetupColor(EcConst.C_LIT_GRAY, EcConst.C_GRAY);
     
     //-- led
+    cmErrorMessagePL.ccSetupColor(EcConst.C_RED,lpPotentialColor);
+    cmErrorMessagePL.ccSetTextColor(lpPotentialColor);
     //-- led ** size
     cmRunningPL.ccSetH(cmSystemPopSW.ccGetH());
     cmLinkageOKayPL.ccSetH(cmSystemPopSW.ccGetH());
     cmLinkageSendingPL.ccSetH(cmSystemPopSW.ccGetH());
     cmLinkageRecievingPL.ccSetH(cmSystemPopSW.ccGetH());
+    cmErrorMessagePL.ccSetH(cmSystemPopSW.ccGetH());
     //-- led ** location
     cmSystemPopSW.ccSetLocation(0, 0);
     cmRunningPL.ccSetLocation(cmSystemPopSW, 1, 0);
     cmLinkageOKayPL.ccSetLocation(cmRunningPL, 1, 0);
     cmLinkageSendingPL.ccSetLocation(cmLinkageOKayPL, 1, 0);
     cmLinkageRecievingPL.ccSetLocation(cmLinkageSendingPL, 1, 0);
+    cmErrorMessagePL.ccSetLocation(cmLinkageRecievingPL, 1, 0);
     
     //-- console
-    VcLocalConsole.ccGetInstance().ccSetMessageBarColor
-      (EcConst.ccAdjustColor(MainSketch.C_COLOR_BACKGROUD,0x20));
-    VcLocalConsole.ccGetInstance().ccSetMessageBarAnchor
-      (cmLinkageRecievingPL.ccEndX()+1, 0);
+    VcLocalConsole.ccGetInstance()
+      .ccSetMessageBarColor(lpPotentialColor);
+    VcLocalConsole.ccGetInstance()
+      .ccSetMessageBarAnchor(cmErrorMessagePL.ccEndX()+1, 0);
     VcLocalConsole.ccGetInstance().ccSetFieldBarAnchor(
       0,
       MainSketch.ccGetPApplet().height
@@ -82,7 +90,8 @@ public final class SubIndicativeGroup implements EiGroup{
   @Override public List<? extends EcElement> ccGiveElementList(){
     return Arrays.asList(
       cmSystemPopSW,
-      cmRunningPL,cmLinkageOKayPL,cmLinkageSendingPL,cmLinkageRecievingPL
+      cmRunningPL,cmLinkageOKayPL,cmLinkageSendingPL,cmLinkageRecievingPL,
+      cmErrorMessagePL
     );
   }//+++
   

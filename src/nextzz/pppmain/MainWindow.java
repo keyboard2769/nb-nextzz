@@ -21,8 +21,10 @@ package nextzz.pppmain;
 
 import java.awt.Dimension;
 import javax.swing.JButton;
+import javax.swing.JSeparator;
 import javax.swing.JTabbedPane;
 import javax.swing.JToolBar;
+import javax.swing.SwingConstants;
 import kosui.pppswingui.ScConst;
 import kosui.pppswingui.ScFactory;
 import kosui.pppswingui.ScTitledWindow;
@@ -80,6 +82,9 @@ public final class MainWindow {
   public final JButton cmHideButton
     = new JButton(VcTranslator.tr("_hide"));
   
+  public final JButton cmErrorClearButton
+    = new JButton(VcTranslator.tr("_error_clear"));
+  
   public final Runnable cmInitiating = new Runnable() {
     @Override public void run() {
       
@@ -102,6 +107,8 @@ public final class MainWindow {
       final JToolBar lpToolBar = ScFactory.ccCreateStuckedToolBar();
       lpToolBar.add(cmQuitButton);
       lpToolBar.add(cmHideButton);
+      lpToolBar.add(new JSeparator(SwingConstants.VERTICAL));
+      lpToolBar.add(cmErrorClearButton);
       
       //-- pack
       cmWindow.ccAddCenter(lpCenterPane);
