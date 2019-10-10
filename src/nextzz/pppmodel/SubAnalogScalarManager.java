@@ -21,6 +21,7 @@ package nextzz.pppmodel;
 
 import java.util.ArrayList;
 import java.util.List;
+import kosui.ppplogic.ZcRevisedScaledModel;
 import kosui.ppplogic.ZcScaledModel;
 import kosui.pppmodel.McPipedChannel;
 import kosui.ppputil.VcLocalTagger;
@@ -29,19 +30,17 @@ import nextzz.pppdelegate.SubFeederDelegator;
 
 public final class SubAnalogScalarManager {
   
-  public static final int C_I_TH_CHUTE    = 1;
-  public static final int C_I_TH_ENTRANCE = 2;
-  public static final int C_I_TH_PIPE     = 3;
-  public static final int C_I_TH_SAND     = 4;
-  public static final int C_I_TH_MIXER    = 6;
-  
-  //[todo]::C_I_RH_ENTRANCE
-  //[todo]::C_I_RH_GAS
-  //[todo]::C_I_RH_SURGE
-  //[todo]::C_I_RH_RECYCLE
-  
-  //[todo]::C_I_TH_SILO_I
-  //[todo]::C_I_TH_SILO_II
+  public static final int C_I_THI_CHUTE      = 1;
+  public static final int C_I_THII_ENTRANCE  = 2;
+  public static final int C_I_THIII_PIPE     = 3;
+  public static final int C_I_THIV_SAND      = 4;
+  public static final int C_I_THVI_MIXER     = 6;
+  //[todo]::C_I_RH_SURGE        =11
+  //[todo]::C_II_RH_RECYCLE     =12
+  //[todo]::C_IV_RH_GAS         =13
+  //[todo]::C_VIII_RH_ENTRANCE  =14
+  //[todo]::C_THVII_SILO_I    = 7
+  //[todo]::C_THVIII_SILO_II  = 8
   
   //===
   
@@ -80,28 +79,40 @@ public final class SubAnalogScalarManager {
   
   //===
   
-  private final ZcScaledModel cmThermoCouplScalar
-    = new ZcScaledModel(1000, 4680, 0, 1472);
+  private final ZcRevisedScaledModel cmThermoCouplScalar
+    = new ZcRevisedScaledModel(1000, 4680, 0, 1472);
+  
+  public final McPipedChannel cmDesThermoCoupleBias = new McPipedChannel();
+  
+  public final McPipedChannel cmDesThermoCoupleOffset = new McPipedChannel();
   
   public final McPipedChannel cmDesVThermoCelcius = new McPipedChannel();
+  
   //[todo]::cmDesRThermoCelcius
   
   //===
     
   public final void ccInit(){
     
-    //-- create current 
+    //-- WORDY indexed
     for(int i=0;i<32;i++){
+      //-- create current 
       cmListOfCTSlotScalar.add(new ZcScaledModel(0, 5000, 0, 1000));
       //.. 1000d -> 100.0f [A]
     }//+++
     
-    //-- feeder flux
-    
-    //-- feeder flux ** V
+    //-- DOUBLY indexed
     for(int i=0;i<16;i++){
+      
+      //-- feeder flux
+      //-- feeder flux ** V
       cmListOfVFeederFluxScalar.add(new ZcScaledModel(0, 900, 0, 500));
       //.. 500d -> 50.0f [ton]
+      
+      //-- thermocouple bias
+      cmDesThermoCoupleBias.ccSet(i, 100);
+      cmDesThermoCoupleOffset.ccSet(i, 0);
+      
     }//+++
     
   }//++!
@@ -116,11 +127,15 @@ public final class SubAnalogScalarManager {
     
     //-- th ** v
     for(int i=1;i<=8;i++){
-      cmDesVThermoCelcius.ccSet(
-        i,
-        cmThermoCouplScalar
-          .ccToScaledIntegerValue(SubAnalogDelegator.ccGetVThermoAD(i))
+      cmThermoCouplScalar.ccSetupRevicer(
+        cmDesThermoCoupleBias.ccGet(i),
+        cmDesThermoCoupleOffset.ccGet(i)
       );
+      cmThermoCouplScalar
+        .ccSetInputValue(SubAnalogDelegator.ccGetVThermoAD(i));
+      cmThermoCouplScalar.ccRun();
+      cmDesVThermoCelcius
+        .ccSet(i,cmThermoCouplScalar.ccGetRevisedIntegerValue());
       //[todo]:: % cmDesRThermoCelcius.ccSet(...
     }//..~
     

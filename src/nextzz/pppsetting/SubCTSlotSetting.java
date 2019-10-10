@@ -45,7 +45,7 @@ public final class SubCTSlotSetting extends McAbstractSettingPartition{
         +VcTranslator.tr("_ct_span");
     }//+++
     @Override public String ccGetDescription() {
-      return VcTranslator.tr("_m_ct_span");
+      return VcTranslator.tr("_dscp_ct_span");
     }//+++
     @Override public String ccGetLimitationInfo() {
       return "[1 ~ 999]";

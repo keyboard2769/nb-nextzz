@@ -184,6 +184,9 @@ public final class SubAnalogDelegator {
   }//+++
   
   public static final int ccGetVThermoAD(int pxOrder){
+    
+    //[head]::fix this system to a continiouse indexed one!!
+    
     switch(pxOrder){
       case  1:return mnTHnI;
       case  2:return mnTHnII;

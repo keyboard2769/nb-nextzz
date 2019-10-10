@@ -24,17 +24,30 @@ import nextzz.pppdelegate.SubFeederDelegator;
 
 public final class MainPlantModel {
   
+  //-- ct slot
   public static final int C_CTSLOT_CHANNEL_SINGLE = 16;
   public static final int C_CTSLOT_CHANNEL_MAX    = 32;
   public static final int C_CTSLOT_CHANNEL_MASK   = 31;
   
+  //-- temperature
   public static final int C_THERMO_CHANNEL_HEAD = 1;
   public static final int C_THERMO_CHANNEL_TAIL = 8;
   
+  //-- combust
   public static final float C_PRESSURE_CONTOL_OFFSET = 500f;
   
+  //-- feeder
+  //   .. for any UI part grouping vergin or recycle feeder abstractly
+  //   ..   their max count should get left arbitrary
+  //   ..   as they should feel comfortable when implementing their own stuff.
+  //   .. as for delegator, witch is THE traffic line interface
+  //   ..   between pc and plc, the valid count hard coded as shown below.
   public static final int C_FEEDER_RPM_MIN =    0;
   public static final int C_FEEDER_RPM_MAX = 1800;
+  public static final int C_VF_INIT_ORDER  =    1;
+  public static final int C_VF_VALID_MAX   =   10;
+  public static final int C_RF_INIT_ORDER  =    1;
+  public static final int C_RF_VALID_MAX   =    5;
   
   //===
 
@@ -66,7 +79,7 @@ public final class MainPlantModel {
     //-- v feeder tph
     cmVSupplyTPH=0;
     for(
-      int i=SubFeederDelegator.C_VF_INIT_ORDER;
+      int i=C_VF_INIT_ORDER;
       i<=MainSpecificator.ccRefer().mnVFeederAmount;
       i++
     ){

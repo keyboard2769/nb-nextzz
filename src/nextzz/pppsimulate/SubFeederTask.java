@@ -99,7 +99,7 @@ public final class SubFeederTask implements ZiTask{
   public final int ccGetVFeederConveyorScaleBYTE(){
     int lpSum=0;
     for(
-      int i=SubFeederDelegator.C_VF_INIT_ORDER;
+      int i=MainPlantModel.C_VF_INIT_ORDER;
       i<=MainSpecificator.ccRefer().mnVFeederAmount;
       i++
     ){
@@ -130,15 +130,18 @@ public final class SubFeederTask implements ZiTask{
     if(!lpVFeederIL){
       cmVFeederChainCTRL.ccForceStop();
     }//..?
-    cmVFeederChainCTRL.ccSetConfirmedAt(C_CONTROLLER_UPBOUND, true);
+    cmVFeederChainCTRL.ccSetConfirmedAt(
+      C_CONTROLLER_UPBOUND,lpVFeederIL
+    );
     boolean lpVFeederStartFlag
       = SubFeederDelegator.mnVFChainMSSW;
     cmVFeederChainCTRL.ccSetRun(lpVFeederStartFlag);
     cmVFeederChainCTRL.ccRun();
     
     //-- vf ** output
-    for(int i=1;i<=8;i++){
-      cmDesVFeederHOOK.get(i).ccHook(cmVFeederChainCTRL.ccGetPulseAt(i));
+    for(int i=1;i<=MainSpecificator.ccRefer().mnVFeederAmount;i++){
+      cmDesVFeederHOOK.get(i)
+        .ccHook(cmVFeederChainCTRL.ccGetPulseAt(i),!lpVFeederIL);
       boolean lpPermmision = (!dcDesVFeeder.get(i).ccIsTripped())
         && (!SubFeederDelegator.ccGetVFeederDisable(i));
       boolean lpEngage = 
@@ -151,8 +154,8 @@ public final class SubFeederTask implements ZiTask{
     SubFeederDelegator.mnVFChainMSPL
       =cmVFeederChainCTRL.ccGetFlasher(MainSimulator.ccOneSecondClock());
     for(
-      int i=SubFeederDelegator.C_VF_INIT_ORDER;
-      i<=SubFeederDelegator.C_VF_VALID_MAX;
+      int i=MainPlantModel.C_VF_INIT_ORDER;
+      i<=MainSpecificator.ccRefer().mnVFeederAmount;
       i++
     ){
       SubFeederDelegator.ccSetVFeederRunning
@@ -169,8 +172,8 @@ public final class SubFeederTask implements ZiTask{
     //-- v feeder
     simVFeederCutout=false;
     for(
-      int i=SubFeederDelegator.C_VF_INIT_ORDER;
-      i<=SubFeederDelegator.C_VF_VALID_MAX;
+      int i=MainPlantModel.C_VF_INIT_ORDER;
+      i<=MainSpecificator.ccRefer().mnVFeederAmount;
       i++
     ){
       simDesVFeederSensorTM.get(i).ccAct(

@@ -125,7 +125,7 @@ public class MainSketch extends PApplet{
     SwingUtilities.invokeLater
       (MainWindow.ccRefer().cmInitiating);
     SwingUtilities.invokeLater
-      (MainActionManager.ccRefer().cmSwingClickableRegisering);
+      (MainActionManager.ccRefer().cmSwingClickableRegiseriness);
     SwingUtilities.invokeLater
       (MainFileManager.ccRefer().cmNotchStateInitiating);
     
@@ -199,7 +199,16 @@ public class MainSketch extends PApplet{
   }//+++
 
   @Override public void mousePressed(){
-    VcLocalCoordinator.ccMousePressed();
+    if(mouseButton == LEFT) {
+      VcLocalCoordinator.ccMousePressed();
+    }else
+    if(mouseButton == RIGHT) {
+      if(MainWindow.pbIsVisible){
+        SwingUtilities.invokeLater(MainActionManager.ccRefer().cmHidingness);
+      }else{
+        MainActionManager.ccRefer().cmPopping.ccTrigger();
+      }//..?
+    }//..?
   }//+++
   
   //=== utility
@@ -330,7 +339,7 @@ public class MainSketch extends PApplet{
   }//+++
   
   public static final String ccGetLastLeavingStamp(){
-    return "_1910101029";
+    return "_1910101155";
   }//+++
 
 }//***eof

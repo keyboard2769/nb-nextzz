@@ -42,6 +42,7 @@ import nextzz.ppplocalui.SubIndicativeGroup;
 import nextzz.ppplocalui.SubOperativeGroup;
 import nextzz.ppplocalui.SubVBondGroup;
 import nextzz.ppplocalui.SubVFeederGroup;
+import nextzz.pppmodel.MainPlantModel;
 import nextzz.pppswingui.SubAssistantPane;
 import nextzz.pppsetting.MainSettingManager;
 import nextzz.pppsetting.MiSettingItem;
@@ -71,10 +72,17 @@ public final class MainActionManager {
     }//+++
   };//***
   
-  public final EiTriggerable cmPopping = new EiTriggerable() {
-    @Override public void ccTrigger() {
+  public final Runnable cmPoppingness = new Runnable() {
+    @Override public void run() {
       MainWindow.ccRefer().cmWindow.setVisible(true);
       MainWindow.ccRefer().cmWindow.toFront();
+      MainWindow.pbIsVisible=true;
+    }//+++
+  };//***
+  
+  public final EiTriggerable cmPopping = new EiTriggerable() {
+    @Override public void ccTrigger() {
+      SwingUtilities.invokeLater(cmPoppingness);
     }//+++
   };//***
  
@@ -218,6 +226,13 @@ public final class MainActionManager {
   public final EiTriggerable cmHiding = new EiTriggerable() {
     @Override public void ccTrigger() {
       MainWindow.ccRefer().cmWindow.setVisible(false);
+      MainWindow.pbIsVisible=false;
+    }//+++
+  };//***
+  
+  public final Runnable cmHidingness = new Runnable() {
+    @Override public void run() {
+      cmHiding.ccTrigger();
     }//+++
   };//***
   
@@ -305,8 +320,8 @@ public final class MainActionManager {
       
       //-- feeder
       for(
-        int i=SubFeederDelegator.C_VF_INIT_ORDER;
-        i<=SubFeederDelegator.C_VF_VALID_MAX;
+        int i=MainPlantModel.C_VF_INIT_ORDER;
+        i<=MainPlantModel.C_VF_VALID_MAX;
         i++
       ){
         SubFeederDelegator.ccSetVFeederForce(i,
@@ -318,8 +333,7 @@ public final class MainActionManager {
     }//+++
   };//***
   
-  
-  public final Runnable cmSwingClickableRegisering = new Runnable() {
+  public final Runnable cmSwingClickableRegiseriness = new Runnable() {
     @Override public void run() {
     
       VcSwingCoordinator.ccRegisterAction

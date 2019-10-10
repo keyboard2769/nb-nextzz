@@ -40,6 +40,8 @@ import nextzz.pppswingui.SubMonitorPane;
 import nextzz.pppswingui.SubSettingPane;
 
 public final class MainWindow {
+  
+  public static volatile boolean pbIsVisible;
 
   private static final MainWindow SELF = new MainWindow();
   public static final MainWindow ccRefer(){return SELF;}//+++
@@ -69,9 +71,7 @@ public final class MainWindow {
   //===
   
   private int cmInitX=100, cmInitY=100;
-  
-  private boolean cmDoShowAtFirst=true;
-  
+    
   public final ScTitledWindow cmWindow=new ScTitledWindow(null);
   
   public final JButton cmQuitButton
@@ -106,7 +106,7 @@ public final class MainWindow {
       //-- pack
       cmWindow.ccAddCenter(lpCenterPane);
       cmWindow.ccAddPageEnd(lpToolBar);
-      cmWindow.ccFinish(cmDoShowAtFirst, cmInitX, cmInitY);
+      cmWindow.ccFinish(pbIsVisible, cmInitX, cmInitY);
       
       //-- post
       SubErrorPane.ccRefer().cmErrorList.ccRefresh();
@@ -131,7 +131,7 @@ public final class MainWindow {
   void ccSetupInitInformation(int pxX, int pxY, boolean pxVisible){
     SELF.cmInitX=pxX;
     SELF.cmInitY=pxY;
-    SELF.cmDoShowAtFirst=pxVisible;
+    pbIsVisible=pxVisible;
   }//+++
   
  }//***eof

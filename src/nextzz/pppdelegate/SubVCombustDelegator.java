@@ -108,7 +108,7 @@ public class SubVCombustDelegator {
     
     //-- cooldown ** pc -> plc
     mnCoolingDamperAutoFLG=SubAnalogScalarManager.ccRefer()
-      .cmDesVThermoCelcius.ccGet(SubAnalogScalarManager.C_I_TH_ENTRANCE)
+      .cmDesVThermoCelcius.ccGet(SubAnalogScalarManager.C_I_THII_ENTRANCE)
        > ((float)SubDegreeControlManager.ccRefer().vmVCoolDownCELC);
     SubVBondGroup.ccRefer().cmEntranceTemperatureCB
       .ccSetIsActivated(mnCoolingDamperAutoFLG);

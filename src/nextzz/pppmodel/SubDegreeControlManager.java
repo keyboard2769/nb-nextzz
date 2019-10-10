@@ -107,7 +107,7 @@ public final class SubDegreeControlManager {
     cmVTemperatureCTRL.ccSetTarget(vmVTargetCELC);
     cmVTemperatureCTRL.ccRun(
       SubAnalogScalarManager.ccRefer().cmDesVThermoCelcius
-        .ccGet(SubAnalogScalarManager.C_I_TH_CHUTE),
+        .ccGet(SubAnalogScalarManager.C_I_THI_CHUTE),
       cmVTemperatureAdjustTM.ccIsAt(1)
         && SubVCombustDelegator.mnVColdAggreageSensorPL,
       cmVTemperatureSamplingTM.ccIsAt(1)

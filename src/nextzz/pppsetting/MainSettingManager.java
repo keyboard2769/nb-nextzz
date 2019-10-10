@@ -53,7 +53,10 @@ public final class MainSettingManager implements ListModel<String>{
   }//++!
   
   public final void ccLoadFromFile(File pxFile){
-    if(pxFile==null){ScConst.ccMessage("failed to load setting file.");}
+    if(pxFile==null){
+    /* 7 */  System.err
+        .println("MainSettingManager.ccLoadFromFile()::not yet.");
+    }//..?
     /* 7 */SubAnalogScalarManager.ccRefer().ccSetCTSlotSpan(0,  750);
     /* 7 */SubAnalogScalarManager.ccRefer().ccSetCTSlotSpan(1, 3000);
     /* 7 */SubAnalogScalarManager.ccRefer().ccSetCTSlotSpan(2, 2600);
@@ -73,7 +76,7 @@ public final class MainSettingManager implements ListModel<String>{
     /* 7 */SubAnalogScalarManager.ccRefer().ccSetCTSlotSpan(13,  380);
     /* 7 */SubAnalogScalarManager.ccRefer().ccSetCTSlotSpan(14,  450);
     /* 7 */SubAnalogScalarManager.ccRefer().ccSetCTSlotSpan(15,  110);
-    return;
+    /* 7 *///return true;
   }//++!
   
   //===

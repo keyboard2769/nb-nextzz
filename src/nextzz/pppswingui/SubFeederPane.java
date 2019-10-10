@@ -119,8 +119,8 @@ public final class SubFeederPane implements SiTabbable{
     = new ChangeListener() {
     @Override public void stateChanged(ChangeEvent ce) {
       for(
-        int i=SubFeederDelegator.C_VF_INIT_ORDER;
-        i<=SubFeederDelegator.C_VF_VALID_MAX;
+        int i=MainPlantModel.C_VF_INIT_ORDER;
+        i<=MainPlantModel.C_VF_VALID_MAX;
         i++
       ){
         SubFeederDelegator.ccSetVFeederSpeed

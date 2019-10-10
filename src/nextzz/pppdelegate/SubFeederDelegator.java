@@ -21,18 +21,9 @@ package nextzz.pppdelegate;
 
 import nextzz.ppplocalui.SubOperativeGroup;
 import nextzz.ppplocalui.SubVFeederGroup;
+import nextzz.pppmodel.MainPlantModel;
 
 public class SubFeederDelegator {
-  
-  //.. for any UI part grouping vergin or recycle feeder abstractly
-  //..   their max count should get left arbitrary
-  //..   as they should feel comfortable when implementing their own stuff.
-  //.. as for delegator, witch is THE traffic line interface
-  //..   between pc and plc, the valid count hard coded as shown below.
-  public static final int C_VF_INIT_ORDER =  1;
-  public static final int C_VF_VALID_MAX  = 10;
-  public static final int C_RF_INIT_ORDER =  1;
-  public static final int C_RF_VALID_MAX  =  5;
   
   public static volatile boolean 
     
@@ -90,8 +81,8 @@ public class SubFeederDelegator {
     
     //-- v feeder ** iteraticve
     for(
-      int i=C_VF_INIT_ORDER;
-      i<=C_VF_VALID_MAX;
+      int i=MainPlantModel.C_VF_INIT_ORDER;
+      i<=MainPlantModel.C_VF_VALID_MAX;
       i++
     ){
       //-- ** plc -> pc **stuck
