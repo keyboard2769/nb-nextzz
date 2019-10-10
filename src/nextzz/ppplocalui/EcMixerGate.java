@@ -38,7 +38,7 @@ public class EcMixerGate extends EcElement{
     drawRect(SubMixerGroup.ccRefer().cmPlateColor);
     
     //-- draw
-    ccActFill();
+    ssActFill();
     int lpOffset=cmIsClosed?0:(cmW/8);
     pbOwner.arc(
       ccCenterX()-lpOffset, ccCenterY(), cmW*3/4, cmH,

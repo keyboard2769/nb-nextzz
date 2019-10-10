@@ -186,6 +186,8 @@ public final class MainActionManager {
           }//..!
           SubDegreeControlManager.ccRefer().vmVTargetCELC
             = VcNumericUtility.ccParseIntegerString(lpInput)&0xFF;
+          VcLocalCoordinator.ccInvokeLater(SubDegreeControlManager
+            .ccRefer().cmControllerRetargetting);
         }//+++
       });//***
     }//+++
@@ -197,6 +199,7 @@ public final class MainActionManager {
       SubDegreeControlManager.ccRefer().vmVTargetCELC
         -= SubDegreeControlManager.ccRefer().vmVTargetAdjustWidth;
       SubDegreeControlManager.ccRefer().vmVTargetCELC &= 0xFF;
+      SubDegreeControlManager.ccRefer().cmControllerRetargetting.ccTrigger();
     }//+++
   };//***
   
@@ -206,6 +209,7 @@ public final class MainActionManager {
       SubDegreeControlManager.ccRefer().vmVTargetCELC
         += SubDegreeControlManager.ccRefer().vmVTargetAdjustWidth;
       SubDegreeControlManager.ccRefer().vmVTargetCELC &= 0xFF;
+      SubDegreeControlManager.ccRefer().cmControllerRetargetting.ccTrigger();
     }//+++
   };//***
   

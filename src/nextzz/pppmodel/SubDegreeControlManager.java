@@ -19,6 +19,7 @@
 
 package nextzz.pppmodel;
 
+import kosui.ppplocalui.EiTriggerable;
 import kosui.ppplogic.ZcPulser;
 import kosui.ppplogic.ZcRangedValueModel;
 import kosui.ppputil.VcLocalTagger;
@@ -52,7 +53,7 @@ public final class SubDegreeControlManager {
   public volatile int vmVExfanIgnitionPT = 15;//.. aka "TyakKaKaiDo"
     
   private final ZcPIDController 
-    cmVTemperatureCTRL   = new ZcPIDController(100f,0.8f,0.10f),
+    cmVTemperatureCTRL   = new ZcPIDController(100f,0.8f,0.10f,true),
     cmVBurnerDegreeCTRL  = new ZcPIDController(100f,0.5f,0.02f),
     cmVPressureCTRL      = new ZcPIDController(100f,0.8f,0.10f),
     cmVExfanDegreeCTRL   = new ZcPIDController(100f,0.5f,0.02f)
@@ -77,14 +78,25 @@ public final class SubDegreeControlManager {
   //[todo]::cmRPressureAdjustTM
   //[todo]::cmRPressureSamplingTM
   
+  //===
+  
+  public final EiTriggerable cmControllerRetargetting = new EiTriggerable() {
+    @Override public void ccTrigger() {
+      System.out.println("cmControllerRetargetting()::invoked!!");
+      cmVTemperatureCTRL.ccResetShiftedTarget();
+      cmVPressureCTRL.ccResetShiftedTarget();
+    }//+++
+  };//***
+  
+  //===
+  
   public final void ccLogic(){
     
     //-- v
     
     //-- v ** shift reset
     if(cmVShiftResetPLS.ccUpPulse(SubVCombustDelegator.mnVBFlamingPL)){
-      cmVTemperatureCTRL.ccResetShiftedTarget();
-      cmVPressureCTRL.ccResetShiftedTarget();
+      cmControllerRetargetting.ccTrigger();
     }//..?
     
     //-- vb

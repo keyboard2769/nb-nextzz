@@ -19,6 +19,7 @@
 
 package nextzz.pppsimulate;
 
+import kosui.ppputil.VcConst;
 import kosui.ppputil.VcNumericUtility;
 import kosui.ppputil.VcStringUtility;
 import processing.core.PApplet;
@@ -33,15 +34,19 @@ public class ZcPIDController {
     cmAnalogOutput
   ;//...
   
+  private final boolean cmIsRelative;
+  
   public ZcPIDController(
     float pxInit, float pxBase,
-    float pxProportion, float pxDead
+    float pxProportion, float pxDead,
+    boolean pxRelative
   ){
     ccSetTarget(pxInit);
     ccSetBaseTarget(pxBase);
     ccSetProportion(pxProportion, pxDead);
-    ssApplyAbsoluteProportion();
+    ssApplyProportion();
     ccResetShiftedTarget();
+    cmIsRelative=pxRelative;
     cmProsessValue=0f;
     cmAnalogOutput=0f;
     cmAdjustRatio=4f;
@@ -49,13 +54,21 @@ public class ZcPIDController {
   
   public ZcPIDController(
     float pxBase,
+    float pxProportion, float pxDead,
+    boolean pxRelative
+  ){
+    this(pxBase, pxBase, pxProportion, pxDead, pxRelative);
+  }//++!
+  
+  public ZcPIDController(
+    float pxBase,
     float pxProportion, float pxDead
   ){
-    this(pxBase, pxBase, pxProportion, pxDead);
+    this(pxBase, pxBase, pxProportion, pxDead, false);
   }//++!
   
   public ZcPIDController(){
-    this(50f,100f, 0.2f, 0.02f);
+    this(50f,100f, 0.2f, 0.02f,false);
   }//++!
   
   //=== 
@@ -83,7 +96,7 @@ public class ZcPIDController {
   public final void ccRun(){
     
     //--
-    ssApplyAbsoluteProportion();
+    ssApplyProportion();
     
     //--
     cmAnalogOutput=0.0f;
@@ -101,6 +114,11 @@ public class ZcPIDController {
   
   }//++~
   
+  private void ssApplyProportion(){
+    if(cmIsRelative){ssApplyRelativeProportion();}
+    else{ssApplyAbsoluteProportion();}
+  }//+++
+  
   private void ssApplyAbsoluteProportion(){
     cmDeadZoneN   = cmShiftedTarget-(cmBaseTarget*  cmDeadZone);
     cmDeadZoneP   = cmShiftedTarget+(cmBaseTarget*  cmDeadZone);
@@ -108,7 +126,19 @@ public class ZcPIDController {
     cmProportionP = cmShiftedTarget+(cmBaseTarget*cmProportion);
   }//+++
   
-  //[todo]::apply relative proportion
+  private void ssApplyRelativeProportion(){
+    if(cmShiftedTarget==0){
+      cmDeadZoneN=-cmDeadZone;
+      cmDeadZoneP=cmDeadZone;
+      cmProportionN=-cmProportion;
+      cmProportionP=cmProportion;
+    }else{
+      cmDeadZoneN   = cmShiftedTarget*(1f - cmDeadZone);
+      cmDeadZoneP   = cmShiftedTarget*(1f + cmDeadZone);
+      cmProportionN = cmShiftedTarget*(1f - cmProportion);
+      cmProportionP = cmShiftedTarget*(1f + cmProportion);
+    }//..?
+  }//+++
   
   public final void ccAdjustTarget(boolean pxPulse){
     if(!pxPulse){return;}
