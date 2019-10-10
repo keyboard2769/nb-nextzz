@@ -92,6 +92,7 @@ public final class MainSimulator {
     SubFeederTask.ccRefer().ccScan();
     SubVProvisionTask.ccRefer().ccScan();
     SubVCombusTask.ccRefer().ccScan();
+    SubErrorTask.ccRefer().ccScan();
     
     //-- simulate
     SubWeighingTask.ccRefer().ccSimulate();

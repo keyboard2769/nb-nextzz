@@ -106,7 +106,7 @@ public final class SubDegreeControlManager {
     //-- vb ** controller
     cmVTemperatureCTRL.ccSetTarget(vmVTargetCELC);
     cmVTemperatureCTRL.ccRun(
-      SubAnalogScalarManager.ccRefer().cmDesVThermoCelcius
+      SubAnalogScalarManager.ccRefer().cmDesThermoCelcius
         .ccGet(SubAnalogScalarManager.C_I_THI_CHUTE),
       cmVTemperatureAdjustTM.ccIsAt(1)
         && SubVCombustDelegator.mnVColdAggreageSensorPL,

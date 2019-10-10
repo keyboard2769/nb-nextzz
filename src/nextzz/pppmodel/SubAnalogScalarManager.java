@@ -20,6 +20,7 @@
 package nextzz.pppmodel;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import kosui.ppplogic.ZcRevisedScaledModel;
 import kosui.ppplogic.ZcScaledModel;
@@ -35,12 +36,12 @@ public final class SubAnalogScalarManager {
   public static final int C_I_THIII_PIPE     = 3;
   public static final int C_I_THIV_SAND      = 4;
   public static final int C_I_THVI_MIXER     = 6;
-  //[todo]::C_I_RH_SURGE        =11
-  //[todo]::C_II_RH_RECYCLE     =12
-  //[todo]::C_IV_RH_GAS         =13
-  //[todo]::C_VIII_RH_ENTRANCE  =14
-  //[todo]::C_THVII_SILO_I    = 7
-  //[todo]::C_THVIII_SILO_II  = 8
+  //[todo]::C_I_RH_SURGE        =0xA
+  //[todo]::C_II_RH_RECYCLE     =0xB
+  //[todo]::C_IV_RH_GAS         =0xC
+  //[todo]::C_VIII_RH_ENTRANCE  =0xD
+  //[todo]::C_THVII_SILO_I    = 0x7
+  //[todo]::C_THVIII_SILO_II  = 0x8
   
   //===
   
@@ -54,12 +55,34 @@ public final class SubAnalogScalarManager {
   
   //===
   
+  public static final Integer C_KEY_CA = 0x99;
+  public static final Integer C_KEY_VB = 0x01;
+  public static final Integer C_KEY_VD = 0x02;
+  public static final Integer C_KEY_VE = 0x03;
+  //[todo]::public static final Integer C_KEY_RB = ???;
+  //[todo]::public static final Integer C_KEY_RD = ???;
+  //[todo]::public static final Integer C_KEY_RE = ???;
+  //[todo]::public static final Integer C_KEY_CELL_AG = ???;
+  //[todo]::public static final Integer C_KEY_CELL_FR = ???;
+  //[todo]::public static final Integer C_KEY_CELL_AS = ???;
+  //[todo]::public static final Integer C_KEY_CELL_FR = ???;
+  //[todo]::public static final Integer C_KEY_CELL_AD = ???;
+  
+  //===
+  
   private static final SubAnalogScalarManager SELF
     = new SubAnalogScalarManager();
   public static final
   SubAnalogScalarManager ccRefer(){return SELF;}//+++
   private SubAnalogScalarManager(){}//++!
-
+  
+  private final RuntimeException O_RE_SCALA_NOT_FOUND
+    = new RuntimeException
+      ("unhandled errer occured while accessing scala object");
+  
+  private final HashMap<Integer,ZcScaledModel> cmMapOfScala
+    = new HashMap<Integer, ZcScaledModel>();
+  
   //===
   
   private final List<ZcScaledModel> cmListOfCTSlotScalar
@@ -86,9 +109,7 @@ public final class SubAnalogScalarManager {
   
   public final McPipedChannel cmDesThermoCoupleOffset = new McPipedChannel();
   
-  public final McPipedChannel cmDesVThermoCelcius = new McPipedChannel();
-  
-  //[todo]::cmDesRThermoCelcius
+  public final McPipedChannel cmDesThermoCelcius = new McPipedChannel();
   
   //===
     
@@ -96,9 +117,8 @@ public final class SubAnalogScalarManager {
     
     //-- WORDY indexed
     for(int i=0;i<32;i++){
-      //-- create current 
+      //-- ct slot ..1000d -> 100.0f [A]
       cmListOfCTSlotScalar.add(new ZcScaledModel(0, 5000, 0, 1000));
-      //.. 1000d -> 100.0f [A]
     }//+++
     
     //-- DOUBLY indexed
@@ -115,6 +135,12 @@ public final class SubAnalogScalarManager {
       
     }//+++
     
+    //-- general register
+    cmMapOfScala.put(C_KEY_CA, cmThermoCouplScalar);
+    cmMapOfScala.put(C_KEY_VB, cmVBurnerDegreeScalar);
+    cmMapOfScala.put(C_KEY_VD, cmVDryerPressureScalar);
+    cmMapOfScala.put(C_KEY_VE, cmVExfanDegreeScalar);
+    
   }//++!
   
   public final void ccLogic(){
@@ -126,17 +152,16 @@ public final class SubAnalogScalarManager {
     }//..~
     
     //-- th ** v
-    for(int i=1;i<=8;i++){
+    for(int i=0;i<MainPlantModel.C_THERMO_VALID_MAX;i++){
       cmThermoCouplScalar.ccSetupRevicer(
         cmDesThermoCoupleBias.ccGet(i),
         cmDesThermoCoupleOffset.ccGet(i)
       );
       cmThermoCouplScalar
-        .ccSetInputValue(SubAnalogDelegator.ccGetVThermoAD(i));
+        .ccSetInputValue(SubAnalogDelegator.ccGetThermoAD(i));
       cmThermoCouplScalar.ccRun();
-      cmDesVThermoCelcius
+      cmDesThermoCelcius
         .ccSet(i,cmThermoCouplScalar.ccGetRevisedIntegerValue());
-      //[todo]:: % cmDesRThermoCelcius.ccSet(...
     }//..~
     
     //-- v
@@ -178,9 +203,7 @@ public final class SubAnalogScalarManager {
   int ccGetVFeederFluxTPH(int pxIndex){
     //[tofix]::why have we leave this??
     return cmListOfVFeederFluxScalar.get(pxIndex&15)
-      .ccToScaledIntegerValue(
-        SubFeederDelegator.ccGetVFeederSpeed(pxIndex)
-      );
+      .ccToScaledIntegerValue(SubFeederDelegator.ccGetVFeederSpeed(pxIndex));
   }//++>
   
   //=== feeder flux ** R
@@ -192,11 +215,11 @@ public final class SubAnalogScalarManager {
   
   //=== CT Slot
   
-  synchronized public final void ccSetCTSlotSpan(int pxIndex, int pxVal){
+  synchronized public final void ccSetCTSlotREALSpan(int pxIndex, int pxVal){
     cmListOfCTSlotScalar.get(pxIndex&31).ccSetOutputSpan(pxVal&0xFFFF);
   }//++<
   
-  synchronized public final int ccGetCTSlotSpan(int pxIndex){
+  synchronized public final int ccGetCTSlotREALSpan(int pxIndex){
     return cmListOfCTSlotScalar.get(pxIndex&31).ccGetOutputSpan();
   }//++>
   
@@ -232,15 +255,69 @@ public final class SubAnalogScalarManager {
   
   //=== utility
   
-  //[todo]::.. static % set ad offset (k,v)
-  //[todo]::.. static % set ad span (k,v)
-  //[todo]::.. static % set real offset (k,v)
-  //[todo]::.. static % set real span (k,v)
+  synchronized public final
+  void ccSetScalaADOffset(Integer pxKey, int pxVal){
+    if(pxKey==null){throw O_RE_SCALA_NOT_FOUND;}
+    if(!cmMapOfScala.containsKey(pxKey)){throw O_RE_SCALA_NOT_FOUND;}
+    ZcScaledModel lpModle=cmMapOfScala.get(pxKey);
+    lpModle.ccSetInputOffset(pxVal);
+  }//+++<
   
-  //[todo]::.. static % get ad offset (k)
-  //[todo]::.. static % get ad span (k)
-  //[todo]::.. static % get real offset (k)
-  //[todo]::.. static % get real span (k)
+  synchronized public final
+  void ccSetScalaADSpan(Integer pxKey, int pxVal){
+    if(pxKey==null){throw O_RE_SCALA_NOT_FOUND;}
+    if(!cmMapOfScala.containsKey(pxKey)){throw O_RE_SCALA_NOT_FOUND;}
+    ZcScaledModel lpModle=cmMapOfScala.get(pxKey);
+    lpModle.ccSetInputSpan(pxVal);
+  }//+++<
+  
+  synchronized public final
+  void ccSetScalaRealOffset(Integer pxKey, int pxVal){
+    if(pxKey==null){throw O_RE_SCALA_NOT_FOUND;}
+    if(!cmMapOfScala.containsKey(pxKey)){throw O_RE_SCALA_NOT_FOUND;}
+    ZcScaledModel lpModle=cmMapOfScala.get(pxKey);
+    lpModle.ccSetOutputSpan(pxVal);
+  }//+++<
+  
+  synchronized public final
+  void ccSetScalaRealSpan(Integer pxKey, int pxVal){
+    if(pxKey==null){throw O_RE_SCALA_NOT_FOUND;}
+    if(!cmMapOfScala.containsKey(pxKey)){throw O_RE_SCALA_NOT_FOUND;}
+    ZcScaledModel lpModle=cmMapOfScala.get(pxKey);
+    lpModle.ccSetOutputSpan(pxVal);
+  }//+++<
+  
+  synchronized public final
+  int ccGetScalaADOffset(Integer pxKey){
+    if(pxKey==null){throw O_RE_SCALA_NOT_FOUND;}
+    if(!cmMapOfScala.containsKey(pxKey)){throw O_RE_SCALA_NOT_FOUND;}
+    ZcScaledModel lpModle=cmMapOfScala.get(pxKey);
+    return lpModle.ccGetInputOffset();
+  }//+++<
+  
+  synchronized public final
+  int ccGetScalaADSpan(Integer pxKey){
+    if(pxKey==null){throw O_RE_SCALA_NOT_FOUND;}
+    if(!cmMapOfScala.containsKey(pxKey)){throw O_RE_SCALA_NOT_FOUND;}
+    ZcScaledModel lpModle=cmMapOfScala.get(pxKey);
+    return lpModle.ccGetInputSpan();
+  }//+++<
+  
+  synchronized public final
+  int ccGetScalaRealOffset(Integer pxKey){
+    if(pxKey==null){throw O_RE_SCALA_NOT_FOUND;}
+    if(!cmMapOfScala.containsKey(pxKey)){throw O_RE_SCALA_NOT_FOUND;}
+    ZcScaledModel lpModle=cmMapOfScala.get(pxKey);
+    return lpModle.ccGetOutputOffset();
+  }//+++<
+  
+  synchronized public final
+  int ccGetScalaRealSpan(Integer pxKey){
+    if(pxKey==null){throw O_RE_SCALA_NOT_FOUND;}
+    if(!cmMapOfScala.containsKey(pxKey)){throw O_RE_SCALA_NOT_FOUND;}
+    ZcScaledModel lpModle=cmMapOfScala.get(pxKey);
+    return lpModle.ccGetOutputSpan();
+  }//+++<
   
   //===
   

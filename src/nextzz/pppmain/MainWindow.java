@@ -55,7 +55,7 @@ public final class MainWindow {
       //-- current
       for(int i=0;i<MainPlantModel.C_CTSLOT_CHANNEL_MAX;i++){
         int lpValue=SubAnalogScalarManager.ccRefer().ccGetCTSlotAMPR(i);
-        int lpSpan=SubAnalogScalarManager.ccRefer().ccGetCTSlotSpan(i);
+        int lpSpan=SubAnalogScalarManager.ccRefer().ccGetCTSlotREALSpan(i);
         SubMonitorPane.ccRefer().cmDesCurrentCTSlot.get(i)
           .ccSetFloatValueForOneAfter(
             lpValue<10?0f:

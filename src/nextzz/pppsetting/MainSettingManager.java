@@ -25,7 +25,6 @@ import java.util.List;
 import javax.swing.ListModel;
 import javax.swing.event.ListDataListener;
 import kosui.ppplogic.ZcRangedModel;
-import kosui.pppswingui.ScConst;
 import nextzz.pppmodel.SubAnalogScalarManager;
 
 public final class MainSettingManager implements ListModel<String>{
@@ -43,6 +42,7 @@ public final class MainSettingManager implements ListModel<String>{
   private MainSettingManager(){
     ssAdd(SubCombustSetting.ccRefer());
     ssAdd(SubFeederFluxSetting.ccRefer());
+    ssAdd(SubTemperatureSetting.ccRefer());
     ssAdd(SubCTSlotSetting.ccRefer());
   }//++!
   
@@ -57,25 +57,25 @@ public final class MainSettingManager implements ListModel<String>{
     /* 7 */  System.err
         .println("MainSettingManager.ccLoadFromFile()::not yet.");
     }//..?
-    /* 7 */SubAnalogScalarManager.ccRefer().ccSetCTSlotSpan(0,  750);
-    /* 7 */SubAnalogScalarManager.ccRefer().ccSetCTSlotSpan(1, 3000);
-    /* 7 */SubAnalogScalarManager.ccRefer().ccSetCTSlotSpan(2, 2600);
-    /* 7 */SubAnalogScalarManager.ccRefer().ccSetCTSlotSpan(3,  300);
+    /* 7 */SubAnalogScalarManager.ccRefer().ccSetCTSlotREALSpan(0,  750);
+    /* 7 */SubAnalogScalarManager.ccRefer().ccSetCTSlotREALSpan(1, 3000);
+    /* 7 */SubAnalogScalarManager.ccRefer().ccSetCTSlotREALSpan(2, 2600);
+    /* 7 */SubAnalogScalarManager.ccRefer().ccSetCTSlotREALSpan(3,  300);
     //--
-    /* 7 */SubAnalogScalarManager.ccRefer().ccSetCTSlotSpan(4,  900);
-    /* 7 */SubAnalogScalarManager.ccRefer().ccSetCTSlotSpan(5,  220);
-    /* 7 */SubAnalogScalarManager.ccRefer().ccSetCTSlotSpan(6,  750);
-    /* 7 */SubAnalogScalarManager.ccRefer().ccSetCTSlotSpan(7,  900);
+    /* 7 */SubAnalogScalarManager.ccRefer().ccSetCTSlotREALSpan(4,  900);
+    /* 7 */SubAnalogScalarManager.ccRefer().ccSetCTSlotREALSpan(5,  220);
+    /* 7 */SubAnalogScalarManager.ccRefer().ccSetCTSlotREALSpan(6,  750);
+    /* 7 */SubAnalogScalarManager.ccRefer().ccSetCTSlotREALSpan(7,  900);
     //--
-    /* 7 */SubAnalogScalarManager.ccRefer().ccSetCTSlotSpan( 8,  160);
-    /* 7 */SubAnalogScalarManager.ccRefer().ccSetCTSlotSpan( 9,  150);
-    /* 7 */SubAnalogScalarManager.ccRefer().ccSetCTSlotSpan(10,  150);
-    /* 7 */SubAnalogScalarManager.ccRefer().ccSetCTSlotSpan(11,   80);
+    /* 7 */SubAnalogScalarManager.ccRefer().ccSetCTSlotREALSpan( 8,  160);
+    /* 7 */SubAnalogScalarManager.ccRefer().ccSetCTSlotREALSpan( 9,  150);
+    /* 7 */SubAnalogScalarManager.ccRefer().ccSetCTSlotREALSpan(10,  150);
+    /* 7 */SubAnalogScalarManager.ccRefer().ccSetCTSlotREALSpan(11,   80);
     //--
-    /* 7 */SubAnalogScalarManager.ccRefer().ccSetCTSlotSpan(12,  150);
-    /* 7 */SubAnalogScalarManager.ccRefer().ccSetCTSlotSpan(13,  380);
-    /* 7 */SubAnalogScalarManager.ccRefer().ccSetCTSlotSpan(14,  450);
-    /* 7 */SubAnalogScalarManager.ccRefer().ccSetCTSlotSpan(15,  110);
+    /* 7 */SubAnalogScalarManager.ccRefer().ccSetCTSlotREALSpan(12,  150);
+    /* 7 */SubAnalogScalarManager.ccRefer().ccSetCTSlotREALSpan(13,  380);
+    /* 7 */SubAnalogScalarManager.ccRefer().ccSetCTSlotREALSpan(14,  450);
+    /* 7 */SubAnalogScalarManager.ccRefer().ccSetCTSlotREALSpan(15,  110);
     /* 7 *///return true;
   }//++!
   

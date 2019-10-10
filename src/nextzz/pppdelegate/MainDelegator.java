@@ -46,6 +46,7 @@ public final class MainDelegator {
     SubWeighingDelegator.ccBind();
     SubFeederDelegator.ccBind();
     SubAnalogDelegator.ccBind();
+    SubErrorDelegator.ccBind();
     
     //-- virgin
     SubVProvisionDelegator.ccBind();

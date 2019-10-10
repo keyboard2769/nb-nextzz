@@ -30,8 +30,7 @@ public final class MainPlantModel {
   public static final int C_CTSLOT_CHANNEL_MASK   = 31;
   
   //-- temperature
-  public static final int C_THERMO_CHANNEL_HEAD = 1;
-  public static final int C_THERMO_CHANNEL_TAIL = 8;
+  public static final int C_THERMO_VALID_MAX = 16;
   
   //-- combust
   public static final float C_PRESSURE_CONTOL_OFFSET = 500f;

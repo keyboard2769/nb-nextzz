@@ -49,8 +49,10 @@ import nextzz.pppmodel.MainPlantModel;
 import nextzz.pppmodel.MainSpecificator;
 import nextzz.pppmodel.SubAnalogScalarManager;
 import nextzz.pppmodel.SubDegreeControlManager;
+import nextzz.pppmodel.SubErrorListModel;
 import nextzz.pppsetting.MainSettingManager;
 import nextzz.pppsimulate.MainSimulator;
+import nextzz.pppsimulate.SubErrorTask;
 import nextzz.pppsimulate.SubVCombusTask;
 import nextzz.pppsimulate.SubWeighingTask;
 import nextzz.pppswingui.ConstSwingUI;
@@ -104,6 +106,7 @@ public class MainSketch extends PApplet{
     //-- modeling
     MainPlantModel.ccRefer().ccInit();
     MainSettingManager.ccRefer().ccLoadFromFile(null);
+    SubErrorListModel.ccRefer().ccInit();
     
     //-- local ui group
     VcLocalCoordinator.ccAddGroup
@@ -178,7 +181,7 @@ public class MainSketch extends PApplet{
     }//..?
     
     //-- debug
-    /* 4 */ SubDegreeControlManager.ccRefer().tstTagg();
+    /* 4 */ SubErrorTask.ccRefer().tstTagg();
     VcLocalTagger.ccTag("roll",nf(cmRoller,2));
     VcLocalTagger.ccTag
       ("latency",VcNumericUtility.ccFormatPointTwoFloat(17f-frameRate));
@@ -339,7 +342,7 @@ public class MainSketch extends PApplet{
   }//+++
   
   public static final String ccGetLastLeavingStamp(){
-    return "_1910101155";
+    return "_1910101627";
   }//+++
 
 }//***eof

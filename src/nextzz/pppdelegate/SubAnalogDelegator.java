@@ -60,10 +60,12 @@ public final class SubAnalogDelegator {
   public static final void ccBind(){
     
     //-- temperature
-    SubVBondGroup.ccRefer().cmEntranceTemperatureCB.ccSetValue
-      (SubAnalogScalarManager.ccRefer().cmDesVThermoCelcius.ccGet(2));
-    SubVBondGroup.ccRefer().cmChuteTemperatureTB.ccSetValue
-      (SubAnalogScalarManager.ccRefer().cmDesVThermoCelcius.ccGet(1));
+    SubVBondGroup.ccRefer().cmEntranceTemperatureCB
+      .ccSetValue(SubAnalogScalarManager.ccRefer().cmDesThermoCelcius
+        .ccGet(SubAnalogScalarManager.C_I_THII_ENTRANCE));
+    SubVBondGroup.ccRefer().cmChuteTemperatureTB
+      .ccSetValue(SubAnalogScalarManager.ccRefer().cmDesThermoCelcius
+        .ccGet(SubAnalogScalarManager.C_I_THI_CHUTE));
     
     //-- content
     SubVSurgeGroup.ccRefer().cmFillerSiloLV.ccSetProportion(mnFillerSiloLV);
@@ -168,66 +170,36 @@ public final class SubAnalogDelegator {
   
    //===
   
-  public static final void ccSetVThermoAD(int pxOrder, int pxVal){
+  public static final void ccSetThermoAD(int pxOrder, int pxVal){
     switch(pxOrder){
-      case  1:mnTHnI=pxVal;break;
-      case  2:mnTHnII=pxVal;break;
-      case  3:mnTHnIII=pxVal;break;
-      case  4:mnTHnIV=pxVal;break;
-      case  5:mnTHnV=pxVal;break;
-      case  6:mnTHnVI=pxVal;break;
-      case  7:mnTHnVII=pxVal;break;
-      case  8:mnTHnVIII=pxVal;break;
+      case SubAnalogScalarManager.C_I_THI_CHUTE:mnTHnI=pxVal;break;
+      case SubAnalogScalarManager.C_I_THII_ENTRANCE:mnTHnII=pxVal;break;
+      case SubAnalogScalarManager.C_I_THIII_PIPE:mnTHnIII=pxVal;break;
+      case SubAnalogScalarManager.C_I_THIV_SAND:mnTHnIV=pxVal;break;
+      case SubAnalogScalarManager.C_I_THVI_MIXER:mnTHnVI=pxVal;break;
+      //[later]::case  0xA:mnRHnVI=pxVal;break;
+      //[later]::case  0xB:mnRHnVII=pxVal;break;
+      //[later]::case  0xC:mnRHnIVI=pxVal;break;
+      //[later]::case  0xD:mnRHnVIII=pxVal;break;
+      //[later]::case  0x7:mnTHnVII=pxVal;break;
+      //[later]::case  0x8:mnTHnVIII=pxVal;break;
       //--
       default:break;
     }//..?
   }//+++
   
-  public static final int ccGetVThermoAD(int pxOrder){
-    
-    //[head]::fix this system to a continiouse indexed one!!
-    
-    switch(pxOrder){
-      case  1:return mnTHnI;
-      case  2:return mnTHnII;
-      case  3:return mnTHnIII;
-      case  4:return mnTHnIV;
-      case  5:return mnTHnV;
-      case  6:return mnTHnVI;
-      case  7:return mnTHnVII;
-      case  8:return mnTHnVIII;
-      //--
-      default:return 0;
-    }//..?
-  }//+++
-  
-  //===
-  
-  public static final void ccSetRThermoAD(int pxOrder, int pxVal){
-    switch(pxOrder){
-      case  1:mnRHnI=pxVal;break;
-      case  2:mnRHnII=pxVal;break;
-      case  3:mnRHnIII=pxVal;break;
-      case  4:mnRHnIV=pxVal;break;
-      case  5:mnRHnV=pxVal;break;
-      case  6:mnRHnVI=pxVal;break;
-      case  7:mnRHnVII=pxVal;break;
-      case  8:mnRHnVIII=pxVal;break;
-      //--
-      default:break;
-    }//..?
-  }//+++
-  
-  public static final int ccGetRThermoAD(int pxOrder){
-    switch(pxOrder){
-      case  1:return mnRHnI;
-      case  2:return mnRHnII;
-      case  3:return mnRHnIII;
-      case  4:return mnRHnIV;
-      case  5:return mnRHnV;
-      case  6:return mnRHnVI;
-      case  7:return mnRHnVII;
-      case  8:return mnRHnVIII;
+  public static final int ccGetThermoAD(int pxOrder){switch(pxOrder){
+      case SubAnalogScalarManager.C_I_THI_CHUTE:return mnTHnI;
+      case SubAnalogScalarManager.C_I_THII_ENTRANCE:return mnTHnII;
+      case SubAnalogScalarManager.C_I_THIII_PIPE:return mnTHnIII;
+      case SubAnalogScalarManager.C_I_THIV_SAND:return mnTHnIV;
+      case SubAnalogScalarManager.C_I_THVI_MIXER:return mnTHnVI;
+      //[later]::case 0xA:return mnRHnI;
+      //[later]::case 0xB:return mnRHnII;
+      //[later]::case 0xC:return mnRHnIV;
+      //[later]::case 0xD:return mnRHnVIII;
+      //[later]::case 0x7:return mnTHnVII;
+      //[later]::case 0x8:return mnTHnVIII;
       //--
       default:return 0;
     }//..?

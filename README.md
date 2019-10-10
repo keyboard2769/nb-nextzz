@@ -16,15 +16,14 @@ but hey, dose it sounds stupid if you make it DOUBLE-ZEUS ??
 - [ ] $ tre
 - [ ] $ dos
 - [ ] $ uno
-- [ ] $ build the error mechanism first
+- [ ] $ refine case test of pid controller to have target manipulation
 
 #### heading
 
-- [ ] $ dont you forget that temperature need to be revised!!?
+- [ ] $ build the error warning message mechanism first
 
 #### last
 
-- [x] $ a combust resource exchange controller
 - [x] $ the cooling damper .. and value input?
 - [x] $ refactorred setting mechanism
 - [x] $ v burner and oil pump ct current showing is missing
@@ -32,5 +31,6 @@ but hey, dose it sounds stupid if you make it DOUBLE-ZEUS ??
 - [x] $ the coarse dust screw ct showing is missing
 - [x] $ refactorred the pid controller implementation
 - [x] $ fiex the feeder chain controller interlock
+- [x] $ temperature setting folder added
 
 <hr><!--EOF-->

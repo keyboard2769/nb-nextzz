@@ -52,14 +52,14 @@ public final class SubCTSlotSetting extends McAbstractSettingPartition{
     }//+++
     @Override public String ccGetValue() {
       return VcNumericUtility
-        .ccFormatFloatForOneAfter
-          (SubAnalogScalarManager.ccRefer().ccGetCTSlotSpan(cmIndex));
+        .ccFormatFloatForOneAfter(SubAnalogScalarManager.ccRefer()
+          .ccGetCTSlotREALSpan(cmIndex));
     }//+++
     @Override public void ccSetValue(String pxVal) {
       float lpFixed = VcNumericUtility.ccParseFloatString(pxVal);
       lpFixed=PApplet.constrain(lpFixed, 1f, 999f);
       SubAnalogScalarManager.ccRefer()
-        .ccSetCTSlotSpan(cmIndex,VcNumericUtility.ccInteger(lpFixed,10f));
+        .ccSetCTSlotREALSpan(cmIndex,VcNumericUtility.ccInteger(lpFixed,10f));
     }//+++
   }//***
   
