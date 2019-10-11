@@ -192,7 +192,7 @@ public final class SubAssistantPane implements SiTabbable{
     lpLeftV.add(new JLabel(VcTranslator.tr("_misc:")));
     
     //-- optional
-    if(MainSpecificator.ccRefer().mnFRCattegoryCount<3)
+    if(MainSpecificator.ccRefer().vmFRCattegoryCount<3)
       {ScConst.ccHideComponent(cmCementSiloAirNT);}
     
     //-- pack

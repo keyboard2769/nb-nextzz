@@ -21,6 +21,7 @@ package nextzz.pppdelegate;
 
 import nextzz.ppplocalui.SubVBondGroup;
 import nextzz.ppplocalui.SubVSurgeGroup;
+import nextzz.pppmodel.MainSpecificator;
 import nextzz.pppmodel.SubAnalogScalarManager;
 
 public final class SubAnalogDelegator {
@@ -49,6 +50,8 @@ public final class SubAnalogDelegator {
     mnVDPressureAD,
     
     //-- lv
+    mnAGxLVnI,mnAGxLVnII,mnAGxLVnIII,
+    mnAGxLVnIV,mnAGxLVnV,mnAGxLVnVI,mnAGxLVnVII,
     mnFillerSiloLV,mnCementSiloLV,mnDustSiloLV
     
   ;//...
@@ -66,11 +69,7 @@ public final class SubAnalogDelegator {
     SubVBondGroup.ccRefer().cmChuteTemperatureTB
       .ccSetValue(SubAnalogScalarManager.ccRefer().cmDesThermoCelcius
         .ccGet(SubAnalogScalarManager.C_I_THI_CHUTE));
-    
-    //-- content
-    SubVSurgeGroup.ccRefer().cmFillerSiloLV.ccSetProportion(mnFillerSiloLV);
-    SubVSurgeGroup.ccRefer().cmCementSiloLV.ccSetProportion(mnCementSiloLV);
-    SubVSurgeGroup.ccRefer().cmDustSiloLV.ccSetProportion(mnDustSiloLV);
+    //[head]:: where the fuck is sand bin ??!
     
     //-- vbond
     SubVBondGroup.ccRefer().cmVDPressureCB.ccSetValue
@@ -79,6 +78,15 @@ public final class SubAnalogDelegator {
       (SubAnalogScalarManager.ccRefer().ccGerVBurnerPercentage());
     SubVBondGroup.ccRefer().cmExfanDegreeCB.ccSetValue
       (SubAnalogScalarManager.ccRefer().ccGetVExfanPercentage());
+    
+    //-- content
+    for(int i=1;i<=MainSpecificator.ccRefer().vmAGCattegoryCount;i++){
+      SubVSurgeGroup.ccRefer().cmDesHotbinLV.get(i)
+        .ccSetProportion(ccGetHotBinLevelorAD(i));
+    }//..~
+    SubVSurgeGroup.ccRefer().cmFillerSiloLV.ccSetProportion(mnFillerSiloLV);
+    SubVSurgeGroup.ccRefer().cmCementSiloLV.ccSetProportion(mnCementSiloLV);
+    SubVSurgeGroup.ccRefer().cmDustSiloLV.ccSetProportion(mnDustSiloLV);
     
   }//+++
   
@@ -204,5 +212,34 @@ public final class SubAnalogDelegator {
       default:return 0;
     }//..?
   }//+++
+  
+  //===
+  
+  public static final void ccSetHotBinLevelorAD(int pxOrder, int pxVal){
+    switch(pxOrder){
+      case  1:mnAGxLVnI=pxVal;break;
+      case  2:mnAGxLVnII=pxVal;break;
+      case  3:mnAGxLVnIII=pxVal;break;
+      case  4:mnAGxLVnIV=pxVal;break;
+      case  5:mnAGxLVnV=pxVal;break;
+      case  6:mnAGxLVnVI=pxVal;break;
+      case  7:mnAGxLVnVII=pxVal;break;
+      //--
+      default:break;
+    }//..?
+  }//++<
+  
+  public static final int ccGetHotBinLevelorAD(int pxOrder){
+    switch(pxOrder){
+      case  1:return mnAGxLVnI;
+      case  2:return mnAGxLVnII;
+      case  3:return mnAGxLVnIII;
+      case  4:return mnAGxLVnIV;
+      case  5:return mnAGxLVnV;
+      case  6:return mnAGxLVnVI;
+      case  7:return mnAGxLVnVII;
+      default:return 0;
+    }//..?
+  }//++>
   
 }//***eof

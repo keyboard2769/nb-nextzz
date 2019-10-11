@@ -188,7 +188,7 @@ public final class SubVFeederGroup implements EiGroup{
       cmDesFeederShape.get(it).ccHide();
       cmDesFeederText.get(it).ccHide();
     }//..~
-    for(int i=MainSpecificator.ccRefer().mnVFeederAmount+1;i<=10;i++){
+    for(int i=MainSpecificator.ccRefer().vmVFeederAmount+1;i<=10;i++){
       cmDesFeederRPMBox.get(i).ccHide();
       cmDesFeederRPMGauge.get(i).ccHide();
       cmDesFeederShape.get(i).ccHide();
@@ -198,7 +198,7 @@ public final class SubVFeederGroup implements EiGroup{
     //-- line dividing
     int[] lpDesUnderLine;
     int[] lpDesUpperLine;
-    switch(MainSpecificator.ccRefer().mnVFeederAmount){
+    switch(MainSpecificator.ccRefer().vmVFeederAmount){
       case 4:
         lpDesUpperLine=new int[]{0};
         lpDesUnderLine=new int[]{1,2,3,4};

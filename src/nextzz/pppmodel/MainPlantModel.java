@@ -102,7 +102,7 @@ public final class MainPlantModel {
     cmVSupplyTPH=0;
     for(
       int i=C_VF_INIT_ORDER;
-      i<=MainSpecificator.ccRefer().mnVFeederAmount;
+      i<=MainSpecificator.ccRefer().vmVFeederAmount;
       i++
     ){
       if(SubFeederDelegator.ccGetVFeederRunning(i)){

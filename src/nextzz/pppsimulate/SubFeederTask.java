@@ -28,8 +28,10 @@ import kosui.ppplogic.ZcOnDelayTimer;
 import kosui.ppplogic.ZcTimer;
 import kosui.ppplogic.ZiTask;
 import kosui.ppputil.VcLocalTagger;
+import nextzz.pppdelegate.SubAnalogDelegator;
 import nextzz.pppdelegate.SubFeederDelegator;
 import nextzz.pppdelegate.SubVCombustDelegator;
+import nextzz.pppdelegate.SubVProvisionDelegator;
 import nextzz.pppmodel.MainPlantModel;
 import nextzz.pppmodel.MainSpecificator;
 import processing.core.PApplet;
@@ -46,7 +48,7 @@ public final class SubFeederTask implements ZiTask{
   //===
   
   private static final int C_CONTROLLER_UPBOUND
-    = MainSpecificator.ccRefer().mnVFeederAmount+1;
+    = MainSpecificator.ccRefer().vmVFeederAmount+1;
   
   private final ZcChainController cmVFeederChainCTRL
     = new ZcChainController(2, C_CONTROLLER_UPBOUND);
@@ -69,7 +71,7 @@ public final class SubFeederTask implements ZiTask{
       new ZcHookFlicker(),new ZcHookFlicker()
     ));
   
-  private final ZcTimer simColdAggregateSensorTM
+  private final ZcTimer simVColdAggregateSensorTM
     = new ZcDelayor(50,50);
   
   private final List<? extends ZcTimer> simDesVFeederSensorTM
@@ -81,12 +83,33 @@ public final class SubFeederTask implements ZiTask{
       new ZcOnDelayTimer(11),new ZcOnDelayTimer(11)
     ));
   
-  private boolean  simVFeederCutout;
+  private boolean simVFeederCutout;
+  
+  private final List<ZcContainer> dcDesHotBin
+    = Collections.unmodifiableList(Arrays.asList(
+      new ZcContainer(),
+      new ZcContainer(),new ZcContainer(),new ZcContainer(),
+      new ZcContainer(),new ZcContainer(),new ZcContainer(),
+      new ZcContainer()
+    ));
+  
+  private final ZcContainer dcOverFlowedBin = new ZcContainer();
+  
+  private final ZcContainer dcOverSizedBin = new ZcContainer();
+  
+  private final ZcHookFlicker cmOverFlowedGateHOOK = new ZcHookFlicker();
+  
+  private final ZcHookFlicker cmOverSizedGateHOOK = new ZcHookFlicker();
+    
+  private final boolean[] dcDesVFSG = new boolean[16];
+  
+  private boolean
+    dcCAS=false,
+    dcOFD=false,
+    dcOSD=false
+  ;//,,,
   
   //===
-  
-  private boolean dcCAS=false;
-  private final boolean[] dcDesVFSG = new boolean[16];
   
   public final boolean ccGetColdAggregateSensor(){
     return dcCAS;
@@ -100,7 +123,7 @@ public final class SubFeederTask implements ZiTask{
     int lpSum=0;
     for(
       int i=MainPlantModel.C_VF_INIT_ORDER;
-      i<=MainSpecificator.ccRefer().mnVFeederAmount;
+      i<=MainSpecificator.ccRefer().vmVFeederAmount;
       i++
     ){
       lpSum+=SubFeederDelegator.ccGetVFeederSpeed(i);
@@ -108,7 +131,7 @@ public final class SubFeederTask implements ZiTask{
     if(lpSum<=100){return 0;}
     return PApplet.ceil(PApplet.map((float)lpSum,
       0f,
-      (float)(MainSpecificator.ccRefer().mnVFeederAmount
+      (float)(MainSpecificator.ccRefer().vmVFeederAmount
         * MainPlantModel.C_FEEDER_RPM_MAX), 
       0f, 255f
     ));
@@ -117,7 +140,7 @@ public final class SubFeederTask implements ZiTask{
   public final boolean ccGetVFeederStartFlag(){
     return simVFeederCutout;
   }//++>
-
+  
   //===
   
   @Override public void ccScan(){
@@ -139,7 +162,7 @@ public final class SubFeederTask implements ZiTask{
     cmVFeederChainCTRL.ccRun();
     
     //-- vf ** output
-    for(int i=1;i<=MainSpecificator.ccRefer().mnVFeederAmount;i++){
+    for(int i=1;i<=MainSpecificator.ccRefer().vmVFeederAmount;i++){
       cmDesVFeederHOOK.get(i)
         .ccHook(cmVFeederChainCTRL.ccGetPulseAt(i),!lpVFeederIL);
       boolean lpPermmision = (!dcDesVFeeder.get(i).ccIsTripped())
@@ -155,7 +178,7 @@ public final class SubFeederTask implements ZiTask{
       =cmVFeederChainCTRL.ccGetFlasher(MainSimulator.ccOneSecondClock());
     for(
       int i=MainPlantModel.C_VF_INIT_ORDER;
-      i<=MainSpecificator.ccRefer().mnVFeederAmount;
+      i<=MainSpecificator.ccRefer().vmVFeederAmount;
       i++
     ){
       SubFeederDelegator.ccSetVFeederRunning
@@ -165,45 +188,87 @@ public final class SubFeederTask implements ZiTask{
     }//..~
     SubVCombustDelegator.mnVColdAggreageSensorPL=dcCAS;
     
+    //-- hb ** feedback
+    for(int i=1;i<=MainSpecificator.ccRefer().vmAGCattegoryCount;i++){
+      SubAnalogDelegator.ccSetHotBinLevelorAD
+        (i,dcDesHotBin.get(i).ccGetScaledValue(255));
+    }//..~
+    
+    //-- hb ** of-os
+    cmOverFlowedGateHOOK.ccHook(SubVProvisionDelegator.mnOverFlowedGateSW);
+    dcOFD=cmOverFlowedGateHOOK.ccIsHooked();
+    SubVProvisionDelegator.mnOverFlowedGatePL=dcOFD;
+    cmOverSizedGateHOOK.ccHook(SubVProvisionDelegator.mnOverSizedGateSW);
+    dcOSD=cmOverSizedGateHOOK.ccIsHooked();
+    SubVProvisionDelegator.mnOverSizedGatePL=dcOSD;
+    //[head]:: the levelor
+    
   }//+++
 
   @Override public void ccSimulate() {
     
-    //-- v feeder
+    //-- cold aggregate sensor
+    simVColdAggregateSensorTM.ccAct(
+      simVFeederCutout
+      && SubVProvisionTask.ccRefer().dcHorizontalBelcon.ccIsContacted()
+    );
+    dcCAS=simVColdAggregateSensorTM.ccIsUp()
+      && SubVProvisionTask.ccRefer().dcInclinedBelcon.ccIsContacted();
+    
+    //-- aggregate supply
     simVFeederCutout=false;
+    boolean lpHotbinInjectCondition
+      = SubVProvisionTask.ccRefer().dcScreen.ccIsContacted()
+        && SubVProvisionTask.ccRefer().dcHotElevator.ccIsContacted();
     for(
       int i=MainPlantModel.C_VF_INIT_ORDER;
-      i<=MainSpecificator.ccRefer().mnVFeederAmount;
+      i<=MainSpecificator.ccRefer().vmVFeederAmount;
       i++
     ){
+      dcDesVFeeder.get(i).ccSimulate(0.64f);
       simDesVFeederSensorTM.get(i).ccAct(
             dcDesVFeeder.get(i).ccIsContacted()
         && (SubFeederDelegator.ccGetVFeederSpeed(i)>512)
       );
       dcDesVFSG[i]=!simDesVFeederSensorTM.get(i).ccIsUp();
       simVFeederCutout|=simDesVFeederSensorTM.get(i).ccIsUp();
+      if(dcCAS && lpHotbinInjectCondition){
+        dcDesHotBin.get(i).ccCharge(
+          SubFeederDelegator.ccGetVFeederSpeed(i)/120,
+          simDesVFeederSensorTM.get(i).ccIsUp()
+        );
+        if(i>=6){
+          dcOverSizedBin.ccCharge(
+            SubFeederDelegator.ccGetVFeederSpeed(i)/200,
+            dcDesHotBin.get(i).ccIsOverflowing()
+          );
+        }else{
+          dcOverFlowedBin.ccCharge(
+            SubFeederDelegator.ccGetVFeederSpeed(i)/300,
+            dcDesHotBin.get(i).ccIsOverflowing()
+          );
+        }//..?
+      }//..?
     }//..~
-    for(ZcMotor it:dcDesVFeeder){it.ccSimulate(0.66f);}
     
-    //-- v cas
-    simColdAggregateSensorTM.ccAct(simVFeederCutout
-        && SubVProvisionTask.ccRefer().dcHorizontalBelcon.ccIsContacted()
-    );
-    dcCAS=simColdAggregateSensorTM.ccIsUp()
-      && SubVProvisionTask.ccRefer().dcInclinedBelcon.ccIsContacted();
+    //-- of-os
+    dcOverFlowedBin.ccDischarge(99,dcOFD);
+    dcOverSizedBin.ccDischarge(99, dcOSD);
     
   }//+++
   
   //===
   
   @Deprecated public final void tstTagg(){
-    VcLocalTagger.ccTag("vf-ctrl", self.cmVFeederChainCTRL);
-    VcLocalTagger.ccTag("vf-1", self.dcDesVFeeder.get(1));
-    VcLocalTagger.ccTag("vf-2", self.dcDesVFeeder.get(2));
-    VcLocalTagger.ccTag("vf-3", self.dcDesVFeeder.get(3));
-    VcLocalTagger.ccTag("vf-4", self.dcDesVFeeder.get(4));
-    VcLocalTagger.ccTag("vf-5", self.dcDesVFeeder.get(5));
-    VcLocalTagger.ccTag("vf-6", self.dcDesVFeeder.get(6));
+    VcLocalTagger.ccTag("vf-ctrl", cmVFeederChainCTRL);
+    VcLocalTagger.ccTag("ag1", dcDesHotBin.get(1));
+    VcLocalTagger.ccTag("ag2", dcDesHotBin.get(2));
+    VcLocalTagger.ccTag("ag3", dcDesHotBin.get(3));
+    VcLocalTagger.ccTag("ag4", dcDesHotBin.get(4));
+    VcLocalTagger.ccTag("ag5", dcDesHotBin.get(5));
+    VcLocalTagger.ccTag("ag6", dcDesHotBin.get(6));
+    VcLocalTagger.ccTag("of", dcOverFlowedBin);
+    VcLocalTagger.ccTag("os", dcOverSizedBin);
   }//+++
   
 }//***eof

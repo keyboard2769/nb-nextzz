@@ -159,7 +159,7 @@ public final class SubFeederPane implements SiTabbable{
         .addChangeListener(cmFeederSpeedChangeListener);
       
       //-- V ** hide
-      if(i>MainSpecificator.ccRefer().mnVFeederAmount){
+      if(i>MainSpecificator.ccRefer().vmVFeederAmount){
         ScConst.ccHideComponent(cmDesVFeederBlock.get(i));
       }//..?
       

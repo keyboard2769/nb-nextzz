@@ -27,7 +27,9 @@ but hey, dose it sounds stupid if you make it DOUBLE-ZEUS ??
 
 #### heading
 
-- [ ] $ hot bin leveler 
+- [ ] $ hot bin and over flow and size leveler and transfer and gate and..
+        .. wohwohwohwohwohw hold it man!
+        .. no, im not gonna stop .. and sand bin temperature!!
 
 #### last
 

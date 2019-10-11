@@ -146,6 +146,8 @@ public final class SubVSurgeGroup implements EiGroup{
     lpPotentialY = cmPlate.ccGetY()+ConstLocalUI.C_INPANE_GAP;
     lpPotentialW = SubWeigherGroup.ccRefer().cmPlateAG.ccGetW()/4;
     lpPotentialH = ConstLocalUI.C_DEFAULT_SINGLELINE_H;
+    cmOverFlowedLV.ccSetColor(EcConst.C_ORANGE);
+    cmOverSizedLV.ccSetColor(EcConst.C_ORANGE);
     cmOverFlowedLV.ccSetSize(lpPotentialW,lpPotentialH);
     cmOverFlowedGateSW.ccSetSize(lpPotentialW,lpPotentialH);
     cmOverSizedLV.ccSetSize(lpPotentialW,lpPotentialH);
@@ -157,7 +159,8 @@ public final class SubVSurgeGroup implements EiGroup{
     cmOverSizedGateSW
       .ccSetLocation(cmOverSizedLV,0,ConstLocalUI.C_INPANE_GAP);
     cmSandTemperatureCB.ccSetH(ConstLocalUI.C_DEFAULT_SINGLELINE_H);
-    cmSandTemperatureCB.ccSetLocation(SubWeigherGroup.ccRefer().cmPlateAG.ccEndX()
+    cmSandTemperatureCB.ccSetLocation(
+      SubWeigherGroup.ccRefer().cmPlateAG.ccEndX()
        - cmSandTemperatureCB.ccGetW(),
       cmOverFlowedLV.ccGetY()
     );
@@ -179,7 +182,7 @@ public final class SubVSurgeGroup implements EiGroup{
     cmHotbinShape.ccSetLocation(lpPotentialX, lpPotentialY);
     int lpFixedCattCount
       = ZcRangedModel.ccLimitInclude
-        (MainSpecificator.ccRefer().mnAGCattegoryCount,1,7);
+        (MainSpecificator.ccRefer().vmAGCattegoryCount,1,7);
     lpPotentialW = (
         cmHotbinShape.ccGetW()
         - (ConstLocalUI.C_INPANE_GAP*(lpFixedCattCount+1))
@@ -193,10 +196,11 @@ public final class SubVSurgeGroup implements EiGroup{
           ),
         cmHotbinShape.ccGetY()+ConstLocalUI.C_INPANE_GAP
       );
+      cmDesHotbinLV.get(i).ccSetupColor(EcConst.C_ORANGE, EcConst.C_YELLOW);
       cmDesHotbinLV.get(i).ccSetSize(lpPotentialW,lpPotentialH);
     }//~
     //-- ag surge ** hiding
-    for(int i=MainSpecificator.ccRefer().mnAGCattegoryCount+1;i<=7;i++){
+    for(int i=MainSpecificator.ccRefer().vmAGCattegoryCount+1;i<=7;i++){
       cmDesHotbinLV.get(i).ccHide();
     }//..~
     
@@ -251,19 +255,19 @@ public final class SubVSurgeGroup implements EiGroup{
       lpPotentialY, 'a'
     );
     //-- fr surge ** optional
-    if(!MainSpecificator.ccRefer().mnDustSiloExists){
+    if(!MainSpecificator.ccRefer().vmDustSiloExists){
       EcConst.ccHideAll(Arrays.asList
         (cmDustSiloLV,cmDustSiloShape,cmDustSiloText));
     }//..?
-    if(!MainSpecificator.ccRefer().mnDustBinSeparated){
+    if(!MainSpecificator.ccRefer().vmDustBinSeparated){
       EcConst.ccHideAll(Arrays.asList
         (cmDustBinLV,cmDustBinShape,cmDustBinText));
     }//..?
-    if(MainSpecificator.ccRefer().mnFillerSiloCount<2){
+    if(MainSpecificator.ccRefer().vmFillerSiloCount<2){
       EcConst.ccHideAll(Arrays.asList
         (cmCementSiloLV,cmCementSiloShape,cmCementSiloText));
     }
-    if(MainSpecificator.ccRefer().mnFRCattegoryCount<3){
+    if(MainSpecificator.ccRefer().vmFRCattegoryCount<3){
       EcConst.ccHideAll(Arrays.asList
         (cmCementBinLV,cmCementBinShape,cmCementBinText));
     }//..?

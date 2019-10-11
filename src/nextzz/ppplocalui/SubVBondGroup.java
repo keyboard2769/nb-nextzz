@@ -250,6 +250,7 @@ public final class SubVBondGroup implements EiGroup{
     
     //-- bag indicator
     final int lpLevelLampGap=10;
+    cmBagHighLV.ccSetColor(EcConst.C_ORANGE);
     cmBagHighLV.ccSetLocation(
       cmBagFilterShape.ccGetX()+ConstLocalUI.C_INPANE_GAP*4,
       cmBagFilterShape.ccCenterY()

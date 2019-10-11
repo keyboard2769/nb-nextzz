@@ -40,10 +40,15 @@ public final class SubVProvisionDelegator {
     
     //-- ag
     
-    //-- ag ** tower bond
+    //-- ag ** bond->tower
     mnAGChainMSSW,mnAGChainMSPL,
     mnVDryerPL,mnVInclinedBelconPL,
     mnVHorizontalBelconPL,
+    
+    //-- ag ** of-os
+    mnOverFlowedLVPL,mnOverSizedLVPL,
+    mnOverFlowedGatePL,mnOverSizedGatePL,
+    mnOverFlowedGateSW,mnOverSizedGateSW,
 
     //-- fr
     
@@ -82,46 +87,48 @@ public final class SubVProvisionDelegator {
   public static final void ccBind(){
     
     //-- misc
-    
-    //-- misc ** pc -> sim
+    //-- misc ** motor ** v comp
     mnVCompressorMSSW=SubOperativeGroup.ccRefer().cmDesMotorSW
       .get(1).ccIsMousePressed();
-    mnMixerMSSW=SubOperativeGroup.ccRefer().cmDesMotorSW
-      .get(2).ccIsMousePressed();
-    mnVExfanMSSW=SubOperativeGroup.ccRefer().cmDesMotorSW
-      .get(3).ccIsMousePressed();
-    mnWeighSystemMSSW=SubOperativeGroup.ccRefer().cmDesMotorSW
-      .get(7).ccIsMousePressed();
-    mnVBCompressorMSSW=SubOperativeGroup.ccRefer().cmDesMotorSW
-      .get(10).ccIsMousePressed();
-    
-    //-- misc ** sim -> pc ** mspl
     SubOperativeGroup.ccRefer().cmDesMotorSW
       .get(1).ccSetIsActivated(mnVCompressorMSPL);
+    
+    //-- misc ** motor ** mixer
+    mnMixerMSSW=SubOperativeGroup.ccRefer().cmDesMotorSW
+      .get(2).ccIsMousePressed();
     SubOperativeGroup.ccRefer().cmDesMotorSW
       .get(2).ccSetIsActivated(mnMixerMSPL);
+    
+    //-- misc ** motor ** v exf
+    mnVExfanMSSW=SubOperativeGroup.ccRefer().cmDesMotorSW
+      .get(3).ccIsMousePressed();
     SubOperativeGroup.ccRefer().cmDesMotorSW
       .get(3).ccSetIsActivated(mnVExfanMSPL);
-    SubOperativeGroup.ccRefer().cmDesMotorSW
-      .get(7).ccSetIsActivated(mnWeighSystemMSPL);
-    SubOperativeGroup.ccRefer().cmDesMotorSW
-      .get(10).ccSetIsActivated(mnVBCompressorMSPL);
-    
-    //-- misc ** sim -> pc ** icon pl
     SubMixerGroup.ccRefer().cmMixerIcon
       .ccSetIsActivated(mnMixerIconPL);
     SubVBondGroup.ccRefer().cmExfanIcon
       .ccSetIsActivated(mnVExfanIconPL);
     
-    //-- AG
+    //-- misc ** motor ** weigh sys
+    mnWeighSystemMSSW=SubOperativeGroup.ccRefer().cmDesMotorSW
+      .get(7).ccIsMousePressed();
+    SubOperativeGroup.ccRefer().cmDesMotorSW
+      .get(7).ccSetIsActivated(mnWeighSystemMSPL);
     
-    //-- AG ** motoer switch
+    //-- misc ** motor ** vb comp
+    mnVBCompressorMSSW=SubOperativeGroup.ccRefer().cmDesMotorSW
+      .get(10).ccIsMousePressed();
+    SubOperativeGroup.ccRefer().cmDesMotorSW
+      .get(10).ccSetIsActivated(mnVBCompressorMSPL);
+    
+    //-- AG
+    //-- AG ** chain
+    //-- AG ** chain ** motoer switch
     mnAGChainMSSW=SubOperativeGroup.ccRefer().cmDesMotorSW
       .get(4).ccIsMousePressed();
     SubOperativeGroup.ccRefer().cmDesMotorSW
       .get(4).ccSetIsActivated(mnAGChainMSPL);
-    
-    //-- AG ** sim -> pc
+    //-- AG ** chain ** pl
     SubVBondGroup.ccRefer().cmVDryerRollerA
       .ccSetIsActivated(mnVDryerPL);
     SubVBondGroup.ccRefer().cmVDryerRollerC
@@ -131,25 +138,33 @@ public final class SubVProvisionDelegator {
     SubVFeederGroup.ccRefer().cmBelconForwarPL
       .ccSetIsActivated(mnVHorizontalBelconPL);
     
-    //-- filter
+    //-- AG ** of-os
+    mnOverFlowedGateSW=SubVSurgeGroup.ccRefer()
+      .cmOverFlowedGateSW.ccIsMousePressed();
+    mnOverSizedGateSW=SubVSurgeGroup.ccRefer()
+      .cmOverSizedGateSW.ccIsMousePressed();
+    SubVSurgeGroup.ccRefer().cmOverFlowedLV
+      .ccSetIsActivated(mnOverFlowedLVPL);
+    SubVSurgeGroup.ccRefer().cmOverSizedLV
+      .ccSetIsActivated(mnOverSizedLVPL);
+    SubVSurgeGroup.ccRefer().cmOverFlowedGateSW
+      .ccSetIsActivated(mnOverFlowedGatePL);
+    SubVSurgeGroup.ccRefer().cmOverSizedGateSW
+      .ccSetIsActivated(mnOverSizedGatePL);
+    
+    //-- FR ** bag filter
     SubVBondGroup.ccRefer().cmAirPulsePL.ccSetIsActivated(mnAirPulsingPL);
 
-    //-- filler supply
-    //-- filler supply ** pc -> plc
+    //-- FR ** bag filter ** supply
+    //-- FR ** bag filter ** supply ** pc -> plc
     mnFillerSystemSW=SubOperativeGroup.ccRefer().cmDesMotorSW
       .get(8).ccIsMousePressed();
-    //-- filler supply ** plc -> pc
-    SubOperativeGroup.ccRefer().cmDesMotorSW
-      .get(8).ccSetIsActivated(mnFillerSystemPL);
-    SubVSurgeGroup.ccRefer().cmFillerBinLV
-      .ccSetProportion(ConstLocalUI.ccLeverage
-        (mnFillerBinHLVPL, mnFillerBinMLVPL, mnFillerBinLLVPL));
     
-    //-- dust extraction
-    //-- dust extraction ** pc -> plc
+    //-- FR ** dust extraction
+    //-- FR ** dust extraction ** pc -> plc
     mnDustExtractionMSSW=SubOperativeGroup.ccRefer().cmDesMotorSW
       .get(9).ccIsMousePressed();
-    //-- dust extraction ** plc -> pc
+    //-- FR ** dust extraction ** plc -> pc
     SubOperativeGroup.ccRefer().cmDesMotorSW
       .get(9).ccSetIsActivated(mnDustExtractionMSPL);
     SubVBondGroup.ccRefer().cmBagHighLV
@@ -157,16 +172,21 @@ public final class SubVProvisionDelegator {
     SubVBondGroup.ccRefer().cmBagLowLV
       .ccSetIsActivated(mnBagHopperLLV);
     
-    //-- asphalt supply
-    //-- asphalt supply ** pc -> plc
+    //-- FR ** filler supply ** plc -> pc
+    SubOperativeGroup.ccRefer().cmDesMotorSW
+      .get(8).ccSetIsActivated(mnFillerSystemPL);
+    SubVSurgeGroup.ccRefer().cmFillerBinLV
+      .ccSetProportion(ConstLocalUI.ccLeverage
+        (mnFillerBinHLVPL, mnFillerBinMLVPL, mnFillerBinLLVPL));
+    
+    //-- AS ** supply
     mnASSupplyPumpMSSW=SubOperativeGroup.ccRefer().cmDesMotorSW
       .get(6).ccIsMousePressed();
-    //[todo]:: % mnASTankInWith
-    //[todo]::mnASTankOutWith
-    //-- asphalt supply **  plc -> pc
     SubOperativeGroup.ccRefer().cmDesMotorSW
       .get(6).ccSetIsActivated(mnASSupplyPumpMSPL);
+    //[todo]:: % mnASTankInWith
+    //[todo]:: % mnASTankOutWith
     
   }//+++
   
- }//***eof
+}//***eof

@@ -31,7 +31,7 @@ public class ZcContainer extends ZcRangedValueModel{
   public ZcContainer() {
     super(0, 29999);
     cmSpeedMag=1.0f;
-  }//..!
+  }//++!
   
   /**
    * @param cmMagnitude bigger is smaller
@@ -39,41 +39,60 @@ public class ZcContainer extends ZcRangedValueModel{
   public ZcContainer(float cmMagnitude){
     super(0,29999);
     cmSpeedMag=PApplet.constrain(cmMagnitude, 0.01f, 2.99f);
-  }//..!
+  }//++!
   
   //===
   
   public final void ccCharge(int pxSpeed){
     ccShift( 1*(VcNumericUtility.ccMagnify(pxSpeed, cmSpeedMag)&0xFF));
-  }//+++
+  }//++<
+  
+  public final void ccCharge(int pxSpeed, boolean pxCondition){
+    if(!pxCondition){return;}
+    ccCharge(pxSpeed);
+  }//++<
+  
   public final void ccDischarge(int pxSpeed){
     ccShift(-1*(VcNumericUtility.ccMagnify(pxSpeed, cmSpeedMag)&0xFF));
-  }//+++
+  }//++<
+  
+  public final void ccDischarge(int pxSpeed, boolean pxCondition){
+    if(!pxCondition){return;}
+    ccDischarge(pxSpeed);
+  }//++<
   
   //===
   
   public final boolean ccIsFull(){
     return ccIsAbove(25555);
-  }//+++
+  }//++>
   
   public final boolean ccIsMiddle(){
     return ccIsAbove(15555);
-  }//+++
+  }//++>
   
   public final boolean ccIsLow(){
     return ccIsAbove( 5555);
-  }//+++
+  }//++>
   
   public final boolean ccIsEmpty(){
     return ccIsBelow( 5555);
-  }//+++
+  }//++>
+  
+  public final boolean ccHasContent(){
+    return ccIsAbove(1);
+  }//++>
+  
+  public final boolean ccIsOverflowing(){
+    return ccIsAbove(29988);
+  }//++>
   
   public final int ccGetScaledValue(int pxSpan){
     return (int)(
       (((float)cmValue)/29999f)
       *((float)(pxSpan&0xFFFF))
     );
-  }//+++
+  }//++>
   
   //===
 

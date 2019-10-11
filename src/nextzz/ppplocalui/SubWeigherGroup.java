@@ -223,7 +223,7 @@ public final class SubWeigherGroup implements EiGroup{
     //-- ag weigher
     ConstLocalUI.ccAssembleWeighControl(cmPlateAG,
       cmDesAGLockSW,cmDesAGWeighSW, cmDesAGText,
-      MainSpecificator.ccRefer().mnAGCattegoryCount
+      MainSpecificator.ccRefer().vmAGCattegoryCount
     );
     ConstLocalUI.ccAssenbleCell(
       cmAGCellLV, cmAGTargetCB, cmAGCellCB,
@@ -306,19 +306,19 @@ public final class SubWeigherGroup implements EiGroup{
     
     //-- hiding
     //-- hiding ** ag
-    for(int i=MainSpecificator.ccRefer().mnAGCattegoryCount+1;i<=7;i++){
+    for(int i=MainSpecificator.ccRefer().vmAGCattegoryCount+1;i<=7;i++){
       cmDesAGLockSW.get(i).ccHide();
       cmDesAGWeighSW.get(i).ccHide();
       cmDesAGText.get(i).ccHide();
     }//..~
     //-- hiding ** fr
-    if(MainSpecificator.ccRefer().mnFRCattegoryCount<3){
+    if(MainSpecificator.ccRefer().vmFRCattegoryCount<3){
       cmDesFRLockSW.get(1).ccHide();
       cmDesFRWeighSW.get(1).ccHide();
       cmDesFRText.get(1).ccHide();
     }//..?
     //-- hiding ** as
-    switch(MainSpecificator.ccRefer().mnASCattegoryCount){
+    switch(MainSpecificator.ccRefer().vmASCattegoryCount){
       case 1:
         cmDesASLockSW.get(1).ccHide();
         cmDesASWeighSW.get(1).ccHide();
@@ -336,7 +336,7 @@ public final class SubWeigherGroup implements EiGroup{
     }//..?
     
     //-- hiding ** rc
-    if(MainSpecificator.ccRefer().mnRCCattegoryCount==0){
+    if(MainSpecificator.ccRefer().vmRCCattegoryCount==0){
       int lpDummyPage=99;
       cmPlateRC.ccSetPage(lpDummyPage);
       cmRCCellLV.ccSetPage(lpDummyPage);
@@ -347,7 +347,7 @@ public final class SubWeigherGroup implements EiGroup{
       for(EcShape it:cmDesRCText){it.ccSetPage(lpDummyPage);}
     }//..else?
     //-- hiding ** ad
-    if(MainSpecificator.ccRefer().mnADCattegoryCount==0){
+    if(MainSpecificator.ccRefer().vmADCattegoryCount==0){
       int lpDummyPage=99;
       cmPlateAD.ccSetPage(lpDummyPage);
       cmADCellLV.ccSetPage(lpDummyPage);

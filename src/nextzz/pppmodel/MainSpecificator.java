@@ -28,19 +28,19 @@ public final class MainSpecificator {
 
   //===
   
-  public final int mnVFeederAmount;
+  public final int vmVFeederAmount;
   
-  public final int mnAGCattegoryCount;
-  public final int mnFRCattegoryCount;
-  public final int mnASCattegoryCount;
-  public final int mnRCCattegoryCount;
-  public final int mnADCattegoryCount;
+  public final int vmAGCattegoryCount;
+  public final int vmFRCattegoryCount;
+  public final int vmASCattegoryCount;
+  public final int vmRCCattegoryCount;
+  public final int vmADCattegoryCount;
   
-  public final int mnFillerSiloCount;
-  public final boolean mnDustBinSeparated;
-  public final boolean mnDustSiloExists;
+  public final int vmFillerSiloCount;
+  public final boolean vmDustBinSeparated;
+  public final boolean vmDustSiloExists;
   
-  public final int mnMixtureSiloType;
+  public final int vmMixtureSiloType;
   
   //===
   
@@ -51,26 +51,26 @@ public final class MainSpecificator {
     //-- const 
       
     //-- const ** a
-    mnAGCattegoryCount=ccGetValue("mnAGCattegoryCount", 6);
-    mnFRCattegoryCount=ccGetValue("mnFRCattegoryCount", 2);
-    mnASCattegoryCount=ccGetValue("mnASCattegoryCount", 1);
-    mnRCCattegoryCount=ccGetValue("mnRCCattegoryCount", 0);
-    mnADCattegoryCount=ccGetValue("mnADCattegoryCount", 0);
+    vmAGCattegoryCount=ccGetValue("mnAGCattegoryCount", 6);
+    vmFRCattegoryCount=ccGetValue("mnFRCattegoryCount", 2);
+    vmASCattegoryCount=ccGetValue("mnASCattegoryCount", 1);
+    vmRCCattegoryCount=ccGetValue("mnRCCattegoryCount", 0);
+    vmADCattegoryCount=ccGetValue("mnADCattegoryCount", 0);
 
     //-- const ** v
-    mnVFeederAmount=ccGetValue("mnVFeederAmount", 6);
+    vmVFeederAmount=ccGetValue("mnVFeederAmount", 6);
 
     //-- const ** v ** f
-    mnFillerSiloCount=ccGetValue("mnFillerSiloCount", 1);
-    mnDustBinSeparated=ccGetValue("mnDustBinSeparated", false);
-    mnDustSiloExists=ccGetValue("mnDustSiloExists", true);
+    vmFillerSiloCount=ccGetValue("mnFillerSiloCount", 1);
+    vmDustBinSeparated=ccGetValue("mnDustBinSeparated", false);
+    vmDustSiloExists=ccGetValue("mnDustSiloExists", true);
 
     //-- s
     //.. [ 0 ]none
     //.. [ 1 ]beside tower
     //.. [ 2 ]none
     //.. [ 3 ]below mixer
-    /* 7 */mnMixtureSiloType = ccGetValue("mnMixtureSiloType", 0);
+    /* 7 */vmMixtureSiloType = ccGetValue("mnMixtureSiloType", 0);
     
     //-- const ** r
     
@@ -109,9 +109,9 @@ public final class MainSpecificator {
   
   public final boolean ccNeedsExtendsCurrentSlot(){
     return
-         mnRCCattegoryCount>0
-      || mnMixtureSiloType==1
-      || mnMixtureSiloType==3;
+         vmRCCattegoryCount>0
+      || vmMixtureSiloType==1
+      || vmMixtureSiloType==3;
   }//+++
   
  }//***eof
