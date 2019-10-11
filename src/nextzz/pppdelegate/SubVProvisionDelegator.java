@@ -151,16 +151,9 @@ public final class SubVProvisionDelegator {
       .ccSetIsActivated(mnOverFlowedGatePL);
     SubVSurgeGroup.ccRefer().cmOverSizedGateSW
       .ccSetIsActivated(mnOverSizedGatePL);
-    
-    //-- FR ** bag filter
-    SubVBondGroup.ccRefer().cmAirPulsePL.ccSetIsActivated(mnAirPulsingPL);
 
-    //-- FR ** bag filter ** supply
-    //-- FR ** bag filter ** supply ** pc -> plc
-    mnFillerSystemSW=SubOperativeGroup.ccRefer().cmDesMotorSW
-      .get(8).ccIsMousePressed();
-    
     //-- FR ** dust extraction
+    SubVBondGroup.ccRefer().cmAirPulsePL.ccSetIsActivated(mnAirPulsingPL);
     //-- FR ** dust extraction ** pc -> plc
     mnDustExtractionMSSW=SubOperativeGroup.ccRefer().cmDesMotorSW
       .get(9).ccIsMousePressed();
@@ -173,6 +166,8 @@ public final class SubVProvisionDelegator {
       .ccSetIsActivated(mnBagHopperLLV);
     
     //-- FR ** filler supply ** plc -> pc
+    mnFillerSystemSW=SubOperativeGroup.ccRefer().cmDesMotorSW
+      .get(8).ccIsMousePressed();
     SubOperativeGroup.ccRefer().cmDesMotorSW
       .get(8).ccSetIsActivated(mnFillerSystemPL);
     SubVSurgeGroup.ccRefer().cmFillerBinLV

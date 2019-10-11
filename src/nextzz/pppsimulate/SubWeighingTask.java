@@ -35,9 +35,20 @@ public class SubWeighingTask implements ZiTask{
   //===
   
   public final ZcGate dcMixerGate = new ZcGate(96);
-
+  
+  private final boolean[] dcDesASGate = new boolean[4];
+  private final ZcContainer dcASCell = new ZcContainer();
+  
   @Override public void ccScan() {
     
+    //-- ???
+    //[head]:: now what ??!
+    dcDesASGate[2]= SubWeighingDelegator.mnASwSWnII;
+    SubWeighingDelegator.mnASwPLnII=dcDesASGate[2];
+    dcDesASGate[0] = SubWeighingDelegator.mnASCellDischargeSW;
+    SubWeighingDelegator.mnASCellDischargePL=dcDesASGate[0];
+    
+    //-- mixer gate 
     dcMixerGate.ccSetupAction(MainSimulator.ccSelectModeForce(
         SubWeighingDelegator.mnMixerGateHoldSW,
         SubWeighingDelegator.mnMixerGateOpenSW,
@@ -55,6 +66,11 @@ public class SubWeighingTask implements ZiTask{
 
   @Override public void ccSimulate() {
     
+    //-- ???
+    dcASCell.ccCharge(10, dcDesASGate[2]);
+    dcASCell.ccDischarge(30, dcDesASGate[0]);
+    
+    //-- mixer gate
     dcMixerGate.ccSimulate
       (SubVProvisionTask.ccRefer().dcVCompressor.ccIsContacted());
     
@@ -63,6 +79,7 @@ public class SubWeighingTask implements ZiTask{
   //=== 
   
   @Deprecated public final void tstTagg(){
+    VcLocalTagger.ccTag("as-cell?",dcASCell);
     VcLocalTagger.ccTag("m-g?",dcMixerGate);
   }//+++
   

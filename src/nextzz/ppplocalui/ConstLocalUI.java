@@ -296,7 +296,10 @@ public final class ConstLocalUI {
     
     //-- restyling
     final int lpButtonScale=18;
-    for(EcButton it : pxDesLocker){it.ccSetSize(lpButtonScale);}
+    for(EcButton it : pxDesLocker){
+      it.ccSetColor(EcConst.C_RED);
+      it.ccSetSize(lpButtonScale);
+    }//..~
     for(EcButton it : pxDesWeigher){it.ccSetSize(lpButtonScale);}
     for(EcText it : pxDesLabel){it.ccSetTextColor(EcConst.C_LIT_GRAY);}
     

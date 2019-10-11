@@ -19,15 +19,20 @@
 
 package nextzz.pppmodel;
 
-import kosui.ppplogic.ZcOnDelayPulser;
+import kosui.ppplogic.ZcOnDelayTimer;
 import kosui.ppplogic.ZcTimer;
 import kosui.pppmodel.McPipedChannel;
 import kosui.ppputil.VcLocalConsole;
-import kosui.ppputil.VcLocalCoordinator;
 import kosui.ppputil.VcLocalTagger;
 import nextzz.pppdelegate.SubFeederDelegator;
 
 public final class MainPlantModel {
+  
+  //-- weighing
+  public static final int C_MATT_AGGR_UI_VALID_HEAD = 1;
+  public static final int C_MATT_AGGR_UI_VALID_MAX  = 7;//.. the BIG
+  public static final int C_MATT_REST_UI_VALID_HEAD = 1;
+  public static final int C_MATT_REST_UI_VALID_MAX  = 3;//.. the THIG
   
   //-- ct slot
   public static final int C_CTSLOT_CHANNEL_SINGLE = 16;
@@ -48,10 +53,10 @@ public final class MainPlantModel {
   //   ..   between pc and plc, the valid count hard coded as shown below.
   public static final int C_FEEDER_RPM_MIN =    0;
   public static final int C_FEEDER_RPM_MAX = 1800;
-  public static final int C_VF_INIT_ORDER  =    1;
-  public static final int C_VF_VALID_MAX   =   10;
-  public static final int C_RF_INIT_ORDER  =    1;
-  public static final int C_RF_VALID_MAX   =    5;
+  public static final int C_VF_UI_VALID_HEAD  =    1;
+  public static final int C_VF_UI_VALID_MAX   =   10;
+  public static final int C_RF_UI_VALID_HEAD  =    1;
+  public static final int C_RF_UI_VALID_MAX   =    5;
   
   //===
 
@@ -62,11 +67,11 @@ public final class MainPlantModel {
   //===
   
   public volatile boolean vmMessageBarBlockingFLG = false;
-  private final ZcTimer cmMessageBarBlockingTM = new ZcOnDelayPulser(32);
+  private final ZcTimer cmMessageBarBlockingTM = new ZcOnDelayTimer(32);
   
   
   public volatile boolean vmErrorClearHoldingFLG = false;
-  private final ZcTimer cmErrorClearHoldingTM = new ZcOnDelayPulser(16);
+  private final ZcTimer cmErrorClearHoldingTM = new ZcOnDelayTimer(16);
   
   //-- v combust
   public final McPipedChannel cmDesVFeederTPH = new McPipedChannel();
@@ -101,7 +106,7 @@ public final class MainPlantModel {
     //-- v feeder tph
     cmVSupplyTPH=0;
     for(
-      int i=C_VF_INIT_ORDER;
+      int i=C_VF_UI_VALID_HEAD;
       i<=MainSpecificator.ccRefer().vmVFeederAmount;
       i++
     ){

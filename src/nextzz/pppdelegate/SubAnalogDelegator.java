@@ -19,6 +19,7 @@
 
 package nextzz.pppdelegate;
 
+import nextzz.ppplocalui.SubMixerGroup;
 import nextzz.ppplocalui.SubVBondGroup;
 import nextzz.ppplocalui.SubVSurgeGroup;
 import nextzz.pppmodel.MainSpecificator;
@@ -69,7 +70,15 @@ public final class SubAnalogDelegator {
     SubVBondGroup.ccRefer().cmChuteTemperatureTB
       .ccSetValue(SubAnalogScalarManager.ccRefer().cmDesThermoCelcius
         .ccGet(SubAnalogScalarManager.C_I_THI_CHUTE));
-    //[head]:: where the fuck is sand bin ??!
+    SubVSurgeGroup.ccRefer().cmSandTemperatureCB
+      .ccSetValue(SubAnalogScalarManager.ccRefer().cmDesThermoCelcius
+        .ccGet(SubAnalogScalarManager.C_I_THIV_SAND));
+    SubVSurgeGroup.ccRefer().cmPipeTemperatureCB
+      .ccSetValue(SubAnalogScalarManager.ccRefer().cmDesThermoCelcius
+        .ccGet(SubAnalogScalarManager.C_I_THIII_PIPE));
+    SubMixerGroup.ccRefer().cmMixerTemperatureCB
+      .ccSetValue(SubAnalogScalarManager.ccRefer().cmDesThermoCelcius
+        .ccGet(SubAnalogScalarManager.C_I_THVI_MIXER));
     
     //-- vbond
     SubVBondGroup.ccRefer().cmVDPressureCB.ccSetValue

@@ -90,7 +90,11 @@ public final class SubVProvisionTask implements ZiTask{
   public final ZcMotor dcBagDustScrew = new ZcMotor(4);
   public final ZcContainer dcBagHopper = new ZcContainer(1.8f);
   public final ZcContainer dcDustSilo = new ZcContainer(1.2f);
-
+  
+  //-- asphault supply
+  public final ZcMotor dcAsSupplyPump = new ZcMotor(6);
+  private final ZcHookFlicker cmAsSupplyPumpHOOK = new ZcHookFlicker();
+  
   //===
 
   @Override public void ccScan(){
@@ -193,15 +197,16 @@ public final class SubVProvisionTask implements ZiTask{
     cmFillerBinInputStopTM.ccAct(cmFillerSupplyHOOK.ccIsHooked());
     cmFillerBinInpuStartTM.ccAct(cmFillerSupplyHOOK.ccIsHooked());
     //-- filler supply ** hardware io
-    cmFillerBinLevelDelayor.ccAct(dcFillerBin.ccIsMiddle());
+    cmFillerBinLevelDelayor.ccAct(dcFillerBin.ccIsFull());
     dcFillerElevator.ccContact(cmFillerBinInputStopTM.ccIsUp());
     dcFillerScrew.ccContact(!cmFillerBinLevelDelayor.ccIsUp()
       &&cmFillerBinInpuStartTM.ccIsUp()
     );
     //-- filler supply ** feedback
-    SubVProvisionDelegator.mnFillerBinMLVPL
+    SubVProvisionDelegator.mnFillerBinHLVPL
+      =SubVProvisionDelegator.mnFillerBinMLVPL
       =SubVProvisionDelegator.mnFillerBinLLVPL
-      =dcFillerBin.ccIsMiddle();
+      =cmFillerBinLevelDelayor.ccIsUp();
     SubVProvisionDelegator.mnFillerSystemPL=cmFillerBinInputStopTM.ccIsUp()&&
       (MainSimulator.ccOneSecondClock()||dcFillerScrew.ccIsContacted());
     SubAnalogDelegator.mnFillerSiloLV = dcFillerSilo.ccGetScaledValue(255);
@@ -242,10 +247,17 @@ public final class SubVProvisionTask implements ZiTask{
     SubVProvisionDelegator.mnBagHopperHLV=dcBagHopper.ccIsFull();
     SubAnalogDelegator.mnDustSiloLV=dcDustSilo.ccGetScaledValue(255);
     SubAnalogDelegator.mnCTSlotXII=dcBagDustScrew.ccGetCT();
-
-    //--???
-
-
+    
+    //-- asphault supply
+    cmAsSupplyPumpHOOK.ccHook(
+      SubVProvisionDelegator.mnASSupplyPumpMSSW,
+      dcAsSupplyPump.ccIsTripped()
+    );
+    dcAsSupplyPump.ccContact(cmAsSupplyPumpHOOK.ccIsHooked());
+    SubVProvisionDelegator.mnASSupplyPumpMSPL
+      = dcAsSupplyPump.ccIsContacted();
+    SubAnalogDelegator.mnCTSlotXIII=dcAsSupplyPump.ccGetCT();
+    
   }//+++
 
   //===
@@ -259,6 +271,7 @@ public final class SubVProvisionTask implements ZiTask{
       .dcVExfanDegree.ccGetProportion()/2f+0.44f);
     dcVBCompressor.ccSimulate(0.45f);
     dcCoarseDustScrew.ccSimulate(0.67f);
+    dcAsSupplyPump.ccSimulate(0.45f);
 
     //-- ag chain
     dcScreen.ccSimulate(0.66f);
@@ -277,7 +290,7 @@ public final class SubVProvisionTask implements ZiTask{
       64
     );
 
-    //--
+    //-- dust generate
     if(dcVExFan.ccIsContacted()){
       dcBagHopper.ccCharge(2);
       if(SubFeederTask.ccRefer().ccGetColdAggregateSensor()){
@@ -295,7 +308,7 @@ public final class SubVProvisionTask implements ZiTask{
         && dcBagDustScrew.ccIsContacted(),
       32
     );
-
+    
   }//+++
 
   //===

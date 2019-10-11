@@ -55,7 +55,7 @@ public final class SubMixerGroup implements EiGroup{
   public final EcValueBox
     cmWetCountBox = new EcValueBox("_wet", "00 S"),
     cmDryCountBox = new EcValueBox("_dry", "00 S"),
-    cmMixerTemperatureBox = new EcValueBox("_mixer", "-000 'C")
+    cmMixerTemperatureCB = new EcValueBox("_mixer", "-000 'C")
   ;//...
   public final EcText
     cmWetText = new EcText(VcTranslator.tr("_wet")),
@@ -93,8 +93,7 @@ public final class SubMixerGroup implements EiGroup{
       cmHasContentPL.ccEndY()+5
     );
     cmWetCountBox.ccSetLocation(cmDryCountBox, 0,2);
-    cmMixerTemperatureBox.ccSetLocation(
-      cmPlate.ccEndX()-cmMixerTemperatureBox.ccGetW()-5,
+    cmMixerTemperatureCB.ccSetLocation(cmPlate.ccEndX()-cmMixerTemperatureCB.ccGetW()-5,
       cmDryCountBox.ccGetY()
     );
     cmDryText.ccSetLocation(cmDryCountBox,'l');
@@ -103,7 +102,7 @@ public final class SubMixerGroup implements EiGroup{
     cmWetText.ccSetTextColor(EcConst.C_LIT_GRAY);
     ConstLocalUI.ccSetupClickableBoxColor(cmDryCountBox);
     ConstLocalUI.ccSetupClickableBoxColor(cmWetCountBox);
-    ConstLocalUI.ccSetupTemperatureBoxColor(cmMixerTemperatureBox);
+    ConstLocalUI.ccSetupTemperatureBoxColor(cmMixerTemperatureCB);
     
   }//..!
 
@@ -115,9 +114,8 @@ public final class SubMixerGroup implements EiGroup{
   }//+++
   
   @Override public List<? extends EcElement> ccGiveElementList(){
-    return Arrays.asList(
-      cmMixerIcon,cmMixerGate,cmHasContentPL,
-      cmDryCountBox,cmWetCountBox,cmMixerTemperatureBox
+    return Arrays.asList(cmMixerIcon,cmMixerGate,cmHasContentPL,
+      cmDryCountBox,cmWetCountBox,cmMixerTemperatureCB
     );
   }//+++
   

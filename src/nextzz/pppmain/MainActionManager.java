@@ -23,6 +23,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import javax.swing.SwingUtilities;
+import kosui.ppplocalui.EcButton;
 import kosui.ppplocalui.EcElement;
 import kosui.ppplocalui.EcValueBox;
 import kosui.ppplocalui.EiTriggerable;
@@ -42,6 +43,7 @@ import nextzz.ppplocalui.SubIndicativeGroup;
 import nextzz.ppplocalui.SubOperativeGroup;
 import nextzz.ppplocalui.SubVBondGroup;
 import nextzz.ppplocalui.SubVFeederGroup;
+import nextzz.ppplocalui.SubWeigherGroup;
 import nextzz.pppmodel.MainPlantModel;
 import nextzz.pppswingui.SubAssistantPane;
 import nextzz.pppsetting.MainSettingManager;
@@ -158,7 +160,9 @@ public final class MainActionManager {
   public final EiTriggerable cmVFeederRatioAutoFitting
     = new EiTriggerable() {
     @Override public void ccTrigger() {
-      System.err.println(".cmVFeederRatioAutoFitting::not_yet");
+      //[tofix]:: with the booked recipe
+      SubFeederPane.ccRefer().cmDesVFeederBlock.get(1).ccSetValue(1222);
+      SubFeederPane.ccRefer().cmDesVFeederBlock.get(6).ccSetValue(1222);
     }//+++
   };//***
   
@@ -221,6 +225,44 @@ public final class MainActionManager {
       SubDegreeControlManager.ccRefer().cmControllerRetargetting.ccTrigger();
     }//+++
   };//***
+  
+  //=== trigger ** operative ** weigh
+  
+  public final EiTriggerable cmAGLockFlipping
+    = new EiTriggerable() {
+    @Override public void ccTrigger() {
+      int lpID=VcLocalCoordinator.ccGetMouseOverID();
+      lpID-=SubWeigherGroup.ccRefer().cmDesAGLockSW.get(0).ccGetID();
+      boolean lpFlip = SubWeighingDelegator.ccGetAGLockSW(lpID);
+      lpFlip=!lpFlip;
+      SubWeighingDelegator.ccSetAGLockSW(lpID, lpFlip);
+    }//+++
+  };//***
+  
+  public final EiTriggerable cmFRLockFlipping
+    = new EiTriggerable() {
+    @Override public void ccTrigger() {
+      int lpID=VcLocalCoordinator.ccGetMouseOverID();
+      lpID-=SubWeigherGroup.ccRefer().cmDesFRLockSW.get(0).ccGetID();
+      boolean lpFlip = SubWeighingDelegator.ccGetFRLockSW(lpID);
+      lpFlip=!lpFlip;
+      SubWeighingDelegator.ccSetFRLockSW(lpID, lpFlip);
+    }//+++
+  };//***
+  
+  public final EiTriggerable cmASLockFlipping
+    = new EiTriggerable() {
+    @Override public void ccTrigger() {
+      int lpID=VcLocalCoordinator.ccGetMouseOverID();
+      lpID-=SubWeigherGroup.ccRefer().cmDesASLockSW.get(0).ccGetID();
+      boolean lpFlip = SubWeighingDelegator.ccGetASLockSW(lpID);
+      lpFlip=!lpFlip;
+      SubWeighingDelegator.ccSetASLockSW(lpID, lpFlip);
+    }//+++
+  };//***
+  
+  //[todo]::cmRCLockFlipping
+  //[todo]::cmADLockFlipping
   
   //=== trigger ** swing
    
@@ -327,8 +369,8 @@ public final class MainActionManager {
       
       //-- feeder
       for(
-        int i=MainPlantModel.C_VF_INIT_ORDER;
-        i<=MainPlantModel.C_VF_VALID_MAX;
+        int i=MainPlantModel.C_VF_UI_VALID_HEAD;
+        i<=MainPlantModel.C_VF_UI_VALID_MAX;
         i++
       ){
         SubFeederDelegator.ccSetVFeederForce(i,
@@ -393,6 +435,19 @@ public final class MainActionManager {
     VcLocalCoordinator.ccRegisterMouseTrigger
       (SubVBondGroup.ccRefer().cmTargetIncrementSW
         ,cmVTargetTemperatureIncrementing);
+    
+    //-- sketch ** floatting ** weighing
+    for(EcButton it : SubWeigherGroup.ccRefer().cmDesAGLockSW){
+      VcLocalCoordinator.ccRegisterMouseTrigger(it, cmAGLockFlipping);
+    }//..~
+    for(EcButton it : SubWeigherGroup.ccRefer().cmDesFRLockSW){
+      VcLocalCoordinator.ccRegisterMouseTrigger(it, cmFRLockFlipping);
+    }//..~
+    for(EcButton it : SubWeigherGroup.ccRefer().cmDesASLockSW){
+      VcLocalCoordinator.ccRegisterMouseTrigger(it, cmASLockFlipping);
+    }//..~
+    //[todo]::for(EcButton it : SubWeigherGroup.ccRefer().cmDesRC...
+    //[todo]::for(EcButton it : SubWeigherGroup.ccRefer().cmDesAD...
     
     //-- skectch ** key pressing
     VcLocalCoordinator.ccRegisterKeyTrigger

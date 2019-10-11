@@ -28,6 +28,7 @@ import kosui.ppputil.VcLocalTagger;
 import kosui.ppputil.VcNumericUtility;
 import nextzz.pppdelegate.SubAnalogDelegator;
 import nextzz.pppdelegate.SubVCombustDelegator;
+import nextzz.ppplocalui.SubVFeederGroup;
 
 public final class SubVCombusTask implements ZiTask{
   
@@ -71,9 +72,11 @@ public final class SubVCombusTask implements ZiTask{
     simBurnerBlastCELC = new ZcReal(32f, true),
     simDryerBodyCELC   = new ZcReal(34f),
     //--
-    simDryerChuteCELC  = new ZcReal(16f),
-    simBagEntranceCELC = new ZcReal(12f),
-    simSandBinCELC     = new ZcReal(14f)
+    simDryerChuteCELC   = new ZcReal(16f),
+    simBagEntranceCELC  = new ZcReal(12f),
+    simSandBinCELC      = new ZcReal(12f),
+    simMixerCELC        = new ZcReal(12f,true),
+    simAsPhaultPipeCELC = new ZcReal(14f,true)
   ;//,,,
   
   //===
@@ -180,6 +183,12 @@ public final class SubVCombusTask implements ZiTask{
       = MainSimulator.ccDecodeTemperature(simBagEntranceCELC.ccGet());
     SubAnalogDelegator.mnTHnI
       = MainSimulator.ccDecodeTemperature(simDryerChuteCELC.ccGet());
+    SubAnalogDelegator.mnTHnIV
+      = MainSimulator.ccDecodeTemperature(simSandBinCELC.ccGet()/* 7 */*1.3f);
+    SubAnalogDelegator.mnTHnVI
+      = MainSimulator.ccDecodeTemperature(simMixerCELC.ccGet());
+    SubAnalogDelegator.mnTHnIII
+      = MainSimulator.ccDecodeTemperature(simAsPhaultPipeCELC.ccGet());
     
     //-- ampere ** feedback
     SubAnalogDelegator.mnCTSlotIV=dcVBurnerFan.ccGetCT();
@@ -216,7 +225,7 @@ public final class SubVCombusTask implements ZiTask{
     dcVExfanPressureLS=simVExfanKPA.ccGet() < (-7f);
     dcVBurnerPressureLS=simVBurnerKPA.ccGet() > 3f;
     
-    //-- temperature
+    //-- temperature ** v combust
     simAtomsphereCELC.ccEffect(VcNumericUtility.ccRandom(-26f, 3f));
     simBurnerBlastCELC.ccEffect(
       dcVOilPump.ccIsOnFire()
@@ -241,7 +250,19 @@ public final class SubVCombusTask implements ZiTask{
     if(SubFeederTask.ccRefer().ccGetColdAggregateSensor()){
       ZcReal.ccTransfer(simDryerBodyCELC, simDryerChuteCELC);
     }//..?
-    //[todo]::ZcReal.ccTransfer(simDryerChuteCELC, simSandBinCELC);
+    if(SubFeederTask.ccRefer().ccIsSandBinNotEmpty()){
+      ZcReal.ccTransfer(simDryerChuteCELC, simSandBinCELC,10);
+    }//..?
+    
+    
+    //-- temperature ** other
+    //[todo]:: go find a better home
+    simMixerCELC.ccEffect(simAtomsphereCELC.ccGet());
+    simAsPhaultPipeCELC.ccEffect(
+      SubVProvisionTask.ccRefer().dcAsSupplyPump.ccIsContacted()
+        ? VcNumericUtility.ccRandom(-147f, 15f)
+        : simAtomsphereCELC.ccGet()
+    );
         
   }//+++
   

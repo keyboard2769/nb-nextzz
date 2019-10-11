@@ -81,8 +81,8 @@ public class SubFeederDelegator {
     
     //-- v feeder ** iteraticve
     for(
-      int i=MainPlantModel.C_VF_INIT_ORDER;
-      i<=MainPlantModel.C_VF_VALID_MAX;
+      int i=MainPlantModel.C_VF_UI_VALID_HEAD;
+      i<=MainPlantModel.C_VF_UI_VALID_MAX;
       i++
     ){
       //-- ** plc -> pc **stuck

@@ -122,7 +122,7 @@ public final class SubFeederTask implements ZiTask{
   public final int ccGetVFeederConveyorScaleBYTE(){
     int lpSum=0;
     for(
-      int i=MainPlantModel.C_VF_INIT_ORDER;
+      int i=MainPlantModel.C_VF_UI_VALID_HEAD;
       i<=MainSpecificator.ccRefer().vmVFeederAmount;
       i++
     ){
@@ -139,6 +139,10 @@ public final class SubFeederTask implements ZiTask{
   
   public final boolean ccGetVFeederStartFlag(){
     return simVFeederCutout;
+  }//++>
+  
+  public final boolean ccIsSandBinNotEmpty(){
+    return dcDesHotBin.get(1).ccHasContent();
   }//++>
   
   //===
@@ -177,7 +181,7 @@ public final class SubFeederTask implements ZiTask{
     SubFeederDelegator.mnVFChainMSPL
       =cmVFeederChainCTRL.ccGetFlasher(MainSimulator.ccOneSecondClock());
     for(
-      int i=MainPlantModel.C_VF_INIT_ORDER;
+      int i=MainPlantModel.C_VF_UI_VALID_HEAD;
       i<=MainSpecificator.ccRefer().vmVFeederAmount;
       i++
     ){
@@ -198,10 +202,11 @@ public final class SubFeederTask implements ZiTask{
     cmOverFlowedGateHOOK.ccHook(SubVProvisionDelegator.mnOverFlowedGateSW);
     dcOFD=cmOverFlowedGateHOOK.ccIsHooked();
     SubVProvisionDelegator.mnOverFlowedGatePL=dcOFD;
+    SubVProvisionDelegator.mnOverFlowedLVPL=dcOverFlowedBin.ccIsFull();
     cmOverSizedGateHOOK.ccHook(SubVProvisionDelegator.mnOverSizedGateSW);
     dcOSD=cmOverSizedGateHOOK.ccIsHooked();
     SubVProvisionDelegator.mnOverSizedGatePL=dcOSD;
-    //[head]:: the levelor
+    SubVProvisionDelegator.mnOverSizedLVPL=dcOverSizedBin.ccIsFull();
     
   }//+++
 
@@ -221,7 +226,7 @@ public final class SubFeederTask implements ZiTask{
       = SubVProvisionTask.ccRefer().dcScreen.ccIsContacted()
         && SubVProvisionTask.ccRefer().dcHotElevator.ccIsContacted();
     for(
-      int i=MainPlantModel.C_VF_INIT_ORDER;
+      int i=MainPlantModel.C_VF_UI_VALID_HEAD;
       i<=MainSpecificator.ccRefer().vmVFeederAmount;
       i++
     ){

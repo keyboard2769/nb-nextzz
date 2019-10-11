@@ -16,24 +16,21 @@ but hey, dose it sounds stupid if you make it DOUBLE-ZEUS ??
 - [ ] $ tre
 - [ ] $ dos
 - [ ] $ uno
-- [ ] $ lock switch determine mechanism
+- [ ] $ maybe we need to let the feeder speed box send manual pulse
+- [ ] $ over sized stuff should get located near the sixth bin
 - [ ] $ fill v provision and combust motor load factor
 - [ ] $ move feeder assistance switch to feeder pane
 - [ ] $ feeder flux setting representation needs another floating point
 - [ ] $ current slot overwhelming color and setting
-- [ ] $ fill the error list and log mechanism
+- [ ] $ complete the error list and log mechanism
 - [ ] $ refine case test of pid controller to have target manipulation
-- [ ] $ asphalt supply pump start and slot and lock
 
 #### heading
 
-- [ ] $ hot bin and over flow and size leveler and transfer and gate and..
-        .. wohwohwohwohwohw hold it man!
-        .. no, im not gonna stop .. and sand bin temperature!!
+- [ ] $ cell simulation
 
 #### last
 
-- [x] $ refactorred setting mechanism
 - [x] $ v burner and oil pump ct current showing is missing
 - [x] $ the pressure controller is targeting AD value!! fix it !!
 - [x] $ the coarse dust screw ct showing is missing
@@ -41,5 +38,8 @@ but hey, dose it sounds stupid if you make it DOUBLE-ZEUS ??
 - [x] $ fiex the feeder chain controller interlock
 - [x] $ temperature setting folder added
 - [x] $ added the error message loop and clear mechanism
+- [x] $ filled most part of the v surge layer
+- [x] $ asphalt supply pump start and slot and lock
+- [x] $ lock switch determine mechanism
 
 <hr><!--EOF-->
