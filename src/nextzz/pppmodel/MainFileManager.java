@@ -30,9 +30,7 @@ public final class MainFileManager {
     = "/Users/keypad/Yard/_temp/nextZZ/font/GB18030Bitmap-12.vlw";
   private static final String C_TEXT_FONT_LOCATION_MY_MAC_XIII
     = "/Users/Keypad/Documents/Processing/CodeP/ResourceFontCreator/data/"
-      + "MDSChGothic16-11.vlw";
-  private static final String C_LOCAL_FONT_MY_MI_XV
-    = "??!!?!!";
+      + "GB18030Bitmap-12.vlw";
   private static final String C_TRUETYPE_FONT_MY_MI_XV
     = "D:\\_installer\\FONTS\\DFHEI5.TTC";
   private static final String C_TRUETYPE_FONT_MY_SONY_XI

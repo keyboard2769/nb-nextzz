@@ -30,6 +30,7 @@ but hey, dose it sounds stupid if you make it DOUBLE-ZEUS ??
 
 - [ ] $ cell and weigh simulation
         .. say : sequence first, valueator later.
+        .. how the fuck came the batch count to be minus one?!
 
 #### last
 

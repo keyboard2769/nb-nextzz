@@ -30,6 +30,7 @@ import kosui.ppputil.VcStringUtility;
 import nextzz.pppdelegate.SubWeighingDelegator;
 import nextzz.ppplocalui.SubMixerGroup;
 import nextzz.ppplocalui.SubOperativeGroup;
+import nextzz.pppmain.MainSketch;
 import nextzz.pppsimulate.ZcWeighController;
 
 public final class SubWeighControlManager {
@@ -89,15 +90,15 @@ public final class SubWeighControlManager {
       && cmASWeighCTRL.ccIsWaitingToDischarge()
       && cmMixerReadyFlag;
     
-    cmAGWeighCTRL.ccSetHasNext(vmRemainBatch>0);
+    cmAGWeighCTRL.ccSetHasNext(vmRemainBatch>1);
     cmAGWeighCTRL.ccSetToNext(lpAGSkip);
     cmAGWeighCTRL.ccRun();
     
-    cmFRWeighCTRL.ccSetHasNext(vmRemainBatch>0);
+    cmFRWeighCTRL.ccSetHasNext(vmRemainBatch>1);
     cmFRWeighCTRL.ccSetToNext(lpFRSkip);
     cmFRWeighCTRL.ccRun();
     
-    cmASWeighCTRL.ccSetHasNext(vmRemainBatch>0);
+    cmASWeighCTRL.ccSetHasNext(vmRemainBatch>1);
     cmASWeighCTRL.ccSetToNext(lpASSkip);
     cmASWeighCTRL.ccRun();
     
@@ -131,11 +132,11 @@ public final class SubWeighControlManager {
     //--
     if(cmWetTimeManipulator.ccIsAt(1)){
       SubWeighingDelegator.mnMixerAutoDischargeFlag=true;
+      vmRemainBatch--;if(vmRemainBatch<0){vmRemainBatch=0;}
     }//..?
     if(SubWeighingDelegator.mnMixerDischargeConfirmFlag){
       cmMixerReadyFlag=true;
       SubWeighingDelegator.mnMixerAutoDischargeFlag=false;
-      vmRemainBatch--;
     }//..?
     
     //[head]:: i know you have absolutely no idea about what to do next
@@ -145,8 +146,15 @@ public final class SubWeighControlManager {
   public final void ccBind(){
     
     SubOperativeGroup.ccRefer().cmDesBatchTB.get(0).ccSetValue(vmRemainBatch);
-    SubMixerGroup.ccRefer().cmDryCountBox.ccSetValue(vmDryRemainSecond);
-    SubMixerGroup.ccRefer().cmWetCountBox.ccSetValue(vmWetRemainSecond);
+    SubMixerGroup.ccRefer().cmDryCountCB.ccSetValue(vmDryRemainSecond);
+    SubMixerGroup.ccRefer().cmWetCountCB.ccSetValue(vmWetRemainSecond);
+    
+    SubMixerGroup.ccRefer().cmDryCountCB
+      .ccSetIsActivated(cmIsDryCountingDown
+        && MainSketch.ccIsRollingAccrose(5, 2));
+    SubMixerGroup.ccRefer().cmWetCountCB
+      .ccSetIsActivated(cmIsWetCountingDown
+        && MainSketch.ccIsRollingAccrose(5, 2));
     
   }//++~
   

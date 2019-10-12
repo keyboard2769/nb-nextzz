@@ -303,6 +303,7 @@ public final class ConstLocalUI {
     for(EcButton it : pxDesWeigher){it.ccSetSize(lpButtonScale);}
     for(EcText it : pxDesLabel){it.ccSetTextColor(EcConst.C_LIT_GRAY);}
     
+    
     //-- relocating ** anchor
     int lpPotentialG=(pxPlate.ccGetW()-lpButtonScale*pxCategoryCount)/lpSize;
     pxDesLocker.get(pxCategoryCount).ccSetLocation
@@ -341,10 +342,12 @@ public final class ConstLocalUI {
     //-- resizing
     //   .. i dont know how to make this thing clean 
     final int lpGaugeWidth=4;
-    pxGauge.ccSetW(lpGaugeWidth);
-    pxGauge.ccSetH(pxTarget.ccGetH()+pxCell.ccGetH()-1);
-    pxDischarger.ccSetW(pxGauge.ccGetW()+pxCell.ccGetW());
+    pxTarget.ccSetH(C_DEFAULT_SINGLELINE_H);
+    pxCell.ccSetH(C_DEFAULT_SINGLELINE_H);
     pxDischarger.ccSetH(C_DEFAULT_SINGLELINE_H);
+    pxGauge.ccSetH(pxTarget.ccGetH()+pxCell.ccGetH()-1);
+    pxGauge.ccSetW(lpGaugeWidth);
+    pxDischarger.ccSetW(pxGauge.ccGetW()+pxCell.ccGetW());
     
     //-- restyling
     ccSetupClickableBoxColor(pxTarget);
@@ -475,7 +478,10 @@ public final class ConstLocalUI {
   
   public static final void ccSetupClickableBoxColor(EcValueBox pxBox){
     if(pxBox==null){return;}
-    pxBox.ccSetupColor(EcConst.C_DARK_YELLOW, EcConst.C_DARK_GREEN);
+    pxBox.ccSetupColor(
+      EcConst.ccAdjustColor(EcConst.C_DARK_GREEN, 16),
+      EcConst.C_DARK_GREEN
+    );
     pxBox.ccSetTextColor(EcConst.C_LIT_GRAY);
   }//+++
   

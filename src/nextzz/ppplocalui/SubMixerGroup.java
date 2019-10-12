@@ -53,8 +53,8 @@ public final class SubMixerGroup implements EiGroup{
   
   //-- box
   public final EcValueBox
-    cmWetCountBox = new EcValueBox("_wet", "00 S"),
-    cmDryCountBox = new EcValueBox("_dry", "00 S"),
+    cmWetCountCB = new EcValueBox("_wet", "00 S"),
+    cmDryCountCB = new EcValueBox("_dry", "00 S"),
     cmMixerTemperatureCB = new EcValueBox("_mixer", "-000 'C")
   ;//...
   public final EcText
@@ -88,20 +88,24 @@ public final class SubMixerGroup implements EiGroup{
     cmHasContentPL.ccSetSize(cmMixerIcon.ccGetW()-4,4);
     
     //-- box
-    cmDryCountBox.ccSetLocation(
+    cmDryCountCB.ccSetH(ConstLocalUI.C_DEFAULT_SINGLELINE_H);
+    cmWetCountCB.ccSetH(ConstLocalUI.C_DEFAULT_SINGLELINE_H);
+    cmMixerTemperatureCB.ccSetH(ConstLocalUI.C_DEFAULT_SINGLELINE_H);
+    cmDryCountCB.ccSetH(ConstLocalUI.C_DEFAULT_SINGLELINE_H);
+    cmDryCountCB.ccSetLocation(
       cmMixerIcon.ccGetX()-5,
       cmHasContentPL.ccEndY()+5
     );
-    cmWetCountBox.ccSetLocation(cmDryCountBox, 0,2);
+    cmWetCountCB.ccSetLocation(cmDryCountCB, 0,2);
     cmMixerTemperatureCB.ccSetLocation(cmPlate.ccEndX()-cmMixerTemperatureCB.ccGetW()-5,
-      cmDryCountBox.ccGetY()
+      cmDryCountCB.ccGetY()
     );
-    cmDryText.ccSetLocation(cmDryCountBox,'l');
+    cmDryText.ccSetLocation(cmDryCountCB,'l');
     cmDryText.ccSetTextColor(EcConst.C_LIT_GRAY);
-    cmWetText.ccSetLocation(cmWetCountBox,'l');
+    cmWetText.ccSetLocation(cmWetCountCB,'l');
     cmWetText.ccSetTextColor(EcConst.C_LIT_GRAY);
-    ConstLocalUI.ccSetupClickableBoxColor(cmDryCountBox);
-    ConstLocalUI.ccSetupClickableBoxColor(cmWetCountBox);
+    ConstLocalUI.ccSetupClickableBoxColor(cmDryCountCB);
+    ConstLocalUI.ccSetupClickableBoxColor(cmWetCountCB);
     ConstLocalUI.ccSetupTemperatureBoxColor(cmMixerTemperatureCB);
     
   }//..!
@@ -115,7 +119,7 @@ public final class SubMixerGroup implements EiGroup{
   
   @Override public List<? extends EcElement> ccGiveElementList(){
     return Arrays.asList(cmMixerIcon,cmMixerGate,cmHasContentPL,
-      cmDryCountBox,cmWetCountBox,cmMixerTemperatureCB
+      cmDryCountCB,cmWetCountCB,cmMixerTemperatureCB
     );
   }//+++
   
