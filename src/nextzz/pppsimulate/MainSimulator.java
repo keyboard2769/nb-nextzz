@@ -72,7 +72,10 @@ public final class MainSimulator {
   //=== body
   
   static public final void ccInit(){
-    /* 0 */SubErrorTask.ccRefer().ccSetErrorBit(77, true);
+    /* 6 */SubErrorTask.ccRefer().ccSetErrorBit(77, true);
+    /* 6 */SubWeighingTask.ccRefer().dcAGCell.ccSetValue(9999);
+    /* 6 */SubWeighingTask.ccRefer().dcFRCell.ccSetValue(9999);
+    /* 6 */SubWeighingTask.ccRefer().dcASCell.ccSetValue(9999);
   }//++!
   
   static public final void ccSimulate(){

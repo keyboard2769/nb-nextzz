@@ -25,6 +25,7 @@ import nextzz.ppplocalui.SubOperativeGroup;
 import nextzz.ppplocalui.SubVBondGroup;
 import nextzz.ppplocalui.SubVFeederGroup;
 import nextzz.ppplocalui.SubVSurgeGroup;
+import nextzz.pppmodel.MainPlantModel;
 
 public final class SubVProvisionDelegator {
     
@@ -69,7 +70,19 @@ public final class SubVProvisionDelegator {
     mnFillerBinHLVPL,mnFillerBinMLVPL,mnFillerBinLLVPL,
     
     //-- as
-    mnASSupplyPumpMSSW,mnASSupplyPumpMSPL
+    mnASSupplyPumpMSSW,mnASSupplyPumpMSPL,
+    
+    //-- assist
+    //-- assist ** SW
+    mnAssistSWnZ,mnAssistSWnI,mnAssistSWnII,mnAssistSWnIII,
+    mnAssistSWnIV,mnAssistSWnV,mnAssistSWnVI,mnAssistSWnVII,
+    mnAssistSWnVIII,mnAssistSWnIX,mnAssistSWnX,mnAssistSWnXI,
+    mnAssistSWnXII,mnAssistSWnXIII,mnAssistSWnXIV,mnAssistSWnXV,
+    //-- assist ** PL
+    mnAssistPLnZ,mnAssistPLnI,mnAssistPLnII,mnAssistPLnIII,
+    mnAssistPLnIV,mnAssistPLnV,mnAssistPLnVI,mnAssistPLnVII,
+    mnAssistPLnVIII,mnAssistPLnIX,mnAssistPLnX,mnAssistPLnXI,
+    mnAssistPLnXII,mnAssistPLnXIII,mnAssistPLnXIV,mnAssistPLnXV
     
   ;//...
   
@@ -182,6 +195,112 @@ public final class SubVProvisionDelegator {
     //[todo]:: % mnASTankInWith
     //[todo]:: % mnASTankOutWith
     
+    //-- assist
+    for(int i=0;i<=MainPlantModel.C_ASSIST_SW_MASK;i++){
+      ccSetAssistSW(i, SubOperativeGroup.ccRefer()
+        .cmDesAssistSW.get(i).ccIsMousePressed());
+      SubOperativeGroup.ccRefer()
+        .cmDesAssistSW.get(i).ccSetIsActivated(ccGetAssistPL(i));
+    }//..~
+    
   }//+++
+  
+  //===
+  
+  public static final void ccSetAssistSW(int pxOrder, boolean pxVal){
+    switch(pxOrder){
+      case  0:mnAssistSWnZ=pxVal;break;
+      case  1:mnAssistSWnI=pxVal;break;
+      case  2:mnAssistSWnII=pxVal;break;
+      case  3:mnAssistSWnIII=pxVal;break;
+      case  4:mnAssistSWnIV=pxVal;break;
+      case  5:mnAssistSWnV=pxVal;break;
+      case  6:mnAssistSWnVI=pxVal;break;
+      case  7:mnAssistSWnVII=pxVal;break;
+      //--
+      case  8:mnAssistSWnVIII=pxVal;break;
+      case  9:mnAssistSWnIX=pxVal;break;
+      case 10:mnAssistSWnX=pxVal;break;
+      case 11:mnAssistSWnXI=pxVal;break;
+      case 12:mnAssistSWnXII=pxVal;break;
+      case 13:mnAssistSWnXIII=pxVal;break;
+      case 14:mnAssistSWnXIV=pxVal;break;
+      case 15:mnAssistSWnXV=pxVal;break;
+      //--
+      default:break;
+    }//..?
+  }//++<
+  
+  public static final boolean ccGetAssistSW(int pxOrder){
+    switch(pxOrder){
+      case  0:return mnAssistSWnZ;
+      case  1:return mnAssistSWnI;
+      case  2:return mnAssistSWnII;
+      case  3:return mnAssistSWnIII;
+      case  4:return mnAssistSWnIV;
+      case  5:return mnAssistSWnV;
+      case  6:return mnAssistSWnVI;
+      case  7:return mnAssistSWnVII;
+      //--
+      case  8:return mnAssistSWnVIII;
+      case  9:return mnAssistSWnIX;
+      case 10:return mnAssistSWnX;
+      case 11:return mnAssistSWnXI;
+      case 12:return mnAssistSWnXII;
+      case 13:return mnAssistSWnXIII;
+      case 14:return mnAssistSWnXIV;
+      case 15:return mnAssistSWnXV;
+      //--
+      default:return false;
+    }//..?
+  }//++>
+  
+  public static final void ccSetAssistPL(int pxOrder, boolean pxVal){
+    switch(pxOrder){
+      case  0:mnAssistPLnZ=pxVal;break;
+      case  1:mnAssistPLnI=pxVal;break;
+      case  2:mnAssistPLnII=pxVal;break;
+      case  3:mnAssistPLnIII=pxVal;break;
+      case  4:mnAssistPLnIV=pxVal;break;
+      case  5:mnAssistPLnV=pxVal;break;
+      case  6:mnAssistPLnVI=pxVal;break;
+      case  7:mnAssistPLnVII=pxVal;break;
+      //--
+      case  8:mnAssistPLnVIII=pxVal;break;
+      case  9:mnAssistPLnIX=pxVal;break;
+      case 10:mnAssistPLnX=pxVal;break;
+      case 11:mnAssistPLnXI=pxVal;break;
+      case 12:mnAssistPLnXII=pxVal;break;
+      case 13:mnAssistPLnXIII=pxVal;break;
+      case 14:mnAssistPLnXIV=pxVal;break;
+      case 15:mnAssistPLnXV=pxVal;break;
+      //--
+      default:break;
+    }//..?
+  }//++<
+  
+  public static final boolean ccGetAssistPL(int pxOrder){
+    switch(pxOrder){
+      case  0:return mnAssistPLnZ;
+      case  1:return mnAssistPLnI;
+      case  2:return mnAssistPLnII;
+      case  3:return mnAssistPLnIII;
+      case  4:return mnAssistPLnIV;
+      case  5:return mnAssistPLnV;
+      case  6:return mnAssistPLnVI;
+      case  7:return mnAssistPLnVII;
+      //--
+      case  8:return mnAssistPLnVIII;
+      case  9:return mnAssistPLnIX;
+      case 10:return mnAssistPLnX;
+      case 11:return mnAssistPLnXI;
+      case 12:return mnAssistPLnXII;
+      case 13:return mnAssistPLnXIII;
+      case 14:return mnAssistPLnXIV;
+      case 15:return mnAssistPLnXV;
+      //--
+      default:return false;
+    }//..?
+  }//++>
   
 }//***eof

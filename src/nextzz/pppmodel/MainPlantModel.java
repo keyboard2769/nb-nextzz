@@ -28,6 +28,9 @@ import nextzz.pppdelegate.SubFeederDelegator;
 
 public final class MainPlantModel {
   
+  //-- general
+  public static final int C_ASSIST_SW_MASK = 15;
+  
   //-- weighing
   public static final int C_MATT_AGGR_UI_VALID_HEAD = 1;
   public static final int C_MATT_AGGR_UI_VALID_MAX  = 7;//.. the BIG
@@ -100,8 +103,9 @@ public final class MainPlantModel {
     if(cmErrorClearHoldingTM.ccIsUp()){vmErrorClearHoldingFLG=false;}
     
     //-- manager
-    SubDegreeControlManager.ccRefer().ccLogic();
     SubAnalogScalarManager.ccRefer().ccLogic();
+    SubWeighControlManager.ccRefer().ccLogic();
+    SubDegreeControlManager.ccRefer().ccLogic();
     
     //-- v feeder tph
     cmVSupplyTPH=0;

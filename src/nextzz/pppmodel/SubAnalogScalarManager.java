@@ -55,18 +55,18 @@ public final class SubAnalogScalarManager {
   
   //===
   
-  public static final Integer C_KEY_CA = 0x99;
+  public static final Integer C_KEY_CELL_AG = 0x01;
+  public static final Integer C_KEY_CELL_FR = 0x02;
+  public static final Integer C_KEY_CELL_AS = 0x03;
+  //[todo]::public static final Integer C_KEY_CELL_RC = ???;
+  //[todo]::public static final Integer C_KEY_CELL_AD = ???;
   public static final Integer C_KEY_VB = 0x01;
   public static final Integer C_KEY_VD = 0x02;
   public static final Integer C_KEY_VE = 0x03;
   //[todo]::public static final Integer C_KEY_RB = ???;
   //[todo]::public static final Integer C_KEY_RD = ???;
   //[todo]::public static final Integer C_KEY_RE = ???;
-  //[todo]::public static final Integer C_KEY_CELL_AG = ???;
-  //[todo]::public static final Integer C_KEY_CELL_FR = ???;
-  //[todo]::public static final Integer C_KEY_CELL_AS = ???;
-  //[todo]::public static final Integer C_KEY_CELL_FR = ???;
-  //[todo]::public static final Integer C_KEY_CELL_AD = ???;
+  public static final Integer C_KEY_CA = 0x99;
   
   //===
   
@@ -87,20 +87,26 @@ public final class SubAnalogScalarManager {
   
   private final List<ZcScaledModel> cmListOfCTSlotScalar
     = new ArrayList<ZcScaledModel>(32);
-
+  
   private final List<ZcScaledModel> cmListOfVFeederFluxScalar
     = new ArrayList<ZcScaledModel>(16);
   
-  private final ZcScaledModel cmVDryerPressureScalar
-    = new ZcScaledModel(1500, 2500, 0, 200);
-  
-  private final ZcScaledModel cmVBurnerDegreeScalar
-    = new ZcScaledModel(400, 3600, 0, 100);
-  
-  private final ZcScaledModel cmVExfanDegreeScalar
-    = new ZcScaledModel(400, 3600, 0, 100);
-  
   //===
+  
+  private final ZcScaledModel cmAGCellScalar
+    = new ZcScaledModel(400, 3600, 0, 4000);
+  
+  private final ZcScaledModel cmFRCellScalar
+    = new ZcScaledModel(400, 3600, 0, 5000);
+  
+  private final ZcScaledModel cmASCellScalar
+    = new ZcScaledModel(400, 3600, 0, 5000);
+  
+  //[todo]:: private final ZcScaledModel cmRCCellScalar
+  
+  //[todo]:: private final ZcScaledModel cmADCellScalar
+  
+  //=== 
   
   private final ZcRevisedScaledModel cmThermoCouplScalar
     = new ZcRevisedScaledModel(1000, 4680, 0, 1472);
@@ -112,16 +118,27 @@ public final class SubAnalogScalarManager {
   public final McPipedChannel cmDesThermoCelcius = new McPipedChannel();
   
   //===
+  
+  private final ZcScaledModel cmVBurnerDegreeScalar
+    = new ZcScaledModel(400, 3600, 0, 100);
+  
+  private final ZcScaledModel cmVDryerPressureScalar
+    = new ZcScaledModel(1500, 2500, 0, 200);
+  
+  private final ZcScaledModel cmVExfanDegreeScalar
+    = new ZcScaledModel(400, 3600, 0, 100);
+  
+  //=== 
+  
+  //[todo]::cmRDryerPressureScalar
+  //[todo]::cmRBurnerDegreeScalar
+  //[todo]::cmRExfanDegreeScalar
+  
+  //===
     
   public final void ccInit(){
     
     //-- WORDY indexed
-    for(int i=0;i<32;i++){
-      //-- ct slot ..1000d -> 100.0f [A]
-      cmListOfCTSlotScalar.add(new ZcScaledModel(0, 5000, 0, 1000));
-    }//+++
-    
-    //-- DOUBLY indexed
     for(int i=0;i<16;i++){
       
       //-- feeder flux
@@ -135,15 +152,35 @@ public final class SubAnalogScalarManager {
       
     }//+++
     
+    //-- DOUBLY indexed
+    for(int i=0;i<32;i++){
+      //-- ct slot ..1000d -> 100.0f [A]
+      cmListOfCTSlotScalar.add(new ZcScaledModel(0, 5000, 0, 1000));
+    }//+++
+    
+    //-- file inii
+    //[notyet]::cmAGCellScalar.ccSetupSpan..
+    //[notyet]::cmFRCellScalar.ccSetupSpan..
+    //[notyet]::cmASCellScalar.ccSetupSpan..
+    //[notyet]::cmRCCellScalar.ccSetupSpan..
+    //[notyet]::cmADCellScalar.ccSetupSpan..
+    
     //-- general register
-    cmMapOfScala.put(C_KEY_CA, cmThermoCouplScalar);
     cmMapOfScala.put(C_KEY_VB, cmVBurnerDegreeScalar);
     cmMapOfScala.put(C_KEY_VD, cmVDryerPressureScalar);
     cmMapOfScala.put(C_KEY_VE, cmVExfanDegreeScalar);
+    cmMapOfScala.put(C_KEY_CA, cmThermoCouplScalar);
     
   }//++!
   
   public final void ccLogic(){
+    
+    //-- cell
+    cmAGCellScalar.ccRun(SubAnalogDelegator.mnAGCellAD);
+    cmFRCellScalar.ccRun(SubAnalogDelegator.mnFRCellAD);
+    cmASCellScalar.ccRun(SubAnalogDelegator.mnASCellAD);
+    //[todo]::RC
+    //[todo]::AD
     
     //-- ct
     for(int i=0;i<MainPlantModel.C_CTSLOT_CHANNEL_MAX;i++){
@@ -164,12 +201,12 @@ public final class SubAnalogScalarManager {
         .ccSet(i,cmThermoCouplScalar.ccGetRevisedIntegerValue());
     }//..~
     
-    //-- v
+    //-- v combust
     cmVBurnerDegreeScalar.ccRun(SubAnalogDelegator.mnVBDegreeAD);
     cmVExfanDegreeScalar.ccRun(SubAnalogDelegator.mnVEDegreeAD);
     cmVDryerPressureScalar.ccRun(SubAnalogDelegator.mnVDPressureAD);
     
-    //-- r
+    //-- r combust
     
   }//++~
   
@@ -227,33 +264,43 @@ public final class SubAnalogScalarManager {
     return cmListOfCTSlotScalar.get(pxIndex&31).ccGetScaledIntegerValue();
   }//++>
   
-  //=== pressure
-  //=== pressure ** v
+  //=== Cell
   
-  synchronized public final int ccGetVDryerKPA(){
-    return cmVDryerPressureScalar.ccGetScaledIntegerValue();
+  synchronized public final int ccGetAGCellKG(){
+    return cmAGCellScalar.ccGetScaledIntegerValue();
   }//++>
   
-  //=== pressure ** r
+  synchronized public final int ccGetFRCellKG(){
+    return cmFRCellScalar.ccGetScaledIntegerValue();
+  }//++>
   
-  //=== degree
-  //=== degree ** v 
-  //=== degree ** v ** vb
+  synchronized public final int ccGetASCellKG(){
+    return cmASCellScalar.ccGetScaledIntegerValue();
+  }//++>
   
-  //[todo]::.. % set vb span
-  //[todo]::.. % set vb offset
+  //[todo]:: ccGetRCCellKG
+  //[todo]:: ccGetADCellKG
+  
+  //=== V combust
   
   synchronized public final int ccGerVBurnerPercentage(){
     return cmVBurnerDegreeScalar.ccGetScaledIntegerValue();
   }//++>
   
-  //=== degree ** v ** ve
+  synchronized public final int ccGetVDryerKPA(){
+    return cmVDryerPressureScalar.ccGetScaledIntegerValue();
+  }//++>
   
   synchronized public final int ccGetVExfanPercentage(){
     return cmVExfanDegreeScalar.ccGetScaledIntegerValue();
   }//++>
   
-  //=== utility
+  //=== R combust
+  //[todo]::ccGerRBurnerPercentage
+  //[todo]::ccGetRDryerKPA
+  //[todo]::ccGetRExfanPercentage
+  
+  //=== general interface 
   
   synchronized public final
   void ccSetScalaADOffset(Integer pxKey, int pxVal){

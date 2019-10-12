@@ -63,7 +63,7 @@ public final class SubOperativeGroup implements EiGroup{
   ));//...
   
   //-- assistance pane
-  public final EcShape cmAssistancePane = new EcShape();
+  public final EcShape cmAssistPlate = new EcShape();
   public final List<EcButton> cmDesAssistSW
     = Collections.unmodifiableList(Arrays.asList(
     //--
@@ -203,18 +203,18 @@ public final class SubOperativeGroup implements EiGroup{
     
     //-- assistance
     //-- assistance ** anchor
-    cmAssistancePane.ccSetX(ConstLocalUI.C_SIDE_MARGIN);
-    cmAssistancePane.ccSetY(
+    cmAssistPlate.ccSetX(ConstLocalUI.C_SIDE_MARGIN);
+    cmAssistPlate.ccSetY(
       cmMotorSwitchPane.ccGetY()
      -ConstLocalUI.C_ASSIST_SW_H
      -ConstLocalUI.C_SIDE_MARGIN*2
     );
-    cmAssistancePane.ccSetBaseColor(
+    cmAssistPlate.ccSetBaseColor(
       EcConst.ccAdjustColor(MainSketch.C_COLOR_BACKGROUD, -16)
     );
     //-- assistance
     cmDesAssistSW.get(1).ccSetLocation
-      (cmAssistancePane, ConstLocalUI.C_INPANE_GAP, ConstLocalUI.C_INPANE_GAP);
+      (cmAssistPlate, ConstLocalUI.C_INPANE_GAP, ConstLocalUI.C_INPANE_GAP);
     cmDesAssistSW.get(1).ccSetSize
       (ConstLocalUI.C_ASSIST_SW_W,ConstLocalUI.C_ASSIST_SW_H);
     for(int i=2;i<=8;i++){
@@ -226,9 +226,9 @@ public final class SubOperativeGroup implements EiGroup{
       cmDesAssistSW.get(it).ccHide();//..intended disposed
     }//..~
     //-- assistance ** pack
-    cmAssistancePane.ccSetW
+    cmAssistPlate.ccSetW
       (MainSketch.ccGetPrefferedW()-ConstLocalUI.C_SIDE_MARGIN*2);
-    cmAssistancePane.ccSetH
+    cmAssistPlate.ccSetH
       (ConstLocalUI.C_ASSIST_SW_H+ConstLocalUI.C_INPANE_GAP*2);
     
     //-- cell ** pane
@@ -435,7 +435,7 @@ public final class SubOperativeGroup implements EiGroup{
   }//..!
   
   @Override public List<? extends EcShape> ccGiveShapeList(){
-    return Arrays.asList(cmMotorSwitchPane,cmAssistancePane,
+    return Arrays.asList(cmMotorSwitchPane,cmAssistPlate,
       cmCellPane,cmZeroPlate,
       cmMixtureControlPane,cmMixtureAnnouncementPlate,
       cmBookingPane,cmBookingPlate,

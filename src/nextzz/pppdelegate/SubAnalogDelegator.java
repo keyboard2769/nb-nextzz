@@ -19,15 +19,21 @@
 
 package nextzz.pppdelegate;
 
+import kosui.ppputil.VcNumericUtility;
 import nextzz.ppplocalui.SubMixerGroup;
 import nextzz.ppplocalui.SubVBondGroup;
 import nextzz.ppplocalui.SubVSurgeGroup;
+import nextzz.ppplocalui.SubWeigherGroup;
 import nextzz.pppmodel.MainSpecificator;
 import nextzz.pppmodel.SubAnalogScalarManager;
 
 public final class SubAnalogDelegator {
   
   public static volatile int
+    
+    //-- cell
+    mnAGCellAD,mnFRCellAD,mnASCellAD,
+    //[todo]::mnRCCellAd,mnADCellAd,
     
     //-- ct
     mnCTSlotZ,mnCTSlotI,mnCTSlotII,mnCTSlotIII,
@@ -62,6 +68,18 @@ public final class SubAnalogDelegator {
   }//+++
   
   public static final void ccBind(){
+    
+    //-- cell
+    SubWeigherGroup.ccRefer().cmAGCellCB.ccSetValue
+      (SubAnalogScalarManager.ccRefer().ccGetAGCellKG());
+    SubWeigherGroup.ccRefer().cmFRCellCB.ccSetFloatValueForOneAfter(
+      VcNumericUtility.ccToFloatForOneAfter(
+        (SubAnalogScalarManager.ccRefer().ccGetFRCellKG())
+    ));
+    SubWeigherGroup.ccRefer().cmASCellCB.ccSetFloatValueForOneAfter(
+      VcNumericUtility.ccToFloatForOneAfter(
+        (SubAnalogScalarManager.ccRefer().ccGetASCellKG())
+    ));
     
     //-- temperature
     SubVBondGroup.ccRefer().cmEntranceTemperatureCB

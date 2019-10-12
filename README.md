@@ -22,12 +22,13 @@ but hey, dose it sounds stupid if you make it DOUBLE-ZEUS ??
 - [ ] $ move feeder assistance switch to feeder pane
 - [ ] $ feeder flux setting representation needs another floating point
 - [ ] $ current slot overwhelming color and setting
+- [ ] $ add the "linear setting" to THE list
 - [ ] $ complete the error list and log mechanism
 - [ ] $ refine case test of pid controller to have target manipulation
 
 #### heading
 
-- [ ] $ cell simulation
+- [ ] $ cell and weigh simulation
 
 #### last
 
