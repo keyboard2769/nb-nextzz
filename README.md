@@ -29,6 +29,7 @@ but hey, dose it sounds stupid if you make it DOUBLE-ZEUS ??
 #### heading
 
 - [ ] $ cell and weigh simulation
+        .. say : sequence first, valueator later.
 
 #### last
 

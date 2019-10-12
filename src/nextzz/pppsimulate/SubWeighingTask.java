@@ -47,13 +47,34 @@ public class SubWeighingTask implements ZiTask{
   private final boolean[] dcDesASGate = new boolean[4];
   final ZcContainer dcASCell = new ZcContainer();
   
+  
+  /* 6 */private int dtfmMixerContoller = 0;
+  
   @Override public void ccScan(){
     
+    //-- ???
+    if(SubWeighingDelegator.mnMixerAutoDischargeFlag){
+      if(dtfmMixerContoller==0){dtfmMixerContoller=1;}
+    }//..?
+    if(dcMixerGate.ccIsFullOpened()){
+      if(dtfmMixerContoller==1){
+        dtfmMixerContoller=2;
+        SubWeighingDelegator.mnMixerDischargeConfirmFlag=true;
+      }
+    }//..?
+    if(dcMixerGate.ccIsClosed()){
+      if(dtfmMixerContoller==2){
+        dtfmMixerContoller=0;
+      }
+    }//..?
+    
+    
     //-- mixer gate 
-    dcMixerGate.ccSetupAction(MainSimulator.ccSelectModeForce(
+    dcMixerGate.ccSetupAction(
+      MainSimulator.ccSelectModeForce(
         SubWeighingDelegator.mnMixerGateHoldSW,
         SubWeighingDelegator.mnMixerGateOpenSW,
-        false
+        SubWeighingDelegator.mnMixerAutoDischargeFlag
       )
     );
     SubWeighingDelegator.mnMixerGateFB

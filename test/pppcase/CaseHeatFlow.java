@@ -23,7 +23,7 @@ import kosui.ppplocalui.EcConst;
 import kosui.ppplocalui.EcElement;
 import kosui.ppplocalui.EcSlider;
 import kosui.ppplocalui.EcValueBox;
-import kosui.ppplogic.ZcImpulseTimer;
+import kosui.ppplogic.ZcImpulsiveTimer;
 import kosui.ppplogic.ZcReal;
 import kosui.ppplogic.ZcRoller;
 import kosui.ppplogic.ZcTimer;
@@ -64,7 +64,7 @@ public class CaseHeatFlow extends PApplet{
     cmTonPerHourCB = new EcValueBox("vd", "000 tph")
   ;//,,,
   
-  private final ZcTimer cmCoolingDamperTM = new ZcImpulseTimer(32);
+  private final ZcTimer cmCoolingDamperTM = new ZcImpulsiveTimer(32);
   private boolean dcCoolingDamperMV;
   
   @Override public void setup() {

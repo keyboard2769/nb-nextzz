@@ -23,6 +23,7 @@ import nextzz.ppplocalui.SubMixerGroup;
 import nextzz.ppplocalui.SubOperativeGroup;
 import nextzz.ppplocalui.SubWeigherGroup;
 import nextzz.pppmodel.MainPlantModel;
+import nextzz.pppmodel.SubWeighControlManager;
 
 public final class SubWeighingDelegator {
   
@@ -71,7 +72,9 @@ public final class SubWeighingDelegator {
     //[todo]::ad
     
     //--- Mixer
+    mnMixerDischargeConfirmFlag,
     mnMixerGateHoldSW,mnMixerGateOpenSW,
+    mnMixerAutoDischargeFlag,
     mnMixerGateFB,mnMixerGateClosedPL
     
   ;//,,,
@@ -83,6 +86,17 @@ public final class SubWeighingDelegator {
   }//++~
   
   public static final void ccBind(){
+    
+    //-- cell
+    SubWeigherGroup.ccRefer().cmAGTargetCB
+      .ccSetText(SubWeighControlManager.ccRefer()
+        .cmAGWeighCTRL.ccToTag());
+    SubWeigherGroup.ccRefer().cmFRTargetCB
+      .ccSetText(SubWeighControlManager.ccRefer()
+        .cmFRWeighCTRL.ccToTag());
+    SubWeigherGroup.ccRefer().cmASTargetCB
+      .ccSetText(SubWeighControlManager.ccRefer()
+        .cmASWeighCTRL.ccToTag());
     
     //-- aggregate
     mnAGCellDischargeSW=SubWeigherGroup.ccRefer()
@@ -103,14 +117,14 @@ public final class SubWeighingDelegator {
     }//++~
     
     //-- rest
-    //-- rest ** cell ** fr
+    //-- rest ** weigher ** fr
     mnFRCellDischargeSW=SubWeigherGroup.ccRefer()
       .cmDesFRWeighSW.get(0).ccIsMousePressed();
     SubWeigherGroup.ccRefer().cmDesFRWeighSW.get(0)
       .ccSetIsActivated(ccGetFRGatePL(0));
     SubWeigherGroup.ccRefer().cmDesFRLockSW.get(0)
       .ccSetIsActivated(mnFRCellLockSW);
-    //-- rest ** cell ** as
+    //-- rest ** weigher ** as
     mnASCellDischargeSW=SubWeigherGroup.ccRefer()
       .cmDesASWeighSW.get(0).ccIsMousePressed();
     SubWeigherGroup.ccRefer().cmDesASWeighSW.get(0)
