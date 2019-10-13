@@ -37,6 +37,7 @@ import kosui.ppputil.VcLocalCoordinator;
 import kosui.ppputil.VcTranslator;
 import nextzz.pppmain.MainActionManager;
 import nextzz.pppmain.MainSketch;
+import nextzz.pppmodel.MainPlantModel;
 
 public final class SubOperativeGroup implements EiGroup{
   
@@ -106,9 +107,12 @@ public final class SubOperativeGroup implements EiGroup{
   public final EcText cmNameText = new EcText(VcTranslator.tr("_name"));
   public final EcText cmKilogramText = new EcText("kg");
   public final EcText cmBatchText = new EcText(VcTranslator.tr("_batc"));
+  
+  //[head]:: a stop button? a skip text? a bunch of skip buttons?
+  
   public final EcShape cmBookingPlate = new EcShape();
+  public final EcElement cmWeighReadyPL = new EcElement("_ready");
   public final EcButton cmWeighStartSW = new EcButton("_start", 0x34A1);
-  public final EcButton cmWeighPauseSW = new EcButton("_pause", 0x34A2);
   public final EcButton cmWeighCancelSW = new EcButton("_cancel", 0x34A3);
   public final List<EcValueBox> cmDesRecipeTB
     = Collections.unmodifiableList(Arrays.asList(
@@ -330,7 +334,8 @@ public final class SubOperativeGroup implements EiGroup{
     //-- booking ** pack
     cmBookingPane.ccSetLocation
       (cmMixtureControlPane, ConstLocalUI.C_SIDE_MARGIN, 0);
-    cmBookingPane.ccSetEndPoint(cmMotorSwitchPane.ccGetX()-ConstLocalUI.C_SIDE_MARGIN,
+    cmBookingPane.ccSetEndPoint(
+      cmMotorSwitchPane.ccGetX()-ConstLocalUI.C_SIDE_MARGIN,
       cmMotorSwitchPane.ccEndY()
     );
     //-- booking ** title
@@ -364,7 +369,11 @@ public final class SubOperativeGroup implements EiGroup{
     cmDesBatchTB.get(0).ccSetLocation
       (cmDesKilogramTB.get(0), ConstLocalUI.C_INPANE_GAP, 0);
     //-- booking ** table
-    for(int i=1;i<=4;i++){
+    for(
+      int i=MainPlantModel.C_BOOK_UI_CAPA_HEAD;
+      i<=MainPlantModel.C_BOOK_UI_CAPA_TAIL;
+      i++
+    ){
       //--
       cmDesRecipeTB.get(i).ccSetLocation
         (cmDesRecipeTB.get(i-1), 0,ConstLocalUI.C_INPANE_GAP);
@@ -383,7 +392,9 @@ public final class SubOperativeGroup implements EiGroup{
       cmDesBatchTB.get(i).ccSetSize(cmDesBatchTB.get(i-1));
     }//..~
     //-- booking ** title ** label
-    lpPotentialY=cmBookingPane.ccGetY()+22+5;
+    lpPotentialY=cmBookingPane.ccGetY()
+      +ConstLocalUI.C_INPANE_MARGIN_U
+      +ConstLocalUI.C_INPANE_MARGIN_S;
     cmRecipeText.ccSetTextColor(EcConst.C_LIT_GRAY);
     cmNameText.ccSetTextColor(EcConst.C_LIT_GRAY);
     cmKilogramText.ccSetTextColor(EcConst.C_LIT_GRAY);
@@ -409,27 +420,27 @@ public final class SubOperativeGroup implements EiGroup{
     );
     //-- booking ** control ** switch
     lpPotentialW=55;
+    cmWeighReadyPL.ccSetSize(lpPotentialW, lpPotentialH);
     cmWeighStartSW.ccSetSize(lpPotentialW,lpPotentialH);
-    cmWeighPauseSW.ccSetSize(lpPotentialW,lpPotentialH);
     cmWeighCancelSW.ccSetSize(lpPotentialW,lpPotentialH);
-    cmWeighStartSW.ccSetLocation(cmBookingPlate,
+    cmWeighReadyPL.ccSetLocation(cmBookingPlate,
       ConstLocalUI.C_INPANE_GAP,
       ConstLocalUI.C_INPANE_GAP
     );
-    cmWeighPauseSW.ccSetLocation(cmWeighStartSW, ConstLocalUI.C_INPANE_GAP, 0);
-    cmWeighCancelSW.ccSetLocation(cmWeighPauseSW, ConstLocalUI.C_INPANE_GAP, 0);
+    cmWeighStartSW.ccSetLocation(cmWeighReadyPL, ConstLocalUI.C_INPANE_GAP, 0);
+    cmWeighCancelSW.ccSetLocation(cmWeighStartSW, ConstLocalUI.C_INPANE_GAP, 0);
     
     //-- inputtable ** register
     for(int it:new int[]{1,2,3,4}){
       VcLocalCoordinator.ccAddInputtable(cmDesRecipeTB.get(it));
       VcLocalCoordinator.ccAddInputtable(cmDesKilogramTB.get(it));
       VcLocalCoordinator.ccAddInputtable(cmDesBatchTB.get(it));
-      VcLocalCoordinator.ccRegisterMouseTrigger
-        (cmDesRecipeTB.get(it), MainActionManager.ccRefer().cmInputtableClicking);
-      VcLocalCoordinator.ccRegisterMouseTrigger
-        (cmDesKilogramTB.get(it), MainActionManager.ccRefer().cmInputtableClicking);
-      VcLocalCoordinator.ccRegisterMouseTrigger
-        (cmDesBatchTB.get(it), MainActionManager.ccRefer().cmInputtableClicking);
+      VcLocalCoordinator.ccRegisterMouseTrigger(cmDesRecipeTB.get(it),
+        MainActionManager.ccRefer().cmInputtableClicking);
+      VcLocalCoordinator.ccRegisterMouseTrigger(cmDesKilogramTB.get(it),
+        MainActionManager.ccRefer().cmInputtableClicking);
+      VcLocalCoordinator.ccRegisterMouseTrigger(cmDesBatchTB.get(it),
+        MainActionManager.ccRefer().cmInputtableClicking);
     }//..~
     
   }//..!
@@ -451,12 +462,11 @@ public final class SubOperativeGroup implements EiGroup{
     lpRes.addAll(cmDesNameCB);
     lpRes.addAll(cmDesKilogramTB);
     lpRes.addAll(cmDesBatchTB);
-    lpRes.addAll(Arrays.asList(
-      cmAGZeroSW,cmFRZeroSW,cmASZeroSW,cmRCZeroSW,
+    lpRes.addAll(Arrays.asList(cmAGZeroSW,cmFRZeroSW,cmASZeroSW,cmRCZeroSW,
       cmApplyZeroSW,
       cmMixerGateHoldSW,cmMixerGateAutoSW,cmMixerGateOpenSW,
       cmBellSW,cmSirenSW,
-      cmWeighStartSW,cmWeighPauseSW,cmWeighCancelSW
+      cmWeighReadyPL,cmWeighStartSW,cmWeighCancelSW
     ));//...
     return lpRes;
   }//+++

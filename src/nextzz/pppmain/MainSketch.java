@@ -109,6 +109,7 @@ public class MainSketch extends PApplet{
     MainPlantModel.ccRefer().ccInit();
     MainSettingManager.ccRefer().ccLoadFromFile(null);
     SubErrorListModel.ccRefer().ccInit();
+    SubWeighControlManager.ccRefer().ccInit();
     
     //-- simulator
     MainSimulator.ccInit();
@@ -351,7 +352,7 @@ public class MainSketch extends PApplet{
   }//+++
   
   public static final String ccGetLastLeavingStamp(){
-    return "_1910122222";
+    return "_1910131739";
   }//+++
 
 }//***eof

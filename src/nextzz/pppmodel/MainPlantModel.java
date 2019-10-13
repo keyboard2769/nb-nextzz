@@ -29,7 +29,15 @@ import nextzz.pppdelegate.SubFeederDelegator;
 public final class MainPlantModel {
   
   //-- general
-  public static final int C_ASSIST_SW_MASK = 15;
+  public static final int C_ASSIST_SW_SIZE  = 16;
+  public static final int C_ASSIST_SW_MASK  = 15;
+  
+  //-- book
+  public static final int C_BOOK_MODEL_SIZE     =  8;
+  public static final int C_BOOK_MODEL_MASK     =  7;
+  public static final int C_BOOK_UI_CAPA_HEAD  =  1;//..need manually fit
+  public static final int C_BOOK_UI_CAPA_TAIL  =  4;//..need manually fit
+  public static final int C_BOOK_UI_ROW_SIZE   =  5;//..need manually fit
   
   //-- weighing
   public static final int C_MATT_AGGR_UI_VALID_HEAD = 1;

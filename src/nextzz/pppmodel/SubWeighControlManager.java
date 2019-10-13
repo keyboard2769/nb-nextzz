@@ -19,14 +19,18 @@
 
 package nextzz.pppmodel;
 
+import java.util.HashMap;
 import kosui.ppplocalui.EcComponent;
+import kosui.ppplocalui.EcValueBox;
+import kosui.ppplocalui.EiTriggerable;
 import kosui.ppplogic.ZcImpulsivePulser;
 import kosui.ppplogic.ZcOnDelayTimer;
+import kosui.ppplogic.ZcRangedModel;
 import kosui.ppplogic.ZcRangedValueModel;
-import kosui.ppplogic.ZcStepper;
 import kosui.ppplogic.ZcTimer;
+import kosui.pppmodel.MiValue;
 import kosui.ppputil.VcLocalTagger;
-import kosui.ppputil.VcStringUtility;
+import kosui.ppputil.VcNumericUtility;
 import nextzz.pppdelegate.SubWeighingDelegator;
 import nextzz.ppplocalui.SubMixerGroup;
 import nextzz.ppplocalui.SubOperativeGroup;
@@ -44,7 +48,7 @@ public final class SubWeighControlManager {
   
   //===
   
-  public volatile int vmRemainBatch=6;
+  public volatile int vmRemainBatch=0;
   public volatile int vmDrySetFrame=90;
   public volatile int vmWetSetFrame=160;
   public volatile int vmDryRemainSecond=0;
@@ -57,23 +61,117 @@ public final class SubWeighControlManager {
   ;//,,,
   
   private final ZcTimer
-    cmAGDischargeDelayTM = new ZcImpulsivePulser(7),
-    cmFRDischargeDelayTM = new ZcImpulsivePulser(11);
+    cmAllWeighOverConfrimTM = new ZcOnDelayTimer(16),
+    cmAGDischargeDelayTM    = new ZcImpulsivePulser(7),
+    cmFRDischargeDelayTM    = new ZcImpulsivePulser(11);
   
   private final ZcRangedValueModel
     cmDryTimeManipulator = new ZcRangedValueModel(0, 65535),
     cmWetTimeManipulator = new ZcRangedValueModel(0, 65535);
   
+  private boolean cmIsAutoWeighReady,cmIsAutoWeighing;
   private boolean cmIsDryCountingDown,cmIsWetCountingDown;
   private boolean cmMixerReadyFlag=true;
   
-  public final void ccResetMixerOnMixingFlag(){
-    cmMixerReadyFlag=true;
-  }//+++
+  private final int[] 
+    cmDesRecipeNumber = new int[MainPlantModel.C_BOOK_MODEL_SIZE],
+    cmDesKiloGramme   = new int[MainPlantModel.C_BOOK_MODEL_SIZE],
+    cmDesBatchCount   = new int[MainPlantModel.C_BOOK_MODEL_SIZE];
+  
+  public final EiTriggerable cmWeighStartClicking = new EiTriggerable() {
+    @Override public void ccTrigger(){
+      if(cmIsAutoWeighReady){
+        ssBunkUp();
+        ssVerifyFirstRow();
+        ssRefreshUI();
+        cmIsAutoWeighing=true;
+      }//..?
+    }//+++
+  };//***
+  
+  public final EiTriggerable cmWeighCacncelClicking = new EiTriggerable() {
+    @Override public void ccTrigger(){
+      cmIsAutoWeighing=false;
+    }//+++
+  };//***
+  
+  private final HashMap<EcValueBox,MiValue> cmMapOfModelManiputator
+    = new HashMap<EcValueBox, MiValue>();
+  
+  private class McRecipeValue implements MiValue{
+    private final int cmIndex;
+    public McRecipeValue(int pxIndex){
+      cmIndex = pxIndex & MainPlantModel.C_BOOK_MODEL_MASK;
+    }//++!
+    @Override public void ccSetValue(Object pxVal){
+      cmDesRecipeNumber[cmIndex] = ZcRangedModel.ccLimitInclude(
+        VcNumericUtility.ccInteger(pxVal), 0, 999
+      );
+    }//++<
+    @Override public Object ccGetValue(){
+      return Integer.valueOf(cmDesRecipeNumber[cmIndex]);
+    }//++>
+  }//***
+  
+  private class McKilogramValue implements MiValue{
+    private final int cmIndex;
+    public McKilogramValue(int pxIndex){
+      cmIndex = pxIndex & MainPlantModel.C_BOOK_MODEL_MASK;
+    }//++!
+    @Override public void ccSetValue(Object pxVal){
+      cmDesKiloGramme[cmIndex] = ZcRangedModel.ccLimitInclude(
+        VcNumericUtility.ccInteger(pxVal), 0, 7999
+      );
+    }//++<
+    @Override public Object ccGetValue(){
+      return Integer.valueOf(cmDesKiloGramme[cmIndex]);
+    }//++>
+  }//***
+  
+  private class McBatchValue implements MiValue{
+    private final int cmIndex;
+    public McBatchValue(int pxIndex){
+      cmIndex = pxIndex & MainPlantModel.C_BOOK_MODEL_MASK;
+    }//++!
+    @Override public void ccSetValue(Object pxVal){
+      cmDesBatchCount[cmIndex] = ZcRangedModel.ccLimitInclude(
+        VcNumericUtility.ccInteger(pxVal), 0, 9999
+      );
+    }//++<
+    @Override public Object ccGetValue(){
+      return Integer.valueOf(cmDesBatchCount[cmIndex]);
+    }//++>
+  }//***
   
   //===
   
   public final void ccInit(){
+    
+    //-- init manipulator map
+    for(int i =MainPlantModel.C_BOOK_UI_CAPA_HEAD;
+            i<=MainPlantModel.C_BOOK_UI_CAPA_TAIL;i++){
+      
+      //-- init map ** recipe
+      cmMapOfModelManiputator.put(
+        SubOperativeGroup.ccRefer().cmDesRecipeTB.get(i),
+        new McRecipeValue(i)
+      );
+      
+      //-- init map ** kg
+      cmMapOfModelManiputator.put(
+        SubOperativeGroup.ccRefer().cmDesKilogramTB.get(i),
+        new McKilogramValue(i)
+      );
+      
+      //-- init map ** batch
+      cmMapOfModelManiputator.put(
+        SubOperativeGroup.ccRefer().cmDesBatchTB.get(i),
+        new McBatchValue(i)
+      );
+      
+    }//..~
+    
+    /* 6 */tstRallyUpTestBook();
     
   }//++!
   
@@ -84,20 +182,31 @@ public final class SubWeighControlManager {
     boolean lpFRSkip = EcComponent.ccIsKeyPressed('u');
     boolean lpASSkip = EcComponent.ccIsKeyPressed('o');
     
-    boolean lpDiss = EcComponent.ccIsKeyPressed('k')
-      && cmAGWeighCTRL.ccIsWaitingToDischarge()
+    cmAllWeighOverConfrimTM.ccAct(
+         cmAGWeighCTRL.ccIsWaitingToDischarge()
       && cmFRWeighCTRL.ccIsWaitingToDischarge()
       && cmASWeighCTRL.ccIsWaitingToDischarge()
+    );
+    
+    boolean lpStart = SubOperativeGroup.ccRefer()
+      .cmWeighStartSW.ccIsMousePressed();
+    
+    boolean lpDiss = //EcComponent.ccIsKeyPressed('k')
+      //&&
+      cmAllWeighOverConfrimTM.ccIsUp()
       && cmMixerReadyFlag;
     
+    cmAGWeighCTRL.ccStart(lpStart);
     cmAGWeighCTRL.ccSetHasNext(vmRemainBatch>1);
     cmAGWeighCTRL.ccSetToNext(lpAGSkip);
     cmAGWeighCTRL.ccRun();
     
+    cmFRWeighCTRL.ccStart(lpStart);
     cmFRWeighCTRL.ccSetHasNext(vmRemainBatch>1);
     cmFRWeighCTRL.ccSetToNext(lpFRSkip);
     cmFRWeighCTRL.ccRun();
     
+    cmASWeighCTRL.ccStart(lpStart);
     cmASWeighCTRL.ccSetHasNext(vmRemainBatch>1);
     cmASWeighCTRL.ccSetToNext(lpASSkip);
     cmASWeighCTRL.ccRun();
@@ -132,7 +241,11 @@ public final class SubWeighControlManager {
     //--
     if(cmWetTimeManipulator.ccIsAt(1)){
       SubWeighingDelegator.mnMixerAutoDischargeFlag=true;
-      vmRemainBatch--;if(vmRemainBatch<0){vmRemainBatch=0;}
+      vmRemainBatch--;if(vmRemainBatch<=0){
+        ssClearCurrentlyBooked();
+        vmRemainBatch=0;
+        cmIsAutoWeighing=false;
+      }//..?
     }//..?
     if(SubWeighingDelegator.mnMixerDischargeConfirmFlag){
       cmMixerReadyFlag=true;
@@ -145,10 +258,27 @@ public final class SubWeighControlManager {
   
   public final void ccBind(){
     
-    SubOperativeGroup.ccRefer().cmDesBatchTB.get(0).ccSetValue(vmRemainBatch);
+    //-- weigh control ui
+    
+    //-- weigh control ui ** THE key
+    SubOperativeGroup.ccRefer().cmDesBatchTB.get(0)
+      .ccSetValue(vmRemainBatch);
+    
+    //-- weigh control ui ** rest
+    SubOperativeGroup.ccRefer().cmDesRecipeTB.get(0)
+      .ccSetValue(cmDesRecipeNumber[0]);
+    SubOperativeGroup.ccRefer().cmDesKilogramTB.get(0)
+      .ccSetValue(cmDesKiloGramme[0]);
+    SubOperativeGroup.ccRefer().cmWeighReadyPL
+      .ccSetIsActivated(cmIsAutoWeighReady);
+    SubOperativeGroup.ccRefer().cmWeighStartSW
+      .ccSetIsActivated(cmIsAutoWeighing);
+    SubOperativeGroup.ccRefer().cmWeighCancelSW
+      .ccSetIsActivated(!cmIsAutoWeighing);
+    
+    //-- mixer ui
     SubMixerGroup.ccRefer().cmDryCountCB.ccSetValue(vmDryRemainSecond);
     SubMixerGroup.ccRefer().cmWetCountCB.ccSetValue(vmWetRemainSecond);
-    
     SubMixerGroup.ccRefer().cmDryCountCB
       .ccSetIsActivated(cmIsDryCountingDown
         && MainSketch.ccIsRollingAccrose(5, 2));
@@ -159,6 +289,80 @@ public final class SubWeighControlManager {
   }//++~
   
   //===
+  
+  private void ssRefreshUI(){
+    for(int i =MainPlantModel.C_BOOK_UI_CAPA_HEAD;
+            i<=MainPlantModel.C_BOOK_UI_CAPA_TAIL;i++){
+      SubOperativeGroup.ccRefer().cmDesRecipeTB.get(i)
+        .ccSetValue(cmDesRecipeNumber[i]);
+      SubOperativeGroup.ccRefer().cmDesKilogramTB.get(i)
+        .ccSetValue(cmDesKiloGramme[i]);
+      SubOperativeGroup.ccRefer().cmDesBatchTB.get(i)
+        .ccSetValue(cmDesBatchCount[i]);
+    }//..~
+  }//+++
+  
+  private void ssVerifyFirstRow(){
+    cmIsAutoWeighReady=(cmDesRecipeNumber[1]!=0)//..?.ccVerifyRecipeNumber?
+     && (cmDesKiloGramme[1]>999)
+     && (cmDesBatchCount[1]>0);
+  }//+++
+  
+  private void ssClearCurrentlyBooked(){
+    cmDesRecipeNumber[0]=0;
+    cmDesKiloGramme[0]=0;
+    cmDesBatchCount[0]=0;
+  }//+++
+  
+  private void ssBunkUp(){
+    if(vmRemainBatch!=0){return;}
+    cmDesRecipeNumber[0]=cmDesRecipeNumber[MainPlantModel.C_BOOK_UI_CAPA_HEAD];
+    cmDesKiloGramme[0]=cmDesKiloGramme[MainPlantModel.C_BOOK_UI_CAPA_HEAD];
+    cmDesBatchCount[0]=cmDesBatchCount[MainPlantModel.C_BOOK_UI_CAPA_HEAD];
+    vmRemainBatch=cmDesBatchCount[0];
+    for(int i=MainPlantModel.C_BOOK_UI_CAPA_HEAD;
+            i<MainPlantModel.C_BOOK_UI_CAPA_TAIL;i++){
+      cmDesRecipeNumber[i]=cmDesRecipeNumber[i+1];
+      cmDesKiloGramme[i]=cmDesKiloGramme[i+1];
+      cmDesBatchCount[i]=cmDesBatchCount[i+1];
+    }//..~
+    cmDesRecipeNumber[MainPlantModel.C_BOOK_UI_CAPA_TAIL]=0;
+    cmDesKiloGramme[MainPlantModel.C_BOOK_UI_CAPA_TAIL]=0;
+    cmDesBatchCount[MainPlantModel.C_BOOK_UI_CAPA_TAIL]=0;
+  }//+++
+  
+  //===
+  
+  public final void ccSetMixerReady(){
+    cmMixerReadyFlag=true;
+  }//++<
+  
+  public final void ccSetBookModelValue(EcValueBox pxKey, int pxVal){
+    
+    //-- checkin
+    if(pxKey==null){return;}
+    if(!cmMapOfModelManiputator.containsKey(pxKey)){return;}
+    
+    //-- set
+    MiValue lpManipulator = cmMapOfModelManiputator.get(pxKey);
+    lpManipulator.ccSetValue(Integer.valueOf(
+      pxVal & 0xFFFF //.. i am a cracked stone head who box on purpose
+    ));
+    
+    //-- post
+    ssVerifyFirstRow();
+    ssRefreshUI();
+    
+  }//++<
+  
+  //===
+  
+  @Deprecated public final void tstRallyUpTestBook(){
+    cmDesRecipeNumber[1]=11;cmDesKiloGramme[1]=3100;cmDesBatchCount[1]=3;
+    cmDesRecipeNumber[2]=12;cmDesKiloGramme[2]=3200;cmDesBatchCount[2]=4;
+    cmDesRecipeNumber[3]=13;cmDesKiloGramme[3]=3300;cmDesBatchCount[3]=5;
+    cmDesRecipeNumber[4]=14;cmDesKiloGramme[4]=3400;cmDesBatchCount[4]=6;
+  }//+++
   
   @Deprecated public final void tstTagg(){
     VcLocalTagger.ccTag("-w-ctrl?", cmAGWeighCTRL);

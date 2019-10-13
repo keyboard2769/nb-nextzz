@@ -42,7 +42,9 @@ public final class ZcWeighController extends ZcStepper{
   
   private int cmCurrentLevel = 0;
   
-  private boolean cmHasNext,cmToNext,cmToDischarge,cmIsDicharged;
+  private boolean 
+    cmToStart,
+    cmHasNext,cmToNext,cmToDischarge,cmIsDicharged;
   
   private final int C_LV_MAX;
   
@@ -60,7 +62,7 @@ public final class ZcWeighController extends ZcStepper{
     
     ccStep(
       S_READY, S_PRE,
-      true
+      cmToStart
     );
     
     if(ccIsAt(S_PRE)){
@@ -101,19 +103,23 @@ public final class ZcWeighController extends ZcStepper{
       S_DISCHARGE_CONFIRM,
       cmHasNext
         ? S_PRE
-        : S_ABEND,
+        : S_READY,
       true
     );
     
     
     ccStep(
-      S_ABEND, S_PRE,
-      cmHasNext
+      S_ABEND, S_READY,
+      false// % reset
     );
     
   }//++~
   
   //===
+  
+  public final void ccStart(boolean pxCondition){
+    cmToStart=pxCondition;
+  }//+++
   
   public final void ccSetHasNext(boolean pxCondition){
     cmHasNext=pxCondition;

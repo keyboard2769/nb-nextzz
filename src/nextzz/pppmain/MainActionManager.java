@@ -49,6 +49,7 @@ import nextzz.pppswingui.SubAssistantPane;
 import nextzz.pppsetting.MainSettingManager;
 import nextzz.pppsetting.MiSettingItem;
 import nextzz.pppmodel.SubDegreeControlManager;
+import nextzz.pppmodel.SubWeighControlManager;
 import nextzz.pppsimulate.MainSimulator;
 import nextzz.pppswingui.SubFeederPane;
 import nextzz.pppswingui.SubSettingPane;
@@ -120,12 +121,11 @@ public final class MainActionManager {
     @Override public void ccTrigger(){
       EcElement lpSource
        = VcLocalCoordinator.ccGetInstance().ccGetCurrentFocusedBox();
-      /* 6 *///[later]::
       if(lpSource instanceof EcValueBox){
-        ((EcValueBox)lpSource).ccSetValue(
-          VcNumericUtility.ccParseIntegerString
-            (VcLocalConsole.ccGetLastAccepted())
-        );
+        int lpInput = VcNumericUtility
+          .ccParseIntegerString(VcLocalConsole.ccGetLastAccepted());
+        SubWeighControlManager.ccRefer()
+          .ccSetBookModelValue((EcValueBox)lpSource, lpInput);
       }//..?
     }//+++
   };//***
@@ -448,6 +448,14 @@ public final class MainActionManager {
     }//..~
     //[todo]::for(EcButton it : SubWeigherGroup.ccRefer().cmDesRC...
     //[todo]::for(EcButton it : SubWeigherGroup.ccRefer().cmDesAD...
+    VcLocalCoordinator.ccRegisterMouseTrigger(
+      SubOperativeGroup.ccRefer().cmWeighStartSW,
+      SubWeighControlManager.ccRefer().cmWeighStartClicking
+    );
+    VcLocalCoordinator.ccRegisterMouseTrigger(
+      SubOperativeGroup.ccRefer().cmWeighCancelSW,
+      SubWeighControlManager.ccRefer().cmWeighCacncelClicking
+    );
     
     //-- skectch ** key pressing
     VcLocalCoordinator.ccRegisterKeyTrigger
