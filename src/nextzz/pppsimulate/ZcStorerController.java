@@ -160,9 +160,13 @@ public class ZcStorerController extends ZcStepper{
     return ccIsAt(S_OPEN) || ccIsAt(S_OPENED_CONFIRM);
   }//++>
   
-  public final boolean ccIsDischargeConfirmed(){
+  public final boolean ccIsOpenConfrimed(){
     return ccIsAt(S_OPENED_CONFIRM);
-  }//+++
+  }//++>
+  
+  public final boolean ccIsAtPost(){
+    return ccIsAt(S_POST_DISCHARGE);
+  }//++>
   
   //===
   

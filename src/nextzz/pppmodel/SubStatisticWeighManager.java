@@ -79,11 +79,11 @@ public final class SubStatisticWeighManager extends McTableAdapter{
     int cmRecipeID = 0;
     float cmMixtureTemp = 0f;
     float cmTotalKG = 0f;
-    float[] cmAGResultKG = new float[]{0f,0f,0f,0f, 0f,0f,0f,0f}; 
-    float[] cmFRResultKG = new float[]{0f,0f,0f,0f}; 
-    float[] cmASResultKG = new float[]{0f,0f,0f,0f}; 
-    float[] cmRCResultKG = new float[]{0f,0f,0f,0f}; 
-    float[] cmADResultKG = new float[]{0f,0f,0f,0f};
+    float[] cmDesAGResultKG = new float[]{0f,0f,0f,0f, 0f,0f,0f,0f}; 
+    float[] cmDesFRResultKG = new float[]{0f,0f,0f,0f}; 
+    float[] cmDesASResultKG = new float[]{0f,0f,0f,0f}; 
+    float[] cmDesRCResultKG = new float[]{0f,0f,0f,0f}; 
+    float[] cmDesADResultKG = new float[]{0f,0f,0f,0f};
     McWeighRecord(){}//++!
     McWeighRecord(
       int pxRecipe, float pxMixtrueTemp, float pxTotalKG,
@@ -111,13 +111,13 @@ public final class SubStatisticWeighManager extends McTableAdapter{
       }//..?
       cmTimeStamp=VcStampUtility.ccDataLogTypeI();
       for(int i=0;i<8;i++){
-        cmAGResultKG[i]=pxPacked[0+i];
+        cmDesAGResultKG[i]=pxPacked[0+i];
       }//..~
       for(int i=0;i<4;i++){
-        cmFRResultKG[i]=pxPacked[ 8+i];
-        cmASResultKG[i]=pxPacked[12+i];
-        cmRCResultKG[i]=pxPacked[16+i];
-        cmADResultKG[i]=pxPacked[20+i];
+        cmDesFRResultKG[i]=pxPacked[ 8+i];
+        cmDesASResultKG[i]=pxPacked[12+i];
+        cmDesRCResultKG[i]=pxPacked[16+i];
+        cmDesADResultKG[i]=pxPacked[20+i];
       }//..~
     }//++<
     final String ccGetColumnContent(int pxCount){
@@ -127,29 +127,29 @@ public final class SubStatisticWeighManager extends McTableAdapter{
         case 2:return Float.toString(cmMixtureTemp);
         case 3:return Float.toString(cmTotalKG);
         //--
-        case 4:return Float.toString(cmADResultKG[3]);
-        case 5:return Float.toString(cmADResultKG[2]);
-        case 6:return Float.toString(cmADResultKG[1]);
+        case 4:return Float.toString(cmDesADResultKG[3]);
+        case 5:return Float.toString(cmDesADResultKG[2]);
+        case 6:return Float.toString(cmDesADResultKG[1]);
         //--
-        case 7:return Float.toString(cmFRResultKG[3]);
-        case 8:return Float.toString(cmFRResultKG[2]);
-        case 9:return Float.toString(cmFRResultKG[1]);
+        case 7:return Float.toString(cmDesFRResultKG[3]);
+        case 8:return Float.toString(cmDesFRResultKG[2]);
+        case 9:return Float.toString(cmDesFRResultKG[1]);
         //--
-        case 10:return Float.toString(cmAGResultKG[7]);
-        case 11:return Float.toString(cmAGResultKG[6]);
-        case 12:return Float.toString(cmAGResultKG[5]);
-        case 13:return Float.toString(cmAGResultKG[4]);
-        case 14:return Float.toString(cmAGResultKG[3]);
-        case 15:return Float.toString(cmAGResultKG[2]);
-        case 16:return Float.toString(cmAGResultKG[1]);
+        case 10:return Float.toString(cmDesAGResultKG[7]);
+        case 11:return Float.toString(cmDesAGResultKG[6]);
+        case 12:return Float.toString(cmDesAGResultKG[5]);
+        case 13:return Float.toString(cmDesAGResultKG[4]);
+        case 14:return Float.toString(cmDesAGResultKG[3]);
+        case 15:return Float.toString(cmDesAGResultKG[2]);
+        case 16:return Float.toString(cmDesAGResultKG[1]);
         //--
-        case 17:return Float.toString(cmASResultKG[3]);
-        case 18:return Float.toString(cmASResultKG[2]);
-        case 19:return Float.toString(cmASResultKG[1]);
+        case 17:return Float.toString(cmDesASResultKG[3]);
+        case 18:return Float.toString(cmDesASResultKG[2]);
+        case 19:return Float.toString(cmDesASResultKG[1]);
         //--
-        case 20:return Float.toString(cmRCResultKG[3]);
-        case 21:return Float.toString(cmRCResultKG[2]);
-        case 22:return Float.toString(cmRCResultKG[1]);
+        case 20:return Float.toString(cmDesRCResultKG[3]);
+        case 21:return Float.toString(cmDesRCResultKG[2]);
+        case 22:return Float.toString(cmDesRCResultKG[1]);
         default:return "<?>";
       }//...?
     }//++>

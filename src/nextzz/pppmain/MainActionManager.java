@@ -308,7 +308,8 @@ public final class MainActionManager {
       }//..?
       String lpInput = ScConst.ccGetStringByInputBox(
         lpItem.ccGetLimitationInfo(),
-        lpItem.ccGetValue()
+        lpItem.ccGetValue(),
+        SubSettingPane.ccRefer().cmPane
       );
       if(!VcConst.ccIsValidString(lpInput)){return;}
       if(lpInput.equals(ScConst.C_M_CANCEL)){return;}

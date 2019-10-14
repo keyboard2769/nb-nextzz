@@ -16,7 +16,6 @@ but hey, dose it sounds stupid if you make it DOUBLE-ZEUS ??
 - [ ] $ tre
 - [ ] $ dos
 - [ ] $ uno
-- [ ] $ gimme a NEW mechanism about hiding and tableing
 - [ ] $ maybe some new color style for book input area ?
 - [ ] $ maybe we need to let the feeder speed box send manual pulse
 - [ ] $ over sized stuff should get located near the sixth bin
@@ -30,14 +29,10 @@ but hey, dose it sounds stupid if you make it DOUBLE-ZEUS ??
 
 #### heading
 
-- [ ] $ lets just slow down the mixer gate
-        .. and .. how do we test it? .. no we dont 
-        .. we have some problem on the delegating and interfacing thing now
+- [ ] $ it is time for the recipe handling mechanism
 
 #### last
 
-- [x] $ added the error message loop and clear mechanism
-- [x] $ filled most part of the v surge layer
 - [x] $ asphalt supply pump start and slot and lock
 - [x] $ lock switch determine mechanism
 - [x] $ cell and weigh simulation with assist buttons
@@ -46,6 +41,7 @@ but hey, dose it sounds stupid if you make it DOUBLE-ZEUS ??
 - [x] $ target box color now changes when the very cell is on weighing
 - [x] $ let the manual weigh button shine when the level match
 - [x] $ please not the csv translation trouble is caused by the scanner encode
-- [x] $ a workable skeleton weighing lamp and table in monitor pane
+- [x] $ a skeleton weighing lamp and table in monitor pane
+- [x] $ a skeleton temporary storage controller serve as mixer gate controller
 
 <hr><!--EOF-->

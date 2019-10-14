@@ -288,7 +288,7 @@ public final class SubWeighControlManager {
     
     //-- dry-wet
     if(lpDiss){
-      SubWeighingDelegator.mnMixerDischargeConfirm=false;
+      SubWeighingDelegator.mnMixerDischargedConfirm=false;
       cmIsDryCountingDown=true;
       cmMixerReadyFlag=false;
     }//..?
@@ -314,6 +314,7 @@ public final class SubWeighControlManager {
       
       //-- log
       SubStatisticWeighManager.ccRefer().ccOfferLog(
+        /* 6 */
         16,167f,4000,
         new float[]{
         100f,101f,102f,103f,104f,105f,106f,107f,
@@ -334,7 +335,7 @@ public final class SubWeighControlManager {
       }//..?
       
     }//..?
-    if(SubWeighingDelegator.mnMixerDischargeConfirm){
+    if(SubWeighingDelegator.mnMixerDischargedConfirm){
       cmMixerReadyFlag=true;
       SubWeighingDelegator.mnMixerAutoDischargeRequire=false;
     }//..?
@@ -427,10 +428,6 @@ public final class SubWeighControlManager {
   }//+++
   
   //===
-  
-  public final void ccSetMixerReady(){
-    cmMixerReadyFlag=true;
-  }//++<
   
   public final void ccSetBookModelValue(EcValueBox pxKey, int pxVal){
     

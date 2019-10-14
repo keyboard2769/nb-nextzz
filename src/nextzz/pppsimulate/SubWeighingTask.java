@@ -52,7 +52,7 @@ public class SubWeighingTask implements ZiTask{
   
   @Override public void ccScan(){
     
-    //-- ???
+    //-- mixe discharge auto
     cmMixerDischargeCTRL.ccSetupSuperiorLayer
       (SubWeighingDelegator.mnMixerAutoDischargeRequire);
     cmMixerDischargeCTRL.ccSetupSelfLayer(
@@ -60,8 +60,11 @@ public class SubWeighingTask implements ZiTask{
       dcMixerGate.ccIsFullOpened()
     );
     cmMixerDischargeCTRL.ccRun();
-    if(cmMixerDischargeCTRL.ccIsDischargeConfirmed()){
-      SubWeighingDelegator.mnMixerDischargeConfirm=true;
+    if(cmMixerDischargeCTRL.ccIsOpenConfrimed()){
+      SubWeighingDelegator.mnMixerAutoDischargeRequire=false;
+    }//..?
+    if(cmMixerDischargeCTRL.ccIsAtPost()){
+      SubWeighingDelegator.mnMixerDischargedConfirm=true;
     }//..?
 
     //-- ???

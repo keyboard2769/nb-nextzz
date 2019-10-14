@@ -99,7 +99,8 @@ public final class SubFeederPane implements SiTabbable{
           .toString(VcNumericUtility.ccInteger(lpCurrentSpinner.getValue()));
         String lpNewValueString = ScConst.ccGetStringByInputBox(
           VcTranslator.tr("_feeder_speed"),
-          lpCurrentValue
+          lpCurrentValue,
+          cmPane
         );
         if(!VcConst.ccIsValidString(lpNewValueString)){return;}
         if(lpNewValueString.equals(ScConst.C_M_CANCEL)){return;}
@@ -197,10 +198,10 @@ public final class SubFeederPane implements SiTabbable{
 
   @Override public final String ccGetTitle() {
     return C_TAB_NAME;
-  }//+++
+  }//++>
 
   @Override public final JPanel ccGetPane() {
     return cmPane;
-  }//+++
+  }//++>
   
 }//***eof

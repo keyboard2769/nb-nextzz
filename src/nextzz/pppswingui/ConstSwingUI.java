@@ -24,8 +24,9 @@ import kosui.pppmodel.MiPixillatable;
 import kosui.pppswingui.ScIcon;
 
 public final class ConstSwingUI {
-
+  
   public static final ScIcon O_WINDOW_ICON = new ScIcon();
+  
   //===
   
   static public final void ccInit(){

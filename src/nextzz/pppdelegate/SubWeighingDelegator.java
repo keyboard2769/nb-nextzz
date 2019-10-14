@@ -76,7 +76,7 @@ public final class SubWeighingDelegator {
     //[todo]::ad
     
     //--- Mixer
-    mnMixerDischargeConfirm,mnMixerAutoDischargeRequire,
+    mnMixerDischargedConfirm,mnMixerAutoDischargeRequire,
     mnMixerGateHoldSW,mnMixerGateOpenSW,
     mnMixerGateFB,mnMixerGateClosedPL
     
