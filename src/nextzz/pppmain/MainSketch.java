@@ -188,7 +188,7 @@ public class MainSketch extends PApplet{
     }//..?
     
     //-- debug
-    /* 4 */ SubWeighControlManager.ccRefer().tstTagg();
+    /* 4 */ SubWeighingTask.ccRefer().tstTagg();
     VcLocalTagger.ccTag("roll",nf(cmRoller,2));
     VcLocalTagger.ccTag
       ("latency",VcNumericUtility.ccFormatPointTwoFloat(17f-frameRate));
@@ -352,7 +352,7 @@ public class MainSketch extends PApplet{
   }//+++
   
   public static final String ccGetLastLeavingStamp(){
-    return "_1910141145";
+    return "_1910141627";
   }//+++
 
 }//***eof

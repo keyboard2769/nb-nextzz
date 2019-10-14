@@ -30,7 +30,9 @@ but hey, dose it sounds stupid if you make it DOUBLE-ZEUS ??
 
 #### heading
 
-- [ ] $ a skeleton weigh part in monitor pane include simple lamp and table
+- [ ] $ lets just slow down the mixer gate
+        .. and .. how do we test it? .. no we dont 
+        .. we have some problem on the delegating and interfacing thing now
 
 #### last
 
@@ -44,5 +46,6 @@ but hey, dose it sounds stupid if you make it DOUBLE-ZEUS ??
 - [x] $ target box color now changes when the very cell is on weighing
 - [x] $ let the manual weigh button shine when the level match
 - [x] $ please not the csv translation trouble is caused by the scanner encode
+- [x] $ a workable skeleton weighing lamp and table in monitor pane
 
 <hr><!--EOF-->

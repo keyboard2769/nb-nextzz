@@ -49,9 +49,11 @@ import nextzz.pppswingui.SubAssistantPane;
 import nextzz.pppsetting.MainSettingManager;
 import nextzz.pppsetting.MiSettingItem;
 import nextzz.pppmodel.SubDegreeControlManager;
+import nextzz.pppmodel.SubStatisticWeighManager;
 import nextzz.pppmodel.SubWeighControlManager;
 import nextzz.pppsimulate.MainSimulator;
 import nextzz.pppswingui.SubFeederPane;
+import nextzz.pppswingui.SubMonitorPane;
 import nextzz.pppswingui.SubSettingPane;
 
 public final class MainActionManager {
@@ -472,9 +474,16 @@ public final class MainActionManager {
       @Override public void ccTrigger() {
         VcConst.ccPrintln(
           "this is a public service announcement",
-          "this is only a Test "
+          "this is only a Test 'which ya not suppsed to use"
         );
         /* 7 */ //[givemesomerthing]::
+        SwingUtilities.invokeLater(new Runnable() {
+          @Override public void run() {
+            SubMonitorPane.ccRefer().cmStatisticWeighResultTable.ccRefresh();
+            ScConst.ccScrollToLast(SubMonitorPane.ccRefer().cmStatisticWeighResultTable);
+          }
+        });
+        
       }//+++
     });
     

@@ -23,6 +23,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import javax.swing.SwingUtilities;
 import kosui.ppplocalui.EcComponent;
 import kosui.ppplocalui.EcValueBox;
 import kosui.ppplocalui.EiTriggerable;
@@ -42,6 +43,7 @@ import nextzz.ppplocalui.SubOperativeGroup;
 import nextzz.ppplocalui.SubWeigherGroup;
 import nextzz.pppmain.MainSketch;
 import nextzz.pppsimulate.ZcWeighController;
+import nextzz.pppswingui.SubMonitorPane;
 
 public final class SubWeighControlManager {
 
@@ -210,26 +212,6 @@ public final class SubWeighControlManager {
     }//++>
   };//***
   
-  public final McTableAdapter cmStatisticResultModel = new McTableAdapter(){
-    @Override public int getColumnCount() {
-      /* 7 */return 11;//.. but how do we fix this??
-    }//++>
-    @Override public String getColumnName(int pxColumnIndex) {
-      switch (pxColumnIndex) {
-        case 0: return "?time";
-        case 1: return "?mtemp";
-        default: return "?not_yet";
-      }//...?
-    }//++>
-    @Override public int getRowCount() {
-      //[head]:: well, now what??
-      /* 4 */return 4;
-    }//+++
-    @Override public Object getValueAt(int pxRowIndex, int pxColumnIndex) {
-      return -9.9f;
-    }//++>
-  };//***
-  
   //===
   
   public final void ccInit(){
@@ -306,7 +288,7 @@ public final class SubWeighControlManager {
     
     //-- dry-wet
     if(lpDiss){
-      SubWeighingDelegator.mnMixerDischargeConfirmFlag=false;
+      SubWeighingDelegator.mnMixerDischargeConfirm=false;
       cmIsDryCountingDown=true;
       cmMixerReadyFlag=false;
     }//..?
@@ -329,16 +311,32 @@ public final class SubWeighControlManager {
     
     //--
     if(cmWetTimeManipulator.ccIsAt(1)){
-      SubWeighingDelegator.mnMixerAutoDischargeFlag=true;
+      
+      //-- log
+      SubStatisticWeighManager.ccRefer().ccOfferLog(
+        16,167f,4000,
+        new float[]{
+        100f,101f,102f,103f,104f,105f,106f,107f,
+        200f,201f,202f,203f,
+        300f,301f,302f,303f,
+        400f,401f,402f,403f,
+        500f,501f,502f,503f
+      });
+      SwingUtilities.invokeLater(SubMonitorPane.ccRefer()
+        .cmDynamicWeighResultTableRefreshing);
+      
+      //-- 
+      SubWeighingDelegator.mnMixerAutoDischargeRequire=true;
       vmRemainBatch--;if(vmRemainBatch<=0){
         ssClearCurrentBooked();
         vmRemainBatch=0;
         cmIsAutoWeighing=false;
       }//..?
+      
     }//..?
-    if(SubWeighingDelegator.mnMixerDischargeConfirmFlag){
+    if(SubWeighingDelegator.mnMixerDischargeConfirm){
       cmMixerReadyFlag=true;
-      SubWeighingDelegator.mnMixerAutoDischargeFlag=false;
+      SubWeighingDelegator.mnMixerAutoDischargeRequire=false;
     }//..?
     
     //[head]:: i know you have absolutely no idea about what to do next

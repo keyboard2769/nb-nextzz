@@ -31,12 +31,14 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
+import kosui.pppswingui.ScConst;
 import kosui.pppswingui.ScFactory;
 import kosui.pppswingui.ScGauge;
 import kosui.pppswingui.ScTable;
 import kosui.ppputil.VcTranslator;
 import nextzz.pppmodel.MainPlantModel;
 import nextzz.pppmodel.MainSpecificator;
+import nextzz.pppmodel.SubStatisticWeighManager;
 import nextzz.pppmodel.SubWeighControlManager;
 
 public final class SubMonitorPane implements SiTabbable{
@@ -88,12 +90,17 @@ public final class SubMonitorPane implements SiTabbable{
     = ScFactory.ccCreateTextLamp("[-:-]");
   
   public final ScTable cmDynamicWeighResultTable
-    = new ScTable(SubWeighControlManager.ccRefer()
-      .cmDynamicResultModel,80,80);
+    = new ScTable(SubWeighControlManager.ccRefer().cmDynamicResultModel,80,80);
   
   public final ScTable cmStatisticWeighResultTable
-    = new ScTable(SubWeighControlManager.ccRefer()
-      .cmStatisticResultModel,200,200);
+    = new ScTable(SubStatisticWeighManager.ccRefer(),200,200);
+  
+  public final Runnable cmDynamicWeighResultTableRefreshing=new Runnable(){
+    @Override public void run() {
+      SubMonitorPane.ccRefer().cmStatisticWeighResultTable.ccRefresh();
+      ScConst.ccScrollToLast(SubMonitorPane.ccRefer().cmStatisticWeighResultTable);
+    }//+++
+  };//***
   
   //===
   
@@ -118,6 +125,23 @@ public final class SubMonitorPane implements SiTabbable{
        it.ccSetText(VcTranslator.tr(it.ccGetKey()));
        it.ccSetPercentage(4);//..arbitrary
     }//..~
+    
+    //-- table config
+    //[todo]:: clean this!!
+    cmStatisticWeighResultTable.ccSetColumnWidth(0, 147);//..how do we make it constant?
+    cmStatisticWeighResultTable.ccSetColumnWidth(1, 63);//..how do we make it constant?
+    cmStatisticWeighResultTable.ccSetColumnWidth(2, 99);//..how do we make it constant?
+    cmStatisticWeighResultTable.ccSetColumnWidth(3, 99);//..how do we make it constant?
+    cmStatisticWeighResultTable.ccHideColumn(4);//..how do we make it specific?
+    cmStatisticWeighResultTable.ccHideColumn(5);//..how do we make it specific?
+    cmStatisticWeighResultTable.ccHideColumn(6);//..how do we make it specific?
+    /* 6 */cmStatisticWeighResultTable.ccHideColumn(9);//..how do we make it specific?
+    /* 6 */cmStatisticWeighResultTable.ccHideColumn(10);//..how do we make it specific?
+    /* 6 */cmStatisticWeighResultTable.ccHideColumn(17);//..how do we make it specific?
+    /* 6 */cmStatisticWeighResultTable.ccHideColumn(19);//..how do we make it specific?
+    /* 6 */cmStatisticWeighResultTable.ccHideColumn(20);//..how do we make it specific?
+    /* 6 */cmStatisticWeighResultTable.ccHideColumn(21);//..how do we make it specific?
+    /* 6 */cmStatisticWeighResultTable.ccHideColumn(22);//..how do we make it specific?
     
     //-- center pane 
     
@@ -144,7 +168,6 @@ public final class SubMonitorPane implements SiTabbable{
     JPanel lpCenterPane = ScFactory.ccCreateBorderPanel();
     lpCenterPane.add(lpWeighPartPane, BorderLayout.CENTER);
     lpCenterPane.add(lpCombustPartPane, BorderLayout.PAGE_END);
-    
     
     //-- pack
     cmPane.add(lpLeftWing,BorderLayout.LINE_START);

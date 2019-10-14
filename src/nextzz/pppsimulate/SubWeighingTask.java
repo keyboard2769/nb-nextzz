@@ -47,27 +47,23 @@ public class SubWeighingTask implements ZiTask{
   private final boolean[] dcDesASGate = new boolean[4];
   final ZcContainer dcASCell = new ZcContainer();
   
-  
-  /* 6 */private int dtfmMixerContoller = 0;
+  private final ZcStorerController cmMixerDischargeCTRL
+    = new ZcStorerController(4,48,4);
   
   @Override public void ccScan(){
     
     //-- ???
-    if(SubWeighingDelegator.mnMixerAutoDischargeFlag){
-      if(dtfmMixerContoller==0){dtfmMixerContoller=1;}
+    cmMixerDischargeCTRL.ccSetupSuperiorLayer
+      (SubWeighingDelegator.mnMixerAutoDischargeRequire);
+    cmMixerDischargeCTRL.ccSetupSelfLayer(
+      dcMixerGate.ccIsClosed(),
+      dcMixerGate.ccIsFullOpened()
+    );
+    cmMixerDischargeCTRL.ccRun();
+    if(cmMixerDischargeCTRL.ccIsDischargeConfirmed()){
+      SubWeighingDelegator.mnMixerDischargeConfirm=true;
     }//..?
-    if(dcMixerGate.ccIsFullOpened()){
-      if(dtfmMixerContoller==1){
-        dtfmMixerContoller=2;
-        SubWeighingDelegator.mnMixerDischargeConfirmFlag=true;
-      }
-    }//..?
-    if(dcMixerGate.ccIsClosed()){
-      if(dtfmMixerContoller==2){
-        dtfmMixerContoller=0;
-      }
-    }//..?
-    
+
     //-- ???
     SubWeighingDelegator.mnAGwPLnVI=SubWeighingDelegator.mnAGCurrentMattLevel==6;
     SubWeighingDelegator.mnAGwPLnV=SubWeighingDelegator.mnAGCurrentMattLevel==5;
@@ -84,10 +80,9 @@ public class SubWeighingTask implements ZiTask{
     
     //-- mixer gate 
     dcMixerGate.ccSetupAction(
-      MainSimulator.ccSelectModeForce(
-        SubWeighingDelegator.mnMixerGateHoldSW,
+      MainSimulator.ccSelectModeForce(SubWeighingDelegator.mnMixerGateHoldSW,
         SubWeighingDelegator.mnMixerGateOpenSW,
-        SubWeighingDelegator.mnMixerAutoDischargeFlag
+        cmMixerDischargeCTRL.ccGetGateOpenOutput()
       )
     );
     SubWeighingDelegator.mnMixerGateFB
@@ -124,6 +119,7 @@ public class SubWeighingTask implements ZiTask{
   
   @Deprecated public final void tstTagg(){
     VcLocalTagger.ccTag("ag-cell?",dcAGCell);
+    VcLocalTagger.ccTag("m-ctrl?",cmMixerDischargeCTRL);
     VcLocalTagger.ccTag("m-g?",dcMixerGate);
   }//+++
   

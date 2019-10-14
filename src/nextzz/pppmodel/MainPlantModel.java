@@ -40,8 +40,10 @@ public final class MainPlantModel {
   public static final int C_BOOK_UI_ROW_SIZE   =  5;//..need manually fit
   
   //-- weighing
+  public static final int C_MATT_AGGR_GENERAL_SIZE  = 8;
   public static final int C_MATT_AGGR_UI_VALID_HEAD = 1;
   public static final int C_MATT_AGGR_UI_VALID_MAX  = 7;//.. the BIG
+  public static final int C_MATT_REST_GENERAL_SIZE  = 4;
   public static final int C_MATT_REST_UI_VALID_HEAD = 1;
   public static final int C_MATT_REST_UI_VALID_MAX  = 3;//.. the THIG
   
