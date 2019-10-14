@@ -27,6 +27,10 @@ import nextzz.pppmodel.SubWeighControlManager;
 
 public final class SubWeighingDelegator {
   
+  public static volatile int
+    mnAGCurrentMattLevel,mnFRCurrentMattLevel,mnASCurrentMattLevel
+  ;//,,,
+  
   public static volatile boolean
     
     //-- weight control
@@ -87,7 +91,16 @@ public final class SubWeighingDelegator {
   
   public static final void ccBind(){
     
-    //-- cell
+    //-- cell ** 
+    /* 6 */
+    mnAGCurrentMattLevel=SubWeighControlManager.ccRefer()
+      .cmAGWeighCTRL.ccGetCurrentLevel();
+    mnFRCurrentMattLevel=SubWeighControlManager.ccRefer()
+      .cmFRWeighCTRL.ccGetCurrentLevel();
+    mnASCurrentMattLevel=SubWeighControlManager.ccRefer()
+      .cmASWeighCTRL.ccGetCurrentLevel();
+    //-- cell ** 
+    /* 6 */
     SubWeigherGroup.ccRefer().cmAGTargetCB
       .ccSetText(SubWeighControlManager.ccRefer()
         .cmAGWeighCTRL.ccToTag());

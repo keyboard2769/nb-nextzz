@@ -68,6 +68,19 @@ public class SubWeighingTask implements ZiTask{
       }
     }//..?
     
+    //-- ???
+    SubWeighingDelegator.mnAGwPLnVI=SubWeighingDelegator.mnAGCurrentMattLevel==6;
+    SubWeighingDelegator.mnAGwPLnV=SubWeighingDelegator.mnAGCurrentMattLevel==5;
+    SubWeighingDelegator.mnAGwPLnIV=SubWeighingDelegator.mnAGCurrentMattLevel==4;
+    SubWeighingDelegator.mnAGwPLnIII=SubWeighingDelegator.mnAGCurrentMattLevel==3;
+    SubWeighingDelegator.mnAGwPLnII=SubWeighingDelegator.mnAGCurrentMattLevel==2;
+    SubWeighingDelegator.mnAGwPLnI=SubWeighingDelegator.mnAGCurrentMattLevel==1;
+    //-- ???
+    SubWeighingDelegator.mnFRwPLnIII=SubWeighingDelegator.mnFRCurrentMattLevel==3;
+    SubWeighingDelegator.mnFRwPLnII=SubWeighingDelegator.mnFRCurrentMattLevel==2;
+    SubWeighingDelegator.mnFRwPLnI=SubWeighingDelegator.mnFRCurrentMattLevel==1;
+    //-- ???
+    SubWeighingDelegator.mnASwPLnII=SubWeighingDelegator.mnASCurrentMattLevel==2;
     
     //-- mixer gate 
     dcMixerGate.ccSetupAction(

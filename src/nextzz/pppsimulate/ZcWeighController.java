@@ -56,6 +56,13 @@ public final class ZcWeighController extends ZcStepper{
   
   /* 1 *///run(...)
   
+  /* 1 */public
+  void ccRun(boolean pxStart, boolean pxAbend){
+    ccStart(pxStart);
+    ccAbend(pxAbend);
+    ccRun();
+  }//++~
+  
   public final void ccRun(){
     
     //[head]:: i know you have absolutely no idea about what to do next
@@ -117,9 +124,6 @@ public final class ZcWeighController extends ZcStepper{
   
   //===
   
-  public final void ccStart(boolean pxCondition){
-    cmToStart=pxCondition;
-  }//+++
   
   public final void ccSetHasNext(boolean pxCondition){
     cmHasNext=pxCondition;
@@ -137,12 +141,20 @@ public final class ZcWeighController extends ZcStepper{
     cmIsDicharged=pxCondition;
   }//++<
   
+  public final void ccStart(boolean pxCondition){
+    cmToStart=pxCondition;
+  }//+++
+  
   public final void ccReady(boolean pxCondition){
     ccSetTo(S_READY, pxCondition);
   }//++<
   
   public final void ccAbend(boolean pxCondition){
-    ccSetTo(S_ABEND, pxCondition);
+    if(pxCondition){
+      ccSetTo(S_ABEND, true);
+    }else{
+      ccStep(S_ABEND, S_READY, true);
+    }//..?
   }//++<
   
   //===
@@ -151,6 +163,10 @@ public final class ZcWeighController extends ZcStepper{
   
   public final int ccGetCurrentLevel(){
     return cmCurrentLevel;
+  }//++>
+  
+  public final boolean ccIsWeighing(){
+    return ccIsAt(S_WEIGH);
   }//++>
   
   public final boolean ccIsWaitingToDischarge(){

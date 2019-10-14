@@ -20,17 +20,24 @@
 package nextzz.pppswingui;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.JSeparator;
 import javax.swing.JTabbedPane;
+import javax.swing.JTextField;
+import javax.swing.JToolBar;
+import javax.swing.SwingConstants;
 import kosui.pppswingui.ScFactory;
 import kosui.pppswingui.ScGauge;
+import kosui.pppswingui.ScTable;
 import kosui.ppputil.VcTranslator;
 import nextzz.pppmodel.MainPlantModel;
 import nextzz.pppmodel.MainSpecificator;
+import nextzz.pppmodel.SubWeighControlManager;
 
 public final class SubMonitorPane implements SiTabbable{
   
@@ -71,6 +78,23 @@ public final class SubMonitorPane implements SiTabbable{
       new ScGauge("_ct30", "A"),new ScGauge("_ct31", "A")
     ));
   
+  public final JButton cmExportButton
+    = new JButton(VcTranslator.tr("_export"));
+  
+  public final JButton cmPrintButton
+    = new JButton(VcTranslator.tr("_print"));
+  
+  public final JTextField cmMixerStatePL
+    = ScFactory.ccCreateTextLamp("[-:-]");
+  
+  public final ScTable cmDynamicWeighResultTable
+    = new ScTable(SubWeighControlManager.ccRefer()
+      .cmDynamicResultModel,80,80);
+  
+  public final ScTable cmStatisticWeighResultTable
+    = new ScTable(SubWeighControlManager.ccRefer()
+      .cmStatisticResultModel,200,200);
+  
   //===
   
   @Override public final void ccInit(){
@@ -95,9 +119,36 @@ public final class SubMonitorPane implements SiTabbable{
        it.ccSetPercentage(4);//..arbitrary
     }//..~
     
+    //-- center pane 
+    
+    //-- center pane ** weigh
+    //-- center pane ** weigh ** bar
+    JToolBar lpWeighToolBar = ScFactory.ccCreateStuckedToolBar();
+    lpWeighToolBar.add(cmExportButton);
+    lpWeighToolBar.add(cmPrintButton);
+    lpWeighToolBar.add(new JSeparator(SwingConstants.VERTICAL));
+    lpWeighToolBar.add(cmMixerStatePL);
+    //-- center pane ** weigh ** pack
+    JPanel lpWeighPartPane = ScFactory.ccCreateBorderPanel();
+    lpWeighPartPane.add(lpWeighToolBar,BorderLayout.PAGE_START);
+    lpWeighPartPane.add(cmDynamicWeighResultTable,BorderLayout.CENTER);
+    lpWeighPartPane.add(cmStatisticWeighResultTable,BorderLayout.PAGE_END);
+    
+    //-- center pane ** combust
+    JPanel lpCombustPartPane = ScFactory.ccCreateBorderPanel();
+    /* 6 */JButton dtfmDummy = new JButton("=Dcombust=");
+    dtfmDummy.setPreferredSize(new Dimension(200, 200));
+    lpCombustPartPane.add(dtfmDummy,BorderLayout.CENTER);
+    
+    //-- center pane ** center
+    JPanel lpCenterPane = ScFactory.ccCreateBorderPanel();
+    lpCenterPane.add(lpWeighPartPane, BorderLayout.CENTER);
+    lpCenterPane.add(lpCombustPartPane, BorderLayout.PAGE_END);
+    
+    
     //-- pack
     cmPane.add(lpLeftWing,BorderLayout.LINE_START);
-    cmPane.add(new JButton("=Dweigh="),BorderLayout.CENTER);
+    cmPane.add(lpCenterPane,BorderLayout.CENTER);
     
   }//++!
   

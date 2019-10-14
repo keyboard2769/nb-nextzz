@@ -16,6 +16,8 @@ but hey, dose it sounds stupid if you make it DOUBLE-ZEUS ??
 - [ ] $ tre
 - [ ] $ dos
 - [ ] $ uno
+- [ ] $ gimme a NEW mechanism about hiding and tableing
+- [ ] $ maybe some new color style for book input area ?
 - [ ] $ maybe we need to let the feeder speed box send manual pulse
 - [ ] $ over sized stuff should get located near the sixth bin
 - [ ] $ fill v provision and combust motor load factor
@@ -29,24 +31,18 @@ but hey, dose it sounds stupid if you make it DOUBLE-ZEUS ??
 #### heading
 
 - [ ] $ a skeleton weigh part in monitor pane include simple lamp and table
-- [ ] $ let the manual weigh button shine when the level match
-        .. i mean, even though we are not gonna build the core part in plant
-- [ ] $ let target box color change when the very cell is on weighing
-- [ ] $ stop button and skip buttons of booking group
 
 #### last
 
-- [x] $ v burner and oil pump ct current showing is missing
-- [x] $ the pressure controller is targeting AD value!! fix it !!
-- [x] $ the coarse dust screw ct showing is missing
-- [x] $ refactorred the pid controller implementation
-- [x] $ fiex the feeder chain controller interlock
-- [x] $ temperature setting folder added
 - [x] $ added the error message loop and clear mechanism
 - [x] $ filled most part of the v surge layer
 - [x] $ asphalt supply pump start and slot and lock
 - [x] $ lock switch determine mechanism
 - [x] $ cell and weigh simulation with assist buttons
 - [x] $ did the mixer dry-and-wet control .. we need separate them from the one
+- [x] $ added stop button and skip buttons of booking group
+- [x] $ target box color now changes when the very cell is on weighing
+- [x] $ let the manual weigh button shine when the level match
+- [x] $ please not the csv translation trouble is caused by the scanner encode
 
 <hr><!--EOF-->

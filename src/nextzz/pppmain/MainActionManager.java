@@ -385,10 +385,15 @@ public final class MainActionManager {
   public final Runnable cmSwingClickableRegiseriness = new Runnable() {
     @Override public void run() {
     
+      //-- accessibility
       VcSwingCoordinator.ccRegisterAction
         (MainWindow.ccRefer().cmQuitButton, cmQuitting);
       VcSwingCoordinator.ccRegisterAction
         (MainWindow.ccRefer().cmHideButton, cmHiding);
+      
+      //-- 
+      
+      //-- sub
       VcSwingCoordinator.ccRegisterAction
         (MainWindow.ccRefer().cmErrorClearButton, cmErrorCleaning);
       VcSwingCoordinator.ccRegisterAction
@@ -453,9 +458,25 @@ public final class MainActionManager {
       SubWeighControlManager.ccRefer().cmWeighStartClicking
     );
     VcLocalCoordinator.ccRegisterMouseTrigger(
-      SubOperativeGroup.ccRefer().cmWeighCancelSW,
+      SubOperativeGroup.ccRefer().cmWeighStopSW,
       SubWeighControlManager.ccRefer().cmWeighCacncelClicking
     );
+    VcLocalCoordinator.ccRegisterMouseTrigger(
+      SubOperativeGroup.ccRefer().cmWeighCancelSW,
+      SubWeighControlManager.ccRefer().cmCurrentlyBookedCleaning
+    );
+    
+    //-- skectch ** key pressing ** test
+    VcLocalCoordinator.ccRegisterKeyTrigger
+      (KeyEvent.VK_F, new EiTriggerable() {
+      @Override public void ccTrigger() {
+        VcConst.ccPrintln(
+          "this is a public service announcement",
+          "this is only a Test "
+        );
+        /* 7 */ //[givemesomerthing]::
+      }//+++
+    });
     
     //-- skectch ** key pressing
     VcLocalCoordinator.ccRegisterKeyTrigger

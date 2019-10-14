@@ -27,6 +27,7 @@ import kosui.ppplocalui.EcButton;
 import kosui.ppplocalui.EcConst;
 import kosui.ppplocalui.EcElement;
 import kosui.ppplocalui.EcPane;
+import kosui.ppplocalui.EcRect;
 import kosui.ppplocalui.EcShape;
 import kosui.ppplocalui.EcText;
 import kosui.ppplocalui.EcTextBox;
@@ -43,7 +44,7 @@ public final class SubOperativeGroup implements EiGroup{
   
   private static final SubOperativeGroup SELF = new SubOperativeGroup();
   public static SubOperativeGroup ccRefer(){return SELF;}//+++
-
+  
   //===
   
   //-- motor pane
@@ -107,13 +108,18 @@ public final class SubOperativeGroup implements EiGroup{
   public final EcText cmNameText = new EcText(VcTranslator.tr("_name"));
   public final EcText cmKilogramText = new EcText("kg");
   public final EcText cmBatchText = new EcText(VcTranslator.tr("_batc"));
-  
-  //[head]:: a stop button? a skip text? a bunch of skip buttons?
-  
+  public final EcText cmWeighSkipText = new EcText(VcTranslator.tr("_wskip"));
   public final EcShape cmBookingPlate = new EcShape();
   public final EcElement cmWeighReadyPL = new EcElement("_ready");
   public final EcButton cmWeighStartSW = new EcButton("_start", 0x34A1);
+  public final EcButton cmWeighStopSW = new EcButton("_stop", 0x34A2);
   public final EcButton cmWeighCancelSW = new EcButton("_cancel", 0x34A3);
+  public final EcButton cmAGSkipSW = new EcButton("_ik_ag", 0x34B1);
+  public final EcButton cmFRSkipSW = new EcButton("_ik_fr", 0x34B2);
+  public final EcButton cmASSkipSW = new EcButton("_ik_as", 0x34B3);
+  public final EcButton cmRCSkipSW = new EcButton("_ik_rc", 0x34B4);
+  public final EcButton cmADSkipSW = new EcButton("_ik_ad", 0x34B5);
+  
   public final List<EcValueBox> cmDesRecipeTB
     = Collections.unmodifiableList(Arrays.asList(
       new EcValueBox("_recipe", "000  ",0x3400),
@@ -418,17 +424,39 @@ public final class SubOperativeGroup implements EiGroup{
       -1*ConstLocalUI.C_INPANE_MARGIN_S,
       -1*ConstLocalUI.C_INPANE_MARGIN_S
     );
-    //-- booking ** control ** switch
+    //-- booking ** control ** sequencer
     lpPotentialW=55;
     cmWeighReadyPL.ccSetSize(lpPotentialW, lpPotentialH);
     cmWeighStartSW.ccSetSize(lpPotentialW,lpPotentialH);
-    cmWeighCancelSW.ccSetSize(lpPotentialW,lpPotentialH);
+    cmWeighCancelSW.ccSetSize(cmWeighReadyPL);
+    cmWeighStopSW.ccSetSize(lpPotentialW,lpPotentialH);
     cmWeighReadyPL.ccSetLocation(cmBookingPlate,
       ConstLocalUI.C_INPANE_GAP,
       ConstLocalUI.C_INPANE_GAP
     );
     cmWeighStartSW.ccSetLocation(cmWeighReadyPL, ConstLocalUI.C_INPANE_GAP, 0);
-    cmWeighCancelSW.ccSetLocation(cmWeighStartSW, ConstLocalUI.C_INPANE_GAP, 0);
+    cmWeighStopSW.ccSetLocation(cmWeighStartSW, ConstLocalUI.C_INPANE_GAP, 0);
+    cmWeighCancelSW.ccSetLocation(cmWeighStopSW, ConstLocalUI.C_INPANE_GAP, 0);
+    //-- booking ** control ** skip
+    lpPotentialH=18;
+    cmAGSkipSW.ccSetSize(lpPotentialH);
+    cmFRSkipSW.ccSetSize(lpPotentialH);
+    cmASSkipSW.ccSetSize(lpPotentialH);
+    cmRCSkipSW.ccSetSize(lpPotentialH);
+    cmADSkipSW.ccSetSize(lpPotentialH);
+    cmRCSkipSW.ccSetLocation(
+      cmBookingPlate.ccEndX()-lpPotentialH-ConstLocalUI.C_INPANE_GAP,
+      cmBookingPlate.ccCenterY()-(lpPotentialH/2)+ConstLocalUI.C_INPANE_GAP
+    );
+    EcRect.ccFlowLayout(
+      Arrays.asList(cmRCSkipSW,cmASSkipSW,cmAGSkipSW,cmFRSkipSW,cmADSkipSW),
+      2, false, true
+    );
+    cmWeighSkipText.ccSetTextColor(EcConst.C_LIT_GRAY);
+    cmWeighSkipText.ccSetLocation(
+      cmADSkipSW.ccGetX()-lpPotentialH,
+      cmBookingPlate.ccCenterY()
+    );
     
     //-- inputtable ** register
     for(int it:new int[]{1,2,3,4}){
@@ -450,7 +478,8 @@ public final class SubOperativeGroup implements EiGroup{
       cmCellPane,cmZeroPlate,
       cmMixtureControlPane,cmMixtureAnnouncementPlate,
       cmBookingPane,cmBookingPlate,
-      cmRecipeText,cmNameText,cmKilogramText,cmBatchText
+      cmRecipeText,cmNameText,cmKilogramText,cmBatchText,
+      cmWeighSkipText
     );//...
   }//+++
 
@@ -466,7 +495,8 @@ public final class SubOperativeGroup implements EiGroup{
       cmApplyZeroSW,
       cmMixerGateHoldSW,cmMixerGateAutoSW,cmMixerGateOpenSW,
       cmBellSW,cmSirenSW,
-      cmWeighReadyPL,cmWeighStartSW,cmWeighCancelSW
+      cmWeighReadyPL,cmWeighStartSW,cmWeighStopSW,cmWeighCancelSW,
+      cmAGSkipSW,cmFRSkipSW,cmASSkipSW//[todo]rc-ad?
     ));//...
     return lpRes;
   }//+++
