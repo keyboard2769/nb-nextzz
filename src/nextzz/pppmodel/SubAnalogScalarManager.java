@@ -20,8 +20,8 @@
 package nextzz.pppmodel;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+import java.util.TreeMap;
 import kosui.ppplogic.ZcRevisedScaledModel;
 import kosui.ppplogic.ZcScaledModel;
 import kosui.pppmodel.McPipedChannel;
@@ -80,8 +80,8 @@ public final class SubAnalogScalarManager {
     = new RuntimeException
       ("unhandled errer occured while accessing scala object");
   
-  private final HashMap<Integer,ZcScaledModel> cmMapOfScala
-    = new HashMap<Integer, ZcScaledModel>();
+  private final TreeMap<Integer,ZcScaledModel> cmMapOfScala
+    = new TreeMap<Integer, ZcScaledModel>();
   
   //===
   

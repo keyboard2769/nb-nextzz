@@ -79,7 +79,7 @@ public final class SubWeigherGroup implements EiGroup{
   
   //-- control
   //-- control ** ag
-  public final List<EcButton> cmDesAGWeighSW
+  public final List<EcButton> cmLesAGWeighSW
     = Collections.unmodifiableList(Arrays.asList(
       new EcButton("_ag", 0x3810), 
       new EcButton("+", 0x3811),
@@ -89,7 +89,7 @@ public final class SubWeigherGroup implements EiGroup{
       new EcButton("+", 0x3815),
       new EcButton("+", 0x3816), new EcButton("+", 0x3817)
     ));//...
-  public final List<EcButton> cmDesAGLockSW
+  public final List<EcButton> cmLesAGLockSW
     = Collections.unmodifiableList(Arrays.asList(
       new EcButton("_x_ag", 0x3818),
       new EcButton("x", 0x3819),
@@ -98,7 +98,7 @@ public final class SubWeigherGroup implements EiGroup{
       new EcButton("x", 0x381C), new EcButton("x", 0x381D),
       new EcButton("x", 0x381E), new EcButton("x", 0x381F)
     ));//...
-  public final List<EcText> cmDesAGText
+  public final List<EcText> cmLesAGText
     = Collections.unmodifiableList(Arrays.asList(
       new EcText("_??"),
       new EcText("v1"),new EcText("v2"),new EcText("v3"),
@@ -106,17 +106,17 @@ public final class SubWeigherGroup implements EiGroup{
       new EcText("v7")
     ));
   //-- control ** fr
-  public final List<EcButton> cmDesFRWeighSW
+  public final List<EcButton> cmLesFRWeighSW
     = Collections.unmodifiableList(Arrays.asList(
       new EcButton("_fr", 0x3820), new EcButton("+", 0x3821),
       new EcButton("+", 0x3822), new EcButton("+", 0x3823)
     ));//...
-  public final List<EcButton> cmDesFRLockSW
+  public final List<EcButton> cmLesFRLockSW
     = Collections.unmodifiableList(Arrays.asList(
       new EcButton("_x_fr", 0x3824), new EcButton("x", 0x3825),
       new EcButton("x", 0x3826), new EcButton("x", 0x3827)
     ));//...
-  public final List<EcText> cmDesFRText
+  public final List<EcText> cmLesFRText
     = Collections.unmodifiableList(Arrays.asList(
       new EcText("_??"),
       new EcText(VcTranslator.tr("_fc")),
@@ -124,17 +124,17 @@ public final class SubWeigherGroup implements EiGroup{
       new EcText(VcTranslator.tr("_fd"))
     ));
   //-- control ** as
-  public final List<EcButton> cmDesASWeighSW
+  public final List<EcButton> cmLesASWeighSW
     = Collections.unmodifiableList(Arrays.asList(
       new EcButton("_as", 0x3830),new EcButton("+", 0x3831),
       new EcButton("+", 0x3832), new EcButton("+", 0x3833)
     ));//...
-  public final List<EcButton> cmDesASLockSW
+  public final List<EcButton> cmLesASLockSW
     = Collections.unmodifiableList(Arrays.asList(
       new EcButton("_x_as", 0x3834), new EcButton("x", 0x3835),
       new EcButton("x", 0x3836), new EcButton("x", 0x3837)
     ));//...
-  public final List<EcText> cmDesASText
+  public final List<EcText> cmLesASText
     = Collections.unmodifiableList(Arrays.asList(
       new EcText("_??"),
       new EcText(VcTranslator.tr("_sv")),
@@ -142,17 +142,17 @@ public final class SubWeigherGroup implements EiGroup{
       new EcText(VcTranslator.tr("_sc"))
     ));
   //-- control ** rc
-  public final List<EcButton> cmDesRCWeighSW
+  public final List<EcButton> cmLesRCWeighSW
     = Collections.unmodifiableList(Arrays.asList(
       new EcButton("_rc", 0x3840), new EcButton("+", 0x3841),
       new EcButton("+", 0x3842), new EcButton("+", 0x3843)
     ));//...
-  public final List<EcButton> cmDesRCLockSW
+  public final List<EcButton> cmLesRCLockSW
     = Collections.unmodifiableList(Arrays.asList(
       new EcButton("_x_rc", 0x3844), new EcButton("x", 0x3845),
       new EcButton("x", 0x3846), new EcButton("x", 0x3847)
     ));//...
-  public final List<EcText> cmDesRCText
+  public final List<EcText> cmLesRCText
     = Collections.unmodifiableList(Arrays.asList(
       new EcText("_??"),
       new EcText("_rx"),
@@ -160,17 +160,17 @@ public final class SubWeigherGroup implements EiGroup{
       new EcText("_rx")
     ));
   //-- control ** ad
-  public final List<EcButton> cmDesADWeighSW
+  public final List<EcButton> cmLesADWeighSW
     = Collections.unmodifiableList(Arrays.asList(
       new EcButton("_ad", 0x3850), new EcButton("+", 0x3851),
       new EcButton("+", 0x3852), new EcButton("+", 0x3853)
     ));//...
-  public final List<EcButton> cmDesADLockSW
+  public final List<EcButton> cmLesADLockSW
     = Collections.unmodifiableList(Arrays.asList(
       new EcButton("_x_ad", 0x3854), new EcButton("x", 0x3855),
       new EcButton("x", 0x3856), new EcButton("x", 0x3857)
     ));//...
-  public final List<EcText> cmDesADText
+  public final List<EcText> cmLesADText
     = Collections.unmodifiableList(Arrays.asList(
       new EcText("_??"),
       new EcText("_add"),new EcText("_add"),new EcText("_add")
@@ -222,115 +222,106 @@ public final class SubWeigherGroup implements EiGroup{
     
     //-- ag weigher
     ConstLocalUI.ccAssembleWeighControl(cmPlateAG,
-      cmDesAGLockSW,cmDesAGWeighSW, cmDesAGText,
+      cmLesAGLockSW,cmLesAGWeighSW, cmLesAGText,
       MainSpecificator.ccRefer().vmAGCattegoryCount
     );
-    ConstLocalUI.ccAssenbleCell(
-      cmAGCellLV, cmAGTargetCB, cmAGCellCB,
-      cmDesAGWeighSW.get(0),
+    ConstLocalUI.ccAssenbleCell(cmAGCellLV, cmAGTargetCB, cmAGCellCB,
+      cmLesAGWeighSW.get(0),
       cmPlateAG.ccGetX()
         + (cmPlateAG.ccGetW()-lpSingleCellW)/2,
       cmPlateAG.ccEndY()-lpSingleCellH-ConstLocalUI.C_INPANE_GAP
     );
     
     //-- fr weigher
-    ConstLocalUI.ccAssembleWeighControl(
-      cmPlateFR,
-      cmDesFRLockSW,cmDesFRWeighSW, cmDesFRText,
+    ConstLocalUI.ccAssembleWeighControl(cmPlateFR,
+      cmLesFRLockSW,cmLesFRWeighSW, cmLesFRText,
       3//.. always set by three, hiding is done separately
     );
-    ConstLocalUI.ccAssenbleCell(
-      cmFRCellLV, cmFRTargetCB, cmFRCellCB,
-      cmDesFRWeighSW.get(0),
+    ConstLocalUI.ccAssenbleCell(cmFRCellLV, cmFRTargetCB, cmFRCellCB,
+      cmLesFRWeighSW.get(0),
       cmPlateFR.ccGetX()+ConstLocalUI.C_INPANE_GAP,
       cmPlateFR.ccEndY()-lpSingleCellH-ConstLocalUI.C_INPANE_GAP
     );
     
     //-- as wweigher
-    ConstLocalUI.ccAssembleWeighControl(
-      cmPlateAS, 
-      cmDesASLockSW,cmDesASWeighSW, cmDesASText,
+    ConstLocalUI.ccAssembleWeighControl(cmPlateAS, 
+      cmLesASLockSW,cmLesASWeighSW, cmLesASText,
       3//.. always set by three, hiding is done separately
     );
-    ConstLocalUI.ccAssenbleCell(
-      cmASCellLV, cmASTargetCB, cmASCellCB,
-      cmDesASWeighSW.get(0),
+    ConstLocalUI.ccAssenbleCell(cmASCellLV, cmASTargetCB, cmASCellCB,
+      cmLesASWeighSW.get(0),
       cmPlateAS.ccGetX()+ConstLocalUI.C_INPANE_GAP,
       cmPlateAS.ccEndY()-lpSingleCellH-ConstLocalUI.C_INPANE_GAP
     );
     
     //-- rc wweigher
-    ConstLocalUI.ccAssembleWeighControl(
-      cmPlateRC, 
-      cmDesRCLockSW,cmDesRCWeighSW, cmDesRCText,
+    ConstLocalUI.ccAssembleWeighControl(cmPlateRC, 
+      cmLesRCLockSW,cmLesRCWeighSW, cmLesRCText,
       3//.. always set by three, hiding is done separately
     );
-    ConstLocalUI.ccAssenbleCell(
-      cmRCCellLV, cmRCTargetCB, cmRCCellCB,
-      cmDesRCWeighSW.get(0),
+    ConstLocalUI.ccAssenbleCell(cmRCCellLV, cmRCTargetCB, cmRCCellCB,
+      cmLesRCWeighSW.get(0),
       cmPlateRC.ccGetX()+ConstLocalUI.C_INPANE_GAP,
       cmPlateRC.ccEndY()-lpSingleCellH-ConstLocalUI.C_INPANE_GAP
     );
     
     //-- AD weigher
-    ConstLocalUI.ccAssembleWeighControl(
-      cmPlateAD, 
-      cmDesADLockSW,cmDesADWeighSW, cmDesADText,
+    ConstLocalUI.ccAssembleWeighControl(cmPlateAD, 
+      cmLesADLockSW,cmLesADWeighSW, cmLesADText,
       3//.. always set by three, hiding is done separately
     );
-    ConstLocalUI.ccAssenbleCell(
-      cmADCellLV, cmADTargetCB, cmADCellCB,
-      cmDesADWeighSW.get(0),
+    ConstLocalUI.ccAssenbleCell(cmADCellLV, cmADTargetCB, cmADCellCB,
+      cmLesADWeighSW.get(0),
       cmPlateAD.ccGetX()+ConstLocalUI.C_INPANE_GAP,
       cmPlateAD.ccEndY()-lpSingleCellH-ConstLocalUI.C_INPANE_GAP
     );
     
     //-- cell lock
     //-- cell lock ** anchor
-    cmDesAGLockSW.get(0).ccSetSize(SubOperativeGroup.ccRefer().cmAGZeroSW);
-    cmDesAGLockSW.get(0).ccSetLocation(
+    cmLesAGLockSW.get(0).ccSetSize(SubOperativeGroup.ccRefer().cmAGZeroSW);
+    cmLesAGLockSW.get(0).ccSetLocation(
       SubOperativeGroup.ccRefer().cmCellPane,
       ConstLocalUI.C_INPANE_MARGIN_S,
       ConstLocalUI.C_INPANE_MARGIN_U
     );
     //-- cell lock ** rest
     int lpPotentialG = ConstLocalUI.C_INPANE_GAP; 
-    cmDesFRLockSW.get(0).ccSetSize(cmDesAGLockSW.get(0));
-    cmDesASLockSW.get(0).ccSetSize(cmDesFRLockSW.get(0));
-    cmDesRCLockSW.get(0).ccSetSize(cmDesRCLockSW.get(0));
-    cmDesADLockSW.get(0).ccSetSize(cmDesADLockSW.get(0));
-    cmDesFRLockSW.get(0).ccSetLocation(cmDesAGLockSW.get(0),lpPotentialG,0);
-    cmDesASLockSW.get(0).ccSetLocation(cmDesFRLockSW.get(0),lpPotentialG,0);
-    cmDesRCLockSW.get(0).ccSetLocation(cmDesAGLockSW.get(0),0,lpPotentialG);
-    cmDesADLockSW.get(0).ccSetLocation(cmDesRCLockSW.get(0),lpPotentialG,0);
+    cmLesFRLockSW.get(0).ccSetSize(cmLesAGLockSW.get(0));
+    cmLesASLockSW.get(0).ccSetSize(cmLesFRLockSW.get(0));
+    cmLesRCLockSW.get(0).ccSetSize(cmLesRCLockSW.get(0));
+    cmLesADLockSW.get(0).ccSetSize(cmLesADLockSW.get(0));
+    cmLesFRLockSW.get(0).ccSetLocation(cmLesAGLockSW.get(0),lpPotentialG,0);
+    cmLesASLockSW.get(0).ccSetLocation(cmLesFRLockSW.get(0),lpPotentialG,0);
+    cmLesRCLockSW.get(0).ccSetLocation(cmLesAGLockSW.get(0),0,lpPotentialG);
+    cmLesADLockSW.get(0).ccSetLocation(cmLesRCLockSW.get(0),lpPotentialG,0);
     
     //-- hiding
     //-- hiding ** ag
     for(int i=MainSpecificator.ccRefer().vmAGCattegoryCount+1;i<=7;i++){
-      cmDesAGLockSW.get(i).ccHide();
-      cmDesAGWeighSW.get(i).ccHide();
-      cmDesAGText.get(i).ccHide();
+      cmLesAGLockSW.get(i).ccHide();
+      cmLesAGWeighSW.get(i).ccHide();
+      cmLesAGText.get(i).ccHide();
     }//..~
     //-- hiding ** fr
     if(MainSpecificator.ccRefer().vmFRCattegoryCount<3){
-      cmDesFRLockSW.get(1).ccHide();
-      cmDesFRWeighSW.get(1).ccHide();
-      cmDesFRText.get(1).ccHide();
+      cmLesFRLockSW.get(1).ccHide();
+      cmLesFRWeighSW.get(1).ccHide();
+      cmLesFRText.get(1).ccHide();
     }//..?
     //-- hiding ** as
     switch(MainSpecificator.ccRefer().vmASCattegoryCount){
       case 1:
-        cmDesASLockSW.get(1).ccHide();
-        cmDesASWeighSW.get(1).ccHide();
-        cmDesASText.get(1).ccHide();
-        cmDesASLockSW.get(3).ccHide();
-        cmDesASWeighSW.get(3).ccHide();
-        cmDesASText.get(3).ccHide();
+        cmLesASLockSW.get(1).ccHide();
+        cmLesASWeighSW.get(1).ccHide();
+        cmLesASText.get(1).ccHide();
+        cmLesASLockSW.get(3).ccHide();
+        cmLesASWeighSW.get(3).ccHide();
+        cmLesASText.get(3).ccHide();
       break;
       case 2:
-        cmDesASLockSW.get(3).ccHide();
-        cmDesASWeighSW.get(3).ccHide();
-        cmDesASText.get(3).ccHide();
+        cmLesASLockSW.get(3).ccHide();
+        cmLesASWeighSW.get(3).ccHide();
+        cmLesASText.get(3).ccHide();
       break;
       case 3:default:break;
     }//..?
@@ -342,9 +333,9 @@ public final class SubWeigherGroup implements EiGroup{
       cmRCCellLV.ccSetPage(lpDummyPage);
       cmRCTargetCB.ccSetPage(lpDummyPage);
       cmRCCellCB.ccSetPage(lpDummyPage);
-      for(EcElement it:cmDesRCLockSW){it.ccSetPage(lpDummyPage);}
-      for(EcElement it:cmDesRCWeighSW){it.ccSetPage(lpDummyPage);}
-      for(EcShape it:cmDesRCText){it.ccSetPage(lpDummyPage);}
+      for(EcElement it:cmLesRCLockSW){it.ccSetPage(lpDummyPage);}
+      for(EcElement it:cmLesRCWeighSW){it.ccSetPage(lpDummyPage);}
+      for(EcShape it:cmLesRCText){it.ccSetPage(lpDummyPage);}
     }//..else?
     //-- hiding ** ad
     if(MainSpecificator.ccRefer().vmADCattegoryCount==0){
@@ -353,9 +344,9 @@ public final class SubWeigherGroup implements EiGroup{
       cmADCellLV.ccSetPage(lpDummyPage);
       cmADTargetCB.ccSetPage(lpDummyPage);
       cmADCellCB.ccSetPage(lpDummyPage);
-      for(EcElement it:cmDesADLockSW){it.ccSetPage(lpDummyPage);}
-      for(EcElement it:cmDesADWeighSW){it.ccSetPage(lpDummyPage);}
-      for(EcShape it:cmDesADText){it.ccSetPage(lpDummyPage);}
+      for(EcElement it:cmLesADLockSW){it.ccSetPage(lpDummyPage);}
+      for(EcElement it:cmLesADWeighSW){it.ccSetPage(lpDummyPage);}
+      for(EcShape it:cmLesADText){it.ccSetPage(lpDummyPage);}
     }//..else?
     
   }//..!
@@ -367,21 +358,21 @@ public final class SubWeigherGroup implements EiGroup{
     lpRes.addAll(Arrays.asList(
       cmPlateAD,cmPlateFR,cmPlateAG,cmPlateAS,cmPlateRC
     ));
-    lpRes.addAll(cmDesAGText);
-    lpRes.addAll(cmDesFRText);
-    lpRes.addAll(cmDesASText);
-    lpRes.addAll(cmDesRCText);
-    lpRes.addAll(cmDesADText);
+    lpRes.addAll(cmLesAGText);
+    lpRes.addAll(cmLesFRText);
+    lpRes.addAll(cmLesASText);
+    lpRes.addAll(cmLesRCText);
+    lpRes.addAll(cmLesADText);
     return lpRes;
   }//+++
 
   @Override public List<? extends EcElement> ccGiveElementList(){
     ArrayList<EcElement> lpRes=new ArrayList<EcElement>();
-    lpRes.addAll(cmDesAGLockSW);lpRes.addAll(cmDesAGWeighSW);
-    lpRes.addAll(cmDesFRLockSW);lpRes.addAll(cmDesFRWeighSW);
-    lpRes.addAll(cmDesASLockSW);lpRes.addAll(cmDesASWeighSW);
-    lpRes.addAll(cmDesRCLockSW);lpRes.addAll(cmDesRCWeighSW);
-    lpRes.addAll(cmDesADLockSW);lpRes.addAll(cmDesADWeighSW);
+    lpRes.addAll(cmLesAGLockSW);lpRes.addAll(cmLesAGWeighSW);
+    lpRes.addAll(cmLesFRLockSW);lpRes.addAll(cmLesFRWeighSW);
+    lpRes.addAll(cmLesASLockSW);lpRes.addAll(cmLesASWeighSW);
+    lpRes.addAll(cmLesRCLockSW);lpRes.addAll(cmLesRCWeighSW);
+    lpRes.addAll(cmLesADLockSW);lpRes.addAll(cmLesADWeighSW);
     lpRes.addAll(Arrays.asList(
       cmAGCellLV,cmAGTargetCB,cmAGCellCB,
       cmFRCellLV,cmFRTargetCB,cmFRCellCB,

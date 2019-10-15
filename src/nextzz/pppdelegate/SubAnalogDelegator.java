@@ -108,7 +108,7 @@ public final class SubAnalogDelegator {
     
     //-- content
     for(int i=1;i<=MainSpecificator.ccRefer().vmAGCattegoryCount;i++){
-      SubVSurgeGroup.ccRefer().cmDesHotbinLV.get(i)
+      SubVSurgeGroup.ccRefer().cmLesHotbinLV.get(i)
         .ccSetProportion(ccGetHotBinLevelorAD(i));
     }//..~
     SubVSurgeGroup.ccRefer().cmFillerSiloLV.ccSetProportion(mnFillerSiloLV);

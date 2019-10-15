@@ -58,22 +58,22 @@ public final class SubRecipePane implements SiTabbable{
   
   public final List<JTextField> cmLesAGPercetageBox
    = Collections.unmodifiableList(Arrays.asList(
-    new JTextField("00.0%"),
-    new JTextField("00.1%"),new JTextField("00.2%"),new JTextField("00.3%"),
-    new JTextField("00.4%"),new JTextField("00.5%"),new JTextField("00.6%"),
-    new JTextField("00.7%")
+    new JTextField("--"),
+    new JTextField("--"),new JTextField("--"),new JTextField("--"),
+    new JTextField("--"),new JTextField("--"),new JTextField("--"),
+    new JTextField("--")
   ));//,,,
   
   public final List<JTextField> cmLesFRPercetageBox
    = Collections.unmodifiableList(Arrays.asList(
-    new JTextField("00.0%"),
-    new JTextField("01.1%"),new JTextField("01.2%"),new JTextField("01.3%")
+    new JTextField("--"),
+    new JTextField("--"),new JTextField("--"),new JTextField("--")
   ));//,,,
   
   public final List<JTextField> cmLesASPercetageBox
    = Collections.unmodifiableList(Arrays.asList(
-    new JTextField("00.0%"),
-    new JTextField("02.1%"),new JTextField("02.2%"),new JTextField("02.3%")
+    new JTextField("--"),
+    new JTextField("--"),new JTextField("--"),new JTextField("--")
   ));//,,,
   
   //[todo]::cmLesRCPercetageBox
@@ -94,15 +94,15 @@ public final class SubRecipePane implements SiTabbable{
   public final JButton cmDeleteButton = ScFactory
     .ccCreateCommandButton(VcTranslator.tr("_delete"));
   
-  public final JTextField cmIdentityBox = new JTextField("000");
+  public final JTextField cmIdentityBox = new JTextField("--");
   
-  public final JTextField cmNameBox = new JTextField("--Z-I-II-III");
+  public final JTextField cmNameBox = new JTextField("--");
   
   public final JTextField cmToTalBox
-    = ScFactory.ccCreateTextLamp("000.0%",66,22);
+    = ScFactory.ccCreateTextLamp("--",66,22);
   
   public final JTextField cmASProportionBox
-    = ScFactory.ccCreateTextLamp("0.00",66,22);
+    = ScFactory.ccCreateTextLamp("--",66,22);
   
   public final ScTable cmRecipeTable
     = new ScTable(SubRecipeManager.ccRefer(), -1, -1);
@@ -118,10 +118,12 @@ public final class SubRecipePane implements SiTabbable{
     @Override public void mouseClicked(MouseEvent me) {
       Object lpSource =  me.getSource();
       if(lpSource.equals(cmIdentityBox)){
-        System.err.println("!!not_yet:set_indentity");
+        //[head]:: now what??
+        SubRecipeManager.ccRefer().ccSetPanedRecipeID(932);
       }else
       if(lpSource.equals(cmNameBox)){
-        System.err.println("!!not_yet:set_name");
+        //[head]:: now what??
+        SubRecipeManager.ccRefer().ccSetPanedRecipeName("_not,yet!!_");
       }else
       if(lpSource instanceof JTextField){
         JTextField lpTarget = ((JTextField)lpSource);
@@ -134,6 +136,14 @@ public final class SubRecipePane implements SiTabbable{
         float lpParsed = VcNumericUtility.ccParseFloatString(lpInput);
         ((JTextField)lpSource).setText(Float.toString(lpParsed));
       }//..?
+    }//+++
+  };//***
+  
+  private final MouseAdapter cmTablePressListener = new MouseAdapter() {
+    @Override public void mousePressed(MouseEvent me) {
+      int lpTableIndex = cmRecipeTable.ccGetSelectedRowIndex();
+      /* 4 */VcConst.ccLogln(".cmTablePressListener:", lpTableIndex);
+      SubRecipeManager.ccRefer().ccApplyTableSelection(lpTableIndex);
     }//+++
   };//***
   
@@ -178,13 +188,13 @@ public final class SubRecipePane implements SiTabbable{
     //-- modificaive pane ** inputtive
     JPanel lpInputtivePane = ScFactory.ccCreateGridPanel(3, 2);
     lpInputtivePane.add(ccCreateInputtiveMattPane
-      (VcTranslator.tr("_l_agpt"),cmLesAGPercetageBox,"G"));
+      (VcTranslator.tr("_l_agpt:"),cmLesAGPercetageBox,"G"));
     /* 6 */lpInputtivePane.add(ccCreateInputtiveMattPane("_l_rcpt",null,"R"));
     lpInputtivePane.add(ccCreateInputtiveMattPane
-      (VcTranslator.tr("_l_frpt"),cmLesFRPercetageBox,"F"));
+      (VcTranslator.tr("_l_frpt:"),cmLesFRPercetageBox,"F"));
     /* 6 */lpInputtivePane.add(ccCreateInputtiveMattPane("_ad_agpt",null,"D"));
     lpInputtivePane.add(ccCreateInputtiveMattPane
-      (VcTranslator.tr("_l_aspt"),cmLesASPercetageBox,"S"));
+      (VcTranslator.tr("_l_aspt:"),cmLesASPercetageBox,"S"));
     /* 6 */lpInputtivePane.getComponent(1).setVisible(false);
     /* 6 */lpInputtivePane.getComponent(3).setVisible(false);
     /* 6 */cmLesAGPercetageBox.get(7).setVisible(false);
@@ -201,6 +211,7 @@ public final class SubRecipePane implements SiTabbable{
     lpTailPane.add(lpInputtivePane, BorderLayout.CENTER);
     
     //-- table config
+    cmRecipeTable.ccAddMouseListener(cmTablePressListener);
     //[todo]:: clean this!!
     cmRecipeTable.ccSetColumnWidth(0, 48);//..how do we make it constant?
     cmRecipeTable.ccSetColumnWidth(1, 147);//..how do we make it constant?

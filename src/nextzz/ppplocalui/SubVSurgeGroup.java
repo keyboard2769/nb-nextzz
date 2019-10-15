@@ -64,7 +64,7 @@ public final class SubVSurgeGroup implements EiGroup{
     = new EcText(VcTranslator.tr("_sandt"));
   public final EcValueBox cmSandTemperatureCB
     = new EcValueBox("_sand", "-000 'C");
-  public final List<EcGauge> cmDesHotbinLV
+  public final List<EcGauge> cmLesHotbinLV
     = Collections.unmodifiableList(Arrays.asList(
       new EcGauge("??"),
       new EcGauge("ag1"),new EcGauge("ag2"),new EcGauge("ag3"),
@@ -171,7 +171,7 @@ public final class SubVSurgeGroup implements EiGroup{
     ConstLocalUI.ccSetupTemperatureBoxColor(cmSandTemperatureCB);
     
     //-- ag surge ** dispose
-    cmDesHotbinLV.get(0).ccHide();
+    cmLesHotbinLV.get(0).ccHide();
     //-- ag surge ** lowline
     lpPotentialX = SubWeigherGroup.ccRefer().cmPlateAG.ccGetX();
     lpPotentialY = cmPlate.ccCenterY()+ConstLocalUI.C_INPANE_GAP;
@@ -189,19 +189,19 @@ public final class SubVSurgeGroup implements EiGroup{
       )/lpFixedCattCount;
     lpPotentialH = cmHotbinShape.ccGetH()*2/3;
     for(int i=lpFixedCattCount;i>=1;i--){
-      cmDesHotbinLV.get(i).ccSetLocation(
+      cmLesHotbinLV.get(i).ccSetLocation(
         cmHotbinShape.ccGetX()+ConstLocalUI.C_INPANE_GAP
           + (
             (ConstLocalUI.C_INPANE_GAP+lpPotentialW)*(lpFixedCattCount-i)
           ),
         cmHotbinShape.ccGetY()+ConstLocalUI.C_INPANE_GAP
       );
-      cmDesHotbinLV.get(i).ccSetupColor(EcConst.C_ORANGE, EcConst.C_YELLOW);
-      cmDesHotbinLV.get(i).ccSetSize(lpPotentialW,lpPotentialH);
+      cmLesHotbinLV.get(i).ccSetupColor(EcConst.C_ORANGE, EcConst.C_YELLOW);
+      cmLesHotbinLV.get(i).ccSetSize(lpPotentialW,lpPotentialH);
     }//~
     //-- ag surge ** hiding
     for(int i=MainSpecificator.ccRefer().vmAGCattegoryCount+1;i<=7;i++){
-      cmDesHotbinLV.get(i).ccHide();
+      cmLesHotbinLV.get(i).ccHide();
     }//..~
     
     //-- fr surge
@@ -315,7 +315,7 @@ public final class SubVSurgeGroup implements EiGroup{
 
   @Override public List<? extends EcElement> ccGiveElementList(){
     ArrayList<EcElement> lpRes = new ArrayList<EcElement>();
-    lpRes.addAll(cmDesHotbinLV);
+    lpRes.addAll(cmLesHotbinLV);
     lpRes.addAll(Arrays.asList(cmOverFlowedLV,cmOverFlowedGateSW,
       cmOverSizedLV,cmOverSizedGateSW,
       cmSandTemperatureCB,

@@ -58,7 +58,7 @@ public final class SubFeederPane implements SiTabbable{
   private final HashMap<JButton,JSpinner> cmMapOfConfigSW
     = new HashMap<JButton, JSpinner>();
   
-  public final List<ScFeederBlock> cmDesVFeederBlock
+  public final List<ScFeederBlock> cmLesVFeederBlock
     = Collections.unmodifiableList(Arrays.asList(
       new ScFeederBlock("X"),
       new ScFeederBlock("VF1"),
@@ -73,7 +73,7 @@ public final class SubFeederPane implements SiTabbable{
       new ScFeederBlock("VF10")
     ));
   
-  public final List<ScFeederBlock> cmDesRFeederBlock
+  public final List<ScFeederBlock> cmLesRFeederBlock
     = Collections.unmodifiableList(Arrays.asList(
       new ScFeederBlock("X"),
       new ScFeederBlock("RF1"),
@@ -126,10 +126,10 @@ public final class SubFeederPane implements SiTabbable{
         i++
       ){
         SubFeederDelegator.ccSetVFeederSpeed
-          (i, cmDesVFeederBlock.get(i).ccGetValue());
+          (i, cmLesVFeederBlock.get(i).ccGetValue());
         int lpTPH=SubAnalogScalarManager.ccRefer().ccGetVFeederFluxTPH(i);
         MainPlantModel.ccRefer().cmDesVFeederTPH.ccSet(i, lpTPH);
-        cmDesVFeederBlock.get(i).cmTPHField
+        cmLesVFeederBlock.get(i).cmTPHField
           .setText(VcNumericUtility.ccFormatFloatForOneAfter(lpTPH)+"tph");
       }//..~
     }//+++
@@ -146,31 +146,31 @@ public final class SubFeederPane implements SiTabbable{
       //-- V
       
       //-- V ** register
-      lpVFeederPanel.add(cmDesVFeederBlock.get(i));
-      cmMapOfConfigSW.put(cmDesVFeederBlock.get(i) .cmConfigSW,
-        cmDesVFeederBlock.get(i) .cmRPMSpinner
+      lpVFeederPanel.add(cmLesVFeederBlock.get(i));
+      cmMapOfConfigSW.put(cmLesVFeederBlock.get(i) .cmConfigSW,
+        cmLesVFeederBlock.get(i) .cmRPMSpinner
       );
       //-- V ** event
-      cmDesVFeederBlock.get(i).cmForceSW
+      cmLesVFeederBlock.get(i).cmForceSW
         .addActionListener(MainActionManager.ccRefer().cmNotchListener);
-      cmDesVFeederBlock.get(i).cmDisableSW
+      cmLesVFeederBlock.get(i).cmDisableSW
         .addActionListener(MainActionManager.ccRefer().cmNotchListener);
-      cmDesVFeederBlock.get(i).cmConfigSW
+      cmLesVFeederBlock.get(i).cmConfigSW
         .addActionListener(cmFeederSpeedConfigListener);
-      cmDesVFeederBlock.get(i).cmRPMSpinner
+      cmLesVFeederBlock.get(i).cmRPMSpinner
         .addChangeListener(cmFeederSpeedChangeListener);
       
       //-- V ** hide
       if(i>MainSpecificator.ccRefer().vmVFeederAmount){
-        ScConst.ccHideComponent(cmDesVFeederBlock.get(i));
+        ScConst.ccHideComponent(cmLesVFeederBlock.get(i));
       }//..?
       
       //-- R 
       //-- R ** register
-      lpRFeederPanel.add(cmDesRFeederBlock.get(i));
+      lpRFeederPanel.add(cmLesRFeederBlock.get(i));
       //-- R ** event
       //-- R ** hide
-      ScConst.ccHideComponent(cmDesRFeederBlock.get(i));
+      ScConst.ccHideComponent(cmLesRFeederBlock.get(i));
       
     }//..~
     
@@ -187,7 +187,7 @@ public final class SubFeederPane implements SiTabbable{
     //[todo]:fix this
     int lpStep=VcNumericUtility.ccInteger(50, pxMagnitude);
     int lpBuf;
-    for(ScFeederBlock it : cmDesVFeederBlock){
+    for(ScFeederBlock it : cmLesVFeederBlock){
       lpBuf = it.ccGetValue();
       lpBuf+=lpStep;
       it.ccSetValue(lpBuf);

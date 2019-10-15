@@ -59,12 +59,12 @@ public final class MainWindow {
       for(int i=0;i<MainPlantModel.C_CTSLOT_CHANNEL_MAX;i++){
         int lpValue=SubAnalogScalarManager.ccRefer().ccGetCTSlotAMPR(i);
         int lpSpan=SubAnalogScalarManager.ccRefer().ccGetCTSlotREALSpan(i);
-        SubMonitorPane.ccRefer().cmDesCurrentCTSlot.get(i)
+        SubMonitorPane.ccRefer().cmLesCurrentCTSlot.get(i)
           .ccSetFloatValueForOneAfter(
             lpValue<10?0f:
             VcNumericUtility.ccToFloatForOneAfter(lpValue)
           );
-        SubMonitorPane.ccRefer().cmDesCurrentCTSlot.get(i)
+        SubMonitorPane.ccRefer().cmLesCurrentCTSlot.get(i)
           .ccSetPercentage(VcNumericUtility.ccProportion(lpValue, lpSpan));
       }//..~
       

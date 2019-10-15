@@ -53,7 +53,7 @@ public final class SubMonitorPane implements SiTabbable{
   
   public final JPanel cmPane = ScFactory.ccCreateBorderPanel();
   
-  public final List<ScGauge> cmDesCurrentCTSlot
+  public final List<ScGauge> cmLesCurrentCTSlot
     = Collections.unmodifiableList(Arrays.asList(
       new ScGauge("_ct00", "A"),new ScGauge("_ct01", "A"),
       new ScGauge("_ct02", "A"),new ScGauge("_ct03", "A"),
@@ -112,16 +112,16 @@ public final class SubMonitorPane implements SiTabbable{
     JPanel lpSlotGroupII = ScFactory
       .ccCreateGridPanel(MainPlantModel.C_CTSLOT_CHANNEL_SINGLE, 1);
     for(int i=0;i<MainPlantModel.C_CTSLOT_CHANNEL_SINGLE;i++){
-      lpSlotGroupI.add(cmDesCurrentCTSlot
+      lpSlotGroupI.add(cmLesCurrentCTSlot
         .get(i));
-      lpSlotGroupII.add(cmDesCurrentCTSlot
+      lpSlotGroupII.add(cmLesCurrentCTSlot
         .get(i+MainPlantModel.C_CTSLOT_CHANNEL_SINGLE));
     }////~
     JTabbedPane lpLeftWing = new JTabbedPane();
     lpLeftWing.add(VcTranslator.tr("_vact"),lpSlotGroupI);
     if(MainSpecificator.ccRefer().ccNeedsExtendsCurrentSlot())
       {lpLeftWing.add(VcTranslator.tr("_rsct"),lpSlotGroupII);}
-    for(ScGauge it : cmDesCurrentCTSlot){
+    for(ScGauge it : cmLesCurrentCTSlot){
        it.ccSetText(VcTranslator.tr(it.ccGetKey()));
        it.ccSetPercentage(4);//..arbitrary
     }//..~

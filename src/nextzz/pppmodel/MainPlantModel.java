@@ -96,6 +96,7 @@ public final class MainPlantModel {
     
     //-- manager
     SubAnalogScalarManager.ccRefer().ccInit();
+    SubRecipeManager.ccRefer().ccInit();
     
   }//++!
   

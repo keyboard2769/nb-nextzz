@@ -74,8 +74,7 @@ public final class SubSettingPane implements SiTabbable{
   
   //===
   
-  private final MouseAdapter cmListPressListener
-    = new MouseAdapter() {
+  private final MouseAdapter cmListPressListener = new MouseAdapter() {
     @Override public void mousePressed(MouseEvent me) {
       int lpIndex=cmList.ccGetCurrentIndex();
       if(lpIndex<0){return;}
@@ -88,8 +87,7 @@ public final class SubSettingPane implements SiTabbable{
     }//+++
   };//***
   
-  private final MouseAdapter cmTablePressListener
-    = new MouseAdapter() {
+  private final MouseAdapter cmTablePressListener = new MouseAdapter() {
     @Override public void mouseReleased(MouseEvent me) {
       int lpListIndex = cmList.ccGetCurrentIndex();
       int lpTableIndex = cmTable.ccGetSelectedRowIndex();

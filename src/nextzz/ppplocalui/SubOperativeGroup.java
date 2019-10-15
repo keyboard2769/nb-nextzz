@@ -50,7 +50,7 @@ public final class SubOperativeGroup implements EiGroup{
   //-- motor pane
   public final EcPane cmMotorSwitchPane
     = new EcPane(VcTranslator.tr("_motor"));
-  public final List<EcButton> cmDesMotorSW
+  public final List<EcButton> cmLesMotorSW
     = Collections.unmodifiableList(Arrays.asList(
     //--
     new EcButton("_m00", 0x3100),new EcButton("_m01", 0x3101),
@@ -66,7 +66,7 @@ public final class SubOperativeGroup implements EiGroup{
   
   //-- assistance pane
   public final EcShape cmAssistPlate = new EcShape();
-  public final List<EcButton> cmDesAssistSW
+  public final List<EcButton> cmLesAssistSW
     = Collections.unmodifiableList(Arrays.asList(
     //--
     new EcButton("$a00", 0x3110),new EcButton("$a01", 0x3111),
@@ -120,7 +120,7 @@ public final class SubOperativeGroup implements EiGroup{
   public final EcButton cmRCSkipSW = new EcButton("_ik_rc", 0x34B4);
   public final EcButton cmADSkipSW = new EcButton("_ik_ad", 0x34B5);
   
-  public final List<EcValueBox> cmDesRecipeTB
+  public final List<EcValueBox> cmLesRecipeTB
     = Collections.unmodifiableList(Arrays.asList(
       new EcValueBox("_recipe", "000  ",0x3400),
       new EcValueBox("_recipe", "000  ",0x3401),
@@ -128,7 +128,7 @@ public final class SubOperativeGroup implements EiGroup{
       new EcValueBox("_recipe", "000  ",0x3403),
       new EcValueBox("_recipe", "000  ",0x3404)
   ));//...
-  public final List<EcTextBox> cmDesNameCB
+  public final List<EcTextBox> cmLesNameCB
     = Collections.unmodifiableList(Arrays.asList(
       new EcTextBox("_name", "--Z"),
       new EcTextBox("_name", "--I"),
@@ -136,7 +136,7 @@ public final class SubOperativeGroup implements EiGroup{
       new EcTextBox("_name", "--III"),
       new EcTextBox("_name", "--IV")
   ));//...
-  public final List<EcValueBox> cmDesKilogramTB
+  public final List<EcValueBox> cmLesKilogramTB
     = Collections.unmodifiableList(Arrays.asList(
       new EcValueBox("_per", "0000 kg",0x3410),
       new EcValueBox("_per", "0000 kg",0x3411),
@@ -144,7 +144,7 @@ public final class SubOperativeGroup implements EiGroup{
       new EcValueBox("_per", "0000 kg",0x3413),
       new EcValueBox("_per", "0000 kg",0x3414)
   ));//...
-  public final List<EcValueBox> cmDesBatchTB
+  public final List<EcValueBox> cmLesBatchTB
     = Collections.unmodifiableList(Arrays.asList(
       new EcValueBox("_batch", "0000 b",0x3420),
       new EcValueBox("_batch", "0000 b",0x3421),
@@ -178,37 +178,36 @@ public final class SubOperativeGroup implements EiGroup{
       MainSketch.ccGetPrefferedH()-lpPotentialH//-ConstLocalUI.C_SIDE_MARGIN
         - VcLocalConsole.ccGetInstance().ccGetBarHeight()
     );
-    cmDesMotorSW.get(1).ccSetLocation(cmMotorSwitchPane,
+    cmLesMotorSW.get(1).ccSetLocation(cmMotorSwitchPane,
       ConstLocalUI.C_INPANE_MARGIN_S,
       ConstLocalUI.C_INPANE_MARGIN_U
     );
-    cmDesMotorSW.get(1).ccSetSize(
+    cmLesMotorSW.get(1).ccSetSize(
       ConstLocalUI.C_MOTOR_SW_SIZE,
       ConstLocalUI.C_MOTOR_SW_SIZE
     );
-    /* 6 */cmDesMotorSW.get(0).ccHide();//..intended disposed
+    /* 6 */cmLesMotorSW.get(0).ccHide();//..intended disposed
     //-- motor pane **  relate
-    cmDesMotorSW.get(6).ccSetLocation
-      (cmDesMotorSW.get(1), 0, ConstLocalUI.C_INPANE_GAP);
-    cmDesMotorSW.get(6).ccSetSize(cmDesMotorSW.get(1));
-    cmDesMotorSW.get(11).ccSetLocation
-      (cmDesMotorSW.get(6), 0, ConstLocalUI.C_INPANE_GAP);
-    cmDesMotorSW.get(11).ccSetSize(cmDesMotorSW.get(1));
+    cmLesMotorSW.get(6).ccSetLocation
+      (cmLesMotorSW.get(1), 0, ConstLocalUI.C_INPANE_GAP);
+    cmLesMotorSW.get(6).ccSetSize(cmLesMotorSW.get(1));
+    cmLesMotorSW.get(11).ccSetLocation
+      (cmLesMotorSW.get(6), 0, ConstLocalUI.C_INPANE_GAP);
+    cmLesMotorSW.get(11).ccSetSize(cmLesMotorSW.get(1));
     for(int i=0;i<=3;i++){
-      cmDesMotorSW.get(i+2).ccSetLocation
-        (cmDesMotorSW.get(i+1), ConstLocalUI.C_INPANE_GAP, 0);
-      cmDesMotorSW.get(i+2).ccSetSize(cmDesMotorSW.get(1));
-      cmDesMotorSW.get(i+7).ccSetLocation
-        (cmDesMotorSW.get(i+6), ConstLocalUI.C_INPANE_GAP, 0);
-      cmDesMotorSW.get(i+7).ccSetSize(cmDesMotorSW.get(1));
-      cmDesMotorSW.get(i+12).ccSetLocation
-        (cmDesMotorSW.get(i+11), ConstLocalUI.C_INPANE_GAP, 0);
-      cmDesMotorSW.get(i+12).ccSetSize(cmDesMotorSW.get(1));
+      cmLesMotorSW.get(i+2).ccSetLocation
+        (cmLesMotorSW.get(i+1), ConstLocalUI.C_INPANE_GAP, 0);
+      cmLesMotorSW.get(i+2).ccSetSize(cmLesMotorSW.get(1));
+      cmLesMotorSW.get(i+7).ccSetLocation
+        (cmLesMotorSW.get(i+6), ConstLocalUI.C_INPANE_GAP, 0);
+      cmLesMotorSW.get(i+7).ccSetSize(cmLesMotorSW.get(1));
+      cmLesMotorSW.get(i+12).ccSetLocation
+        (cmLesMotorSW.get(i+11), ConstLocalUI.C_INPANE_GAP, 0);
+      cmLesMotorSW.get(i+12).ccSetSize(cmLesMotorSW.get(1));
     }//..~
     //-- motor pane **  pack
-    cmMotorSwitchPane.ccSetEndPoint(
-      cmDesMotorSW.get(15).ccEndX()+ConstLocalUI.C_INPANE_MARGIN_S,
-      cmDesMotorSW.get(15).ccEndY()+ConstLocalUI.C_INPANE_MARGIN_S
+    cmMotorSwitchPane.ccSetEndPoint(cmLesMotorSW.get(15).ccEndX()+ConstLocalUI.C_INPANE_MARGIN_S,
+      cmLesMotorSW.get(15).ccEndY()+ConstLocalUI.C_INPANE_MARGIN_S
     );//..~
     
     //-- assistance
@@ -223,17 +222,17 @@ public final class SubOperativeGroup implements EiGroup{
       EcConst.ccAdjustColor(MainSketch.C_COLOR_BACKGROUD, -16)
     );
     //-- assistance
-    cmDesAssistSW.get(1).ccSetLocation
+    cmLesAssistSW.get(1).ccSetLocation
       (cmAssistPlate, ConstLocalUI.C_INPANE_GAP, ConstLocalUI.C_INPANE_GAP);
-    cmDesAssistSW.get(1).ccSetSize
+    cmLesAssistSW.get(1).ccSetSize
       (ConstLocalUI.C_ASSIST_SW_W,ConstLocalUI.C_ASSIST_SW_H);
     for(int i=2;i<=8;i++){
-      cmDesAssistSW.get(i).ccSetSize(cmDesAssistSW.get(i-1));
-      cmDesAssistSW.get(i).ccSetLocation
-        (cmDesAssistSW.get(i-1), ConstLocalUI.C_INPANE_GAP, 0);
+      cmLesAssistSW.get(i).ccSetSize(cmLesAssistSW.get(i-1));
+      cmLesAssistSW.get(i).ccSetLocation
+        (cmLesAssistSW.get(i-1), ConstLocalUI.C_INPANE_GAP, 0);
     }//..~
     for(int it:new int[]{0,9,10,11,12,13,14,15}){
-      cmDesAssistSW.get(it).ccHide();//..intended disposed
+      cmLesAssistSW.get(it).ccHide();//..intended disposed
     }//..~
     //-- assistance ** pack
     cmAssistPlate.ccSetW
@@ -346,34 +345,33 @@ public final class SubOperativeGroup implements EiGroup{
     );
     //-- booking ** title
     //-- booking ** title ** shrink
-    cmDesRecipeTB.get(0).ccSetH(lpPotentialH);
-    cmDesNameCB.get(0).ccSetH(lpPotentialH);
-    cmDesKilogramTB.get(0).ccSetH(lpPotentialH);
-    cmDesBatchTB.get(0).ccSetH(lpPotentialH);
+    cmLesRecipeTB.get(0).ccSetH(lpPotentialH);
+    cmLesNameCB.get(0).ccSetH(lpPotentialH);
+    cmLesKilogramTB.get(0).ccSetH(lpPotentialH);
+    cmLesBatchTB.get(0).ccSetH(lpPotentialH);
     //-- booking ** title ** color
-    cmDesRecipeTB.get(0).ccSetupColor(EcConst.C_RED, EcConst.C_DARK_YELLOW);
-    cmDesNameCB.get(0).ccSetupColor(EcConst.C_RED, EcConst.C_DARK_YELLOW);
-    cmDesKilogramTB.get(0).ccSetupColor(EcConst.C_RED, EcConst.C_DARK_YELLOW);
-    cmDesBatchTB.get(0).ccSetupColor(EcConst.C_RED, EcConst.C_DARK_YELLOW);
+    cmLesRecipeTB.get(0).ccSetupColor(EcConst.C_RED, EcConst.C_DARK_YELLOW);
+    cmLesNameCB.get(0).ccSetupColor(EcConst.C_RED, EcConst.C_DARK_YELLOW);
+    cmLesKilogramTB.get(0).ccSetupColor(EcConst.C_RED, EcConst.C_DARK_YELLOW);
+    cmLesBatchTB.get(0).ccSetupColor(EcConst.C_RED, EcConst.C_DARK_YELLOW);
     //-- booking ** title ** span size
-    cmDesNameCB.get(0).ccSetW(
-      cmBookingPane.ccGetW()
+    cmLesNameCB.get(0).ccSetW(cmBookingPane.ccGetW()
      -ConstLocalUI.C_INPANE_GAP*3-ConstLocalUI.C_INPANE_MARGIN_S*2
-     -cmDesRecipeTB.get(0).ccGetW()
-     -cmDesKilogramTB.get(0).ccGetW()
-     -cmDesBatchTB.get(0).ccGetW()
+     -cmLesRecipeTB.get(0).ccGetW()
+     -cmLesKilogramTB.get(0).ccGetW()
+     -cmLesBatchTB.get(0).ccGetW()
     );
     //-- booking ** title ** allocate
-    cmDesRecipeTB.get(0).ccSetLocation(cmBookingPane,
+    cmLesRecipeTB.get(0).ccSetLocation(cmBookingPane,
       ConstLocalUI.C_INPANE_MARGIN_S,
       ConstLocalUI.C_INPANE_MARGIN_U+lpPotentialH
     );
-    cmDesNameCB.get(0).ccSetLocation
-      (cmDesRecipeTB.get(0), ConstLocalUI.C_INPANE_GAP, 0);
-    cmDesKilogramTB.get(0).ccSetLocation
-      (cmDesNameCB.get(0), ConstLocalUI.C_INPANE_GAP, 0);
-    cmDesBatchTB.get(0).ccSetLocation
-      (cmDesKilogramTB.get(0), ConstLocalUI.C_INPANE_GAP, 0);
+    cmLesNameCB.get(0).ccSetLocation
+      (cmLesRecipeTB.get(0), ConstLocalUI.C_INPANE_GAP, 0);
+    cmLesKilogramTB.get(0).ccSetLocation
+      (cmLesNameCB.get(0), ConstLocalUI.C_INPANE_GAP, 0);
+    cmLesBatchTB.get(0).ccSetLocation
+      (cmLesKilogramTB.get(0), ConstLocalUI.C_INPANE_GAP, 0);
     //-- booking ** table
     for(
       int i=MainPlantModel.C_BOOK_UI_CAPA_HEAD;
@@ -381,21 +379,21 @@ public final class SubOperativeGroup implements EiGroup{
       i++
     ){
       //--
-      cmDesRecipeTB.get(i).ccSetLocation
-        (cmDesRecipeTB.get(i-1), 0,ConstLocalUI.C_INPANE_GAP);
-      cmDesRecipeTB.get(i).ccSetSize(cmDesRecipeTB.get(i-1));
+      cmLesRecipeTB.get(i).ccSetLocation
+        (cmLesRecipeTB.get(i-1), 0,ConstLocalUI.C_INPANE_GAP);
+      cmLesRecipeTB.get(i).ccSetSize(cmLesRecipeTB.get(i-1));
       //--
-      cmDesNameCB.get(i).ccSetLocation
-        (cmDesNameCB.get(i-1), 0,ConstLocalUI.C_INPANE_GAP);
-      cmDesNameCB.get(i).ccSetSize(cmDesNameCB.get(i-1));
+      cmLesNameCB.get(i).ccSetLocation
+        (cmLesNameCB.get(i-1), 0,ConstLocalUI.C_INPANE_GAP);
+      cmLesNameCB.get(i).ccSetSize(cmLesNameCB.get(i-1));
       //--
-      cmDesKilogramTB.get(i).ccSetLocation
-        (cmDesKilogramTB.get(i-1), 0,ConstLocalUI.C_INPANE_GAP);
-      cmDesKilogramTB.get(i).ccSetSize(cmDesKilogramTB.get(i-1));
+      cmLesKilogramTB.get(i).ccSetLocation
+        (cmLesKilogramTB.get(i-1), 0,ConstLocalUI.C_INPANE_GAP);
+      cmLesKilogramTB.get(i).ccSetSize(cmLesKilogramTB.get(i-1));
       //--
-      cmDesBatchTB.get(i).ccSetLocation
-        (cmDesBatchTB.get(i-1), 0,ConstLocalUI.C_INPANE_GAP);
-      cmDesBatchTB.get(i).ccSetSize(cmDesBatchTB.get(i-1));
+      cmLesBatchTB.get(i).ccSetLocation
+        (cmLesBatchTB.get(i-1), 0,ConstLocalUI.C_INPANE_GAP);
+      cmLesBatchTB.get(i).ccSetSize(cmLesBatchTB.get(i-1));
     }//..~
     //-- booking ** title ** label
     lpPotentialY=cmBookingPane.ccGetY()
@@ -406,18 +404,17 @@ public final class SubOperativeGroup implements EiGroup{
     cmKilogramText.ccSetTextColor(EcConst.C_LIT_GRAY);
     cmBatchText.ccSetTextColor(EcConst.C_LIT_GRAY);
     cmRecipeText.ccSetLocation
-      (cmDesRecipeTB.get(0).ccCenterX(), lpPotentialY);
+      (cmLesRecipeTB.get(0).ccCenterX(), lpPotentialY);
     cmNameText.ccSetLocation
-      (cmDesNameCB.get(0).ccCenterX(), lpPotentialY);
+      (cmLesNameCB.get(0).ccCenterX(), lpPotentialY);
     cmKilogramText.ccSetLocation
-      (cmDesKilogramTB.get(0).ccCenterX(), lpPotentialY);
+      (cmLesKilogramTB.get(0).ccCenterX(), lpPotentialY);
     cmBatchText.ccSetLocation
-      (cmDesBatchTB.get(0).ccCenterX(), lpPotentialY);
+      (cmLesBatchTB.get(0).ccCenterX(), lpPotentialY);
     //-- booking ** control ** plate
     lpPotentialH=22;
     cmBookingPlate.ccSetBaseColor(lpPlateColor);
-    cmBookingPlate.ccSetLocation(
-      cmDesRecipeTB.get(0).ccGetX(),
+    cmBookingPlate.ccSetLocation(cmLesRecipeTB.get(0).ccGetX(),
       cmBookingPane.ccEndY()-lpPotentialH-ConstLocalUI.C_INPANE_MARGIN_S*2
     );
     cmBookingPlate.ccSetEndPoint(cmBookingPane,
@@ -460,14 +457,14 @@ public final class SubOperativeGroup implements EiGroup{
     
     //-- inputtable ** register
     for(int it:new int[]{1,2,3,4}){
-      VcLocalCoordinator.ccAddInputtable(cmDesRecipeTB.get(it));
-      VcLocalCoordinator.ccAddInputtable(cmDesKilogramTB.get(it));
-      VcLocalCoordinator.ccAddInputtable(cmDesBatchTB.get(it));
-      VcLocalCoordinator.ccRegisterMouseTrigger(cmDesRecipeTB.get(it),
+      VcLocalCoordinator.ccAddInputtable(cmLesRecipeTB.get(it));
+      VcLocalCoordinator.ccAddInputtable(cmLesKilogramTB.get(it));
+      VcLocalCoordinator.ccAddInputtable(cmLesBatchTB.get(it));
+      VcLocalCoordinator.ccRegisterMouseTrigger(cmLesRecipeTB.get(it),
         MainActionManager.ccRefer().cmInputtableClicking);
-      VcLocalCoordinator.ccRegisterMouseTrigger(cmDesKilogramTB.get(it),
+      VcLocalCoordinator.ccRegisterMouseTrigger(cmLesKilogramTB.get(it),
         MainActionManager.ccRefer().cmInputtableClicking);
-      VcLocalCoordinator.ccRegisterMouseTrigger(cmDesBatchTB.get(it),
+      VcLocalCoordinator.ccRegisterMouseTrigger(cmLesBatchTB.get(it),
         MainActionManager.ccRefer().cmInputtableClicking);
     }//..~
     
@@ -485,12 +482,12 @@ public final class SubOperativeGroup implements EiGroup{
 
   @Override public List<? extends EcElement> ccGiveElementList(){
     ArrayList<EcElement> lpRes = new ArrayList<EcElement>();
-    lpRes.addAll(cmDesMotorSW);
-    lpRes.addAll(cmDesAssistSW);
-    lpRes.addAll(cmDesRecipeTB);
-    lpRes.addAll(cmDesNameCB);
-    lpRes.addAll(cmDesKilogramTB);
-    lpRes.addAll(cmDesBatchTB);
+    lpRes.addAll(cmLesMotorSW);
+    lpRes.addAll(cmLesAssistSW);
+    lpRes.addAll(cmLesRecipeTB);
+    lpRes.addAll(cmLesNameCB);
+    lpRes.addAll(cmLesKilogramTB);
+    lpRes.addAll(cmLesBatchTB);
     lpRes.addAll(Arrays.asList(cmAGZeroSW,cmFRZeroSW,cmASZeroSW,cmRCZeroSW,
       cmApplyZeroSW,
       cmMixerGateHoldSW,cmMixerGateAutoSW,cmMixerGateOpenSW,

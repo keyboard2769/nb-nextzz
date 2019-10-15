@@ -68,15 +68,15 @@ public class SubFeederDelegator {
   public static final void ccBind(){
     
     //-- vf ** operative
-    mnVFChainMSSW=SubOperativeGroup.ccRefer().cmDesMotorSW
+    mnVFChainMSSW=SubOperativeGroup.ccRefer().cmLesMotorSW
       .get(5).ccIsMousePressed();
-    SubOperativeGroup.ccRefer().cmDesMotorSW
+    SubOperativeGroup.ccRefer().cmLesMotorSW
       .get(5).ccSetIsActivated(mnVFChainMSPL);
     
     //-- v feeder ** operative
-    mnVFChainMSSW=SubOperativeGroup.ccRefer().cmDesMotorSW
+    mnVFChainMSSW=SubOperativeGroup.ccRefer().cmLesMotorSW
       .get(5).ccIsMousePressed();
-    SubOperativeGroup.ccRefer().cmDesMotorSW
+    SubOperativeGroup.ccRefer().cmLesMotorSW
       .get(5).ccSetIsActivated(mnVFChainMSPL);
     
     //-- v feeder ** iteraticve
@@ -86,10 +86,10 @@ public class SubFeederDelegator {
       i++
     ){
       //-- ** plc -> pc **stuck
-      SubVFeederGroup.ccRefer().cmDesFeederRPMGauge
+      SubVFeederGroup.ccRefer().cmLesFeederRPMGauge
         .get(i).ccSetIsActivated(ccGetVFeederStuck(i));
       //-- ** plc -> pc ** runnning
-      SubVFeederGroup.ccRefer().cmDesFeederRPMBox
+      SubVFeederGroup.ccRefer().cmLesFeederRPMBox
         .get(i).ccSetIsActivated(ccGetVFeederRunning(i));
       //-- ** swing -> local
       SubVFeederGroup.ccRefer().ccSetFeederRPM(i, ccGetVFeederSpeed(i));

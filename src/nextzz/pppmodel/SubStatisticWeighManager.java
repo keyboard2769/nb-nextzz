@@ -75,7 +75,7 @@ public final class SubStatisticWeighManager extends McTableAdapter{
   //===
   
   private final class McWeighRecord {
-    String cmTimeStamp="--";
+    String cmTimeStamp="-- ? MXV";
     int cmRecipeID = 0;
     float cmMixtureTemp = 0f;
     float cmTotalKG = 0f;

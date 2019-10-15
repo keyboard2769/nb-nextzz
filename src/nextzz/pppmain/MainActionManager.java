@@ -163,8 +163,8 @@ public final class MainActionManager {
     = new EiTriggerable() {
     @Override public void ccTrigger() {
       //[tofix]:: with the booked recipe
-      SubFeederPane.ccRefer().cmDesVFeederBlock.get(1).ccSetValue(1222);
-      SubFeederPane.ccRefer().cmDesVFeederBlock.get(6).ccSetValue(1222);
+      SubFeederPane.ccRefer().cmLesVFeederBlock.get(1).ccSetValue(1222);
+      SubFeederPane.ccRefer().cmLesVFeederBlock.get(6).ccSetValue(1222);
     }//+++
   };//***
   
@@ -234,7 +234,7 @@ public final class MainActionManager {
     = new EiTriggerable() {
     @Override public void ccTrigger() {
       int lpID=VcLocalCoordinator.ccGetMouseOverID();
-      lpID-=SubWeigherGroup.ccRefer().cmDesAGLockSW.get(0).ccGetID();
+      lpID-=SubWeigherGroup.ccRefer().cmLesAGLockSW.get(0).ccGetID();
       boolean lpFlip = SubWeighingDelegator.ccGetAGLockSW(lpID);
       lpFlip=!lpFlip;
       SubWeighingDelegator.ccSetAGLockSW(lpID, lpFlip);
@@ -245,7 +245,7 @@ public final class MainActionManager {
     = new EiTriggerable() {
     @Override public void ccTrigger() {
       int lpID=VcLocalCoordinator.ccGetMouseOverID();
-      lpID-=SubWeigherGroup.ccRefer().cmDesFRLockSW.get(0).ccGetID();
+      lpID-=SubWeigherGroup.ccRefer().cmLesFRLockSW.get(0).ccGetID();
       boolean lpFlip = SubWeighingDelegator.ccGetFRLockSW(lpID);
       lpFlip=!lpFlip;
       SubWeighingDelegator.ccSetFRLockSW(lpID, lpFlip);
@@ -256,7 +256,7 @@ public final class MainActionManager {
     = new EiTriggerable() {
     @Override public void ccTrigger() {
       int lpID=VcLocalCoordinator.ccGetMouseOverID();
-      lpID-=SubWeigherGroup.ccRefer().cmDesASLockSW.get(0).ccGetID();
+      lpID-=SubWeigherGroup.ccRefer().cmLesASLockSW.get(0).ccGetID();
       boolean lpFlip = SubWeighingDelegator.ccGetASLockSW(lpID);
       lpFlip=!lpFlip;
       SubWeighingDelegator.ccSetASLockSW(lpID, lpFlip);
@@ -377,9 +377,9 @@ public final class MainActionManager {
         i++
       ){
         SubFeederDelegator.ccSetVFeederForce(i,
-          SubFeederPane.ccRefer().cmDesVFeederBlock.get(i).ccGetIsForced());
+          SubFeederPane.ccRefer().cmLesVFeederBlock.get(i).ccGetIsForced());
         SubFeederDelegator.ccSetVFeederDisable(i,
-          SubFeederPane.ccRefer().cmDesVFeederBlock.get(i).ccGetIsDisabled());
+          SubFeederPane.ccRefer().cmLesVFeederBlock.get(i).ccGetIsDisabled());
       }//..~
       
     }//+++
@@ -445,13 +445,13 @@ public final class MainActionManager {
         ,cmVTargetTemperatureIncrementing);
     
     //-- sketch ** floatting ** weighing
-    for(EcButton it : SubWeigherGroup.ccRefer().cmDesAGLockSW){
+    for(EcButton it : SubWeigherGroup.ccRefer().cmLesAGLockSW){
       VcLocalCoordinator.ccRegisterMouseTrigger(it, cmAGLockFlipping);
     }//..~
-    for(EcButton it : SubWeigherGroup.ccRefer().cmDesFRLockSW){
+    for(EcButton it : SubWeigherGroup.ccRefer().cmLesFRLockSW){
       VcLocalCoordinator.ccRegisterMouseTrigger(it, cmFRLockFlipping);
     }//..~
-    for(EcButton it : SubWeigherGroup.ccRefer().cmDesASLockSW){
+    for(EcButton it : SubWeigherGroup.ccRefer().cmLesASLockSW){
       VcLocalCoordinator.ccRegisterMouseTrigger(it, cmASLockFlipping);
     }//..~
     //[todo]::for(EcButton it : SubWeigherGroup.ccRefer().cmDesRC...

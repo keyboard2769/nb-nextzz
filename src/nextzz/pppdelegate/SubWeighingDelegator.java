@@ -112,54 +112,54 @@ public final class SubWeighingDelegator {
     
     //-- aggregate
     mnAGCellDischargeSW=SubWeigherGroup.ccRefer()
-      .cmDesADWeighSW.get(0).ccIsMousePressed();
-    SubWeigherGroup.ccRefer().cmDesAGWeighSW.get(0)
+      .cmLesADWeighSW.get(0).ccIsMousePressed();
+    SubWeigherGroup.ccRefer().cmLesAGWeighSW.get(0)
       .ccSetIsActivated(mnAGCellDischargePL);
-    SubWeigherGroup.ccRefer().cmDesAGLockSW.get(0)
+    SubWeigherGroup.ccRefer().cmLesAGLockSW.get(0)
       .ccSetIsActivated(mnAGCellLockSW);
     for(int i=MainPlantModel.C_MATT_AGGR_UI_VALID_HEAD;
       i<=MainPlantModel.C_MATT_AGGR_UI_VALID_MAX;i++
     ){
-      ccSetAGGateSW(i, SubWeigherGroup.ccRefer().cmDesAGWeighSW
+      ccSetAGGateSW(i, SubWeigherGroup.ccRefer().cmLesAGWeighSW
         .get(i).ccIsMousePressed());
-      SubWeigherGroup.ccRefer().cmDesAGWeighSW.get(i)
+      SubWeigherGroup.ccRefer().cmLesAGWeighSW.get(i)
         .ccSetIsActivated(ccGetAGGatePL(i));
-      SubWeigherGroup.ccRefer().cmDesAGLockSW.get(i)
+      SubWeigherGroup.ccRefer().cmLesAGLockSW.get(i)
         .ccSetIsActivated(ccGetAGLockSW(i));
     }//++~
     
     //-- rest
     //-- rest ** weigher ** fr
     mnFRCellDischargeSW=SubWeigherGroup.ccRefer()
-      .cmDesFRWeighSW.get(0).ccIsMousePressed();
-    SubWeigherGroup.ccRefer().cmDesFRWeighSW.get(0)
+      .cmLesFRWeighSW.get(0).ccIsMousePressed();
+    SubWeigherGroup.ccRefer().cmLesFRWeighSW.get(0)
       .ccSetIsActivated(ccGetFRGatePL(0));
-    SubWeigherGroup.ccRefer().cmDesFRLockSW.get(0)
+    SubWeigherGroup.ccRefer().cmLesFRLockSW.get(0)
       .ccSetIsActivated(mnFRCellLockSW);
     //-- rest ** weigher ** as
     mnASCellDischargeSW=SubWeigherGroup.ccRefer()
-      .cmDesASWeighSW.get(0).ccIsMousePressed();
-    SubWeigherGroup.ccRefer().cmDesASWeighSW.get(0)
+      .cmLesASWeighSW.get(0).ccIsMousePressed();
+    SubWeigherGroup.ccRefer().cmLesASWeighSW.get(0)
       .ccSetIsActivated(ccGetASGatePL(0));
-    SubWeigherGroup.ccRefer().cmDesASLockSW.get(0)
+    SubWeigherGroup.ccRefer().cmLesASLockSW.get(0)
       .ccSetIsActivated(mnASCellLockSW);
     //[todo]::rc-ad
     for(int i=MainPlantModel.C_MATT_REST_UI_VALID_HEAD;
       i<=MainPlantModel.C_MATT_REST_UI_VALID_MAX;i++
     ){
       //-- rest ** loop * fr
-      ccSetFRGateSW(i, SubWeigherGroup.ccRefer().cmDesFRWeighSW
+      ccSetFRGateSW(i, SubWeigherGroup.ccRefer().cmLesFRWeighSW
         .get(i).ccIsMousePressed());
-      SubWeigherGroup.ccRefer().cmDesFRWeighSW.get(i)
+      SubWeigherGroup.ccRefer().cmLesFRWeighSW.get(i)
         .ccSetIsActivated(ccGetFRGatePL(i));
-      SubWeigherGroup.ccRefer().cmDesFRLockSW.get(i)
+      SubWeigherGroup.ccRefer().cmLesFRLockSW.get(i)
         .ccSetIsActivated(ccGetFRLockSW(i));
       //-- rest ** loop * as
-      ccSetASGateSW(i, SubWeigherGroup.ccRefer().cmDesASWeighSW
+      ccSetASGateSW(i, SubWeigherGroup.ccRefer().cmLesASWeighSW
         .get(i).ccIsMousePressed());
-      SubWeigherGroup.ccRefer().cmDesASWeighSW.get(i)
+      SubWeigherGroup.ccRefer().cmLesASWeighSW.get(i)
         .ccSetIsActivated(ccGetASGatePL(i));
-      SubWeigherGroup.ccRefer().cmDesASLockSW.get(i)
+      SubWeigherGroup.ccRefer().cmLesASLockSW.get(i)
         .ccSetIsActivated(ccGetASLockSW(i));
       //[todo]:rc-ad
     }//..~

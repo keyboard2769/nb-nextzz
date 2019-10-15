@@ -35,11 +35,9 @@ import kosui.ppplocalui.EcValueBox;
 import kosui.ppplocalui.EiGroup;
 import kosui.ppplogic.ZcRangedValueModel;
 import kosui.ppputil.VcLocalConsole;
-import kosui.ppputil.VcTranslator;
 import nextzz.pppmain.MainSketch;
 import nextzz.pppmodel.MainPlantModel;
 import nextzz.pppmodel.MainSpecificator;
-import nextzz.pppswingui.ScFeederBlock;
 
 public final class SubVFeederGroup implements EiGroup{
   
@@ -60,7 +58,7 @@ public final class SubVFeederGroup implements EiGroup{
   ;//...
   
   //-- feeder
-  public final List<EcText> cmDesFeederText
+  public final List<EcText> cmLesFeederText
     = Collections.unmodifiableList(Arrays.asList(
       new EcText("VF00"),new EcText("VF01"),
       new EcText("VF02"),new EcText("VF03"),
@@ -74,7 +72,7 @@ public final class SubVFeederGroup implements EiGroup{
       new EcText("VF12"),new EcText("VF13"),
       new EcText("VF14"),new EcText("VF15")
     ));//...
-  public final List<EcGraph> cmDesFeederShape
+  public final List<EcGraph> cmLesFeederShape
     = Collections.unmodifiableList(Arrays.asList(
       new EcGraph(ConstLocalUI.O_FEEDER),new EcGraph(ConstLocalUI.O_FEEDER),
       new EcGraph(ConstLocalUI.O_FEEDER),new EcGraph(ConstLocalUI.O_FEEDER),
@@ -88,7 +86,7 @@ public final class SubVFeederGroup implements EiGroup{
       new EcGraph(ConstLocalUI.O_FEEDER),new EcGraph(ConstLocalUI.O_FEEDER),
       new EcGraph(ConstLocalUI.O_FEEDER),new EcGraph(ConstLocalUI.O_FEEDER)
     ));//...
-  public final List<EcValueBox> cmDesFeederRPMBox
+  public final List<EcValueBox> cmLesFeederRPMBox
     = Collections.unmodifiableList(Arrays.asList(
       new EcValueBox("VF00", "0000 r", 0x3510),
       new EcValueBox("VF01", "0000 r", 0x3511),
@@ -110,7 +108,7 @@ public final class SubVFeederGroup implements EiGroup{
       new EcValueBox("VF14", "0000 r", 0x351E),
       new EcValueBox("VF15", "0000 r", 0x351F)
     ));//...
-  public final List<EcGauge> cmDesFeederRPMGauge
+  public final List<EcGauge> cmLesFeederRPMGauge
     = Collections.unmodifiableList(Arrays.asList(
       new EcGauge("VF00"),new EcGauge("VF01"),
       new EcGauge("VF02"),new EcGauge("VF03"),
@@ -139,8 +137,8 @@ public final class SubVFeederGroup implements EiGroup{
     final int lpSingleInnerGap = 1;
     final int lpSingleBoxH = 19;
     final int lpSingleGaugeH = 5;
-    final int lpSingleHopperWidth = cmDesFeederShape.get(1).ccGetW();
-    final int lpSingleHopperHeight = cmDesFeederShape.get(1).ccGetH();
+    final int lpSingleHopperWidth = cmLesFeederShape.get(1).ccGetW();
+    final int lpSingleHopperHeight = cmLesFeederShape.get(1).ccGetH();
     final int lpBelconHeight = cmBelconBackwardPL.ccGetH();
     
     //-- buffer
@@ -167,32 +165,32 @@ public final class SubVFeederGroup implements EiGroup{
       (EcConst.ccAdjustColor(MainSketch.C_COLOR_BACKGROUD, -8));
     
     //-- re styling
-    for(EcValueBox it:cmDesFeederRPMBox){
+    for(EcValueBox it:cmLesFeederRPMBox){
       it.ccSetW(lpSingleHopperWidth-lpSingleInnerGap*2);
       it.ccSetH(lpSingleBoxH);
       ConstLocalUI.ccSetupFluxBoxColor(it);
     }//..~
-    for(EcGauge it:cmDesFeederRPMGauge){
-      it.ccSetSize(cmDesFeederRPMBox.get(0).ccGetW(),lpSingleGaugeH);
+    for(EcGauge it:cmLesFeederRPMGauge){
+      it.ccSetSize(cmLesFeederRPMBox.get(0).ccGetW(),lpSingleGaugeH);
       it.ccSetupColor(EcConst.C_DARK_GRAY, EcConst.C_YELLOW);
       it.ccSetIsVertical(false);
     }//..~
-    for(EcText it:cmDesFeederText){
+    for(EcText it:cmLesFeederText){
       it.ccSetTextColor(EcConst.C_BLACK);
     }//..~
     
     //-- disposing
     for(int it:new int[]{0,11,12,13,14,15}){
-      cmDesFeederRPMBox.get(it).ccHide();
-      cmDesFeederRPMGauge.get(it).ccHide();
-      cmDesFeederShape.get(it).ccHide();
-      cmDesFeederText.get(it).ccHide();
+      cmLesFeederRPMBox.get(it).ccHide();
+      cmLesFeederRPMGauge.get(it).ccHide();
+      cmLesFeederShape.get(it).ccHide();
+      cmLesFeederText.get(it).ccHide();
     }//..~
     for(int i=MainSpecificator.ccRefer().vmVFeederAmount+1;i<=10;i++){
-      cmDesFeederRPMBox.get(i).ccHide();
-      cmDesFeederRPMGauge.get(i).ccHide();
-      cmDesFeederShape.get(i).ccHide();
-      cmDesFeederText.get(i).ccHide();
+      cmLesFeederRPMBox.get(i).ccHide();
+      cmLesFeederRPMGauge.get(i).ccHide();
+      cmLesFeederShape.get(i).ccHide();
+      cmLesFeederText.get(i).ccHide();
     }//..~
     
     //-- line dividing
@@ -234,18 +232,16 @@ public final class SubVFeederGroup implements EiGroup{
     lpPotentialW = lpSingleHopperWidth + ConstLocalUI.C_INPANE_GAP;
     lpPotentialX = cmPlate.ccEndX()-lpPotentialW*lpDesUpperLine.length;
     for(int it:lpDesUpperLine){
-      cmDesFeederShape.get(it).ccSetLocation(lpPotentialX, 
+      cmLesFeederShape.get(it).ccSetLocation(lpPotentialX, 
         cmPlate.ccGetY()+ConstLocalUI.C_INPANE_GAP
       );
-      cmDesFeederRPMBox.get(it).ccSetLocation
-        (cmDesFeederShape.get(it), lpSingleInnerGap, lpSingleInnerGap);
-      cmDesFeederRPMGauge.get(it).ccSetLocation(
-        cmDesFeederRPMBox.get(it).ccGetX(),
-        cmDesFeederRPMBox.get(it).ccEndY()
+      cmLesFeederRPMBox.get(it).ccSetLocation
+        (cmLesFeederShape.get(it), lpSingleInnerGap, lpSingleInnerGap);
+      cmLesFeederRPMGauge.get(it).ccSetLocation(cmLesFeederRPMBox.get(it).ccGetX(),
+        cmLesFeederRPMBox.get(it).ccEndY()
       );
-      cmDesFeederText.get(it).ccSetLocation(
-        cmDesFeederRPMGauge.get(it).ccCenterX(),
-        cmDesFeederRPMGauge.get(it).ccEndY()
+      cmLesFeederText.get(it).ccSetLocation(cmLesFeederRPMGauge.get(it).ccCenterX(),
+        cmLesFeederRPMGauge.get(it).ccEndY()
           + EcConst.C_DEFAULT_AUTOSIZE_HEIGHT/3
       );
       lpPotentialX+=lpPotentialW;
@@ -254,18 +250,16 @@ public final class SubVFeederGroup implements EiGroup{
     lpPotentialX = cmPlate.ccEndX()
       - lpPotentialW*lpDesUnderLine.length - lpPotentialW/2;
     for(int it:lpDesUnderLine){
-      cmDesFeederShape.get(it).ccSetLocation(lpPotentialX, 
+      cmLesFeederShape.get(it).ccSetLocation(lpPotentialX, 
         cmPlate.ccGetY()+lpSingleHopperHeight+ConstLocalUI.C_INPANE_GAP*2
       );
-      cmDesFeederRPMBox.get(it).ccSetLocation
-        (cmDesFeederShape.get(it), lpSingleInnerGap, lpSingleInnerGap);
-      cmDesFeederRPMGauge.get(it).ccSetLocation(
-        cmDesFeederRPMBox.get(it).ccGetX(),
-        cmDesFeederRPMBox.get(it).ccEndY()
+      cmLesFeederRPMBox.get(it).ccSetLocation
+        (cmLesFeederShape.get(it), lpSingleInnerGap, lpSingleInnerGap);
+      cmLesFeederRPMGauge.get(it).ccSetLocation(cmLesFeederRPMBox.get(it).ccGetX(),
+        cmLesFeederRPMBox.get(it).ccEndY()
       );
-      cmDesFeederText.get(it).ccSetLocation(
-        cmDesFeederRPMGauge.get(it).ccCenterX(),
-        cmDesFeederRPMGauge.get(it).ccEndY()
+      cmLesFeederText.get(it).ccSetLocation(cmLesFeederRPMGauge.get(it).ccCenterX(),
+        cmLesFeederRPMGauge.get(it).ccEndY()
           + EcConst.C_DEFAULT_AUTOSIZE_HEIGHT/3
       );
       lpPotentialX+=lpPotentialW;
@@ -300,8 +294,8 @@ public final class SubVFeederGroup implements EiGroup{
       MainPlantModel.C_FEEDER_RPM_MIN,
       MainPlantModel.C_FEEDER_RPM_MAX
     );
-    cmDesFeederRPMBox.get(pxIndex&0xF).ccSetValue(lpFixedValue);
-    cmDesFeederRPMGauge.get(pxIndex&0xF)
+    cmLesFeederRPMBox.get(pxIndex&0xF).ccSetValue(lpFixedValue);
+    cmLesFeederRPMGauge.get(pxIndex&0xF)
       .ccSetProportion(lpFixedValue, MainPlantModel.C_FEEDER_RPM_MAX);
   }//+++
   
@@ -310,15 +304,15 @@ public final class SubVFeederGroup implements EiGroup{
   @Override public List<? extends EcShape> ccGiveShapeList(){
     List<EcShape> lpRes = new ArrayList<EcShape>();
     lpRes.addAll(Arrays.asList(cmPlate,cmBelconShape));
-    lpRes.addAll(cmDesFeederShape);
-    lpRes.addAll(cmDesFeederText);
+    lpRes.addAll(cmLesFeederShape);
+    lpRes.addAll(cmLesFeederText);
     return lpRes;
   }//+++
 
   @Override public List<? extends EcElement> ccGiveElementList(){
     List<EcElement> lpRes = new ArrayList<EcElement>();
-    lpRes.addAll(cmDesFeederRPMBox);
-    lpRes.addAll(cmDesFeederRPMGauge);
+    lpRes.addAll(cmLesFeederRPMBox);
+    lpRes.addAll(cmLesFeederRPMGauge);
     lpRes.addAll(Arrays.asList(
       cmBelconBackwardPL,cmBelconForwarPL,
       cmRatioAutoSW,cmRatioDownSW,cmRatioUpSW

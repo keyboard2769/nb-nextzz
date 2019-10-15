@@ -222,19 +222,19 @@ public final class SubWeighControlManager {
       
       //-- init map ** recipe
       cmMapOfModelManiputator.put(
-        SubOperativeGroup.ccRefer().cmDesRecipeTB.get(i),
+        SubOperativeGroup.ccRefer().cmLesRecipeTB.get(i),
         new McRecipeValue(i)
       );
       
       //-- init map ** kg
       cmMapOfModelManiputator.put(
-        SubOperativeGroup.ccRefer().cmDesKilogramTB.get(i),
+        SubOperativeGroup.ccRefer().cmLesKilogramTB.get(i),
         new McKilogramValue(i)
       );
       
       //-- init map ** batch
       cmMapOfModelManiputator.put(
-        SubOperativeGroup.ccRefer().cmDesBatchTB.get(i),
+        SubOperativeGroup.ccRefer().cmLesBatchTB.get(i),
         new McBatchValue(i)
       );
       
@@ -357,13 +357,13 @@ public final class SubWeighControlManager {
     //-- weigh control ui
     
     //-- weigh control ui ** THE key
-    SubOperativeGroup.ccRefer().cmDesBatchTB.get(0)
+    SubOperativeGroup.ccRefer().cmLesBatchTB.get(0)
       .ccSetValue(vmRemainBatch);
     
     //-- weigh control ui ** rest
-    SubOperativeGroup.ccRefer().cmDesRecipeTB.get(0)
+    SubOperativeGroup.ccRefer().cmLesRecipeTB.get(0)
       .ccSetValue(cmDesRecipeNumber[0]);
-    SubOperativeGroup.ccRefer().cmDesKilogramTB.get(0)
+    SubOperativeGroup.ccRefer().cmLesKilogramTB.get(0)
       .ccSetValue(cmDesKiloGramme[0]);
     SubOperativeGroup.ccRefer().cmWeighReadyPL
       .ccSetIsActivated(cmIsAutoWeighReady);
@@ -389,11 +389,11 @@ public final class SubWeighControlManager {
   private void ssRefreshUI(){
     for(int i =MainPlantModel.C_BOOK_UI_CAPA_HEAD;
             i<=MainPlantModel.C_BOOK_UI_CAPA_TAIL;i++){
-      SubOperativeGroup.ccRefer().cmDesRecipeTB.get(i)
+      SubOperativeGroup.ccRefer().cmLesRecipeTB.get(i)
         .ccSetValue(cmDesRecipeNumber[i]);
-      SubOperativeGroup.ccRefer().cmDesKilogramTB.get(i)
+      SubOperativeGroup.ccRefer().cmLesKilogramTB.get(i)
         .ccSetValue(cmDesKiloGramme[i]);
-      SubOperativeGroup.ccRefer().cmDesBatchTB.get(i)
+      SubOperativeGroup.ccRefer().cmLesBatchTB.get(i)
         .ccSetValue(cmDesBatchCount[i]);
     }//..~
   }//+++
@@ -446,7 +446,6 @@ public final class SubWeighControlManager {
     ssRefreshUI();
     
   }//++<
-  
   
   //===
   
