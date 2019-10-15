@@ -479,7 +479,7 @@ public final class ConstLocalUI {
   public static final void ccSetupClickableBoxColor(EcValueBox pxBox){
     if(pxBox==null){return;}
     pxBox.ccSetupColor(
-      EcConst.ccAdjustColor(EcConst.C_DARK_GREEN, 16),
+      EcConst.ccAdjustColor(EcConst.C_DARK_GREEN, 32),
       EcConst.C_DARK_GREEN
     );
     pxBox.ccSetTextColor(EcConst.C_LIT_GRAY);

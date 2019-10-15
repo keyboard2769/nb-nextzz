@@ -34,6 +34,7 @@ import kosui.ppplogic.ZcRangedValueModel;
 import kosui.ppplogic.ZcTimer;
 import kosui.pppmodel.McTableAdapter;
 import kosui.pppmodel.MiValue;
+import kosui.ppputil.VcConst;
 import kosui.ppputil.VcLocalTagger;
 import kosui.ppputil.VcNumericUtility;
 import kosui.ppputil.VcTranslator;
@@ -112,12 +113,33 @@ public final class SubWeighControlManager {
     cmDesKiloGramme   = new int[MainPlantModel.C_BOOK_MODEL_SIZE],
     cmDesBatchCount   = new int[MainPlantModel.C_BOOK_MODEL_SIZE];
   
+  private final int[]
+    cmDesAGWeighLevelTargetKG
+     = new int [MainPlantModel.C_MATT_AGGR_GENERAL_SIZE],
+    cmDesFRWeighLevelTargetKG
+     = new int [MainPlantModel.C_MATT_REST_GENERAL_SIZE],
+    cmDesASWeighLevelTargetKG
+     = new int [MainPlantModel.C_MATT_REST_GENERAL_SIZE];
+    //[todo]::cmDesRCCurrentMattTargetKG = ...
+    //[todo]::cmDesADCurrentMattTargetKG = ...
+  
+  private final int[]
+    cmDesAGWeighLevelTargetAD
+     = new int [MainPlantModel.C_MATT_AGGR_GENERAL_SIZE],
+    cmDesFRWeighLevelTargetAD
+     = new int [MainPlantModel.C_MATT_REST_GENERAL_SIZE],
+    cmDesASWeighLevelTargetAD
+     = new int [MainPlantModel.C_MATT_REST_GENERAL_SIZE];
+    //[todo]::cmDesRCCurrentMattTargetAD = ...
+    //[todo]::cmDesADCurrentMattTargetAD = ...
+  
   public final EiTriggerable cmWeighStartClicking = new EiTriggerable() {
     @Override public void ccTrigger(){
       if(cmIsAutoWeighReady){
         ssBunkUp();
         ssVerifyFirstRow();
         ssRefreshUI();
+        ssCalculateWeighValues();
         cmIsAutoWeighing=true;
       }//..?
     }//+++
@@ -391,6 +413,9 @@ public final class SubWeighControlManager {
             i<=MainPlantModel.C_BOOK_UI_CAPA_TAIL;i++){
       SubOperativeGroup.ccRefer().cmLesRecipeTB.get(i)
         .ccSetValue(cmDesRecipeNumber[i]);
+      SubOperativeGroup.ccRefer().cmLesNameCB.get(i)
+        .ccSetText(SubRecipeManager.ccRefer()
+          .ccGetRecipeName(cmDesRecipeNumber[i]));
       SubOperativeGroup.ccRefer().cmLesKilogramTB.get(i)
         .ccSetValue(cmDesKiloGramme[i]);
       SubOperativeGroup.ccRefer().cmLesBatchTB.get(i)
@@ -399,9 +424,10 @@ public final class SubWeighControlManager {
   }//+++
   
   private void ssVerifyFirstRow(){
-    cmIsAutoWeighReady=(cmDesRecipeNumber[1]!=0)//..?.ccVerifyRecipeNumber?
-     && (cmDesKiloGramme[1]>999)
-     && (cmDesBatchCount[1]>0);
+    cmIsAutoWeighReady=SubRecipeManager.ccRefer()
+      .ccHasRecipe(cmDesRecipeNumber[1])
+       && (cmDesKiloGramme[1]>999)
+       && (cmDesBatchCount[1]>0);
   }//+++
   
   private void ssBunkUp(){
@@ -419,12 +445,78 @@ public final class SubWeighControlManager {
     cmDesRecipeNumber[MainPlantModel.C_BOOK_UI_CAPA_TAIL]=0;
     cmDesKiloGramme[MainPlantModel.C_BOOK_UI_CAPA_TAIL]=0;
     cmDesBatchCount[MainPlantModel.C_BOOK_UI_CAPA_TAIL]=0;
+    SubOperativeGroup.ccRefer().cmLesNameCB.get(0)
+      .ccSetText(SubRecipeManager.ccRefer()
+        .ccGetRecipeName(cmDesRecipeNumber[0]));
   }//+++
   
   private void ssClearCurrentBooked(){
     cmDesRecipeNumber[0]=0;
     cmDesKiloGramme[0]=0;
     cmDesBatchCount[0]=0;
+  }//+++
+  
+  private void ssCalculateWeighValues(){
+    
+    VcConst.ccPrintln("total-kg", cmDesKiloGramme[0]);
+    VcConst.ccPrintln("recp", cmDesRecipeNumber[0]);
+    SubRecipeManager.ccRefer().ccSetOnWeighingRecipe(cmDesRecipeNumber[0]);
+    
+    cmDesAGWeighLevelTargetKG[0]=3;//[todo]::.. la empty kg setting
+    cmDesFRWeighLevelTargetKG[0]=3;//[todo]::.. la empty kg setting
+    cmDesASWeighLevelTargetKG[0]=3;//[todo]::.. la empty kg setting
+    
+    for(int i=MainPlantModel.C_MATT_AGGR_UI_VALID_MAX;i>=1;i--){
+      
+      //-- ag ** kg
+      cmDesAGWeighLevelTargetKG[i]=cmDesAGWeighLevelTargetKG[(i+1)
+        &MainPlantModel.C_MATT_AGGR_GENERAL_MASK]
+        +ssTranslatePercentage(SubRecipeManager.ccRefer()
+          .ccGetPercentage('G', i));//..how do we fix index from level to actual?
+      //-- ag ** ad
+      cmDesAGWeighLevelTargetAD[i]=SubAnalogScalarManager.ccRefer()
+        .ccToAGCellAD(cmDesAGWeighLevelTargetKG[i]);//..what if the scala needs revice?!
+      
+      if(i<MainPlantModel.C_MATT_REST_GENERAL_SIZE){
+        
+        //-- fr ** kg
+        cmDesFRWeighLevelTargetKG[i]=cmDesFRWeighLevelTargetKG[(i+1)
+          &MainPlantModel.C_MATT_REST_GENERAL_MASK]
+          +ssTranslatePercentage(SubRecipeManager.ccRefer()
+            .ccGetPercentage('F', i));//..how do we fix index from level to actual?
+        //-- fr ** ad
+        cmDesFRWeighLevelTargetAD[i]=SubAnalogScalarManager.ccRefer()
+          .ccToAGCellAD(cmDesFRWeighLevelTargetKG[i]);//..what if the scala needs revice?!
+        
+        //-- as ** kg
+        cmDesASWeighLevelTargetKG[i]=cmDesASWeighLevelTargetKG[(i+1)
+          &MainPlantModel.C_MATT_REST_GENERAL_MASK]
+          +ssTranslatePercentage(SubRecipeManager.ccRefer()
+            .ccGetPercentage('S', i));//..how do we fix index from level to actual?
+        //-- as ** ad
+        cmDesASWeighLevelTargetAD[i]=SubAnalogScalarManager.ccRefer()
+          .ccToAGCellAD(cmDesASWeighLevelTargetKG[i]);//..what if the scala needs revice?!
+        
+        //[todo]::cmDesRCWeighLevelTargetKG[i]=ssTranslatePercentage..
+        //[todo]::cmDesADWeighLevelTargetKG[i]=ssTranslatePercentage..
+        
+      }//..?
+    }//..~
+    
+    VcConst.ccPrintln("ag-kg", Arrays.toString(cmDesAGWeighLevelTargetKG));
+    VcConst.ccPrintln("ag-ad", Arrays.toString(cmDesAGWeighLevelTargetAD));
+    VcConst.ccPrintln("fr-kg", Arrays.toString(cmDesFRWeighLevelTargetKG));
+    VcConst.ccPrintln("fr-ad", Arrays.toString(cmDesFRWeighLevelTargetAD));
+    VcConst.ccPrintln("as-kg", Arrays.toString(cmDesASWeighLevelTargetKG));
+    VcConst.ccPrintln("as-ad", Arrays.toString(cmDesASWeighLevelTargetAD));
+    
+  }//+++
+  
+  private int ssTranslatePercentage(float pxPercentage){
+    int r=(int)(
+      ((float)cmDesKiloGramme[0])*pxPercentage/100f  
+    );
+    return r;
   }//+++
   
   //===
@@ -446,6 +538,41 @@ public final class SubWeighControlManager {
     ssRefreshUI();
     
   }//++<
+  
+  //===
+  
+  //=== ** 
+  
+  public final int ccGetAGWeighLevelTargetAD(int pxLevel){
+    return cmDesAGWeighLevelTargetAD[pxLevel
+      &MainPlantModel.C_MATT_AGGR_GENERAL_MASK];
+  }//++>
+  
+  public final int ccGetAGWeighLevelTargetAD(){
+    return ccGetAGWeighLevelTargetAD(cmAGWeighCTRL.ccGetCurrentLevel());
+  }//++>
+  
+  //=== ** 
+  
+  public final int ccGetFRWeighLevelTargetAD(int pxLevel){
+    return cmDesFRWeighLevelTargetAD[pxLevel
+      &MainPlantModel.C_MATT_REST_GENERAL_MASK];
+  }//++>
+  
+  public final int ccGetFRWeighLevelTargetAD(){
+    return ccGetFRWeighLevelTargetAD(cmFRWeighCTRL.ccGetCurrentLevel());
+  }//++>
+  
+  //=== ** 
+  
+  public final int ccGetASWeighLevelTargetAD(int pxLevel){
+    return cmDesASWeighLevelTargetAD[pxLevel
+      &MainPlantModel.C_MATT_REST_GENERAL_MASK];
+  }//++>
+  
+  public final int ccGetASWeighLevelTargetAD(){
+    return ccGetASWeighLevelTargetAD(cmASWeighCTRL.ccGetCurrentLevel());
+  }//++>
   
   //===
   

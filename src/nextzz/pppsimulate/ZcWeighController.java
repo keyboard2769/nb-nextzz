@@ -27,14 +27,17 @@ public final class ZcWeighController extends ZcStepper{
   
   private static final int
     //--
-    S_READY = 0,
-    S_PRE  = 1,
-    S_WEIGH  = 2,
-    S_POST = 3,
-    S_ALL_OVER = 4,
-    S_DISCHARGE = 5,
-    S_DISCHARGE_CONFIRM = 6,
-    S_ZERO_REQUIRE = 7,
+    S_READY   = 0,
+    S_STANDBY = 1,
+    //--
+    S_PRE_WEIGH         = 2,
+    S_WEIGH             = 3,
+    S_POST_WEIGH        = 4,
+    S_ALL_OVER          = 5,
+    S_DISCHARGE         = 6,
+    S_DISCHARGE_CONFIRM = 7,
+    S_POST_DISCHARGE    = 8,
+    //--
     S_ABEND = 99
   ;//,,,
   
@@ -68,17 +71,26 @@ public final class ZcWeighController extends ZcStepper{
     //[head]:: i know you have absolutely no idea about what to do next
     
     ccStep(
-      S_READY, S_PRE,
+      S_ABEND, S_READY,
+      false // % reset
+    );
+    
+    ccStep(
+      S_READY, S_STANDBY,
       cmToStart
     );
     
-    if(ccIsAt(S_PRE)){
+    if(ccIsAt(S_STANDBY)){
       cmCurrentLevel=C_LV_MAX;
     }//..?
     
+    ccStep(
+      S_STANDBY, S_PRE_WEIGH,
+      true
+    );
     
     ccStep(
-      S_PRE, S_WEIGH,
+      S_PRE_WEIGH, S_WEIGH,
       true
     );
     
@@ -86,13 +98,13 @@ public final class ZcWeighController extends ZcStepper{
       cmCurrentLevel--;
     }//..?
     
-    
-    ccStep(S_WEIGH, S_POST,
+    ccStep(
+      S_WEIGH, S_POST_WEIGH,
       cmCurrentLevel<=0
     );
     
     ccStep(
-      S_POST, S_ALL_OVER,
+      S_POST_WEIGH, S_ALL_OVER,
       true
     );
     
@@ -103,21 +115,20 @@ public final class ZcWeighController extends ZcStepper{
     
     ccStep(
       S_DISCHARGE, S_DISCHARGE_CONFIRM,
-      cmToDischarge
+      cmToDischarge//[head]::.. it must be here!
     );
     
     ccStep(
-      S_DISCHARGE_CONFIRM,
-      cmHasNext
-        ? S_PRE
-        : S_READY,
+      S_DISCHARGE_CONFIRM, S_POST_DISCHARGE,
       true
     );
     
-    
     ccStep(
-      S_ABEND, S_READY,
-      false// % reset
+      S_POST_DISCHARGE,
+      cmHasNext
+       ? S_STANDBY
+       : S_READY,
+      true
     );
     
   }//++~
@@ -181,6 +192,10 @@ public final class ZcWeighController extends ZcStepper{
   public final int ccToIndicativeNumber(){
     return cmStage*100+cmCurrentLevel;
   }//++>
+  
+  public final boolean ccIsRequiringDischarge(){
+    return ccIsAt(S_DISCHARGE);
+  }//+++
   
   //===
   

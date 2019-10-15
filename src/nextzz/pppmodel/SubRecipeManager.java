@@ -30,6 +30,7 @@ import kosui.ppputil.VcArrayUtility;
 import kosui.ppputil.VcConst;
 import kosui.ppputil.VcNumericUtility;
 import nextzz.pppswingui.SubRecipePane;
+import processing.core.PApplet;
 
 public final class SubRecipeManager extends McTableAdapter{
   
@@ -153,6 +154,11 @@ public final class SubRecipeManager extends McTableAdapter{
   private final McRecipe cmPanedRecipe
     = new McRecipe();
   
+  private McRecipe cmOnWeighingRecipeBUF = null;
+  
+  private float cmPanedTotalSum = 0f;
+  private float cmPanedAsphaltSum = 0f;
+  
   private final TreeMap<Integer, McRecipe> cmMapOfRecipe
     = new TreeMap<Integer, McRecipe>();
   
@@ -163,34 +169,7 @@ public final class SubRecipeManager extends McTableAdapter{
   public void ccInit(){
     
     //-- dummy for dev
-    cmMapOfRecipe.put(99, new McRecipe(99, "T-N320", new float[]{
-      0f,11f,12f,13f,14f,15f,16f,0f,
-      0f,0f,2f,3f,
-      0f,0f,3f,0f,
-      0f,0f,0f,0f,
-      0f,0f,0f,0f,
-    }));
-    cmMapOfRecipe.put(101, new McRecipe(101, "A-AG", new float[]{
-      10f,11f,12f,13f,14f,15f,16f,17f,
-      0f,0f,0f,0f,
-      0f,0f,0f,0f,
-      0f,0f,0f,0f,
-      0f,0f,0f,0f,
-    }));
-    cmMapOfRecipe.put(102, new McRecipe(102, "N-RC", new float[]{
-      10f,11f,12f,13f,14f,15f,16f,17f,
-      0f,1f,2f,3f,
-      0f,1f,2f,3f,
-      0f,0f,0f,0f,
-      0f,1f,2f,3f,
-    }));
-    cmMapOfRecipe.put(999, new McRecipe(999, "A-TEST", new float[]{
-      10.0f,11.0f,12.0f,13.0f, 14.0f,15.0f,16.0f,17.0f,
-       3.0f, 3.1f, 3.2f, 3.3f,
-       4.0f, 4.1f, 4.2f, 4.3f,
-      11.0f,11.1f,11.2f,11.2f,
-       5.0f, 5.1f, 5.2f, 5.3f
-    }));
+    tstGenerateDummyRecipe();
     ssRefreshOrder();
     
   }//++!
@@ -216,20 +195,46 @@ public final class SubRecipeManager extends McTableAdapter{
       .setText(Integer.toString(cmPanedRecipe.cmRecipeID));
     SubRecipePane.ccRefer().cmNameBox
       .setText(cmPanedRecipe.cmRecipeName);
+    cmPanedTotalSum=0f;
+    cmPanedAsphaltSum=0f;
     for(int i=0;i<8;i++){
+      cmPanedTotalSum+=cmPanedRecipe.cmDesAGPercentage[i];
       SubRecipePane.ccRefer().cmLesAGPercetageBox.get(i)
         .setText(Float.toString(cmPanedRecipe.cmDesAGPercentage[i]));
       if(i<4){
+        
+        //-- summing
+        //[todo]::now how do we hide?
+        cmPanedAsphaltSum+=cmPanedRecipe.cmDesASPercentage[i];
+        cmPanedTotalSum+=cmPanedRecipe.cmDesFRPercentage[i];
+        cmPanedTotalSum+=cmPanedRecipe.cmDesASPercentage[i];
+        cmPanedTotalSum+=cmPanedRecipe.cmDesRCPercentage[i];
+        cmPanedTotalSum+=cmPanedRecipe.cmDesADPercentage[i];
+        
+        //-- output
         SubRecipePane.ccRefer().cmLesFRPercetageBox.get(i)
           .setText(Float.toString(cmPanedRecipe.cmDesFRPercentage[i]));
         SubRecipePane.ccRefer().cmLesASPercetageBox.get(i)
           .setText(Float.toString(cmPanedRecipe.cmDesASPercentage[i]));
         //[todo]::SubRecipePane.ccRefer().cmLesRCPercetageBox.get(i)...
         //[todo::]SubRecipePane.ccRefer().cmLesADPercetageBox.get(i)...
+        
       }//..?
     }//..~
+    cmPanedTotalSum=VcNumericUtility.ccRoundForTwoAfter(cmPanedTotalSum);
+    cmPanedAsphaltSum=VcNumericUtility.ccRoundForTwoAfter(cmPanedAsphaltSum);
+    SubRecipePane.ccRefer().cmToTalBox
+      .setText(Float.toString(cmPanedTotalSum)+"%");
+    float lpProportion;
+    if(cmPanedTotalSum==cmPanedAsphaltSum){
+      lpProportion=0f;
+    }else{
+      lpProportion=(cmPanedAsphaltSum)/(cmPanedTotalSum-cmPanedAsphaltSum);
+    }//..?
+    SubRecipePane.ccRefer().cmASProportionBox
+      .setText(String.format("%.4f", lpProportion));
   }//+++
-  
+    
   //===
   
   public final void ccSetPanedRecipeID(int pxID){
@@ -254,7 +259,19 @@ public final class SubRecipeManager extends McTableAdapter{
     ssRefreshPanedRecipe();
   }//++<
   
-  //[todo]::setPanePercentage(char matt, int order, float val)//++<
+  public final
+  void ccSetPanePercentage(char pxMatt, int pxOrder, float pxVal){
+    float lpFixed = PApplet.constrain(pxVal, 0f, 100f);
+    switch (pxMatt) {
+      case 'G':cmPanedRecipe.cmDesAGPercentage[pxOrder&7]=lpFixed;break;
+      case 'F':cmPanedRecipe.cmDesFRPercentage[pxOrder&3]=lpFixed;break;
+      case 'S':cmPanedRecipe.cmDesASPercentage[pxOrder&3]=lpFixed;break;
+      case 'R':cmPanedRecipe.cmDesRCPercentage[pxOrder&3]=lpFixed;break;
+      case 'D':cmPanedRecipe.cmDesADPercentage[pxOrder&3]=lpFixed;break;
+      default:break;
+    }//...?
+    ssRefreshPanedRecipe();
+  }//++<
   
   public final void ccApplyTableSelection(int pxIndex){
     int lpFixed = pxIndex & C_CAPACITY_MASK;
@@ -266,13 +283,52 @@ public final class SubRecipeManager extends McTableAdapter{
     ssRefreshPanedRecipe();
   }//+++
   
-  //[todo]::registerAppliedOne();
-  //[todo]::duplicateSelectedOne();
+  //[todo]::registerPanedRecipe();
+  //[todo]::duplicateSelectedRecipe();
   //[todo]::deleteSelectedOne();
+  
+  public final void ccSetOnWeighingRecipe(int pxID){
+    if(cmMapOfRecipe.containsKey(pxID)){
+      cmOnWeighingRecipeBUF=new McRecipe();
+      ssCopyRecipe(cmMapOfRecipe.get(pxID), cmOnWeighingRecipeBUF);
+    }else{
+      cmOnWeighingRecipeBUF=null;
+    }//..?
+  }//+++
+  
+  public final void ccClearOnWeighingRecipe(){
+    cmOnWeighingRecipeBUF=null;
+  }//+++
   
   //===
   
-  //[todo]::syn getPercentage(int index,char matt,int order, float val)
+  public final boolean ccHasRecipe(int pxID){
+    return cmMapOfRecipe.containsKey(pxID);
+  }//+++
+  
+  public final String ccGetRecipeName(int pxID){
+    if((pxID <= 0) || (pxID >999)){return "--";}
+    if(!cmMapOfRecipe.containsKey(pxID)){
+      return VcTranslator.tr("_opm_not_found");
+    }//..?
+    return cmMapOfRecipe.get(pxID).cmRecipeName;
+  }//+++
+  
+  public final
+  float ccGetPercentage(char matt,int order){
+    if(cmOnWeighingRecipeBUF==null){return 0f;}
+    switch (matt) {
+      case 'G':return cmOnWeighingRecipeBUF.cmDesAGPercentage[order&7];
+      case 'F':return cmOnWeighingRecipeBUF.cmDesFRPercentage[order&3];
+      case 'S':return cmOnWeighingRecipeBUF.cmDesASPercentage[order&3];
+      case 'R':return cmOnWeighingRecipeBUF.cmDesRCPercentage[order&3];
+      case 'D':return cmOnWeighingRecipeBUF.cmDesADPercentage[order&3];
+      default:return 0f;
+    }//..?
+  }//+++
+  
+  //[todo]::syn getKG(int index,char matt,int order, float val)
+  //[todo]::syn getAD(int index,char matt,int order, float val)
   
   //===
   
@@ -294,5 +350,52 @@ public final class SubRecipeManager extends McTableAdapter{
       .ccInteger(VcArrayUtility.ccGet(cmDesOrderBUFF, pxRowIndex));
     return cmMapOfRecipe.get(lpOrderedIndex).ccGetColumnContent(pxColumnIndex);
   }//++>
+  
+  //===
+  
+  @Deprecated private void tstGenerateDummyRecipe(){
+    cmMapOfRecipe.put(1, new McRecipe(1, "T-N320", new float[]{
+      0f,11f,12f,13f,14f,15f,16f,0f,
+      0f,0f,2f,3f,
+      0f,0f,3f,0f,
+      0f,0f,0f,0f,
+      0f,0f,0f,0f,
+    }));
+    cmMapOfRecipe.put(2, new McRecipe(2, "T-N240", new float[]{
+      0f,11f,12f,13f,14f,15f,0f,0f,
+      0f,0f,2f,3f,
+      0f,0f,3f,0f,
+      0f,0f,0f,0f,
+      0f,0f,0f,0f,
+    }));
+    cmMapOfRecipe.put(3, new McRecipe(3, "C-N240", new float[]{
+      0f,11f,12f,13f,14f,15f,0f,0f,
+      0f,0f,2f,0f,
+      0f,0f,3f,0f,
+      0f,0f,0f,0f,
+      0f,0f,0f,0f,
+    }));
+    cmMapOfRecipe.put(101, new McRecipe(101, "A-AG", new float[]{
+      10f,11f,12f,13f,14f,15f,16f,17f,
+      0f,0f,0f,0f,
+      0f,0f,0f,0f,
+      0f,0f,0f,0f,
+      0f,0f,0f,0f,
+    }));
+    cmMapOfRecipe.put(102, new McRecipe(102, "N-RC", new float[]{
+      10f,11f,12f,13f,14f,15f,16f,17f,
+      0f,1f,2f,3f,
+      0f,1f,2f,3f,
+      0f,0f,0f,0f,
+      0f,1f,2f,3f,
+    }));
+    cmMapOfRecipe.put(999, new McRecipe(999, "A-TEST", new float[]{
+      10.0f,11.0f,12.0f,13.0f, 14.0f,15.0f,16.0f,17.0f,
+       3.0f, 3.1f, 3.2f, 3.3f,
+       4.0f, 4.1f, 4.2f, 4.3f,
+      11.0f,11.1f,11.2f,11.2f,
+       5.0f, 5.1f, 5.2f, 5.3f
+    }));
+  }//+++
   
 }//***eof

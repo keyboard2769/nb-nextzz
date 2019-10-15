@@ -118,23 +118,36 @@ public final class SubRecipePane implements SiTabbable{
     @Override public void mouseClicked(MouseEvent me) {
       Object lpSource =  me.getSource();
       if(lpSource.equals(cmIdentityBox)){
-        //[head]:: now what??
-        SubRecipeManager.ccRefer().ccSetPanedRecipeID(932);
+        String lpInput = ScConst.ccGetStringByInputBox(
+          VcTranslator.tr("_mpipt_rid"),
+          cmIdentityBox.getText(),cmPane
+        );
+        if(lpInput.equals(ScConst.C_M_CANCEL)){return;}
+        int lpID = VcNumericUtility.ccParseIntegerString(lpInput);
+        SubRecipeManager.ccRefer().ccSetPanedRecipeID(lpID);
       }else
       if(lpSource.equals(cmNameBox)){
-        //[head]:: now what??
-        SubRecipeManager.ccRefer().ccSetPanedRecipeName("_not,yet!!_");
+        String lpInput = ScConst.ccGetStringByInputBox(
+          VcTranslator.tr("_mpipt_rname"),
+          cmIdentityBox.getText(),cmPane
+        );
+        if(lpInput.equals(ScConst.C_M_CANCEL)){return;}
+        if(!VcConst.ccIsValidString(lpInput)){return;}
+        SubRecipeManager.ccRefer().ccSetPanedRecipeName(lpInput);
       }else
       if(lpSource instanceof JTextField){
         JTextField lpTarget = ((JTextField)lpSource);
         String lpName = lpTarget.getName();
+        if(lpName==null){return;}
+        if(lpName.length()!=2){return;}
         String lpInput = ScConst.ccGetStringByInputBox(
           VcTranslator.tr("_mpipt_"+lpName),
           lpTarget.getText(),cmPane
         );
         if(lpInput.equals(ScConst.C_M_CANCEL)){return;}
         float lpParsed = VcNumericUtility.ccParseFloatString(lpInput);
-        ((JTextField)lpSource).setText(Float.toString(lpParsed));
+        SubRecipeManager.ccRefer()
+          .ccSetPanePercentage(lpName.charAt(0),lpName.charAt(1),lpParsed);
       }//..?
     }//+++
   };//***

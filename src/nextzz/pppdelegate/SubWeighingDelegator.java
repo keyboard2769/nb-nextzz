@@ -28,7 +28,9 @@ import nextzz.pppmodel.SubWeighControlManager;
 public final class SubWeighingDelegator {
   
   public static volatile int
-    mnAGCurrentMattLevel,mnFRCurrentMattLevel,mnASCurrentMattLevel
+    mnAGWeighLevel,mnFRWeighLevel,mnASWeighLevel,
+    mnAGWeighLevelTargetAD,mnFRGCurrentMattTargetAD,mnFRCurrentMattTargetAD,
+    mnAGWeighLevelLeadAD,mnFRGCurrentMattLeadAD,mnASCurrentMattLeadAD
   ;//,,,
   
   public static volatile boolean
@@ -38,6 +40,7 @@ public final class SubWeighingDelegator {
     
     //-- AG
     //-- AG ** lock sw
+    //[head]:: discharge flag?
     mnAGCellLockSW,
     mnAGxSWnI,mnAGxSWnII,mnAGxSWnIII,
     mnAGxSWnIV,mnAGxSWnV,mnAGxSWnVI,mnAGxSWnVII,
@@ -90,14 +93,32 @@ public final class SubWeighingDelegator {
   
   public static final void ccBind(){
     
-    //-- cell ** 
+    //-- cell ** to plc
     /* 6 */
-    mnAGCurrentMattLevel=SubWeighControlManager.ccRefer()
+    mnAGWeighLevel=SubWeighControlManager.ccRefer()
       .cmAGWeighCTRL.ccGetCurrentLevel();
-    mnFRCurrentMattLevel=SubWeighControlManager.ccRefer()
+    mnAGWeighLevelTargetAD=SubWeighControlManager.ccRefer()
+      .ccGetAGWeighLevelTargetAD();
+    /* 6 */mnAGWeighLevelLeadAD=mnAGWeighLevelTargetAD;//[todo]::..
+    
+    
+    
+    mnFRWeighLevel=SubWeighControlManager.ccRefer()
       .cmFRWeighCTRL.ccGetCurrentLevel();
-    mnASCurrentMattLevel=SubWeighControlManager.ccRefer()
+    
+    
+    
+    mnASWeighLevel=SubWeighControlManager.ccRefer()
       .cmASWeighCTRL.ccGetCurrentLevel();
+    
+    
+    
+    
+    
+    
+    
+    
+    
     //-- cell ** 
     /* 6 */
     SubWeigherGroup.ccRefer().cmAGTargetCB

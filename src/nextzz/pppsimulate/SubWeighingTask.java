@@ -68,18 +68,18 @@ public class SubWeighingTask implements ZiTask{
     }//..?
 
     //-- ???
-    SubWeighingDelegator.mnAGwPLnVI=SubWeighingDelegator.mnAGCurrentMattLevel==6;
-    SubWeighingDelegator.mnAGwPLnV=SubWeighingDelegator.mnAGCurrentMattLevel==5;
-    SubWeighingDelegator.mnAGwPLnIV=SubWeighingDelegator.mnAGCurrentMattLevel==4;
-    SubWeighingDelegator.mnAGwPLnIII=SubWeighingDelegator.mnAGCurrentMattLevel==3;
-    SubWeighingDelegator.mnAGwPLnII=SubWeighingDelegator.mnAGCurrentMattLevel==2;
-    SubWeighingDelegator.mnAGwPLnI=SubWeighingDelegator.mnAGCurrentMattLevel==1;
+    SubWeighingDelegator.mnAGwPLnVI=SubWeighingDelegator.mnAGWeighLevel==6;
+    SubWeighingDelegator.mnAGwPLnV=SubWeighingDelegator.mnAGWeighLevel==5;
+    SubWeighingDelegator.mnAGwPLnIV=SubWeighingDelegator.mnAGWeighLevel==4;
+    SubWeighingDelegator.mnAGwPLnIII=SubWeighingDelegator.mnAGWeighLevel==3;
+    SubWeighingDelegator.mnAGwPLnII=SubWeighingDelegator.mnAGWeighLevel==2;
+    SubWeighingDelegator.mnAGwPLnI=SubWeighingDelegator.mnAGWeighLevel==1;
     //-- ???
-    SubWeighingDelegator.mnFRwPLnIII=SubWeighingDelegator.mnFRCurrentMattLevel==3;
-    SubWeighingDelegator.mnFRwPLnII=SubWeighingDelegator.mnFRCurrentMattLevel==2;
-    SubWeighingDelegator.mnFRwPLnI=SubWeighingDelegator.mnFRCurrentMattLevel==1;
+    SubWeighingDelegator.mnFRwPLnIII=SubWeighingDelegator.mnFRWeighLevel==3;
+    SubWeighingDelegator.mnFRwPLnII=SubWeighingDelegator.mnFRWeighLevel==2;
+    SubWeighingDelegator.mnFRwPLnI=SubWeighingDelegator.mnFRWeighLevel==1;
     //-- ???
-    SubWeighingDelegator.mnASwPLnII=SubWeighingDelegator.mnASCurrentMattLevel==2;
+    SubWeighingDelegator.mnASwPLnII=SubWeighingDelegator.mnASWeighLevel==2;
     
     //-- mixer gate 
     dcMixerGate.ccSetupAction(
@@ -121,6 +121,9 @@ public class SubWeighingTask implements ZiTask{
   //=== 
   
   @Deprecated public final void tstTagg(){
+    VcLocalTagger.ccTag("ag-lv?",SubWeighingDelegator.mnAGWeighLevel);
+    VcLocalTagger.ccTag("ag-target?",SubWeighingDelegator.mnAGWeighLevelTargetAD);
+    VcLocalTagger.ccTag("ag-lead?",SubWeighingDelegator.mnAGWeighLevelLeadAD);
     VcLocalTagger.ccTag("ag-cell?",dcAGCell);
     VcLocalTagger.ccTag("m-ctrl?",cmMixerDischargeCTRL);
     VcLocalTagger.ccTag("m-g?",dcMixerGate);

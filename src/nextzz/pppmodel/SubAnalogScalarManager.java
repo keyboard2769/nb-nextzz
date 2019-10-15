@@ -264,7 +264,7 @@ public final class SubAnalogScalarManager {
     return cmListOfCTSlotScalar.get(pxIndex&31).ccGetScaledIntegerValue();
   }//++>
   
-  //=== Cell
+  //=== Cell ** KG
   
   synchronized public final int ccGetAGCellKG(){
     return cmAGCellScalar.ccGetScaledIntegerValue();
@@ -280,6 +280,13 @@ public final class SubAnalogScalarManager {
   
   //[todo]:: ccGetRCCellKG
   //[todo]:: ccGetADCellKG
+  
+  //=== cell ** AD
+  
+  synchronized public final int ccToAGCellAD(int pxKG){
+    return cmAGCellScalar.ccToUnscaledInputValue(pxKG);
+  }//++>
+  
   
   //=== V combust
   

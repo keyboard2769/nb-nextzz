@@ -1,12 +1,14 @@
 Z for ZEUS but not ZETA
 ===
-but hey, dose it sounds stupid if you make it DOUBLE-ZEUS ??
+but hey, dose it sounds stupid if you read it DOUBLE-ZEUS ??
 
 ---
-## still in dev
+## we are STILL in dev
 
 - cast in the name of test
 - ya not guilty
+- i am not either
+- shame on the guy who polluted my insanity
 
 ---
 ## todo list
@@ -30,10 +32,13 @@ but hey, dose it sounds stupid if you make it DOUBLE-ZEUS ??
 #### heading
 
 - [ ] $ it is time for the recipe handling mechanism
+        .. yeah yeah yeah i got totally lost this time
+        .. i m afraid i just can t give you any advice any more 
+        .. but i know you know that i know you know what to do, right?
+        .. just clean the code after you get it done
 
 #### last
 
-- [x] $ asphalt supply pump start and slot and lock
 - [x] $ lock switch determine mechanism
 - [x] $ cell and weigh simulation with assist buttons
 - [x] $ did the mixer dry-and-wet control .. we need separate them from the one
