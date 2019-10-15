@@ -287,6 +287,29 @@ public final class SubAnalogScalarManager {
     return cmAGCellScalar.ccToUnscaledInputValue(pxKG);
   }//++>
   
+  synchronized public final int ccToAGCellAD(int pxKG, int pxEmptyKG){
+    if(pxKG<=pxEmptyKG){return 0;}
+    else{return ccToAGCellAD(pxKG);}
+  }//++>
+  
+  synchronized public final int ccToFRCellAD(int pxKG){
+    return cmFRCellScalar.ccToUnscaledInputValue(pxKG);
+  }//++>
+  
+  
+  synchronized public final int ccToFRCellAD(int pxKG, int pxEmptyKG){
+    if(pxKG<=pxEmptyKG){return 0;}
+    else{return ccToFRCellAD(pxKG);}
+  }//++>
+  
+  synchronized public final int ccToASCellAD(int pxKG){
+    return cmASCellScalar.ccToUnscaledInputValue(pxKG);
+  }//++>
+  
+  synchronized public final int ccToASCellAD(int pxKG, int pxEmptyKG){
+    if(pxKG<=pxEmptyKG){return 0;}
+    else{return ccToASCellAD(pxKG);}
+  }//++>
   
   //=== V combust
   

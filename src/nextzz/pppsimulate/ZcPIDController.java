@@ -19,7 +19,6 @@
 
 package nextzz.pppsimulate;
 
-import kosui.ppputil.VcConst;
 import kosui.ppputil.VcNumericUtility;
 import kosui.ppputil.VcStringUtility;
 import processing.core.PApplet;

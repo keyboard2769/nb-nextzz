@@ -28,7 +28,9 @@ import kosui.ppplocalui.EcComponent;
 import kosui.ppplocalui.EcValueBox;
 import kosui.ppplocalui.EiTriggerable;
 import kosui.ppplogic.ZcImpulsivePulser;
+import kosui.ppplogic.ZcKeepRelay;
 import kosui.ppplogic.ZcOnDelayTimer;
+import kosui.ppplogic.ZcPulser;
 import kosui.ppplogic.ZcRangedModel;
 import kosui.ppplogic.ZcRangedValueModel;
 import kosui.ppplogic.ZcTimer;
@@ -88,11 +90,19 @@ public final class SubWeighControlManager {
   public volatile int vmWetSetFrame=160;
   public volatile int vmDryRemainSecond=0;
   public volatile int vmWetRemainSecond=0;
+  public volatile int vmAGEmptyKG = 5;
+  public volatile int vmFREmptyKG = 5;
+  public volatile int vmASEmptyKG = 5;
+  //[todo]:: vmRCEmptyKG = ...
+  //[todo]:: vmADEmptyKG = ...
   
   public final ZcWeighController
-    cmAGWeighCTRL = new ZcWeighController(7),
-    cmFRWeighCTRL = new ZcWeighController(3),
-    cmASWeighCTRL = new ZcWeighController(3)
+    cmAGWeighCTRL = new ZcWeighController
+      (MainPlantModel.C_MATT_AGGR_UI_VALID_MAX),
+    cmFRWeighCTRL = new ZcWeighController
+      (MainPlantModel.C_MATT_REST_UI_VALID_MAX),
+    cmASWeighCTRL = new ZcWeighController
+      (MainPlantModel.C_MATT_REST_UI_VALID_MAX)
   ;//,,,
   
   private final ZcTimer
@@ -103,6 +113,14 @@ public final class SubWeighControlManager {
   private final ZcRangedValueModel
     cmDryTimeManipulator = new ZcRangedValueModel(0, 65535),
     cmWetTimeManipulator = new ZcRangedValueModel(0, 65535);
+  
+  private final ZcKeepRelay
+    cmMixingTimeUpFlag = new ZcKeepRelay(),
+    cmAGDischargedFlag = new ZcKeepRelay(),
+    cmFRDischargedFlag = new ZcKeepRelay(),
+    cmASDischargedFlag = new ZcKeepRelay();
+  
+  private final ZcPulser cmMixerDischargeStartPLS = new ZcPulser();
   
   private boolean cmIsAutoWeighReady,cmIsAutoWeighing;
   private boolean cmIsDryCountingDown,cmIsWetCountingDown;
@@ -292,17 +310,37 @@ public final class SubWeighControlManager {
       cmAllWeighOverConfrimTM.ccIsUp()
       && cmMixerReadyFlag;
     
+    SubWeighingDelegator.mnAutoWeighing=cmIsAutoWeighing;
+    
     cmAGWeighCTRL.ccSetHasNext(vmRemainBatch>1);
-    cmAGWeighCTRL.ccSetToNext(lpAGSkip);
+    cmAGWeighCTRL.ccSetToNext(lpAGSkip || SubWeighingDelegator.mnAGWeighConfirm);
+    cmAGWeighCTRL.ccSetDischargeConfirm(SubWeighingDelegator.mnAGDischargeConfirm);
     cmAGWeighCTRL.ccRun(lpStart,!cmIsAutoWeighing);
+    SubWeighingDelegator.mnAGWeighLevel=cmAGWeighCTRL.ccGetCurrentLevel();
+    SubWeighingDelegator.mnAGWeighLevelTargetAD=ccGetAGWeighLevelTargetAD();
+    SubWeighingDelegator.mnAGDischargeRequest=cmAGWeighCTRL.ccIsRequiringDischarge();
+    /* 6 */SubWeighingDelegator.mnAGWeighLevelLeadAD
+      = SubWeighingDelegator.mnAGWeighLevelTargetAD;//[todo]::..
     
     cmFRWeighCTRL.ccSetHasNext(vmRemainBatch>1);
-    cmFRWeighCTRL.ccSetToNext(lpFRSkip);
+    cmFRWeighCTRL.ccSetToNext(lpFRSkip || SubWeighingDelegator.mnFRWeighConfirm);
+    cmFRWeighCTRL.ccSetDischargeConfirm(SubWeighingDelegator.mnFRDischargeConfirm);
     cmFRWeighCTRL.ccRun(lpStart,!cmIsAutoWeighing);
+    SubWeighingDelegator.mnFRWeighLevel=cmFRWeighCTRL.ccGetCurrentLevel();
+    SubWeighingDelegator.mnFRWeighLevelTargetAD=ccGetFRWeighLevelTargetAD();
+    SubWeighingDelegator.mnFRDischargeRequest=cmFRWeighCTRL.ccIsRequiringDischarge();
+    /* 6 */SubWeighingDelegator.mnFRWeighLevelLeadAD
+      = SubWeighingDelegator.mnFRWeighLevelTargetAD;//[todo]::..
     
     cmASWeighCTRL.ccSetHasNext(vmRemainBatch>1);
-    cmASWeighCTRL.ccSetToNext(lpASSkip);
+    cmASWeighCTRL.ccSetToNext(lpASSkip || SubWeighingDelegator.mnASWeighConfirm);
+    cmASWeighCTRL.ccSetDischargeConfirm(SubWeighingDelegator.mnASDischargeConfirm);
     cmASWeighCTRL.ccRun(lpStart,!cmIsAutoWeighing);
+    SubWeighingDelegator.mnASWeighLevel=cmASWeighCTRL.ccGetCurrentLevel();
+    SubWeighingDelegator.mnASWeighLevelTargetAD=ccGetASWeighLevelTargetAD();
+    SubWeighingDelegator.mnASDischargeRequest=cmASWeighCTRL.ccIsRequiringDischarge();
+    /* 6 */SubWeighingDelegator.mnASWeighLevelLeadAD
+      = SubWeighingDelegator.mnASWeighLevelTargetAD;//[todo]::..
     
     //-- raw delay
     cmAGDischargeDelayTM.ccAct(lpDiss);
@@ -332,34 +370,32 @@ public final class SubWeighControlManager {
     cmASWeighCTRL.ccSetToDischarge(cmDryTimeManipulator.ccIsAt(1));
     
     //--
-    if(cmWetTimeManipulator.ccIsAt(1)){
-      
-      //-- log
-      SubStatisticWeighManager.ccRefer().ccOfferLog(
-        /* 6 */
-        16,167f,4000,
-        new float[]{
-        100f,101f,102f,103f,104f,105f,106f,107f,
-        200f,201f,202f,203f,
-        300f,301f,302f,303f,
-        400f,401f,402f,403f,
-        500f,501f,502f,503f
-      });
-      SwingUtilities.invokeLater(SubMonitorPane.ccRefer()
-        .cmDynamicWeighResultTableRefreshing);
-      
-      //-- 
-      SubWeighingDelegator.mnMixerAutoDischargeRequire=true;
-      vmRemainBatch--;if(vmRemainBatch<=0){
-        ssClearCurrentBooked();
-        vmRemainBatch=0;
-        cmIsAutoWeighing=false;
-      }//..?
-      
+    //[head]:: so lets try a very short wet time
+    cmMixingTimeUpFlag.ccSet(cmWetTimeManipulator.ccIsAt(1));
+    cmAGDischargedFlag.ccSet(SubWeighingDelegator.mnAGDischargeConfirm);
+    cmFRDischargedFlag.ccSet(SubWeighingDelegator.mnFRDischargeConfirm);
+    cmASDischargedFlag.ccSet(SubWeighingDelegator.mnASDischargeConfirm);
+    if(cmMixingTimeUpFlag.ccGetStatus()
+     &&cmAGDischargedFlag.ccGetStatus()
+     &&cmFRDischargedFlag.ccGetStatus()
+     &&cmASDischargedFlag.ccGetStatus()
+    ){SubWeighingDelegator.mnMixerAutoDischargeRequire=true;}//..?
+    
+    if(
+      cmMixerDischargeStartPLS.ccUpPulse
+        (SubWeighingDelegator.mnMixerAutoDischargeRequire)
+    ){
+      ssLogWeighResult();
+      ssDecrementBatchCounter();
     }//..?
+    
     if(SubWeighingDelegator.mnMixerDischargedConfirm){
       cmMixerReadyFlag=true;
       SubWeighingDelegator.mnMixerAutoDischargeRequire=false;
+      cmMixingTimeUpFlag.ccReset();
+      cmAGDischargedFlag.ccReset();
+      cmFRDischargedFlag.ccReset();
+      cmASDischargedFlag.ccReset();
     }//..?
     
     //[head]:: i know you have absolutely no idea about what to do next
@@ -371,10 +407,18 @@ public final class SubWeighControlManager {
     //-- weigh model ui
     SubWeigherGroup.ccRefer().cmAGTargetCB
       .ccSetIsActivated(cmAGWeighCTRL.ccIsWeighing());
+    SubWeigherGroup.ccRefer().cmAGTargetCB
+      .ccSetText(cmAGWeighCTRL.ccToTag());
+    
     SubWeigherGroup.ccRefer().cmFRTargetCB
       .ccSetIsActivated(cmFRWeighCTRL.ccIsWeighing());
+    SubWeigherGroup.ccRefer().cmFRTargetCB
+      .ccSetText(cmFRWeighCTRL.ccToTag());
+    
     SubWeigherGroup.ccRefer().cmASTargetCB
       .ccSetIsActivated(cmASWeighCTRL.ccIsWeighing());
+    SubWeigherGroup.ccRefer().cmASTargetCB
+      .ccSetText(cmASWeighCTRL.ccToTag());
     
     //-- weigh control ui
     
@@ -405,6 +449,30 @@ public final class SubWeighControlManager {
         && MainSketch.ccIsRollingAccrose(5, 2));
     
   }//++~
+  
+  private void ssLogWeighResult(){
+    SubStatisticWeighManager.ccRefer().ccOfferLog(
+      /* 6 */
+      16,167f,1999,
+      new float[]{
+      100f,101f,102f,103f,104f,105f,106f,107f,
+      200f,201f,202f,203f,
+      300f,301f,302f,303f,
+      400f,401f,402f,403f,
+      500f,501f,502f,503f
+    });
+    SwingUtilities.invokeLater(SubMonitorPane.ccRefer()
+      .cmDynamicWeighResultTableRefreshing);
+  }//+++
+  
+  private void ssDecrementBatchCounter(){
+    vmRemainBatch--;
+    if(vmRemainBatch<=0){
+      ssClearCurrentBooked();
+      vmRemainBatch=0;
+      cmIsAutoWeighing=false;
+    }//..?
+  }//+++
   
   //===
   
@@ -462,9 +530,9 @@ public final class SubWeighControlManager {
     VcConst.ccPrintln("recp", cmDesRecipeNumber[0]);
     SubRecipeManager.ccRefer().ccSetOnWeighingRecipe(cmDesRecipeNumber[0]);
     
-    cmDesAGWeighLevelTargetKG[0]=3;//[todo]::.. la empty kg setting
-    cmDesFRWeighLevelTargetKG[0]=3;//[todo]::.. la empty kg setting
-    cmDesASWeighLevelTargetKG[0]=3;//[todo]::.. la empty kg setting
+    cmDesAGWeighLevelTargetKG[0]=0;
+    cmDesFRWeighLevelTargetKG[0]=0;
+    cmDesASWeighLevelTargetKG[0]=0;
     
     for(int i=MainPlantModel.C_MATT_AGGR_UI_VALID_MAX;i>=1;i--){
       
@@ -475,7 +543,7 @@ public final class SubWeighControlManager {
           .ccGetPercentage('G', i));//..how do we fix index from level to actual?
       //-- ag ** ad
       cmDesAGWeighLevelTargetAD[i]=SubAnalogScalarManager.ccRefer()
-        .ccToAGCellAD(cmDesAGWeighLevelTargetKG[i]);//..what if the scala needs revice?!
+        .ccToAGCellAD(cmDesAGWeighLevelTargetKG[i],vmAGEmptyKG);//..what if the scala needs revice?!
       
       if(i<MainPlantModel.C_MATT_REST_GENERAL_SIZE){
         
@@ -486,7 +554,7 @@ public final class SubWeighControlManager {
             .ccGetPercentage('F', i));//..how do we fix index from level to actual?
         //-- fr ** ad
         cmDesFRWeighLevelTargetAD[i]=SubAnalogScalarManager.ccRefer()
-          .ccToAGCellAD(cmDesFRWeighLevelTargetKG[i]);//..what if the scala needs revice?!
+          .ccToAGCellAD(cmDesFRWeighLevelTargetKG[i],vmFREmptyKG);//..what if the scala needs revice?!
         
         //-- as ** kg
         cmDesASWeighLevelTargetKG[i]=cmDesASWeighLevelTargetKG[(i+1)
@@ -495,13 +563,20 @@ public final class SubWeighControlManager {
             .ccGetPercentage('S', i));//..how do we fix index from level to actual?
         //-- as ** ad
         cmDesASWeighLevelTargetAD[i]=SubAnalogScalarManager.ccRefer()
-          .ccToAGCellAD(cmDesASWeighLevelTargetKG[i]);//..what if the scala needs revice?!
+          .ccToAGCellAD(cmDesASWeighLevelTargetKG[i],vmASEmptyKG);//..what if the scala needs revice?!
         
         //[todo]::cmDesRCWeighLevelTargetKG[i]=ssTranslatePercentage..
         //[todo]::cmDesADWeighLevelTargetKG[i]=ssTranslatePercentage..
         
       }//..?
     }//..~
+    
+    cmDesAGWeighLevelTargetAD[0]=SubAnalogScalarManager.ccRefer()
+      .ccToAGCellAD(vmAGEmptyKG);
+    cmDesFRWeighLevelTargetAD[0]=SubAnalogScalarManager.ccRefer()
+      .ccToFRCellAD(vmFREmptyKG);
+    cmDesASWeighLevelTargetAD[0]=SubAnalogScalarManager.ccRefer()
+      .ccToASCellAD(vmASEmptyKG);
     
     VcConst.ccPrintln("ag-kg", Arrays.toString(cmDesAGWeighLevelTargetKG));
     VcConst.ccPrintln("ag-ad", Arrays.toString(cmDesAGWeighLevelTargetAD));
@@ -540,6 +615,7 @@ public final class SubWeighControlManager {
   }//++<
   
   //===
+  //[todo]:: should all these be public??
   
   //=== ** 
   

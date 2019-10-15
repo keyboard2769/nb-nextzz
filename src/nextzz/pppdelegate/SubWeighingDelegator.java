@@ -23,24 +23,26 @@ import nextzz.ppplocalui.SubMixerGroup;
 import nextzz.ppplocalui.SubOperativeGroup;
 import nextzz.ppplocalui.SubWeigherGroup;
 import nextzz.pppmodel.MainPlantModel;
-import nextzz.pppmodel.SubWeighControlManager;
 
 public final class SubWeighingDelegator {
   
   public static volatile int
-    mnAGWeighLevel,mnFRWeighLevel,mnASWeighLevel,
-    mnAGWeighLevelTargetAD,mnFRGCurrentMattTargetAD,mnFRCurrentMattTargetAD,
-    mnAGWeighLevelLeadAD,mnFRGCurrentMattLeadAD,mnASCurrentMattLeadAD
+    mnAGWeighLevel,        mnFRWeighLevel,        mnASWeighLevel,
+    mnAGWeighLevelTargetAD,mnFRWeighLevelTargetAD,mnASWeighLevelTargetAD,
+    mnAGWeighLevelLeadAD,  mnFRWeighLevelLeadAD,  mnASWeighLevelLeadAD
   ;//,,,
   
   public static volatile boolean
     
     //-- weight control
+    mnAutoWeighing,
     //[todo]:: ?? manual? auto? ready? run?
     
     //-- AG
+    //-- AG ** flag
+    mnAGWeighRequest,mnAGDischargeRequest,
+    mnAGWeighConfirm,mnAGDischargeConfirm,
     //-- AG ** lock sw
-    //[head]:: discharge flag?
     mnAGCellLockSW,
     mnAGxSWnI,mnAGxSWnII,mnAGxSWnIII,
     mnAGxSWnIV,mnAGxSWnV,mnAGxSWnVI,mnAGxSWnVII,
@@ -54,6 +56,9 @@ public final class SubWeighingDelegator {
     mnAGwPLnIV,mnAGwPLnV,mnAGwPLnVI,mnAGwPLnVII,
     
     //-- FR
+    //-- FR ** flag
+    mnFRWeighRequest,mnFRDischargeRequest,
+    mnFRWeighConfirm,mnFRDischargeConfirm,
     //-- FR ** lock sw
     mnFRCellLockSW,
     mnFRxSWnI,mnFRxSWnII,mnFRxSWnIII,
@@ -65,6 +70,9 @@ public final class SubWeighingDelegator {
     mnFRwPLnI,mnFRwPLnII,mnFRwPLnIII,
     
     //-- AS
+    //-- AS ** flag
+    mnASWeighRequest,mnASDischargeRequest,
+    mnASWeighConfirm,mnASDischargeConfirm,
     //-- AS ** lock sw
     mnASCellLockSW,
     mnASxSWnI,mnASxSWnII,mnASxSWnIII,
@@ -93,47 +101,9 @@ public final class SubWeighingDelegator {
   
   public static final void ccBind(){
     
-    //-- cell ** to plc
-    /* 6 */
-    mnAGWeighLevel=SubWeighControlManager.ccRefer()
-      .cmAGWeighCTRL.ccGetCurrentLevel();
-    mnAGWeighLevelTargetAD=SubWeighControlManager.ccRefer()
-      .ccGetAGWeighLevelTargetAD();
-    /* 6 */mnAGWeighLevelLeadAD=mnAGWeighLevelTargetAD;//[todo]::..
-    
-    
-    
-    mnFRWeighLevel=SubWeighControlManager.ccRefer()
-      .cmFRWeighCTRL.ccGetCurrentLevel();
-    
-    
-    
-    mnASWeighLevel=SubWeighControlManager.ccRefer()
-      .cmASWeighCTRL.ccGetCurrentLevel();
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    //-- cell ** 
-    /* 6 */
-    SubWeigherGroup.ccRefer().cmAGTargetCB
-      .ccSetText(SubWeighControlManager.ccRefer()
-        .cmAGWeighCTRL.ccToTag());
-    SubWeigherGroup.ccRefer().cmFRTargetCB
-      .ccSetText(SubWeighControlManager.ccRefer()
-        .cmFRWeighCTRL.ccToTag());
-    SubWeigherGroup.ccRefer().cmASTargetCB
-      .ccSetText(SubWeighControlManager.ccRefer()
-        .cmASWeighCTRL.ccToTag());
-    
     //-- aggregate
     mnAGCellDischargeSW=SubWeigherGroup.ccRefer()
-      .cmLesADWeighSW.get(0).ccIsMousePressed();
+      .cmLesAGWeighSW.get(0).ccIsMousePressed();
     SubWeigherGroup.ccRefer().cmLesAGWeighSW.get(0)
       .ccSetIsActivated(mnAGCellDischargePL);
     SubWeigherGroup.ccRefer().cmLesAGLockSW.get(0)

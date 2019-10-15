@@ -115,7 +115,7 @@ public final class ZcWeighController extends ZcStepper{
     
     ccStep(
       S_DISCHARGE, S_DISCHARGE_CONFIRM,
-      cmToDischarge//[head]::.. it must be here!
+      cmIsDicharged
     );
     
     ccStep(
@@ -148,7 +148,7 @@ public final class ZcWeighController extends ZcStepper{
     cmToDischarge=pxCondition;
   }//++<
   
-  public final void ccSetIsDischarged(boolean pxCondition){
+  public final void ccSetDischargeConfirm(boolean pxCondition){
     cmIsDicharged=pxCondition;
   }//++<
   
@@ -184,18 +184,13 @@ public final class ZcWeighController extends ZcStepper{
     return ccIsAt(S_ALL_OVER);
   }//++>
   
-  
-  public final int ccGetCurrentTarget(){return 0;}//++>
-  public final int ccGetCurrentCut(){return 0;}//++>
-  public final int ccGetCurrentMAT(){return 0;}//++>
-  
   public final int ccToIndicativeNumber(){
     return cmStage*100+cmCurrentLevel;
   }//++>
   
   public final boolean ccIsRequiringDischarge(){
     return ccIsAt(S_DISCHARGE);
-  }//+++
+  }//++>
   
   //===
   
