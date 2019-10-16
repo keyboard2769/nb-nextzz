@@ -89,6 +89,7 @@ public final class SubWeighingDelegator {
     //--- Mixer
     mnMixerDischargedConfirm,mnMixerAutoDischargeRequire,
     mnMixerGateHoldSW,mnMixerGateOpenSW,
+    mnMixerHasContentPL,
     mnMixerGateFB,mnMixerGateClosedPL
     
   ;//,,,
@@ -155,7 +156,11 @@ public final class SubWeighingDelegator {
       //[todo]:rc-ad
     }//..~
     
-    //-- mixer gate
+    //-- mixer ** content
+    SubMixerGroup.ccRefer().cmHasContentPL
+      .ccSetIsActivated(mnMixerHasContentPL);
+    
+    //-- mixer ** gate
     SubOperativeGroup.ccRefer().cmMixerGateHoldSW
       .ccSetIsActivated(mnMixerGateHoldSW);
     SubOperativeGroup.ccRefer().cmMixerGateAutoSW

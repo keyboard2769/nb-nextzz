@@ -18,7 +18,6 @@ but hey, dose it sounds stupid if you read it DOUBLE-ZEUS ??
 - [ ] $ tre
 - [ ] $ dos
 - [ ] $ uno
-- [ ] $ maybe some new color style for book input area ?
 - [ ] $ maybe we need to let the feeder speed box send manual pulse
 - [ ] $ over sized stuff should get located near the sixth bin
 - [ ] $ fill v provision and combust motor load factor
@@ -28,25 +27,22 @@ but hey, dose it sounds stupid if you read it DOUBLE-ZEUS ??
 - [ ] $ add the "linear setting" to THE list
 - [ ] $ complete the error list and log mechanism
 - [ ] $ refine case test of pid controller to have target manipulation
+- [ ] $ shift-tab to back tabbing ?
 
 #### heading
 
-- [ ] $ it is time for the recipe handling mechanism
-        .. yeah yeah yeah i got totally lost this time
-        .. i m afraid i just can t give you any advice any more 
-        .. but i know you know that i know you know what to do, right?
-        .. just clean the code after you get it done
+- [ ] $ something went wrong after stopping auto-weigh processing 
+        .. and we need a lot more REAL fixing :
 
 #### last
 
-- [x] $ lock switch determine mechanism
-- [x] $ cell and weigh simulation with assist buttons
-- [x] $ did the mixer dry-and-wet control .. we need separate them from the one
-- [x] $ added stop button and skip buttons of booking group
-- [x] $ target box color now changes when the very cell is on weighing
-- [x] $ let the manual weigh button shine when the level match
-- [x] $ please not the csv translation trouble is caused by the scanner encode
-- [x] $ a skeleton weighing lamp and table in monitor pane
 - [x] $ a skeleton temporary storage controller serve as mixer gate controller
+- [x] $ the recipe mechanism works now, forget about it!!
+- [x] $ move the weight control indicative lamp to where it belongs to
+- [x] $ let the target KG value show what it have to show
+- [x] $ local inputtive box color is preferred to dark orange .. cool yeah
+- [x] $ fixed final batch display cleaning thing aka the name box problem
+- [x] $ flag manipulating action needs pulse control actually
+- [x] $ the mixer content pl can flash now .. and it s out of control !
 
 <hr><!--EOF-->

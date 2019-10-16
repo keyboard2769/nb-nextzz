@@ -378,6 +378,10 @@ public final class SubOperativeGroup implements EiGroup{
       i<=MainPlantModel.C_BOOK_UI_CAPA_TAIL;
       i++
     ){
+      cmLesRecipeTB.get(i).ccSetColor(EcConst.C_DARK_ORANGE);
+      cmLesNameCB.get(i).ccSetColor(EcConst.C_DARK_ORANGE);
+      cmLesKilogramTB.get(i).ccSetColor(EcConst.C_DARK_ORANGE);
+      cmLesBatchTB.get(i).ccSetColor(EcConst.C_DARK_ORANGE);
       //--
       cmLesRecipeTB.get(i).ccSetLocation
         (cmLesRecipeTB.get(i-1), 0,ConstLocalUI.C_INPANE_GAP);

@@ -164,6 +164,16 @@ public class SubWeighingTask implements ZiTask{
       SubWeighingDelegator.mnMixerDischargedConfirm=true;
     }//..?
     
+    //-- mixer content
+    if(dcMixerGate.ccIsClosed()
+      &&(dcDesAGGate[0]
+         ||dcDesFRGate[0]
+         ||dcDesASGate[0]
+    )){SubWeighingDelegator.mnMixerHasContentPL=true;}
+    if(!dcMixerGate.ccIsClosed()){
+      SubWeighingDelegator.mnMixerHasContentPL=false;
+    }//..?
+    
     //-- mixer gate 
     dcMixerGate.ccSetupAction(
       MainSimulator.ccSelectModeForce(SubWeighingDelegator.mnMixerGateHoldSW,
@@ -178,7 +188,7 @@ public class SubWeighingTask implements ZiTask{
     SubWeighingDelegator.mnMixerGateClosedPL
       = dcMixerGate.ccIsClosed() && !dcMixerGate.ccIsFullOpened();
     
-    //-- feedback
+    //-- cell
     SubAnalogDelegator.mnAGCellAD=dcAGCell.ccGetScaledValue(4000)+397;
     SubAnalogDelegator.mnFRCellAD=dcFRCell.ccGetScaledValue(4000)+388;
     SubAnalogDelegator.mnASCellAD=dcASCell.ccGetScaledValue(4000)+391;

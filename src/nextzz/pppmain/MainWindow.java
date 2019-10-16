@@ -34,6 +34,7 @@ import kosui.ppputil.VcStampUtility;
 import kosui.ppputil.VcTranslator;
 import nextzz.pppmodel.MainPlantModel;
 import nextzz.pppmodel.SubAnalogScalarManager;
+import nextzz.pppmodel.SubWeighControlManager;
 import nextzz.pppswingui.SiTabbable;
 import nextzz.pppswingui.SubAssistantPane;
 import nextzz.pppswingui.SubErrorPane;
@@ -67,6 +68,11 @@ public final class MainWindow {
         SubMonitorPane.ccRefer().cmLesCurrentCTSlot.get(i)
           .ccSetPercentage(VcNumericUtility.ccProportion(lpValue, lpSpan));
       }//..~
+      
+      //-- state
+      SubMonitorPane.ccRefer().cmAGWeigherStatePL.setText(SubWeighControlManager.ccRefer().ccGetAGCTRLStatus());
+      SubMonitorPane.ccRefer().cmFRWeigherStatePL.setText(SubWeighControlManager.ccRefer().ccGetFRCTRLStatus());
+      SubMonitorPane.ccRefer().cmASWeigherStatePL.setText(SubWeighControlManager.ccRefer().ccGetASCTRLStatus());
       
     }//+++
   };//***

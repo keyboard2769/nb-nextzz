@@ -46,7 +46,8 @@ public class ZcStorerController extends ZcStepper{
   
   private boolean 
     cmIsStored, cmDischargePermission=true, 
-    cmOpenedLS, cmClosedLS,cmReturnPermission=true
+    cmOpenedLS, cmClosedLS,cmReturnPermission=true,
+    cmDoubleTakeinLocker
   ;//,,,
   
   //===
@@ -73,59 +74,44 @@ public class ZcStorerController extends ZcStepper{
   
   public final void ccRun(){
     
-    ccStep(
-      S_ABEND, S_READY,
-      false// % reset
-    );
+    //-- sequence
+    ccStep(S_ABEND, S_READY,
+      false);// % reset
+    ccStep(S_READY, S_STANDY,
+      true);
+    ccStep(S_STANDY, S_STORED,
+      cmIsStored);
     
-    ccStep(
-      S_READY, S_STANDY,
-      true
-    );
-    
-    ccStep(
-      S_STANDY, S_STORED,
-      cmIsStored
-    );
-    
-    ccStep(
-      S_STORED, S_PRE_DISCHARGE,
-      true// % remain
-    );
+    //--
+    ccStep(S_STORED, S_PRE_DISCHARGE,
+      true);// % remain
     cmDischargeWaitTM.ccAct(ccIsAt(S_PRE_DISCHARGE) && cmDischargePermission);
     
-    ccStep(
-      S_PRE_DISCHARGE, S_OPEN,
-      cmDischargeWaitTM.ccIsUp()
-    );
-    
-    ccStep(
-      S_OPEN, S_OPENED_CONFIRM,
-      cmOpenedLS
-    );
+    //--
+    ccStep(S_PRE_DISCHARGE, S_OPEN,
+      cmDischargeWaitTM.ccIsUp());
+    ccStep(S_OPEN, S_OPENED_CONFIRM,
+      cmOpenedLS);
     cmDischargeTM.ccAct(ccIsAt(S_OPENED_CONFIRM));
     
-    ccStep(
-      S_OPENED_CONFIRM, S_CLOSE,
-      cmDischargeTM.ccIsUp()
-    );
-    if(ccIsAt(S_OPENED_CONFIRM)){cmIsStored=false;}
+    //--
+    ccStep(S_OPENED_CONFIRM, S_CLOSE,
+      cmDischargeTM.ccIsUp());
+    if(ccIsAt(S_OPENED_CONFIRM)||cmOpenedLS){
+      cmIsStored=false;
+      cmDoubleTakeinLocker=false;
+    }//..~
     
-    ccStep(
-      S_CLOSE, S_CLOSED_CONFIRM,
-      cmClosedLS
-    );
-    
-    ccStep(
-      S_CLOSED_CONFIRM, S_POST_DISCHARGE,
-      cmReturnPermission
-    );
+    //-- 
+    ccStep(S_CLOSE, S_CLOSED_CONFIRM,
+      cmClosedLS);
+    ccStep(S_CLOSED_CONFIRM, S_POST_DISCHARGE,
+      cmReturnPermission);
     cmRecoverTM.ccAct(ccIsAt(S_POST_DISCHARGE));
     
-    ccStep(
-      S_POST_DISCHARGE, S_STANDY,
-      cmRecoverTM.ccIsUp()
-    );
+    //--
+    ccStep(S_POST_DISCHARGE, S_STANDY,
+      cmRecoverTM.ccIsUp());
     
   }//++~
   
@@ -139,6 +125,9 @@ public class ZcStorerController extends ZcStepper{
   public final void ccSetupSuperiorLayer(boolean pxMV, boolean pxOL){
     if(cmClosedLS && pxMV && pxOL){
       cmIsStored=true;
+    }//+++
+    if(cmIsStored && !(pxOL)){
+      cmDoubleTakeinLocker=true;
     }//+++
   }//++<
   
@@ -166,6 +155,10 @@ public class ZcStorerController extends ZcStepper{
   
   public final boolean ccIsAtPost(){
     return ccIsAt(S_POST_DISCHARGE);
+  }//++>
+  
+  public final boolean ccGetContentFlag(){
+    return cmIsStored;
   }//++>
   
   //===

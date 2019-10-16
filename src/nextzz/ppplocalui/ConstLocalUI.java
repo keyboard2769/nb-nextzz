@@ -31,6 +31,7 @@ import kosui.ppplocalui.EcShape;
 import kosui.ppplocalui.EcText;
 import kosui.ppplocalui.EcValueBox;
 import kosui.ppplocalui.EiGroup;
+import kosui.pppswingui.ScConst;
 import kosui.ppputil.VcNumericUtility;
 import nextzz.pppmain.MainSketch;
 import processing.core.PApplet;
@@ -352,6 +353,8 @@ public final class ConstLocalUI {
     //-- restyling
     ccSetupClickableBoxColor(pxTarget);
     ccSetupPressureBoxColor(pxCell);
+    pxTarget.ccSetDigit(1);
+    pxCell.ccSetDigit(1);
     
     //-- assemble
     int lpX=pxX&0x7FF;

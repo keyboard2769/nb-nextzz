@@ -287,7 +287,7 @@ public final class MainActionManager {
     }//+++
   };//***
   
-  public final EiTriggerable ccSettingModifying = new EiTriggerable() {
+  public final EiTriggerable cmSettingModifying = new EiTriggerable() {
     @Override public void ccTrigger() {
       int lpListIndex = SubSettingPane.ccRefer()
         .cmList.ccGetCurrentIndex();
@@ -319,6 +319,25 @@ public final class MainActionManager {
   };//***
   
   //=== trigger ** what?
+  
+  public final EiTriggerable cmDebugging = new EiTriggerable() {
+    @Override public void ccTrigger(){
+      MainSketch.pbDebugMode=!MainSketch.pbDebugMode;
+      VcLocalTagger.ccGetInstance().ccSetIsVisible(MainSketch.pbDebugMode);
+      VcConst.ccSetDoseLog(MainSketch.pbDebugMode);
+      VcLocalConsole.ccGetInstance().ccSetMessage("[echo]debug:"
+        + (MainSketch.pbDebugMode?"on":"off")
+      );
+    }//+++
+  };//***
+  
+  public final EiTriggerable cmMotorThmalResetting = new EiTriggerable() {
+    @Override public void ccTrigger(){
+      MainSimulator.tstResetAllMotorTrip();
+      VcLocalConsole.ccGetInstance()
+        .ccSetMessage("[echo]mrst::resetting motor thermal status");
+    }//+++
+  };
   
   //=== swing 
   
@@ -400,7 +419,7 @@ public final class MainActionManager {
       VcSwingCoordinator.ccRegisterAction
         (MainWindow.ccRefer().cmErrorClearButton, cmErrorCleaning);
       VcSwingCoordinator.ccRegisterAction
-        (SubSettingPane.ccRefer().cmModifyButton, ccSettingModifying);
+        (SubSettingPane.ccRefer().cmModifyButton, cmSettingModifying);
 
     }//+++
   };//***
@@ -504,25 +523,12 @@ public final class MainActionManager {
     //-- skech ** command ** command
     VcLocalConsole.ccRegisterCommand
       ("quit", cmQuitting);
-    //[todo]::make an explicit instance!!
     VcLocalConsole.ccRegisterCommand
-      ("debug", new EiTriggerable() {
-      @Override public void ccTrigger(){
-        MainSketch.pbDebugMode=!MainSketch.pbDebugMode;
-        VcLocalTagger.ccGetInstance().ccSetIsVisible(MainSketch.pbDebugMode);
-        VcConst.ccSetDoseLog(MainSketch.pbDebugMode);
-        VcLocalConsole.ccGetInstance().ccSetMessage("[echo]debug:"
-          + (MainSketch.pbDebugMode?"on":"off")
-        );
-      }//+++
-    });
+      ("run", SubWeighControlManager.ccRefer().cmWeighStartClicking);
     VcLocalConsole.ccRegisterCommand
-      ("mrst", new EiTriggerable() {
-      @Override public void ccTrigger(){
-        MainSimulator.tstResetAllMotorTrip();
-        VcLocalConsole.ccGetInstance().ccSetMessage("[echo]mrst");
-      }//+++
-    });
+      ("debug", cmDebugging);
+    VcLocalConsole.ccRegisterCommand
+      ("mrst", cmMotorThmalResetting);
   
   }//++!
   

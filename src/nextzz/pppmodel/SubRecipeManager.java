@@ -34,10 +34,14 @@ import processing.core.PApplet;
 
 public final class SubRecipeManager extends McTableAdapter{
   
+  public static final String C_INVALID_MARK = "--";
+  //--
   public static final int C_CAPACITY_HEAD =    0;
   public static final int C_CAPACITY_TAIL =  999;
   public static final int C_CAPACITY_SIZE = 1024;
   public static final int C_CAPACITY_MASK = 1023;
+  
+  //===
   
   private static final SubRecipeManager SELF = new SubRecipeManager();
   public static final SubRecipeManager ccRefer(){return SELF;}//+++
@@ -307,7 +311,7 @@ public final class SubRecipeManager extends McTableAdapter{
   }//+++
   
   public final String ccGetRecipeName(int pxID){
-    if((pxID <= 0) || (pxID >999)){return "--";}
+    if((pxID <= 0) || (pxID >999)){return C_INVALID_MARK;}
     if(!cmMapOfRecipe.containsKey(pxID)){
       return VcTranslator.tr("_opm_not_found");
     }//..?

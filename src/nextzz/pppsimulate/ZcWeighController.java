@@ -131,6 +131,10 @@ public final class ZcWeighController extends ZcStepper{
       true
     );
     
+    if(ccIsAt(S_ABEND)){
+      cmCurrentLevel=0;
+    }//..?
+    
   }//++~
   
   //===
@@ -194,9 +198,9 @@ public final class ZcWeighController extends ZcStepper{
   
   //===
   
-  @Deprecated public final String ccToTag(){
+  public final String ccToTag(){
     return VcStringUtility.ccPackupPairedTag(
-      Integer.toString(cmStage),
+      Integer.toString(cmStage),//[todo]::.. localization??
       Integer.toString(cmCurrentLevel)
     );
   }//+++

@@ -84,6 +84,7 @@ public final class SubMixerGroup implements EiGroup{
     cmMixerGate.ccSetLocation(cmMixerIcon, 'b');
     cmMixerGate.ccSetLocation(cmMixerIcon, 'v');
     cmMixerGate.ccShiftLocation(0, ConstLocalUI.C_INPANE_GAP*2);
+    cmHasContentPL.ccSetColor(EcConst.C_PURPLE);
     cmHasContentPL.ccSetLocation(cmMixerIcon, 2,2);
     cmHasContentPL.ccSetSize(cmMixerIcon.ccGetW()-4,4);
     

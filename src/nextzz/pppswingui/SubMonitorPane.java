@@ -86,8 +86,10 @@ public final class SubMonitorPane implements SiTabbable{
   public final JButton cmPrintButton
     = new JButton(VcTranslator.tr("_print"));
   
-  public final JTextField cmMixerStatePL
-    = ScFactory.ccCreateTextLamp("[-:-]");
+  public final JTextField cmFRWeigherStatePL = ScFactory.ccCreateTextLamp("[-:-]");
+  public final JTextField cmAGWeigherStatePL = ScFactory.ccCreateTextLamp("[-:-]");
+  public final JTextField cmASWeigherStatePL = ScFactory.ccCreateTextLamp("[-:-]");
+  public final JTextField cmMixerStatePL = ScFactory.ccCreateTextLamp("[-:-]");
   
   public final ScTable cmDynamicWeighResultTable
     = new ScTable(SubWeighControlManager.ccRefer().cmDynamicResultModel,80,80);
@@ -151,6 +153,9 @@ public final class SubMonitorPane implements SiTabbable{
     lpWeighToolBar.add(cmExportButton);
     lpWeighToolBar.add(cmPrintButton);
     lpWeighToolBar.add(new JSeparator(SwingConstants.VERTICAL));
+    lpWeighToolBar.add(cmFRWeigherStatePL);
+    lpWeighToolBar.add(cmAGWeigherStatePL);
+    lpWeighToolBar.add(cmASWeigherStatePL);
     lpWeighToolBar.add(cmMixerStatePL);
     //-- center pane ** weigh ** pack
     JPanel lpWeighPartPane = ScFactory.ccCreateBorderPanel();
