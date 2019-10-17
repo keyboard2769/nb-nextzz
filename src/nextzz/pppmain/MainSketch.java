@@ -47,15 +47,10 @@ import nextzz.ppplocalui.SubWeigherGroup;
 import nextzz.pppmodel.MainFileManager;
 import nextzz.pppmodel.MainPlantModel;
 import nextzz.pppmodel.MainSpecificator;
-import nextzz.pppmodel.SubAnalogScalarManager;
-import nextzz.pppmodel.SubDegreeControlManager;
 import nextzz.pppmodel.SubErrorListModel;
 import nextzz.pppmodel.SubWeighControlManager;
 import nextzz.pppsetting.MainSettingManager;
 import nextzz.pppsimulate.MainSimulator;
-import nextzz.pppsimulate.SubErrorTask;
-import nextzz.pppsimulate.SubFeederTask;
-import nextzz.pppsimulate.SubVCombusTask;
 import nextzz.pppsimulate.SubWeighingTask;
 import nextzz.pppswingui.ConstSwingUI;
 import processing.core.PApplet;
@@ -74,9 +69,10 @@ public class MainSketch extends PApplet{
   static public final int C_WIDTH_M  = 1024;
   static public final int C_HEIGHT_M =  768;
   
-  private static int cmWindowW=C_WIDTH_S;
-  private static int cmWindowH=C_HEIGHT_S;
-  private static int cmRoller=10;
+  private static int pbWindowW=C_WIDTH_S;
+  private static int pbWindowH=C_HEIGHT_S;
+  private static int pbModifiableKeyCode=0;
+  private static int pbRoller=10;
   
   public static volatile boolean pbDebugMode=false;
   
@@ -84,7 +80,7 @@ public class MainSketch extends PApplet{
   
   @Override public void setup(){
     
-    size(cmWindowW,cmWindowH,JAVA2D);
+    size(pbWindowW,pbWindowH,JAVA2D);
     /* 4 */VcConst.ccPrintln("MainSketch.setup()::begin");
     
     //-- pre
@@ -189,7 +185,7 @@ public class MainSketch extends PApplet{
     
     //-- debug
     /* 4 */ SubWeighingTask.ccRefer().tstTagg();
-    VcLocalTagger.ccTag("roll",nf(cmRoller,2));
+    VcLocalTagger.ccTag("roll",nf(pbRoller,2));
     VcLocalTagger.ccTag
       ("latency",VcNumericUtility.ccFormatPointTwoFloat(17f-frameRate));
     VcLocalTagger.ccTag
@@ -203,14 +199,33 @@ public class MainSketch extends PApplet{
   }//+++
 
   @Override public void keyPressed(){
+    
+    //-- for console
     VcLocalCoordinator.ccGuardEscKey(this);
     if(VcLocalConsole.ccKeyTyped(key, keyCode)){
       MainPlantModel.ccRefer().vmMessageBarBlockingFLG=true;
       return;
     }//..?
+    
+    //-- for input shift
+    boolean lpMasked=false;
+    if(keyCode==java.awt.event.KeyEvent.VK_TAB){
+      if(pbModifiableKeyCode==java.awt.event.KeyEvent.VK_SHIFT){
+        VcLocalCoordinator.ccGetInstance().ccToPreviousInputIndex();
+        lpMasked=true;
+      }else{
+        VcLocalCoordinator.ccGetInstance().ccToNextInputIndex();
+      }//..?
+    }//..?
+    if(keyCode==java.awt.event.KeyEvent.VK_SHIFT){pbModifiableKeyCode=keyCode;}
+    else{pbModifiableKeyCode=0;}
+    if(lpMasked){return;}
+    
+    //-- norm
     VcLocalCoordinator.ccKeyPressed(keyCode);
+    
   }//+++
-
+  
   @Override public void mousePressed(){
     if(mouseButton == LEFT) {
       VcLocalCoordinator.ccMousePressed();
@@ -244,26 +259,26 @@ public class MainSketch extends PApplet{
   //=== timing
   
   private static void ssRoll(){
-    cmRoller++;cmRoller&=0xF;
+    pbRoller++;pbRoller&=0xF;
   }//+++
   
   static public boolean ccIsRollingAbove(int pxZeroToFifteen){
-    return cmRoller>pxZeroToFifteen;
+    return pbRoller>pxZeroToFifteen;
   }//+++
   
   static public boolean ccIsRollingAt(int pxZeroToFifteen){
-    return cmRoller==pxZeroToFifteen;
+    return pbRoller==pxZeroToFifteen;
   }//+++
   
   static public boolean ccIsRollingAccrose(int pxMod,int pxInt){
-    return (cmRoller % pxMod) == pxInt;
+    return (pbRoller % pxMod) == pxInt;
   }//+++
   
   //=== selfie
   
-  public static final int ccGetPrefferedW(){return cmWindowW;}//+++
+  public static final int ccGetPrefferedW(){return pbWindowW;}//+++
   
-  public static final int ccGetPrefferedH(){return cmWindowH;}//+++
+  public static final int ccGetPrefferedH(){return pbWindowH;}//+++
   
   public static final MainSketch ccGetSketch(){return self;}//+++
   
@@ -305,13 +320,13 @@ public class MainSketch extends PApplet{
     ScConst.ccInitMonitorInformation();
     int lpMonitorHeight = ScConst.ccGetMinimalBound().height;
     if(lpMonitorHeight<=800){
-      cmWindowW=C_WIDTH_S;
-      cmWindowH=C_HEIGHT_S;
+      pbWindowW=C_WIDTH_S;
+      pbWindowH=C_HEIGHT_S;
     }else{
-      cmWindowW=C_WIDTH_M;
-      cmWindowH=C_HEIGHT_M;
+      pbWindowW=C_WIDTH_M;
+      pbWindowH=C_HEIGHT_M;
     }//..?
-    EcRect lpPotentialWindow = new EcRect(cmWindowW, cmWindowH);
+    EcRect lpPotentialWindow = new EcRect(pbWindowW, pbWindowH);
     if(ScConst.ccHasSubMonior()){
       /* 4 */VcConst.ccPrintln(".main()::detected sub monitor");
       Rectangle lpSubBound = ScConst.ccGetSubMoniorBound();
@@ -345,14 +360,14 @@ public class MainSketch extends PApplet{
     }//..?
     
     //-- run sketch
-    /* 4 */VcConst.ccLogln(".main()::commited-w", cmWindowW);
-    /* 4 */VcConst.ccLogln(".main()::commited-h", cmWindowH);
+    /* 4 */VcConst.ccLogln(".main()::commited-w", pbWindowW);
+    /* 4 */VcConst.ccLogln(".main()::commited-h", pbWindowH);
     PApplet.main(MainSketch.class.getCanonicalName());
     
   }//+++
   
   public static final String ccGetLastLeavingStamp(){
-    return "_1910171145";
+    return "_1910171629";
   }//+++
 
 }//***eof

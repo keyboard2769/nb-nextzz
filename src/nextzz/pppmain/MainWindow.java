@@ -69,10 +69,14 @@ public final class MainWindow {
           .ccSetPercentage(VcNumericUtility.ccProportion(lpValue, lpSpan));
       }//..~
       
-      //-- state
-      SubMonitorPane.ccRefer().cmAGWeigherStatePL.setText(SubWeighControlManager.ccRefer().ccGetAGCTRLStatus());
-      SubMonitorPane.ccRefer().cmFRWeigherStatePL.setText(SubWeighControlManager.ccRefer().ccGetFRCTRLStatus());
-      SubMonitorPane.ccRefer().cmASWeigherStatePL.setText(SubWeighControlManager.ccRefer().ccGetASCTRLStatus());
+      //-- weigh state
+      SubMonitorPane.ccRefer().cmDynamicWeighResultTable.ccRefresh();
+      SubMonitorPane.ccRefer().cmAGWeigherStatePL
+        .setText(SubWeighControlManager.ccRefer().ccGetAGCTRLStatus());
+      SubMonitorPane.ccRefer().cmFRWeigherStatePL
+        .setText(SubWeighControlManager.ccRefer().ccGetFRCTRLStatus());
+      SubMonitorPane.ccRefer().cmASWeigherStatePL
+        .setText(SubWeighControlManager.ccRefer().ccGetASCTRLStatus());
       
     }//+++
   };//***

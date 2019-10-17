@@ -32,15 +32,13 @@ but hey, dose it sounds stupid if you read it DOUBLE-ZEUS ??
 - [ ] $ add the "linear setting" to THE list
 - [ ] $ complete the error list and log mechanism
 - [ ] $ refine case test of pid controller to have target manipulation
-- [ ] $ shift-tab to back tabbing ?
 
 #### heading
 
-- [ ] $ let the table dynamic weigh result table shine
+- [ ] $ let the dynamic weigh result table shine
 
 #### last
 
-- [x] $ the recipe mechanism works now, forget about it!!
 - [x] $ move the weight control indicative lamp to where it belongs to
 - [x] $ let the target KG value show what it have to show
 - [x] $ local inputtive box color is preferred to dark orange .. cool yeah
@@ -48,5 +46,6 @@ but hey, dose it sounds stupid if you read it DOUBLE-ZEUS ??
 - [x] $ flag manipulating action needs pulse control actually
 - [x] $ the mixer content pl can flash now .. and it s out of control ! 
 - [x] $ we just gave up on the 'fixing' thing of the auto-weigh-sequence
+- [x] $ shift-tab can now back shift the focus .. don't push to hard !!
 
 <hr><!--EOF-->

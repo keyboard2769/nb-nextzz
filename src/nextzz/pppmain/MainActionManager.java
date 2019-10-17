@@ -49,7 +49,6 @@ import nextzz.pppswingui.SubAssistantPane;
 import nextzz.pppsetting.MainSettingManager;
 import nextzz.pppsetting.MiSettingItem;
 import nextzz.pppmodel.SubDegreeControlManager;
-import nextzz.pppmodel.SubStatisticWeighManager;
 import nextzz.pppmodel.SubWeighControlManager;
 import nextzz.pppsimulate.MainSimulator;
 import nextzz.pppswingui.SubFeederPane;
@@ -92,15 +91,15 @@ public final class MainActionManager {
     }//+++
   };//***
  
-  public final EiTriggerable cmInputFocusShifting = new EiTriggerable() {
-    @Override public void ccTrigger(){
-      VcLocalCoordinator.ccGetInstance().ccToNextInputIndex();
-    }//+++
-  };//***
-  
   public final EiTriggerable cmInputFocusCleaning = new EiTriggerable() {
     @Override public void ccTrigger(){
       VcLocalCoordinator.ccGetInstance().ccClearCurrentInputFocus();
+    }//+++
+  };//***
+  
+  public final EiTriggerable cmInputtableClicking = new EiTriggerable() {
+    @Override public void ccTrigger(){
+      VcLocalCoordinator.ccGetInstance().ccSetCurrentInputFocus();
     }//+++
   };//***
   
@@ -110,12 +109,6 @@ public final class MainActionManager {
       if(VcLocalCoordinator.ccHasInputtableFocused()){
         VcLocalCoordinator.ccGetInstance().ccToNextInputIndex();
       }//..?
-    }//+++
-  };//***
-  
-  public final EiTriggerable cmInputtableClicking = new EiTriggerable() {
-    @Override public void ccTrigger(){
-      VcLocalCoordinator.ccGetInstance().ccSetCurrentInputFocus();
     }//+++
   };//***
   
@@ -510,8 +503,6 @@ public final class MainActionManager {
     //-- skectch ** key pressing
     VcLocalCoordinator.ccRegisterKeyTrigger
       (KeyEvent.VK_Q, cmQuitting);
-    VcLocalCoordinator.ccRegisterKeyTrigger
-      (KeyEvent.VK_TAB, cmInputFocusShifting);
     VcLocalCoordinator.ccRegisterKeyTrigger
       (KeyEvent.VK_SPACE, cmInputFocusCleaning);
     //[todo]::%mask esc to clear input focus%

@@ -20,10 +20,9 @@
 package nextzz.pppmodel;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import javax.swing.SwingUtilities;
+import kosui.ppplocalui.EcComponent;
 import kosui.ppplocalui.EcValueBox;
 import kosui.ppplocalui.EiTriggerable;
 import kosui.ppplogic.ZcImpulsivePulser;
@@ -35,12 +34,10 @@ import kosui.ppplogic.ZcPulser;
 import kosui.ppplogic.ZcRangedModel;
 import kosui.ppplogic.ZcRangedValueModel;
 import kosui.ppplogic.ZcTimer;
-import kosui.pppmodel.McTableAdapter;
 import kosui.pppmodel.MiValue;
 import kosui.ppputil.VcConst;
 import kosui.ppputil.VcLocalTagger;
 import kosui.ppputil.VcNumericUtility;
-import kosui.ppputil.VcTranslator;
 import nextzz.pppdelegate.SubVProvisionDelegator;
 import nextzz.pppdelegate.SubWeighingDelegator;
 import nextzz.ppplocalui.SubMixerGroup;
@@ -58,34 +55,6 @@ public final class SubWeighControlManager {
   public static final SubWeighControlManager ccRefer(){return SELF;}//+++
   private SubWeighControlManager(){}//++!
 
-  //===
-  
-  public static final List<String> O_LIST_OF_TABLE_COLUMN_TITLES=
-    Collections.unmodifiableList(Arrays.asList(
-      VcTranslator.tr("_col_ad_3"),//..0
-      VcTranslator.tr("_col_ad_2"),//..1
-      VcTranslator.tr("_col_ad_1"),//..2
-      //--
-      VcTranslator.tr("_col_fr_3"),//..3
-      VcTranslator.tr("_col_fr_2"),//..4
-      VcTranslator.tr("_col_fr_1"),//..5
-      //--
-      VcTranslator.tr("_col_ag_6"),//..7
-      VcTranslator.tr("_col_ag_5"),//..8
-      VcTranslator.tr("_col_ag_4"),//..9
-      VcTranslator.tr("_col_ag_3"),//..10
-      VcTranslator.tr("_col_ag_2"),//..11
-      VcTranslator.tr("_col_ag_1"),//..12
-      //--
-      VcTranslator.tr("_col_as_3"),//..13
-      VcTranslator.tr("_col_as_2"),//..14
-      VcTranslator.tr("_col_as_1"),//..15
-      //--
-      VcTranslator.tr("_col_rc_3"),//..16
-      VcTranslator.tr("_col_rc_2"),//..17
-      VcTranslator.tr("_col_rc_1") //..18
-    ));
-  
   //===
   
   public volatile int vmRemainBatch=0;
@@ -126,6 +95,7 @@ public final class SubWeighControlManager {
     cmMixingTimeUpFlag = new ZcKeepRelay();
   
   private final ZcPulser
+    cmAllWeighOverPLS = new ZcPulser(),
     cmAllDischargeOverPLS = new ZcPulser(),
     cmMixerDischargeStartPLS = new ZcPulser();
   
@@ -237,33 +207,6 @@ public final class SubWeighControlManager {
     }//++>
   }//***
   
-  public final McTableAdapter cmDynamicResultModel = new McTableAdapter(){
-    @Override public int getColumnCount() {
-      /* 7 */return 9;//.. but how do we fix this??
-    }//++>
-    @Override public String getColumnName(int pxColumnIndex) {
-      switch (pxColumnIndex) {
-        //.. but how do we fix this??
-        case 0: return O_LIST_OF_TABLE_COLUMN_TITLES.get(3);
-        case 1: return O_LIST_OF_TABLE_COLUMN_TITLES.get(4);
-        case 2: return O_LIST_OF_TABLE_COLUMN_TITLES.get(7);
-        case 3: return O_LIST_OF_TABLE_COLUMN_TITLES.get(8);
-        case 4: return O_LIST_OF_TABLE_COLUMN_TITLES.get(9);
-        case 5: return O_LIST_OF_TABLE_COLUMN_TITLES.get(10);
-        case 6: return O_LIST_OF_TABLE_COLUMN_TITLES.get(11);
-        case 7: return O_LIST_OF_TABLE_COLUMN_TITLES.get(12);
-        case 8: return O_LIST_OF_TABLE_COLUMN_TITLES.get(14);
-        default: return "<?>";
-      }//...?
-    }//++>
-    @Override public int getRowCount() {
-      return 3;
-    }//++>
-    @Override public Object getValueAt(int pxRowIndex, int pxColumnIndex) {
-      return -9.9f;
-    }//++>
-  };//***
-  
   //===
   
   public final void ccInit(){
@@ -292,6 +235,8 @@ public final class SubWeighControlManager {
       
     }//..~
     
+    //-- ???
+    //[todo]::delete after dev
     /* 6 */tstRallyUpTestBook();
     /* 6 */ssRefreshUI();
     /* 6 */ssVerifyFirstRow();
@@ -307,7 +252,7 @@ public final class SubWeighControlManager {
       SubOperativeGroup.ccRefer().cmFRSkipSW.ccIsMousePressed();
     boolean lpASSkip = //[dev]::EcComponent.ccIsKeyPressed('o') ||
       SubOperativeGroup.ccRefer().cmASSkipSW.ccIsMousePressed();
-    boolean lpAllDischargeFlag = //[dev]::EcComponent.ccIsKeyPressed('k') &&
+    boolean lpAllWeighOverFlag = //[dev]::EcComponent.ccIsKeyPressed('k') &&
       cmAllWeighOverConfrimTM.ccIsUp() && cmMixerReadyFlag;
     
     //--
@@ -320,50 +265,58 @@ public final class SubWeighControlManager {
     
     //-- AG controller 
     cmAGWeighCTRL.ccSetHasNext(vmRemainBatch>1);
-    cmAGWeighCTRL.ccSetToNext(lpAGSkip || SubWeighingDelegator.mnAGWeighConfirm);
+    cmAGWeighCTRL
+      .ccSetToNext(lpAGSkip || SubWeighingDelegator.mnAGWeighConfirm);
     cmAGWeighCTRL.ccSetDischargeConfirm(cmAllDischargeOverFlag.ccGetBit());
     cmAGWeighCTRL.ccRun(cmAutoWeighStartPLS.ccIsUp(),!cmIsAutoWeighing);
     SubWeighingDelegator.mnAGWeighLevel=cmAGWeighCTRL.ccGetCurrentLevel();
     SubWeighingDelegator.mnAGWeighLevelTargetAD=cmDesAGWeighLevelTargetAD
       [cmAGWeighCTRL.ccGetCurrentLevel()
         &MainPlantModel.C_MATT_AGGR_GENERAL_MASK];
-    SubWeighingDelegator.mnAGDischargeRequest=cmAGWeighCTRL.ccIsRequiringDischarge();
+    SubWeighingDelegator.mnAGDischargeRequest
+      = cmAGWeighCTRL.ccIsRequiringDischarge();
     /* 6 */SubWeighingDelegator.mnAGWeighLevelLeadAD
       = SubWeighingDelegator.mnAGWeighLevelTargetAD;//[todo]::..
     
     //-- FR controller 
     cmFRWeighCTRL.ccSetHasNext(vmRemainBatch>1);
-    cmFRWeighCTRL.ccSetToNext(lpFRSkip || SubWeighingDelegator.mnFRWeighConfirm);
+    cmFRWeighCTRL
+      .ccSetToNext(lpFRSkip || SubWeighingDelegator.mnFRWeighConfirm);
     cmFRWeighCTRL.ccSetDischargeConfirm(cmAllDischargeOverFlag.ccGetBit());
     cmFRWeighCTRL.ccRun(cmAutoWeighStartPLS.ccIsUp(),!cmIsAutoWeighing);
     SubWeighingDelegator.mnFRWeighLevel=cmFRWeighCTRL.ccGetCurrentLevel();
     SubWeighingDelegator.mnFRWeighLevelTargetAD=cmDesFRWeighLevelTargetAD
       [cmFRWeighCTRL.ccGetCurrentLevel()
         & MainPlantModel.C_MATT_REST_GENERAL_MASK];
-    SubWeighingDelegator.mnFRDischargeRequest=cmFRWeighCTRL.ccIsRequiringDischarge();
+    SubWeighingDelegator.mnFRDischargeRequest
+      = cmFRWeighCTRL.ccIsRequiringDischarge();
     /* 6 */SubWeighingDelegator.mnFRWeighLevelLeadAD
       = SubWeighingDelegator.mnFRWeighLevelTargetAD;//[todo]::..
     
-    
     //-- AS controller 
     cmASWeighCTRL.ccSetHasNext(vmRemainBatch>1);
-    cmASWeighCTRL.ccSetToNext(lpASSkip || SubWeighingDelegator.mnASWeighConfirm);
+    cmASWeighCTRL
+      .ccSetToNext(lpASSkip || SubWeighingDelegator.mnASWeighConfirm);
     cmASWeighCTRL.ccSetDischargeConfirm(cmAllDischargeOverFlag.ccGetBit());
     cmASWeighCTRL.ccRun(cmAutoWeighStartPLS.ccIsUp(),!cmIsAutoWeighing);
     SubWeighingDelegator.mnASWeighLevel=cmASWeighCTRL.ccGetCurrentLevel();
     SubWeighingDelegator.mnASWeighLevelTargetAD=cmDesASWeighLevelTargetAD
       [cmASWeighCTRL.ccGetCurrentLevel()
         & MainPlantModel.C_MATT_REST_GENERAL_MASK];
-    SubWeighingDelegator.mnASDischargeRequest=cmASWeighCTRL.ccIsRequiringDischarge();
+    SubWeighingDelegator.mnASDischargeRequest
+      = cmASWeighCTRL.ccIsRequiringDischarge();
     /* 6 */SubWeighingDelegator.mnASWeighLevelLeadAD
       = SubWeighingDelegator.mnASWeighLevelTargetAD;//[todo]::..
     
     //-- raw delay
-    cmAGDischargeDelayTM.ccAct(lpAllDischargeFlag);
-    cmFRDischargeDelayTM.ccAct(lpAllDischargeFlag);
+    cmAGDischargeDelayTM.ccAct(lpAllWeighOverFlag);
+    cmFRDischargeDelayTM.ccAct(lpAllWeighOverFlag);
     
     //-- dry-wet
-    if(lpAllDischargeFlag){
+    if(cmAllWeighOverPLS.ccUpPulse(lpAllWeighOverFlag)){
+      SubWeighDynamicManager.ccRefer().ccPopResult();
+    }//..?
+    if(lpAllWeighOverFlag){
       SubWeighingDelegator.mnMixerDischargedConfirm=false;
       cmIsDryCountingDown=true;
       cmMixerReadyFlag=false;
@@ -442,6 +395,20 @@ public final class SubWeighControlManager {
         .ccToFloatForOneAfter(cmDesASWeighLevelTargetKG[cmASWeighCTRL
           .ccGetCurrentLevel() & MainPlantModel.C_MATT_REST_GENERAL_MASK]));
     
+    //-- weigh dynamic result
+    SubWeighDynamicManager.ccRefer().ccSetAGCurrentWeighKG(
+      cmAGWeighCTRL.ccGetCurrentLevel(),
+      SubAnalogScalarManager.ccRefer().ccGetAGCellKG()
+    );
+    SubWeighDynamicManager.ccRefer().ccSetFRCurrentWeighKG(
+      cmFRWeighCTRL.ccGetCurrentLevel(),
+      SubAnalogScalarManager.ccRefer().ccGetFRCellKG()
+    );
+    SubWeighDynamicManager.ccRefer().ccSetASCurrentWeighKG(
+      cmASWeighCTRL.ccGetCurrentLevel(),
+      SubAnalogScalarManager.ccRefer().ccGetASCellKG()
+    );
+    
     //-- weigh control ui
     
     //-- weigh control ui ** THE key
@@ -473,18 +440,13 @@ public final class SubWeighControlManager {
   }//++~
   
   private void ssLogWeighResult(){
-    SubStatisticWeighManager.ccRefer().ccOfferLog(
+    SubWeighStatisticManager.ccRefer().ccOfferLog(
       /* 6 */
-      16,167f,1999,
-      new float[]{
-      100f,101f,102f,103f,104f,105f,106f,107f,
-      200f,201f,202f,203f,
-      300f,301f,302f,303f,
-      400f,401f,402f,403f,
-      500f,501f,502f,503f
-    });
+      99,999f,9999f,
+      SubWeighDynamicManager.ccRefer().ccDumpResult()
+    );
     SwingUtilities.invokeLater(SubMonitorPane.ccRefer()
-      .cmDynamicWeighResultTableRefreshing);
+      .cmStatisticWeighResultTableRefreshing);
   }//+++
   
   private void ssDecrementBatchCounter(){
@@ -508,7 +470,7 @@ public final class SubWeighControlManager {
     cmIsDryCountingDown=false;
     cmDryTimeManipulator.ccSetValue(vmDrySetFrame);
     cmWetTimeManipulator.ccSetValue(vmWetSetFrame);
-    cmMixerReadyFlag=false;
+    //[so]:: how do we deal with this? : cmMixerReadyFlag=false;
   }//+++
   
   private void ssRefreshUI(){

@@ -27,15 +27,15 @@ import kosui.pppmodel.McTableAdapter;
 import kosui.ppputil.VcStampUtility;
 import kosui.ppputil.VcTranslator;
 
-public final class SubStatisticWeighManager extends McTableAdapter{
+public final class SubWeighStatisticManager extends McTableAdapter{
   
   public static final int C_CAPACITY_SIZE = 512;
   public static final int C_CAPACITY_MASK = 511;
   
-  private static final SubStatisticWeighManager SELF
-    = new SubStatisticWeighManager();
-  public static final SubStatisticWeighManager ccRefer(){return SELF;}//+++
-  private SubStatisticWeighManager(){}//++!
+  private static final SubWeighStatisticManager SELF
+    = new SubWeighStatisticManager();
+  public static final SubWeighStatisticManager ccRefer(){return SELF;}//+++
+  private SubWeighStatisticManager(){}//++!
   
   //===
   
@@ -111,7 +111,7 @@ public final class SubStatisticWeighManager extends McTableAdapter{
       }//..?
       cmTimeStamp=VcStampUtility.ccDataLogTypeI();
       for(int i=0;i<8;i++){
-        cmDesAGResultKG[i]=pxPacked[0+i];
+        cmDesAGResultKG[i]=pxPacked[ 0+i];
       }//..~
       for(int i=0;i<4;i++){
         cmDesFRResultKG[i]=pxPacked[ 8+i];

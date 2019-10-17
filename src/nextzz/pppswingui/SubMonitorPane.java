@@ -20,6 +20,7 @@
 package nextzz.pppswingui;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.util.Arrays;
 import java.util.Collections;
@@ -38,8 +39,8 @@ import kosui.pppswingui.ScTable;
 import kosui.ppputil.VcTranslator;
 import nextzz.pppmodel.MainPlantModel;
 import nextzz.pppmodel.MainSpecificator;
-import nextzz.pppmodel.SubStatisticWeighManager;
-import nextzz.pppmodel.SubWeighControlManager;
+import nextzz.pppmodel.SubWeighStatisticManager;
+import nextzz.pppmodel.SubWeighDynamicManager;
 
 public final class SubMonitorPane implements SiTabbable{
   
@@ -92,15 +93,16 @@ public final class SubMonitorPane implements SiTabbable{
   public final JTextField cmMixerStatePL = ScFactory.ccCreateTextLamp("[-:-]");
   
   public final ScTable cmDynamicWeighResultTable
-    = new ScTable(SubWeighControlManager.ccRefer().cmDynamicResultModel,80,80);
+    = new ScTable(SubWeighDynamicManager.ccRefer(),80,80);
   
   public final ScTable cmStatisticWeighResultTable
-    = new ScTable(SubStatisticWeighManager.ccRefer(),200,200);
+    = new ScTable(SubWeighStatisticManager.ccRefer(),200,200);
   
-  public final Runnable cmDynamicWeighResultTableRefreshing=new Runnable(){
+  public final Runnable cmStatisticWeighResultTableRefreshing=new Runnable(){
     @Override public void run() {
       SubMonitorPane.ccRefer().cmStatisticWeighResultTable.ccRefresh();
-      ScConst.ccScrollToLast(SubMonitorPane.ccRefer().cmStatisticWeighResultTable);
+      ScConst.ccScrollToLast(SubMonitorPane.ccRefer()
+        .cmStatisticWeighResultTable);
     }//+++
   };//***
   
@@ -129,6 +131,26 @@ public final class SubMonitorPane implements SiTabbable{
     }//..~
     
     //-- table config
+    cmDynamicWeighResultTable.ccSetEnabled(false);
+    cmDynamicWeighResultTable
+      .ccSetColor(ScConst.C_LIT_GREEN, Color.DARK_GRAY, Color.GRAY);
+    //-- table config ** hide ** dynamic
+    //[todo]:: clean this!!
+    /* 6 */cmDynamicWeighResultTable.ccHideColumn(0);//..how do we make it specific?
+    /* 6 */cmDynamicWeighResultTable.ccHideColumn(1);//..how do we make it specific?
+    /* 6 */cmDynamicWeighResultTable.ccHideColumn(2);//..how do we make it specific?
+    //--
+    /* 6 */cmDynamicWeighResultTable.ccHideColumn(5);//..how do we make it specific?
+    //--
+    /* 6 */cmDynamicWeighResultTable.ccHideColumn(6);//..how do we make it specific?
+    //--
+    /* 6 */cmDynamicWeighResultTable.ccHideColumn(13);//..how do we make it specific?
+    /* 6 */cmDynamicWeighResultTable.ccHideColumn(15);//..how do we make it specific?
+    //--
+    /* 6 */cmDynamicWeighResultTable.ccHideColumn(16);//..how do we make it specific?
+    /* 6 */cmDynamicWeighResultTable.ccHideColumn(17);//..how do we make it specific?
+    /* 6 */cmDynamicWeighResultTable.ccHideColumn(18);//..how do we make it specific?
+    //-- table config ** hide ** statistic
     //[todo]:: clean this!!
     cmStatisticWeighResultTable.ccSetColumnWidth(0, 147);//..how do we make it constant?
     cmStatisticWeighResultTable.ccSetColumnWidth(1, 63);//..how do we make it constant?
@@ -148,6 +170,13 @@ public final class SubMonitorPane implements SiTabbable{
     //-- center pane 
     
     //-- center pane ** weigh
+    
+    //-- center pane ** weigh ** lamp
+    cmFRWeigherStatePL.setDisabledTextColor(ScConst.C_WHITE);
+    cmAGWeigherStatePL.setDisabledTextColor(ScConst.C_WHITE);
+    cmASWeigherStatePL.setDisabledTextColor(ScConst.C_WHITE);
+    cmMixerStatePL.setDisabledTextColor(ScConst.C_WHITE);
+    
     //-- center pane ** weigh ** bar
     JToolBar lpWeighToolBar = ScFactory.ccCreateStuckedToolBar();
     lpWeighToolBar.add(cmExportButton);
