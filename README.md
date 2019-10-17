@@ -18,6 +18,11 @@ but hey, dose it sounds stupid if you read it DOUBLE-ZEUS ??
 - [ ] $ tre
 - [ ] $ dos
 - [ ] $ uno
+- [ ] $ for translation, we should eliminate any in-loop 'tr' usage
+- [ ] $ and maybe we should re-implement the dry-wet control with a stepper
+        .. to eliminate all those flags? .. after you made the file system done
+- [ ] $ for weigh control manager, may every matt tagged stuff get merged
+        .. i mean , get merged into the 'controller' class
 - [ ] $ maybe we need to let the feeder speed box send manual pulse
 - [ ] $ over sized stuff should get located near the sixth bin
 - [ ] $ fill v provision and combust motor load factor
@@ -31,18 +36,17 @@ but hey, dose it sounds stupid if you read it DOUBLE-ZEUS ??
 
 #### heading
 
-- [ ] $ something went wrong after stopping auto-weigh processing 
-        .. and we need a lot more REAL fixing :
+- [ ] $ let the table dynamic weigh result table shine
 
 #### last
 
-- [x] $ a skeleton temporary storage controller serve as mixer gate controller
 - [x] $ the recipe mechanism works now, forget about it!!
 - [x] $ move the weight control indicative lamp to where it belongs to
 - [x] $ let the target KG value show what it have to show
 - [x] $ local inputtive box color is preferred to dark orange .. cool yeah
 - [x] $ fixed final batch display cleaning thing aka the name box problem
 - [x] $ flag manipulating action needs pulse control actually
-- [x] $ the mixer content pl can flash now .. and it s out of control !
+- [x] $ the mixer content pl can flash now .. and it s out of control ! 
+- [x] $ we just gave up on the 'fixing' thing of the auto-weigh-sequence
 
 <hr><!--EOF-->

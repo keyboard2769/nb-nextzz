@@ -72,8 +72,8 @@ public final class ZcCellGateController {
       && (zxCurrentCellAD<zxTargetAD)
     );
     zyDischargeConfirm=cmDischargeConfirmTM.ccIsUp();
-    zyDesGateAutoFlag[0]=zxDischargeRequest
-      && !cmDischargeConfirmTM.ccIsCounting();
+    zyDesGateAutoFlag[0]=zxDischargeRequest;
+      //&& !cmDischargeConfirmTM.ccIsCounting();
     
   }//++~
   

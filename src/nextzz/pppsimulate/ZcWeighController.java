@@ -68,61 +68,35 @@ public final class ZcWeighController extends ZcStepper{
   
   public final void ccRun(){
     
-    //[head]:: i know you have absolutely no idea about what to do next
+    //--
+    ccStep(S_ABEND, S_READY,
+      false); // % reset
+    ccStep(S_READY, S_STANDBY,
+      cmToStart);
+    if(ccIsAt(S_STANDBY)){cmCurrentLevel=C_LV_MAX;}//..?
     
-    ccStep(
-      S_ABEND, S_READY,
-      false // % reset
-    );
-    
-    ccStep(
-      S_READY, S_STANDBY,
-      cmToStart
-    );
-    
-    if(ccIsAt(S_STANDBY)){
-      cmCurrentLevel=C_LV_MAX;
-    }//..?
-    
-    ccStep(
-      S_STANDBY, S_PRE_WEIGH,
-      true
-    );
-    
-    ccStep(
-      S_PRE_WEIGH, S_WEIGH,
-      true
-    );
-    
+    //--
+    ccStep(S_STANDBY, S_PRE_WEIGH,
+      true);
+    ccStep(S_PRE_WEIGH, S_WEIGH,
+      true);
     if(cmToNextPLS.ccDownPulse(cmToNext) && ccIsAt(S_WEIGH)){
       cmCurrentLevel--;
     }//..?
     
-    ccStep(
-      S_WEIGH, S_POST_WEIGH,
-      cmCurrentLevel<=0
-    );
+    //--
+    ccStep(S_WEIGH, S_POST_WEIGH,
+      cmCurrentLevel<=0);
+    ccStep(S_POST_WEIGH, S_ALL_OVER,
+      true);
+    ccStep(S_ALL_OVER, S_DISCHARGE,
+      cmToDischarge);
+    ccStep(S_DISCHARGE, S_DISCHARGE_CONFIRM,
+      cmIsDicharged);    
+    ccStep(S_DISCHARGE_CONFIRM, S_POST_DISCHARGE,
+      true);    
     
-    ccStep(
-      S_POST_WEIGH, S_ALL_OVER,
-      true
-    );
-    
-    ccStep(
-      S_ALL_OVER, S_DISCHARGE,
-      cmToDischarge
-    );
-    
-    ccStep(
-      S_DISCHARGE, S_DISCHARGE_CONFIRM,
-      cmIsDicharged
-    );
-    
-    ccStep(
-      S_DISCHARGE_CONFIRM, S_POST_DISCHARGE,
-      true
-    );
-    
+    //--
     ccStep(
       S_POST_DISCHARGE,
       cmHasNext
@@ -130,15 +104,11 @@ public final class ZcWeighController extends ZcStepper{
        : S_READY,
       true
     );
-    
-    if(ccIsAt(S_ABEND)){
-      cmCurrentLevel=0;
-    }//..?
+    if(ccIsAt(S_ABEND)){cmCurrentLevel=0;}//..?
     
   }//++~
   
   //===
-  
   
   public final void ccSetHasNext(boolean pxCondition){
     cmHasNext=pxCondition;
