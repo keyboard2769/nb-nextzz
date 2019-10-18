@@ -22,7 +22,6 @@ package nextzz.pppmodel;
 import java.util.Arrays;
 import java.util.HashMap;
 import javax.swing.SwingUtilities;
-import kosui.ppplocalui.EcComponent;
 import kosui.ppplocalui.EcValueBox;
 import kosui.ppplocalui.EiTriggerable;
 import kosui.ppplogic.ZcImpulsivePulser;
@@ -102,6 +101,7 @@ public final class SubWeighControlManager {
   private boolean cmIsAutoWeighReady,cmIsAutoWeighing;
   private boolean cmIsDryCountingDown,cmIsWetCountingDown;
   private boolean cmMixerReadyFlag=true;
+  private int cmRecipeNumberHolder = 0;
   
   private final int[] 
     cmDesRecipeNumber = new int[MainPlantModel.C_BOOK_MODEL_SIZE],
@@ -346,6 +346,7 @@ public final class SubWeighControlManager {
       cmAGDischargedFlag, cmFRDischargedFlag, cmASDischargedFlag
     ));
     if(cmAllDischargeOverPLS.ccUpPulse(cmAllDischargeOverFlag.ccGetBit())){
+      cmRecipeNumberHolder=cmDesRecipeNumber[0];
       ssDecrementBatchCounter();
     }//..?
     cmMixingTimeUpFlag.ccSet(cmWetTimeManipulator.ccIsAt(1));
@@ -358,6 +359,7 @@ public final class SubWeighControlManager {
         .ccUpPulse(SubWeighingDelegator.mnMixerAutoDischargeRequire))
     {
       ssLogWeighResult();
+      cmRecipeNumberHolder=0;
     }//..?
     
     //-- 
@@ -441,8 +443,9 @@ public final class SubWeighControlManager {
   
   private void ssLogWeighResult(){
     SubWeighStatisticManager.ccRefer().ccOfferLog(
-      /* 6 */
-      99,999f,9999f,
+      cmRecipeNumberHolder,
+      (float)(SubAnalogScalarManager.ccRefer().cmDesThermoCelcius
+        .ccGet(SubAnalogScalarManager.C_I_THVI_MIXER)),
       SubWeighDynamicManager.ccRefer().ccDumpResult()
     );
     SwingUtilities.invokeLater(SubMonitorPane.ccRefer()
@@ -453,6 +456,7 @@ public final class SubWeighControlManager {
     vmRemainBatch--;
     if(vmRemainBatch<=0){
       ssClearCurrentBooked();
+      SubWeighDynamicManager.ccRefer().ccClearTarget();
       vmRemainBatch=0;
       cmIsAutoWeighing=false;
     }//..?
@@ -534,8 +538,8 @@ public final class SubWeighControlManager {
   
   private void ssCalculateWeighValues(){
     
-    VcConst.ccPrintln("total-kg", cmDesKiloGramme[0]);
-    VcConst.ccPrintln("recp", cmDesRecipeNumber[0]);
+    /* 4 */VcConst.ccLogln("total-kg", cmDesKiloGramme[0]);
+    /* 4 */VcConst.ccLogln("recp", cmDesRecipeNumber[0]);
     SubRecipeManager.ccRefer().ccSetOnWeighingRecipe(cmDesRecipeNumber[0]);
     
     cmDesAGWeighLevelTargetKG[0]=0;
@@ -549,6 +553,9 @@ public final class SubWeighControlManager {
         &MainPlantModel.C_MATT_AGGR_GENERAL_MASK]
         +ssTranslatePercentage(SubRecipeManager.ccRefer()
           .ccGetPercentage('G', i));//..how do we fix index from level to actual?
+      SubWeighDynamicManager.ccRefer()
+        .ccSetAGTargetWeighKG(i, cmDesAGWeighLevelTargetKG[i]);
+      
       //-- ag ** ad
       cmDesAGWeighLevelTargetAD[i]=SubAnalogScalarManager.ccRefer()
         .ccToAGCellAD(cmDesAGWeighLevelTargetKG[i],vmAGEmptyKG);//..what if the scala needs revice?!
@@ -560,6 +567,8 @@ public final class SubWeighControlManager {
           &MainPlantModel.C_MATT_REST_GENERAL_MASK]
           +ssTranslatePercentage(SubRecipeManager.ccRefer()
             .ccGetPercentage('F', i));//..how do we fix index from level to actual?
+        SubWeighDynamicManager.ccRefer()
+          .ccSetFRTargetWeighKG(i, cmDesFRWeighLevelTargetKG[i]);
         //-- fr ** ad
         cmDesFRWeighLevelTargetAD[i]=SubAnalogScalarManager.ccRefer()
           .ccToAGCellAD(cmDesFRWeighLevelTargetKG[i],vmFREmptyKG);//..what if the scala needs revice?!
@@ -569,6 +578,8 @@ public final class SubWeighControlManager {
           &MainPlantModel.C_MATT_REST_GENERAL_MASK]
           +ssTranslatePercentage(SubRecipeManager.ccRefer()
             .ccGetPercentage('S', i));//..how do we fix index from level to actual?
+        SubWeighDynamicManager.ccRefer()
+          .ccSetASTargetWeighKG(i, cmDesASWeighLevelTargetKG[i]);
         //-- as ** ad
         cmDesASWeighLevelTargetAD[i]=SubAnalogScalarManager.ccRefer()
           .ccToAGCellAD(cmDesASWeighLevelTargetKG[i],vmASEmptyKG);//..what if the scala needs revice?!
@@ -586,12 +597,12 @@ public final class SubWeighControlManager {
     cmDesASWeighLevelTargetAD[0]=SubAnalogScalarManager.ccRefer()
       .ccToASCellAD(vmASEmptyKG);
     
-    VcConst.ccPrintln("ag-kg", Arrays.toString(cmDesAGWeighLevelTargetKG));
-    VcConst.ccPrintln("ag-ad", Arrays.toString(cmDesAGWeighLevelTargetAD));
-    VcConst.ccPrintln("fr-kg", Arrays.toString(cmDesFRWeighLevelTargetKG));
-    VcConst.ccPrintln("fr-ad", Arrays.toString(cmDesFRWeighLevelTargetAD));
-    VcConst.ccPrintln("as-kg", Arrays.toString(cmDesASWeighLevelTargetKG));
-    VcConst.ccPrintln("as-ad", Arrays.toString(cmDesASWeighLevelTargetAD));
+    /* 4 */VcConst.ccLogln("ag-kg", Arrays.toString(cmDesAGWeighLevelTargetKG));
+    /* 4 */VcConst.ccLogln("ag-ad", Arrays.toString(cmDesAGWeighLevelTargetAD));
+    /* 4 */VcConst.ccLogln("fr-kg", Arrays.toString(cmDesFRWeighLevelTargetKG));
+    /* 4 */VcConst.ccLogln("fr-ad", Arrays.toString(cmDesFRWeighLevelTargetAD));
+    /* 4 */VcConst.ccLogln("as-kg", Arrays.toString(cmDesASWeighLevelTargetKG));
+    /* 4 */VcConst.ccLogln("as-ad", Arrays.toString(cmDesASWeighLevelTargetAD));
     
   }//+++
   

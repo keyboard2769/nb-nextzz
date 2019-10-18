@@ -18,6 +18,8 @@ but hey, dose it sounds stupid if you read it DOUBLE-ZEUS ??
 - [ ] $ tre
 - [ ] $ dos
 - [ ] $ uno
+- [ ] $ holding mixer gate screws log and weight control up
+- [ ] $ the gate simulation and the case of cut point handling
 - [ ] $ for translation, we should eliminate any in-loop 'tr' usage
 - [ ] $ and maybe we should re-implement the dry-wet control with a stepper
         .. to eliminate all those flags? .. after you made the file system done
@@ -29,13 +31,13 @@ but hey, dose it sounds stupid if you read it DOUBLE-ZEUS ??
 - [ ] $ move feeder assistance switch to feeder pane
 - [ ] $ feeder flux setting representation needs another floating point
 - [ ] $ current slot overwhelming color and setting
-- [ ] $ add the "linear setting" to THE list
 - [ ] $ complete the error list and log mechanism
 - [ ] $ refine case test of pid controller to have target manipulation
 
 #### heading
 
-- [ ] $ let the dynamic weigh result table shine
+- [ ] $ let us handle the zero adjusting stuff
+- [ ] $ add the "linear setting" to THE list
 
 #### last
 
@@ -47,5 +49,6 @@ but hey, dose it sounds stupid if you read it DOUBLE-ZEUS ??
 - [x] $ the mixer content pl can flash now .. and it s out of control ! 
 - [x] $ we just gave up on the 'fixing' thing of the auto-weigh-sequence
 - [x] $ shift-tab can now back shift the focus .. don't push to hard !!
+- [x] $ let the dynamic weigh result table shine
 
 <hr><!--EOF-->

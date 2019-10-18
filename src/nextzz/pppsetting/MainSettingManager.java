@@ -42,6 +42,7 @@ public final class MainSettingManager implements ListModel<String>{
   private MainSettingManager(){
     ssAdd(SubCombustSetting.ccRefer());
     ssAdd(SubFeederFluxSetting.ccRefer());
+    ssAdd(SubLinearSetting.ccRefer());
     ssAdd(SubTemperatureSetting.ccRefer());
     ssAdd(SubCTSlotSetting.ccRefer());
   }//++!

@@ -93,14 +93,14 @@ public final class SubAnalogScalarManager {
   
   //===
   
-  private final ZcScaledModel cmAGCellScalar
-    = new ZcScaledModel(400, 3600, 0, 4000);
+  private final ZcRevisedScaledModel cmAGCellScalar
+    = new ZcRevisedScaledModel(400, 3600, 0, 4000);
   
-  private final ZcScaledModel cmFRCellScalar
-    = new ZcScaledModel(400, 3600, 0, 5000);
+  private final ZcRevisedScaledModel cmFRCellScalar
+    = new ZcRevisedScaledModel(400, 3600, 0, 5000);
   
-  private final ZcScaledModel cmASCellScalar
-    = new ZcScaledModel(400, 3600, 0, 5000);
+  private final ZcRevisedScaledModel cmASCellScalar
+    = new ZcRevisedScaledModel(400, 3600, 0, 5000);
   
   //[todo]:: private final ZcScaledModel cmRCCellScalar
   
@@ -176,6 +176,7 @@ public final class SubAnalogScalarManager {
   public final void ccLogic(){
     
     //-- cell
+    //[head]:: test this!!
     cmAGCellScalar.ccRun(SubAnalogDelegator.mnAGCellAD);
     cmFRCellScalar.ccRun(SubAnalogDelegator.mnFRCellAD);
     cmASCellScalar.ccRun(SubAnalogDelegator.mnASCellAD);
@@ -190,13 +191,12 @@ public final class SubAnalogScalarManager {
     
     //-- th ** v
     for(int i=0;i<MainPlantModel.C_THERMO_VALID_MAX;i++){
-      cmThermoCouplScalar.ccSetupRevicer(
+      cmThermoCouplScalar.ccSetupReviser(
         cmDesThermoCoupleBias.ccGet(i),
         cmDesThermoCoupleOffset.ccGet(i)
       );
-      cmThermoCouplScalar
-        .ccSetInputValue(SubAnalogDelegator.ccGetThermoAD(i));
-      cmThermoCouplScalar.ccRun();
+      //[head]:: test this!!
+      cmThermoCouplScalar.ccRun(SubAnalogDelegator.ccGetThermoAD(i));
       cmDesThermoCelcius
         .ccSet(i,cmThermoCouplScalar.ccGetRevisedIntegerValue());
     }//..~
@@ -267,48 +267,81 @@ public final class SubAnalogScalarManager {
   //=== Cell ** KG
   
   synchronized public final int ccGetAGCellKG(){
-    return cmAGCellScalar.ccGetScaledIntegerValue();
+    return cmAGCellScalar.ccGetRevisedIntegerValue();
   }//++>
   
   synchronized public final int ccGetFRCellKG(){
-    return cmFRCellScalar.ccGetScaledIntegerValue();
+    return cmFRCellScalar.ccGetRevisedIntegerValue();
   }//++>
   
   synchronized public final int ccGetASCellKG(){
-    return cmASCellScalar.ccGetScaledIntegerValue();
+    return cmASCellScalar.ccGetRevisedIntegerValue();
   }//++>
   
   //[todo]:: ccGetRCCellKG
   //[todo]:: ccGetADCellKG
   
-  //=== cell ** AD
+  //=== cell ** AD ** AG
   
   synchronized public final int ccToAGCellAD(int pxKG){
-    return cmAGCellScalar.ccToUnscaledInputValue(pxKG);
+    return cmAGCellScalar.ccToUnrevisedInputValue(pxKG);//.. what if we have to count the tare?!
   }//++>
   
   synchronized public final int ccToAGCellAD(int pxKG, int pxEmptyKG){
     if(pxKG<=pxEmptyKG){return 0;}
-    else{return ccToAGCellAD(pxKG);}
+    else{return ccToAGCellAD(pxKG);}//.. what if we have to count the tare?!
   }//++>
+  
+  //=== cell ** AD ** FR
   
   synchronized public final int ccToFRCellAD(int pxKG){
-    return cmFRCellScalar.ccToUnscaledInputValue(pxKG);
+    return cmFRCellScalar.ccToUnrevisedInputValue(pxKG);//.. what if we have to count the tare?!
   }//++>
-  
   
   synchronized public final int ccToFRCellAD(int pxKG, int pxEmptyKG){
     if(pxKG<=pxEmptyKG){return 0;}
-    else{return ccToFRCellAD(pxKG);}
+    else{return ccToFRCellAD(pxKG);}//.. what if we have to count the tare?!
   }//++>
   
+  //=== cell ** AD ** AS
+  
   synchronized public final int ccToASCellAD(int pxKG){
-    return cmASCellScalar.ccToUnscaledInputValue(pxKG);
+    return cmASCellScalar.ccToUnrevisedInputValue(pxKG);//.. what if we have to count the tare?!
   }//++>
   
   synchronized public final int ccToASCellAD(int pxKG, int pxEmptyKG){
     if(pxKG<=pxEmptyKG){return 0;}
-    else{return ccToASCellAD(pxKG);}
+    else{return ccToASCellAD(pxKG);}//.. what if we have to count the tare?!
+  }//++>
+  
+  //=== Cell ** tare ** AG
+  
+  synchronized public final void ccSetAGReviseOffsetKG(int pxOffset){
+    cmAGCellScalar.ccSetReviseOffset(pxOffset);
+  }//++<
+  
+  synchronized public final int ccGetAGReviseOffsetKG(){
+    return cmAGCellScalar.ccGetReviseOffset();
+  }//++>
+  
+  //=== Cell ** tare ** FR
+  
+  synchronized public final void ccSetFRReviseOffsetKG(int pxOffset){
+    cmFRCellScalar.ccSetReviseOffset(pxOffset);
+  }//++<
+  
+  synchronized public final int ccGetFRReviseOffsetKG(){
+    return cmFRCellScalar.ccGetReviseOffset();
+  }//++>
+  
+  //=== Cell ** tare ** AS
+  
+  synchronized public final void ccSetASReviseOffsetKG(int pxOffset){
+    cmASCellScalar.ccSetReviseOffset(pxOffset);
+  }//++<
+  
+  synchronized public final int ccGetASReviseOffsetKG(){
+    return cmASCellScalar.ccGetReviseOffset();
   }//++>
   
   //=== V combust

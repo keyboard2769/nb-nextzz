@@ -24,6 +24,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import kosui.pppmodel.McTableAdapter;
+import kosui.ppputil.VcConst;
 import kosui.ppputil.VcStampUtility;
 import kosui.ppputil.VcTranslator;
 
@@ -159,12 +160,14 @@ public final class SubWeighStatisticManager extends McTableAdapter{
     = new ArrayList<McWeighRecord>(C_CAPACITY_SIZE);
   
   public final void ccOfferLog(
-      int pxRecipe, float pxMixtrueTemp, float pxTotalKG,
+      int pxRecipe, float pxMixtrueTemp,
       float[] pxPacked
   ){
+    float lpSum
+      = pxPacked[ 0]+pxPacked[ 8]+pxPacked[ 12]
+      + pxPacked[16]+pxPacked[20];
     cmLesWeighLog
-      .add(new McWeighRecord(pxRecipe, pxMixtrueTemp, pxTotalKG, pxPacked));
-    //[todo]::if(..size()>%capacity-%){...}
+      .add(new McWeighRecord(pxRecipe, pxMixtrueTemp, lpSum, pxPacked));
   }//+++
   
   //[todo]:: % cleardata

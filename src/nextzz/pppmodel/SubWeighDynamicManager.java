@@ -71,13 +71,13 @@ public final class SubWeighDynamicManager extends McTableAdapter{
     int[] cmDesADStateKG = new int[]{0,0,0,0};
     final String ccGetColumnContent(int pxCount){
       switch (pxCount) {
-        case 0:return Integer.toString(cmDesADStateKG[3]);
-        case 1:return Integer.toString(cmDesADStateKG[2]);
-        case 2:return Integer.toString(cmDesADStateKG[1]);
+        case 0:return Float.toString(((float)cmDesADStateKG[3])/10f);
+        case 1:return Float.toString(((float)cmDesADStateKG[2])/10f);
+        case 2:return Float.toString(((float)cmDesADStateKG[1])/10f);
         //--
-        case 3:return Integer.toString(cmDesFRStateKG[3]);
-        case 4:return Integer.toString(cmDesFRStateKG[2]);
-        case 5:return Integer.toString(cmDesFRStateKG[1]);
+        case 3:return Float.toString(((float)cmDesFRStateKG[3])/10f);
+        case 4:return Float.toString(((float)cmDesFRStateKG[2])/10f);
+        case 5:return Float.toString(((float)cmDesFRStateKG[1])/10f);
         //--
         case  6:return Integer.toString(cmDesAGStateKG[7]);
         case  7:return Integer.toString(cmDesAGStateKG[6]);
@@ -87,13 +87,13 @@ public final class SubWeighDynamicManager extends McTableAdapter{
         case 11:return Integer.toString(cmDesAGStateKG[2]);
         case 12:return Integer.toString(cmDesAGStateKG[1]);
         //--
-        case 13:return Integer.toString(cmDesASStateKG[3]);
-        case 14:return Integer.toString(cmDesASStateKG[2]);
-        case 15:return Integer.toString(cmDesASStateKG[1]);
+        case 13:return Float.toString(((float)cmDesASStateKG[3])/10f);
+        case 14:return Float.toString(((float)cmDesASStateKG[2])/10f);
+        case 15:return Float.toString(((float)cmDesASStateKG[1])/10f);
         //--
-        case 16:return Integer.toString(cmDesRCStateKG[3]);
-        case 17:return Integer.toString(cmDesRCStateKG[2]);
-        case 18:return Integer.toString(cmDesRCStateKG[1]);
+        case 16:return Float.toString(((float)cmDesRCStateKG[3])/10f);
+        case 17:return Float.toString(((float)cmDesRCStateKG[2])/10f);
+        case 18:return Float.toString(((float)cmDesRCStateKG[1])/10f);
         default:return "<?>";
       }//...?
     }//++>
@@ -105,7 +105,17 @@ public final class SubWeighDynamicManager extends McTableAdapter{
   
   //===
   
-  //[head]::ccSetAGTargetKG
+  public final void ccSetAGTargetWeighKG(int pxOrder, int pxVal){
+    cmTargetWeighKG.cmDesAGStateKG[pxOrder&7]=pxVal;
+  }//++<
+  
+  public final void ccSetFRTargetWeighKG(int pxOrder, int pxVal){
+    cmTargetWeighKG.cmDesFRStateKG[pxOrder&3]=pxVal;
+  }//++<
+  
+  public final void ccSetASTargetWeighKG(int pxOrder, int pxVal){
+    cmTargetWeighKG.cmDesASStateKG[pxOrder&3]=pxVal;
+  }//++<
   
   //===
   
@@ -131,16 +141,25 @@ public final class SubWeighDynamicManager extends McTableAdapter{
   public final float[] ccDumpResult(){
     float[] lpRes = new float[24];
     for(int i=0;i<8;i++){
-      lpRes[ 0+i]=(float)cmForDumpWeighKG.cmDesAGStateKG[i];
+      float lpAG=(float)cmForDumpWeighKG.cmDesAGStateKG[i];
+      lpRes[ 0+i]=lpAG<0f?0f:lpAG;
     }//..~
     for(int i=0;i<4;i++){
-      lpRes[ 8+i]=((float)cmForDumpWeighKG.cmDesFRStateKG[i])/10f;
-      lpRes[12+i]=((float)cmForDumpWeighKG.cmDesASStateKG[i])/10f;
-      lpRes[16+i]=((float)cmForDumpWeighKG.cmDesRCStateKG[i])/10f;
-      lpRes[20+i]=((float)cmForDumpWeighKG.cmDesADStateKG[i])/10f;
+      float lpFR=((float)cmForDumpWeighKG.cmDesFRStateKG[i])/10f;
+      lpRes[ 8+i]=lpFR<0f?0f:lpFR;
+      float lpAS=((float)cmForDumpWeighKG.cmDesASStateKG[i])/10f;
+      lpRes[12+i]=lpAS<0f?0f:lpAS;
+      float lpRC=((float)cmForDumpWeighKG.cmDesRCStateKG[i])/10f;
+      lpRes[16+i]=lpRC<0f?0f:lpRC;
+      float lpAD=((float)cmForDumpWeighKG.cmDesADStateKG[i])/10f;
+      lpRes[20+i]=lpAD<0f?0f:lpAD;
     }//..~
     ssClear(cmForDumpWeighKG);
     return lpRes;
+  }//+++
+  
+  public final void ccClearTarget(){
+    ssClear(cmTargetWeighKG);
   }//+++
   
   private void ssCopy(McWeighState pxFrom, McWeighState pxTo){
