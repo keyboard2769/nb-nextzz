@@ -191,6 +191,7 @@ public final class SubWeigherGroup implements EiGroup{
     int lpPotentialY;
     int lpPotentialW;
     int lpPotentialH;
+    int lpPotentialG;
     
     //-- plate 
     //-- plate ** coloring
@@ -277,23 +278,30 @@ public final class SubWeigherGroup implements EiGroup{
     );
     
     //-- cell lock
-    //-- cell lock ** anchor
+    //-- cell lock ** resizing
     cmLesAGLockSW.get(0).ccSetSize(SubOperativeGroup.ccRefer().cmAGZeroSW);
-    cmLesAGLockSW.get(0).ccSetLocation(
-      SubOperativeGroup.ccRefer().cmCellPane,
-      ConstLocalUI.C_INPANE_MARGIN_S,
-      ConstLocalUI.C_INPANE_MARGIN_U
-    );
-    //-- cell lock ** rest
-    int lpPotentialG = ConstLocalUI.C_INPANE_GAP; 
     cmLesFRLockSW.get(0).ccSetSize(cmLesAGLockSW.get(0));
     cmLesASLockSW.get(0).ccSetSize(cmLesFRLockSW.get(0));
     cmLesRCLockSW.get(0).ccSetSize(cmLesRCLockSW.get(0));
     cmLesADLockSW.get(0).ccSetSize(cmLesADLockSW.get(0));
-    cmLesFRLockSW.get(0).ccSetLocation(cmLesAGLockSW.get(0),lpPotentialG,0);
-    cmLesASLockSW.get(0).ccSetLocation(cmLesFRLockSW.get(0),lpPotentialG,0);
-    cmLesRCLockSW.get(0).ccSetLocation(cmLesAGLockSW.get(0),0,lpPotentialG);
-    cmLesADLockSW.get(0).ccSetLocation(cmLesRCLockSW.get(0),lpPotentialG,0);
+    //-- cell lock ** realigning
+    lpPotentialY = SubOperativeGroup.ccRefer().cmCellPane.ccGetY()
+     + ConstLocalUI.C_INPANE_MARGIN_U;
+    lpPotentialG = ConstLocalUI.C_INPANE_GAP; 
+    cmLesAGLockSW.get(0).ccSetLocation(
+      SubOperativeGroup.ccRefer().cmAGZeroSW.ccGetX(),
+      lpPotentialY
+    );
+    cmLesFRLockSW.get(0).ccSetLocation(
+      SubOperativeGroup.ccRefer().cmFRZeroSW.ccGetX(),
+      lpPotentialY
+    );
+    cmLesASLockSW.get(0).ccSetLocation(
+      SubOperativeGroup.ccRefer().cmASZeroSW.ccGetX(),
+      lpPotentialY
+    );
+    cmLesRCLockSW.get(0).ccSetLocation(cmLesASLockSW.get(0),0,lpPotentialG);
+    cmLesADLockSW.get(0).ccSetLocation(cmLesAGLockSW.get(0),0,lpPotentialG);
     
     //-- hiding
     //-- hiding ** ag

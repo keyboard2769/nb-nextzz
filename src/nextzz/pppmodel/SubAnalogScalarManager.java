@@ -58,14 +58,14 @@ public final class SubAnalogScalarManager {
   public static final Integer C_KEY_CELL_AG = 0x01;
   public static final Integer C_KEY_CELL_FR = 0x02;
   public static final Integer C_KEY_CELL_AS = 0x03;
-  //[todo]::public static final Integer C_KEY_CELL_RC = ???;
-  //[todo]::public static final Integer C_KEY_CELL_AD = ???;
-  public static final Integer C_KEY_VB = 0x01;
-  public static final Integer C_KEY_VD = 0x02;
-  public static final Integer C_KEY_VE = 0x03;
-  //[todo]::public static final Integer C_KEY_RB = ???;
-  //[todo]::public static final Integer C_KEY_RD = ???;
-  //[todo]::public static final Integer C_KEY_RE = ???;
+  //[todo]::public static final Integer C_KEY_CELL_RC = 0x04;
+  //[todo]::public static final Integer C_KEY_CELL_AD = 0x05;
+  public static final Integer C_KEY_VB = 0x11;
+  public static final Integer C_KEY_VD = 0x12;
+  public static final Integer C_KEY_VE = 0x13;
+  //[todo]::public static final Integer C_KEY_RB = 0x21;
+  //[todo]::public static final Integer C_KEY_RD = 0x22;
+  //[todo]::public static final Integer C_KEY_RE = 0x23;
   public static final Integer C_KEY_CA = 0x99;
   
   //===
@@ -166,6 +166,9 @@ public final class SubAnalogScalarManager {
     //[notyet]::cmADCellScalar.ccSetupSpan..
     
     //-- general register
+    cmMapOfScala.put(C_KEY_CELL_AG, cmAGCellScalar);
+    cmMapOfScala.put(C_KEY_CELL_FR, cmFRCellScalar);
+    cmMapOfScala.put(C_KEY_CELL_AS, cmASCellScalar);
     cmMapOfScala.put(C_KEY_VB, cmVBurnerDegreeScalar);
     cmMapOfScala.put(C_KEY_VD, cmVDryerPressureScalar);
     cmMapOfScala.put(C_KEY_VE, cmVExfanDegreeScalar);
@@ -176,7 +179,6 @@ public final class SubAnalogScalarManager {
   public final void ccLogic(){
     
     //-- cell
-    //[head]:: test this!!
     cmAGCellScalar.ccRun(SubAnalogDelegator.mnAGCellAD);
     cmFRCellScalar.ccRun(SubAnalogDelegator.mnFRCellAD);
     cmASCellScalar.ccRun(SubAnalogDelegator.mnASCellAD);
@@ -195,7 +197,6 @@ public final class SubAnalogScalarManager {
         cmDesThermoCoupleBias.ccGet(i),
         cmDesThermoCoupleOffset.ccGet(i)
       );
-      //[head]:: test this!!
       cmThermoCouplScalar.ccRun(SubAnalogDelegator.ccGetThermoAD(i));
       cmDesThermoCelcius
         .ccSet(i,cmThermoCouplScalar.ccGetRevisedIntegerValue());
@@ -262,6 +263,23 @@ public final class SubAnalogScalarManager {
   
   synchronized public final int ccGetCTSlotAMPR(int pxIndex){
     return cmListOfCTSlotScalar.get(pxIndex&31).ccGetScaledIntegerValue();
+  }//++>
+  
+  //=== Cell ** proportion
+  
+  public final float ccGetAGProportion(){
+    return ((float)cmAGCellScalar.ccGetRevisedIntegerValue())
+      / ((float)cmAGCellScalar.ccGetOutputSpan());
+  }//++>
+  
+  public final float ccGetFRProportion(){
+    return ((float)cmFRCellScalar.ccGetRevisedIntegerValue())
+      / ((float)cmFRCellScalar.ccGetOutputSpan());
+  }//++>
+  
+  public final float ccGetASProportion(){
+    return ((float)cmASCellScalar.ccGetRevisedIntegerValue())
+      / ((float)cmASCellScalar.ccGetOutputSpan());
   }//++>
   
   //=== Cell ** KG
@@ -364,6 +382,11 @@ public final class SubAnalogScalarManager {
   //[todo]::ccGetRExfanPercentage
   
   //=== general interface 
+  
+  synchronized public final
+  Object[] ccGetScalaKeyList(){
+    return cmMapOfScala.keySet().toArray();
+  }//+++
   
   synchronized public final
   void ccSetScalaADOffset(Integer pxKey, int pxVal){

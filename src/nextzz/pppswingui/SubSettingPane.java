@@ -34,6 +34,7 @@ import kosui.pppswingui.ScTable;
 import kosui.ppputil.VcConst;
 import kosui.ppputil.VcStringUtility;
 import kosui.ppputil.VcTranslator;
+import nextzz.pppmain.MainActionManager;
 import nextzz.pppsetting.MainSettingManager;
 import nextzz.pppsetting.McAbstractSettingPartition;
 import nextzz.pppsetting.MiSettingItem;
@@ -102,6 +103,10 @@ public final class SubSettingPane implements SiTabbable{
         .ccGetSelectedItem(lpListIndex, lpTableIndex);
       if(lpItem==null){return;}//..?
       cmDescriptor.setText(lpItem.ccGetDescription());
+      if (me.getClickCount() == 2 && !me.isConsumed()) {
+        me.consume();
+        MainActionManager.ccRefer().cmSettingModifying.ccTrigger();
+      }//..?
     }//+++
   };//***
   

@@ -19,7 +19,9 @@
 
 package nextzz.pppsetting;
 
+import java.util.Arrays;
 import kosui.ppplogic.ZcRangedModel;
+import kosui.ppputil.VcConst;
 import kosui.ppputil.VcNumericUtility;
 import kosui.ppputil.VcTranslator;
 import nextzz.pppmodel.SubAnalogScalarManager;
@@ -32,6 +34,114 @@ public class SubLinearSetting extends McAbstractSettingPartition{
   private static final SubLinearSetting SELF = new SubLinearSetting();
   public static final SubLinearSetting ccRefer(){return SELF;}//++>
   private SubLinearSetting(){}//++!
+  
+  //===
+  
+  private class McScalaADOffsetItem implements MiSettingItem{
+    private final int cmKey;
+    public McScalaADOffsetItem(int pxKey) {
+      cmKey=pxKey;
+    }//++!
+    @Override public String ccGetName() {
+      return "[AD]:"+VcTranslator
+        .tr(String.format("_linear_ad_offset_%02d", cmKey));
+    }//++>
+    @Override public String ccGetDescription() {
+      return VcTranslator.tr("_dscp_linear_ad_offset");
+    }//++>
+    @Override public String ccGetLimitationInfo() {
+      return "[0 ~ 10000]";
+    }//++>
+    @Override public String ccGetValue() {
+      return Integer.toString(SubAnalogScalarManager.ccRefer()
+        .ccGetScalaADOffset(cmKey));
+    }//++>
+    @Override public void ccSetValue(String pxVal) {
+      int lpFixed=VcNumericUtility.ccParseIntegerString(pxVal);
+      lpFixed=ZcRangedModel.ccLimitInclude(lpFixed, 0, 10000);
+      SubAnalogScalarManager.ccRefer()
+        .ccSetScalaADOffset(cmKey, lpFixed);
+    }//++<
+  }//***
+  
+  private class McScalaADSpanItem implements MiSettingItem{
+    private final int cmKey;
+    public McScalaADSpanItem(int pxKey) {
+      cmKey=pxKey;
+    }//++!
+    @Override public String ccGetName() {
+      return "[AD]:"+VcTranslator
+        .tr(String.format("_linear_ad_span_%02d", cmKey));
+    }//++>
+    @Override public String ccGetDescription() {
+      return VcTranslator.tr("_dscp_linear_ad_span");
+    }//++>
+    @Override public String ccGetLimitationInfo() {
+      return "[0 ~ 10000]";
+    }//++>
+    @Override public String ccGetValue() {
+      return Integer.toString(SubAnalogScalarManager.ccRefer()
+        .ccGetScalaADSpan(cmKey));
+    }//++>
+    @Override public void ccSetValue(String pxVal) {
+      int lpFixed=VcNumericUtility.ccParseIntegerString(pxVal);
+      lpFixed=ZcRangedModel.ccLimitInclude(lpFixed, 0, 10000);
+      SubAnalogScalarManager.ccRefer()
+        .ccSetScalaADSpan(cmKey, lpFixed);
+    }//++<
+  }//***
+  
+  private class McScalaRealOffsetItem implements MiSettingItem{
+    private final int cmKey;
+    public McScalaRealOffsetItem(int pxKey) {
+      cmKey=pxKey;
+    }//++!
+    @Override public String ccGetName() {
+      return VcTranslator.tr(String.format("_linear_ureal_offset_%02d", cmKey));
+    }//++>
+    @Override public String ccGetDescription() {
+      return VcTranslator.tr("_dscp_linear_ureal_offset");
+    }//++>
+    @Override public String ccGetLimitationInfo() {
+      return "[0 ~ 5000]";
+    }//++>
+    @Override public String ccGetValue() {
+      return Integer.toString(SubAnalogScalarManager.ccRefer()
+        .ccGetScalaRealOffset(cmKey));
+    }//++>
+    @Override public void ccSetValue(String pxVal) {
+      int lpFixed=VcNumericUtility.ccParseIntegerString(pxVal);
+      lpFixed=ZcRangedModel.ccLimitInclude(lpFixed, 0, 5000);
+      SubAnalogScalarManager.ccRefer()
+        .ccSetScalaRealOffset(cmKey, lpFixed);
+    }//++<
+  }//***
+  
+  private class McScalaRealSpanItem implements MiSettingItem{
+    private final int cmKey;
+    public McScalaRealSpanItem(int pxKey) {
+      cmKey=pxKey;
+    }//++!
+    @Override public String ccGetName() {
+      return VcTranslator.tr(String.format("_linear_ureal_span_%02d", cmKey));
+    }//++>
+    @Override public String ccGetDescription() {
+      return VcTranslator.tr("_dscp_linear_ureal_span");
+    }//++>
+    @Override public String ccGetLimitationInfo() {
+      return "[0 ~ 5000]";
+    }//++>
+    @Override public String ccGetValue() {
+      return Integer.toString(SubAnalogScalarManager.ccRefer()
+        .ccGetScalaRealSpan(cmKey));
+    }//++>
+    @Override public void ccSetValue(String pxVal) {
+      int lpFixed=VcNumericUtility.ccParseIntegerString(pxVal);
+      lpFixed=ZcRangedModel.ccLimitInclude(lpFixed, 0, 5000);
+      SubAnalogScalarManager.ccRefer()
+        .ccSetScalaRealSpan(cmKey, lpFixed);
+    }//++<
+  }//***
   
   //===
   
@@ -110,7 +220,14 @@ public class SubLinearSetting extends McAbstractSettingPartition{
     cmListOfItem.add(cmASTareWeight);
     
     //-- scalas
-    //[head]::
+    //VcConst.ccPrintln("id", Arrays.toString(SubAnalogScalarManager.ccRefer().ccGetScalaKeyList()));
+    for(Object it : SubAnalogScalarManager.ccRefer().ccGetScalaKeyList()){
+      int lpKey = VcNumericUtility.ccInteger(it);
+      cmListOfItem.add(new McScalaADOffsetItem(lpKey));
+      cmListOfItem.add(new McScalaADSpanItem(lpKey));
+      cmListOfItem.add(new McScalaRealOffsetItem(lpKey));
+      cmListOfItem.add(new McScalaRealSpanItem(lpKey));
+    }//..~
     
   }//++!
   

@@ -35,7 +35,7 @@ public final class SubErrorDelegator {
   
   public static final void ccBind(){
     
-    mnErrorClearSW=MainPlantModel.ccRefer().vmErrorClearHoldingFLG;
+    mnErrorClearSW=MainPlantModel.ccRefer().cmErrorClearHoldingFLG;
     
     SubIndicativeGroup.ccRefer().cmErrorMessagePL.ccSetIsActivated(mnErrorPL);
     VcLocalConsole.ccSetMessageBarText(SubErrorListModel.ccRefer()

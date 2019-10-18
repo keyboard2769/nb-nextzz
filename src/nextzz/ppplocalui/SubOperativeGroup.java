@@ -84,10 +84,11 @@ public final class SubOperativeGroup implements EiGroup{
   public final EcPane cmCellPane
     = new EcPane(VcTranslator.tr("_cell"));
   public final EcShape cmZeroPlate = new EcShape();
-  public final EcButton cmAGZeroSW = new EcButton("_ag", 0x3209);
-  public final EcButton cmFRZeroSW = new EcButton("_fr", 0x3209);
-  public final EcButton cmASZeroSW = new EcButton("_as", 0x3209);
-  public final EcButton cmRCZeroSW = new EcButton("_rc", 0x3209);
+  public final EcButton cmAGZeroSW = new EcButton("_ag", 0x320A);
+  public final EcButton cmFRZeroSW = new EcButton("_fr", 0x320B);
+  public final EcButton cmASZeroSW = new EcButton("_as", 0x320C);
+  public final EcButton cmRCZeroSW = new EcButton("_rc", 0x320D);
+  //[todo]:: % ad .. 0x320E
   public final EcButton cmApplyZeroSW = new EcButton("_zero", 0x3209);
   
   //-- mixture pane
@@ -278,11 +279,11 @@ public final class SubOperativeGroup implements EiGroup{
     cmASZeroSW.ccSetSize(cmAGZeroSW);
     cmRCZeroSW.ccSetSize(cmAGZeroSW);
     //[todo]::.. AD!!
-    cmAGZeroSW.ccSetLocation
+    cmFRZeroSW.ccSetLocation
       (cmZeroPlate,ConstLocalUI.C_INPANE_GAP, ConstLocalUI.C_INPANE_GAP);
-    cmFRZeroSW.ccSetLocation(cmAGZeroSW, ConstLocalUI.C_INPANE_GAP, 0);
-    cmASZeroSW.ccSetLocation(cmFRZeroSW, ConstLocalUI.C_INPANE_GAP, 0);
-    cmRCZeroSW.ccSetLocation(cmAGZeroSW, 0, ConstLocalUI.C_INPANE_GAP);
+    cmAGZeroSW.ccSetLocation(cmFRZeroSW, ConstLocalUI.C_INPANE_GAP, 0);
+    cmASZeroSW.ccSetLocation(cmAGZeroSW, ConstLocalUI.C_INPANE_GAP, 0);
+    cmRCZeroSW.ccSetLocation(cmASZeroSW, 0, ConstLocalUI.C_INPANE_GAP);
     //[todo]::.. AD!!
     //-- zero ** hide optional
     cmRCZeroSW.ccHide();//..optionally disposed

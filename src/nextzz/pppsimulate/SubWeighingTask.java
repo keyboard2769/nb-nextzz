@@ -189,9 +189,9 @@ public class SubWeighingTask implements ZiTask{
       = dcMixerGate.ccIsClosed() && !dcMixerGate.ccIsFullOpened();
     
     //-- cell
-    SubAnalogDelegator.mnAGCellAD=dcAGCell.ccGetScaledValue(4000)+397;
-    SubAnalogDelegator.mnFRCellAD=dcFRCell.ccGetScaledValue(4000)+388;
-    SubAnalogDelegator.mnASCellAD=dcASCell.ccGetScaledValue(4000)+391;
+    SubAnalogDelegator.mnAGCellAD=dcAGCell.ccGetScaledValue(4000)+465;
+    SubAnalogDelegator.mnFRCellAD=dcFRCell.ccGetScaledValue(4000)+497;
+    SubAnalogDelegator.mnASCellAD=dcASCell.ccGetScaledValue(4000)+488;
     
   }//+++
 

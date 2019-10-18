@@ -18,6 +18,7 @@ but hey, dose it sounds stupid if you read it DOUBLE-ZEUS ??
 - [ ] $ tre
 - [ ] $ dos
 - [ ] $ uno
+- [ ] $ a linear pane with blocks of 'zero' and 'span' button
 - [ ] $ holding mixer gate screws log and weight control up
 - [ ] $ the gate simulation and the case of cut point handling
 - [ ] $ for translation, we should eliminate any in-loop 'tr' usage
@@ -36,13 +37,10 @@ but hey, dose it sounds stupid if you read it DOUBLE-ZEUS ??
 
 #### heading
 
-- [ ] $ let us handle the zero adjusting stuff
-- [ ] $ add the "linear setting" to THE list
+- now what ??
 
 #### last
 
-- [x] $ move the weight control indicative lamp to where it belongs to
-- [x] $ let the target KG value show what it have to show
 - [x] $ local inputtive box color is preferred to dark orange .. cool yeah
 - [x] $ fixed final batch display cleaning thing aka the name box problem
 - [x] $ flag manipulating action needs pulse control actually
@@ -50,5 +48,7 @@ but hey, dose it sounds stupid if you read it DOUBLE-ZEUS ??
 - [x] $ we just gave up on the 'fixing' thing of the auto-weigh-sequence
 - [x] $ shift-tab can now back shift the focus .. don't push to hard !!
 - [x] $ let the dynamic weigh result table shine
+- [x] $ added the "linear setting" to THE list
+- [x] $ the zero adjusting stuff works now more than likely
 
 <hr><!--EOF-->

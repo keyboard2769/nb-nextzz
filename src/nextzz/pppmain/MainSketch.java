@@ -173,7 +173,7 @@ public class MainSketch extends PApplet{
     MainPlantModel.ccRefer().ccLogic();
     
     //-- local ui
-    SubWeighControlManager.ccRefer().ccBind();
+    MainPlantModel.ccRefer().ccBind();
     MainDelegator.ccBind();
     VcLocalCoordinator.ccUpdateActive();
     VcLocalConsole.ccUpdate();
@@ -203,7 +203,7 @@ public class MainSketch extends PApplet{
     //-- for console
     VcLocalCoordinator.ccGuardEscKey(this);
     if(VcLocalConsole.ccKeyTyped(key, keyCode)){
-      MainPlantModel.ccRefer().vmMessageBarBlockingFLG=true;
+      MainPlantModel.ccRefer().cmMessageBarBlockingFLG=true;
       return;
     }//..?
     

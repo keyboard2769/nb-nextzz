@@ -25,6 +25,7 @@ import kosui.pppmodel.McPipedChannel;
 import kosui.ppputil.VcLocalConsole;
 import kosui.ppputil.VcLocalTagger;
 import nextzz.pppdelegate.SubFeederDelegator;
+import nextzz.ppplocalui.SubOperativeGroup;
 
 public final class MainPlantModel {
   
@@ -81,16 +82,22 @@ public final class MainPlantModel {
 
   //===
   
-  public volatile boolean vmMessageBarBlockingFLG = false;
+  public volatile boolean cmMessageBarBlockingFLG = false;
   private final ZcTimer cmMessageBarBlockingTM = new ZcOnDelayTimer(32);
   
   
-  public volatile boolean vmErrorClearHoldingFLG = false;
+  public volatile boolean cmErrorClearHoldingFLG = false;
   private final ZcTimer cmErrorClearHoldingTM = new ZcOnDelayTimer(16);
   
   //-- v combust
   public final McPipedChannel cmDesVFeederTPH = new McPipedChannel();
   public volatile int cmVSupplyTPH = 0;
+  
+  //-- zero
+  
+  public volatile boolean vmAGZeroAdjustSelecor =false;
+  public volatile boolean vmFRZeroAdjustSelecor =false;
+  public volatile boolean vmASZeroAdjustSelecor =false;
   
   //===
   
@@ -105,15 +112,15 @@ public final class MainPlantModel {
   public final void ccLogic(){
     
     //-- one shot ** message bar blocking
-    cmMessageBarBlockingTM.ccAct(vmMessageBarBlockingFLG);
+    cmMessageBarBlockingTM.ccAct(cmMessageBarBlockingFLG);
     if(cmMessageBarBlockingTM.ccIsUp()){
       VcLocalConsole.ccClearMessageBarText();
-      vmMessageBarBlockingFLG=false;
+      cmMessageBarBlockingFLG=false;
     }//..?
     
     //-- one shot ** error reset
-    cmErrorClearHoldingTM.ccAct(vmErrorClearHoldingFLG);
-    if(cmErrorClearHoldingTM.ccIsUp()){vmErrorClearHoldingFLG=false;}
+    cmErrorClearHoldingTM.ccAct(cmErrorClearHoldingFLG);
+    if(cmErrorClearHoldingTM.ccIsUp()){cmErrorClearHoldingFLG=false;}
     
     //-- manager
     SubAnalogScalarManager.ccRefer().ccLogic();
@@ -133,6 +140,21 @@ public final class MainPlantModel {
     }//..~
   
   }//++~
+  
+  public final void ccBind(){
+    
+    //-- misc
+    SubOperativeGroup.ccRefer().cmAGZeroSW
+      .ccSetIsActivated(vmAGZeroAdjustSelecor);
+    SubOperativeGroup.ccRefer().cmFRZeroSW
+      .ccSetIsActivated(vmFRZeroAdjustSelecor);
+    SubOperativeGroup.ccRefer().cmASZeroSW
+      .ccSetIsActivated(vmASZeroAdjustSelecor);
+    
+    //-- manager
+    SubWeighControlManager.ccRefer().ccBind();
+  
+  }//..~
   
   //===
   

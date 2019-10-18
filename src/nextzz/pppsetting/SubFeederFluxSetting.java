@@ -47,7 +47,7 @@ public final class SubFeederFluxSetting extends McAbstractSettingPartition{
         .tr(String.format("_rpm_span_%cf%02d", cmSystem,cmIndex));
     }//++>
     @Override public String ccGetDescription() {
-      return VcTranslator.tr("_feeder_rpm_span");
+      return VcTranslator.tr("_dscp_feeder_rpm_span");
     }//++>
     @Override public String ccGetLimitationInfo() {
       return "[1 ~ 1800]";
@@ -76,7 +76,7 @@ public final class SubFeederFluxSetting extends McAbstractSettingPartition{
         .tr(String.format("_tph_span_%cf%02d", cmSystem,cmIndex));
     }//++>
     @Override public String ccGetDescription() {
-      return VcTranslator.tr("_feeder_tph_span");
+      return VcTranslator.tr("_dscp_feeder_tph_span");
     }//++>
     @Override public String ccGetLimitationInfo() {
       return "[1 ~ 200]";

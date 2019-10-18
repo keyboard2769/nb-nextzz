@@ -45,6 +45,7 @@ import nextzz.ppplocalui.SubVBondGroup;
 import nextzz.ppplocalui.SubVFeederGroup;
 import nextzz.ppplocalui.SubWeigherGroup;
 import nextzz.pppmodel.MainPlantModel;
+import nextzz.pppmodel.SubAnalogScalarManager;
 import nextzz.pppswingui.SubAssistantPane;
 import nextzz.pppsetting.MainSettingManager;
 import nextzz.pppsetting.MiSettingItem;
@@ -126,6 +127,90 @@ public final class MainActionManager {
   };//***
   
   //=== trigger ** operative
+  
+  //=== trigger ** operative ** weigher locker
+  
+  public final EiTriggerable cmAGLockFlipping
+    = new EiTriggerable() {
+    @Override public void ccTrigger() {
+      int lpID=VcLocalCoordinator.ccGetMouseOverID();
+      lpID-=SubWeigherGroup.ccRefer().cmLesAGLockSW.get(0).ccGetID();
+      boolean lpFlip = SubWeighingDelegator.ccGetAGLockSW(lpID);
+      lpFlip=!lpFlip;
+      SubWeighingDelegator.ccSetAGLockSW(lpID, lpFlip);
+    }//+++
+  };//***
+  
+  public final EiTriggerable cmFRLockFlipping
+    = new EiTriggerable() {
+    @Override public void ccTrigger() {
+      int lpID=VcLocalCoordinator.ccGetMouseOverID();
+      lpID-=SubWeigherGroup.ccRefer().cmLesFRLockSW.get(0).ccGetID();
+      boolean lpFlip = SubWeighingDelegator.ccGetFRLockSW(lpID);
+      lpFlip=!lpFlip;
+      SubWeighingDelegator.ccSetFRLockSW(lpID, lpFlip);
+    }//+++
+  };//***
+  
+  public final EiTriggerable cmASLockFlipping
+    = new EiTriggerable() {
+    @Override public void ccTrigger() {
+      int lpID=VcLocalCoordinator.ccGetMouseOverID();
+      lpID-=SubWeigherGroup.ccRefer().cmLesASLockSW.get(0).ccGetID();
+      boolean lpFlip = SubWeighingDelegator.ccGetASLockSW(lpID);
+      lpFlip=!lpFlip;
+      SubWeighingDelegator.ccSetASLockSW(lpID, lpFlip);
+    }//+++
+  };//***
+  
+  //[todo]::cmRCLockFlipping
+  //[todo]::cmADLockFlipping
+  
+  //=== trigger ** operative ** zero adjust
+  
+  public final EiTriggerable cmAGZeroAdjustFlipping = new EiTriggerable() {
+    @Override public void ccTrigger() {
+      MainPlantModel.ccRefer().vmAGZeroAdjustSelecor = 
+        ! MainPlantModel.ccRefer().vmAGZeroAdjustSelecor;
+    }//+++
+  };//***
+  
+  public final EiTriggerable cmFRZeroAdjustFlipping = new EiTriggerable() {
+    @Override public void ccTrigger() {
+      MainPlantModel.ccRefer().vmFRZeroAdjustSelecor = 
+        ! MainPlantModel.ccRefer().vmFRZeroAdjustSelecor;
+    }//+++
+  };//***
+  
+  public final EiTriggerable cmASZeroAdjustFlipping = new EiTriggerable() {
+    @Override public void ccTrigger() {
+      MainPlantModel.ccRefer().vmASZeroAdjustSelecor = 
+        ! MainPlantModel.ccRefer().vmASZeroAdjustSelecor;
+    }//+++
+  };//***
+  
+  //[todo]::cmRCZeroAdjustFlipping
+  //[todo]::cmADZeroAdjustFlipping
+  
+  public final EiTriggerable cmZeroAdjustApplying = new EiTriggerable() {
+    @Override public void ccTrigger() {
+      if(MainPlantModel.ccRefer().vmAGZeroAdjustSelecor){
+        int lpKG = SubAnalogScalarManager.ccRefer().ccGetAGCellKG();
+        SubAnalogScalarManager.ccRefer().ccSetAGReviseOffsetKG(-1*lpKG);
+      }//..?
+      if(MainPlantModel.ccRefer().vmFRZeroAdjustSelecor){
+        int lpKG = SubAnalogScalarManager.ccRefer().ccGetFRCellKG();
+        SubAnalogScalarManager.ccRefer().ccSetFRReviseOffsetKG(-1*lpKG);
+      }//..?
+      if(MainPlantModel.ccRefer().vmASZeroAdjustSelecor){
+        int lpKG = SubAnalogScalarManager.ccRefer().ccGetASCellKG();
+        SubAnalogScalarManager.ccRefer().ccSetASReviseOffsetKG(-1*lpKG);
+      }//..?
+      MainPlantModel.ccRefer().vmAGZeroAdjustSelecor=false;
+      MainPlantModel.ccRefer().vmFRZeroAdjustSelecor=false;
+      MainPlantModel.ccRefer().vmASZeroAdjustSelecor=false;
+    }//+++
+  };//***
   
   //=== trigger ** operative ** mixer gate
   
@@ -221,44 +306,6 @@ public final class MainActionManager {
     }//+++
   };//***
   
-  //=== trigger ** operative ** weigh
-  
-  public final EiTriggerable cmAGLockFlipping
-    = new EiTriggerable() {
-    @Override public void ccTrigger() {
-      int lpID=VcLocalCoordinator.ccGetMouseOverID();
-      lpID-=SubWeigherGroup.ccRefer().cmLesAGLockSW.get(0).ccGetID();
-      boolean lpFlip = SubWeighingDelegator.ccGetAGLockSW(lpID);
-      lpFlip=!lpFlip;
-      SubWeighingDelegator.ccSetAGLockSW(lpID, lpFlip);
-    }//+++
-  };//***
-  
-  public final EiTriggerable cmFRLockFlipping
-    = new EiTriggerable() {
-    @Override public void ccTrigger() {
-      int lpID=VcLocalCoordinator.ccGetMouseOverID();
-      lpID-=SubWeigherGroup.ccRefer().cmLesFRLockSW.get(0).ccGetID();
-      boolean lpFlip = SubWeighingDelegator.ccGetFRLockSW(lpID);
-      lpFlip=!lpFlip;
-      SubWeighingDelegator.ccSetFRLockSW(lpID, lpFlip);
-    }//+++
-  };//***
-  
-  public final EiTriggerable cmASLockFlipping
-    = new EiTriggerable() {
-    @Override public void ccTrigger() {
-      int lpID=VcLocalCoordinator.ccGetMouseOverID();
-      lpID-=SubWeigherGroup.ccRefer().cmLesASLockSW.get(0).ccGetID();
-      boolean lpFlip = SubWeighingDelegator.ccGetASLockSW(lpID);
-      lpFlip=!lpFlip;
-      SubWeighingDelegator.ccSetASLockSW(lpID, lpFlip);
-    }//+++
-  };//***
-  
-  //[todo]::cmRCLockFlipping
-  //[todo]::cmADLockFlipping
-  
   //=== trigger ** swing
    
   public final EiTriggerable cmHiding = new EiTriggerable() {
@@ -276,7 +323,7 @@ public final class MainActionManager {
   
   public final EiTriggerable cmErrorCleaning = new EiTriggerable() {
     @Override public void ccTrigger() {
-      MainPlantModel.ccRefer().vmErrorClearHoldingFLG=true;
+      MainPlantModel.ccRefer().cmErrorClearHoldingFLG=true;
     }//+++
   };//***
   
@@ -429,6 +476,31 @@ public final class MainActionManager {
     
     //-- sketch ** floatting
     
+    //-- sketch ** floatting ** weigher locker
+    for(EcButton it : SubWeigherGroup.ccRefer().cmLesAGLockSW){
+      VcLocalCoordinator.ccRegisterMouseTrigger(it, cmAGLockFlipping);
+    }//..~
+    for(EcButton it : SubWeigherGroup.ccRefer().cmLesFRLockSW){
+      VcLocalCoordinator.ccRegisterMouseTrigger(it, cmFRLockFlipping);
+    }//..~
+    for(EcButton it : SubWeigherGroup.ccRefer().cmLesASLockSW){
+      VcLocalCoordinator.ccRegisterMouseTrigger(it, cmASLockFlipping);
+    }//..~
+    //[todo]::for(EcButton it : SubWeigherGroup.ccRefer().cmDesRC...
+    //[todo]::for(EcButton it : SubWeigherGroup.ccRefer().cmDesAD...
+    
+    //-- sketch ** floatting ** zero adjust
+    VcLocalCoordinator.ccRegisterMouseTrigger
+      (SubOperativeGroup.ccRefer().cmAGZeroSW,cmAGZeroAdjustFlipping);
+    VcLocalCoordinator.ccRegisterMouseTrigger
+      (SubOperativeGroup.ccRefer().cmFRZeroSW,cmFRZeroAdjustFlipping);
+    VcLocalCoordinator.ccRegisterMouseTrigger
+      (SubOperativeGroup.ccRefer().cmASZeroSW,cmASZeroAdjustFlipping);
+    //[todo]:: % rc ...
+    //[todo]:: % ad ...
+    VcLocalCoordinator.ccRegisterMouseTrigger
+      (SubOperativeGroup.ccRefer().cmApplyZeroSW,cmZeroAdjustApplying);
+    
     //-- sketch ** floatting ** mixer gate control
     VcLocalCoordinator.ccRegisterMouseTrigger
       (SubOperativeGroup.ccRefer().cmMixerGateHoldSW, cmMixerGateHoldClicking);
@@ -456,18 +528,7 @@ public final class MainActionManager {
       (SubVBondGroup.ccRefer().cmTargetIncrementSW
         ,cmVTargetTemperatureIncrementing);
     
-    //-- sketch ** floatting ** weighing
-    for(EcButton it : SubWeigherGroup.ccRefer().cmLesAGLockSW){
-      VcLocalCoordinator.ccRegisterMouseTrigger(it, cmAGLockFlipping);
-    }//..~
-    for(EcButton it : SubWeigherGroup.ccRefer().cmLesFRLockSW){
-      VcLocalCoordinator.ccRegisterMouseTrigger(it, cmFRLockFlipping);
-    }//..~
-    for(EcButton it : SubWeigherGroup.ccRefer().cmLesASLockSW){
-      VcLocalCoordinator.ccRegisterMouseTrigger(it, cmASLockFlipping);
-    }//..~
-    //[todo]::for(EcButton it : SubWeigherGroup.ccRefer().cmDesRC...
-    //[todo]::for(EcButton it : SubWeigherGroup.ccRefer().cmDesAD...
+    //-- 
     VcLocalCoordinator.ccRegisterMouseTrigger(
       SubOperativeGroup.ccRefer().cmWeighStartSW,
       SubWeighControlManager.ccRefer().cmWeighStartClicking

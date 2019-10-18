@@ -69,7 +69,7 @@ public final class SubAnalogDelegator {
   
   public static final void ccBind(){
     
-    //-- cell
+    //-- cell ** box
     SubWeigherGroup.ccRefer().cmAGCellCB.ccSetValue
       (SubAnalogScalarManager.ccRefer().ccGetAGCellKG());
     SubWeigherGroup.ccRefer().cmFRCellCB.ccSetFloatValueForOneAfter(
@@ -80,6 +80,14 @@ public final class SubAnalogDelegator {
       VcNumericUtility.ccToFloatForOneAfter(
         (SubAnalogScalarManager.ccRefer().ccGetASCellKG())
     ));
+    
+    //-- cell ** gauge
+    SubWeigherGroup.ccRefer().cmAGCellLV.ccSetProportion
+      (SubAnalogScalarManager.ccRefer().ccGetAGProportion());
+    SubWeigherGroup.ccRefer().cmFRCellLV.ccSetProportion
+      (SubAnalogScalarManager.ccRefer().ccGetFRProportion());
+    SubWeigherGroup.ccRefer().cmASCellLV.ccSetProportion
+      (SubAnalogScalarManager.ccRefer().ccGetASProportion());
     
     //-- temperature
     SubVBondGroup.ccRefer().cmEntranceTemperatureCB

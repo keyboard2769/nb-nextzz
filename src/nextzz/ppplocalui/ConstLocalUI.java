@@ -355,6 +355,7 @@ public final class ConstLocalUI {
     ccSetupPressureBoxColor(pxCell);
     pxTarget.ccSetDigit(1);
     pxCell.ccSetDigit(1);
+    pxGauge.ccSetupColor(EcConst.C_ORANGE, EcConst.C_YELLOW);
     
     //-- assemble
     int lpX=pxX&0x7FF;
