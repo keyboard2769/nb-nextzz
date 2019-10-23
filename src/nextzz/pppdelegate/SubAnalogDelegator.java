@@ -110,7 +110,7 @@ public final class SubAnalogDelegator {
     SubVBondGroup.ccRefer().cmVDPressureCB.ccSetValue
       (SubAnalogScalarManager.ccRefer().ccGetVDryerKPA());
     SubVBondGroup.ccRefer().cmBurnerDegreeCB.ccSetValue
-      (SubAnalogScalarManager.ccRefer().ccGerVBurnerPercentage());
+      (SubAnalogScalarManager.ccRefer().ccGetVBurnerPercentage());
     SubVBondGroup.ccRefer().cmExfanDegreeCB.ccSetValue
       (SubAnalogScalarManager.ccRefer().ccGetVExfanPercentage());
     

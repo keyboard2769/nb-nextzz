@@ -442,7 +442,7 @@ public final class SubWeighControlManager {
   }//++~
   
   private void ssLogWeighResult(){
-    SubWeighStatisticManager.ccRefer().ccOfferLog(
+    SubWeighStatisticManager.ccRefer().ccLogRecord(
       cmRecipeNumberHolder,
       (float)(SubAnalogScalarManager.ccRefer().cmDesThermoCelcius
         .ccGet(SubAnalogScalarManager.C_I_THVI_MIXER)),

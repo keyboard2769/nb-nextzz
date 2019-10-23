@@ -117,7 +117,7 @@ public final class SubDegreeControlManager {
         : (SubVCombustDelegator.mnVColdAggreageSensorPL
             ? cmVTemperatureCTRL.ccGetMinusTrimmed()*100f
             : ((float)vmVPreHeatingPT)),
-      (float)SubAnalogScalarManager.ccRefer().ccGerVBurnerPercentage()
+      (float)SubAnalogScalarManager.ccRefer().ccGetVBurnerPercentage()
     );
     //-- vb ** to plc
     SubVCombustDelegator.mnVBurnerCloseFLG

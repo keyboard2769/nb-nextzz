@@ -50,6 +50,7 @@ import nextzz.pppswingui.SubAssistantPane;
 import nextzz.pppsetting.MainSettingManager;
 import nextzz.pppsetting.MiSettingItem;
 import nextzz.pppmodel.SubDegreeControlManager;
+import nextzz.pppmodel.SubVCombustStaticManager;
 import nextzz.pppmodel.SubWeighControlManager;
 import nextzz.pppsimulate.MainSimulator;
 import nextzz.pppswingui.SubFeederPane;
@@ -550,14 +551,8 @@ public final class MainActionManager {
           "this is a public service announcement",
           "this is only a Test 'which ya not suppsed to use"
         );
-        /* 7 */ //[givemesomerthing]::
-        SwingUtilities.invokeLater(new Runnable() {
-          @Override public void run() {
-            SubMonitorPane.ccRefer().cmStatisticWeighResultTable.ccRefresh();
-            ScConst.ccScrollToLast(SubMonitorPane.ccRefer().cmStatisticWeighResultTable);
-          }
-        });
-        
+        /* 7 */ //[givemesomerthing]::..
+        // ...
       }//+++
     });
     

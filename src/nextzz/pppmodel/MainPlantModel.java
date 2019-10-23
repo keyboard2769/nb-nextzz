@@ -19,13 +19,18 @@
 
 package nextzz.pppmodel;
 
+import javax.swing.SwingUtilities;
 import kosui.ppplogic.ZcOnDelayTimer;
+import kosui.ppplogic.ZcRangedValueModel;
 import kosui.ppplogic.ZcTimer;
 import kosui.pppmodel.McPipedChannel;
+import kosui.pppswingui.ScConst;
 import kosui.ppputil.VcLocalConsole;
 import kosui.ppputil.VcLocalTagger;
 import nextzz.pppdelegate.SubFeederDelegator;
+import nextzz.pppdelegate.SubVCombustDelegator;
 import nextzz.ppplocalui.SubOperativeGroup;
+import nextzz.pppswingui.SubMonitorPane;
 
 public final class MainPlantModel {
   
@@ -82,16 +87,27 @@ public final class MainPlantModel {
 
   //===
   
+  //-- error message
   public volatile boolean cmMessageBarBlockingFLG = false;
   private final ZcTimer cmMessageBarBlockingTM = new ZcOnDelayTimer(32);
-  
   
   public volatile boolean cmErrorClearHoldingFLG = false;
   private final ZcTimer cmErrorClearHoldingTM = new ZcOnDelayTimer(16);
   
-  //-- v combust
+  //-- v supply
   public final McPipedChannel cmDesVFeederTPH = new McPipedChannel();
   public volatile int cmVSupplyTPH = 0;
+  
+  //-- v combust
+  public final ZcRangedValueModel cmVCombustLogINTV
+    = new ZcRangedValueModel(0, 32);
+  public final Runnable cmVCombustResultTableRefreshing
+    = new Runnable() {
+    @Override public void run() {
+      SubMonitorPane.ccRefer().cmVCombustResultTable.ccRefresh();
+      ScConst.ccScrollToLast(SubMonitorPane.ccRefer().cmVCombustResultTable);
+    }//+++
+  };//***
   
   //-- zero
   
@@ -138,6 +154,26 @@ public final class MainPlantModel {
         cmVSupplyTPH+=cmDesVFeederTPH.ccGet(i);
       }//..? 
     }//..~
+    
+    //-- v comboset logging
+    if(SubVCombustDelegator.mnVBFlamingPL){
+      cmVCombustLogINTV.ccRoll(1);
+      if(cmVCombustLogINTV.ccIsAt(cmVCombustLogINTV.ccGetMax()-1)){
+        SubVCombustStaticManager.ccRefer().ccLogRecord(
+          SubAnalogScalarManager.ccRefer().ccGetVExfanPercentage(),
+          SubAnalogScalarManager.ccRefer().ccGetVBurnerPercentage(),
+          SubAnalogScalarManager.ccRefer().cmDesThermoCelcius
+            .ccGet(SubAnalogScalarManager.C_I_THI_CHUTE),
+          SubAnalogScalarManager.ccRefer().cmDesThermoCelcius
+            .ccGet(SubAnalogScalarManager.C_I_THII_ENTRANCE),
+          SubAnalogScalarManager.ccRefer().cmDesThermoCelcius
+            .ccGet(SubAnalogScalarManager.C_I_THIII_PIPE),
+          SubAnalogScalarManager.ccRefer().cmDesThermoCelcius
+            .ccGet(SubAnalogScalarManager.C_I_THIV_SAND)
+        );
+        SwingUtilities.invokeLater(cmVCombustResultTableRefreshing);
+      }//..?
+    }//..?
   
   }//++~
   

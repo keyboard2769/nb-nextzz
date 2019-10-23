@@ -24,7 +24,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import kosui.pppmodel.McTableAdapter;
-import kosui.ppputil.VcConst;
 import kosui.ppputil.VcStampUtility;
 import kosui.ppputil.VcTranslator;
 
@@ -156,17 +155,17 @@ public final class SubWeighStatisticManager extends McTableAdapter{
     }//++>
   }//***
   
-  private final List<McWeighRecord> cmLesWeighLog 
+  private final List<McWeighRecord> cmLesRecord 
     = new ArrayList<McWeighRecord>(C_CAPACITY_SIZE);
   
-  public final void ccOfferLog(
+  public final void ccLogRecord(
       int pxRecipe, float pxMixtrueTemp,
       float[] pxPacked
   ){
     float lpSum
       = pxPacked[ 0]+pxPacked[ 8]+pxPacked[ 12]
       + pxPacked[16]+pxPacked[20];
-    cmLesWeighLog
+    cmLesRecord
       .add(new McWeighRecord(pxRecipe, pxMixtrueTemp, lpSum, pxPacked));
   }//+++
   
@@ -184,11 +183,11 @@ public final class SubWeighStatisticManager extends McTableAdapter{
   }//++>
   
   @Override public int getRowCount() {
-    return cmLesWeighLog.size();
+    return cmLesRecord.size();
   }//++>
   
   @Override public Object getValueAt(int pxRowIndex, int pxColumnIndex) {
-    return cmLesWeighLog.get(pxRowIndex).ccGetColumnContent(pxColumnIndex);
+    return cmLesRecord.get(pxRowIndex).ccGetColumnContent(pxColumnIndex);
   }//++>
 
 }//***eof

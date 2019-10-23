@@ -364,7 +364,7 @@ public final class SubAnalogScalarManager {
   
   //=== V combust
   
-  synchronized public final int ccGerVBurnerPercentage(){
+  synchronized public final int ccGetVBurnerPercentage(){
     return cmVBurnerDegreeScalar.ccGetScaledIntegerValue();
   }//++>
   

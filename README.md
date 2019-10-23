@@ -37,7 +37,7 @@ but hey, dose it sounds stupid if you read it DOUBLE-ZEUS ??
 
 #### heading
 
-- now what ??
+- [ ] $ the log and file stuff
 
 #### last
 

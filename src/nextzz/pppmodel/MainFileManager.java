@@ -26,6 +26,8 @@ import nextzz.pppswingui.SubAssistantPane;
 
 public final class MainFileManager {
   
+  //=== font
+  
   private static final String C_LOCAL_FONT_MY_MAC_XI
     = "/Users/keypad/Yard/_temp/nextZZ/font/GB18030Bitmap-12.vlw";
   private static final String C_TEXT_FONT_LOCATION_MY_MAC_XIII
@@ -35,6 +37,15 @@ public final class MainFileManager {
     = "D:\\_installer\\FONTS\\DFHEI5.TTC";
   private static final String C_TRUETYPE_FONT_MY_SONY_XI
     = "C:\\home\\_installer\\FONTS\\DFHEI5.TTC";
+  
+  //=== home
+  
+  private String cmRootLocation=null;
+  
+  private static final String C_ROOT_MY_MI_XV
+    = "C:\\keypadhome\\develop\\nextzz";
+  
+  //=== folder
   
   public static final String
     //-- sub folder
@@ -47,6 +58,8 @@ public final class MainFileManager {
     C_SUB_ERR_LOGS_FOLDER = "err"
     //-- file name
   ;//...
+  
+  //===
   
   private static final MainFileManager SELF = new MainFileManager();
   public static MainFileManager ccRefer(){return SELF;}//+++
@@ -74,6 +87,12 @@ public final class MainFileManager {
     //[todo]::validate ...
     
   }//++!
+  
+  private void ssValidateRootLocation(){
+    
+    //[head]:: now what??
+  
+  }//+++
   
   private void ssValidateFontFile(){
     

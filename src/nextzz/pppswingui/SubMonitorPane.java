@@ -21,24 +21,31 @@ package nextzz.pppswingui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import javax.swing.JButton;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JSeparator;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
+import kosui.ppplocalui.EiTriggerable;
 import kosui.pppswingui.ScConst;
 import kosui.pppswingui.ScFactory;
 import kosui.pppswingui.ScGauge;
 import kosui.pppswingui.ScTable;
+import kosui.ppputil.VcSwingCoordinator;
 import kosui.ppputil.VcTranslator;
 import nextzz.pppmodel.MainPlantModel;
 import nextzz.pppmodel.MainSpecificator;
+import nextzz.pppmodel.SubVCombustStaticManager;
 import nextzz.pppmodel.SubWeighStatisticManager;
 import nextzz.pppmodel.SubWeighDynamicManager;
 
@@ -98,11 +105,39 @@ public final class SubMonitorPane implements SiTabbable{
   public final ScTable cmStatisticWeighResultTable
     = new ScTable(SubWeighStatisticManager.ccRefer(),200,200);
   
+  public final ScTable cmVCombustResultTable
+    = new ScTable(SubVCombustStaticManager.ccRefer(), 180, 180);
+  
   public final Runnable cmStatisticWeighResultTableRefreshing=new Runnable(){
     @Override public void run() {
       SubMonitorPane.ccRefer().cmStatisticWeighResultTable.ccRefresh();
       ScConst.ccScrollToLast(SubMonitorPane.ccRefer()
         .cmStatisticWeighResultTable);
+    }//+++
+  };//***
+  
+  //=== *popup ** v combust result
+  
+  private final JTabbedPane cmCombustTablePane = new JTabbedPane();;
+  
+  public final JPopupMenu cmVCombustResultMenu = new JPopupMenu();
+  
+  private final MouseAdapter cmVCombustTableClickListener = new MouseAdapter(){
+    @Override public void mouseReleased(MouseEvent me) {
+      if(me.isPopupTrigger()){
+        cmVCombustResultMenu.show(me.getComponent(), me.getX(), me.getY());
+      }//..?
+    }//+++
+  };//***
+  
+  public final EiTriggerable cmVCombustResultExporting = new EiTriggerable(){
+    @Override public void ccTrigger() {
+      
+      //[head]::yeah.. but wait, we need to deal with the 
+      System.out.println("cmVCombustResultExporting.ccTrigger()::not yet:"
+        +Integer.toString(cmCombustTablePane.getSelectedIndex())
+      );
+      
     }//+++
   };//***
   
@@ -122,9 +157,9 @@ public final class SubMonitorPane implements SiTabbable{
         .get(i+MainPlantModel.C_CTSLOT_CHANNEL_SINGLE));
     }////~
     JTabbedPane lpLeftWing = new JTabbedPane();
-    lpLeftWing.add(VcTranslator.tr("_vact"),lpSlotGroupI);
+    lpLeftWing.add(VcTranslator.tr("_va_ct"),lpSlotGroupI);
     if(MainSpecificator.ccRefer().ccNeedsExtendsCurrentSlot())
-      {lpLeftWing.add(VcTranslator.tr("_rsct"),lpSlotGroupII);}
+      {lpLeftWing.add(VcTranslator.tr("_rs_ct"),lpSlotGroupII);}
     for(ScGauge it : cmLesCurrentCTSlot){
        it.ccSetText(VcTranslator.tr(it.ccGetKey()));
        it.ccSetPercentage(4);//..arbitrary
@@ -192,16 +227,24 @@ public final class SubMonitorPane implements SiTabbable{
     lpWeighPartPane.add(cmDynamicWeighResultTable,BorderLayout.CENTER);
     lpWeighPartPane.add(cmStatisticWeighResultTable,BorderLayout.PAGE_END);
     
+    //-- center pane ** combust ** popup
+    JMenuItem lpVCRExportMI = new JMenuItem("_export");
+    cmVCombustResultMenu.add(lpVCRExportMI);
+    VcSwingCoordinator
+      .ccRegisterAction(lpVCRExportMI, cmVCombustResultExporting);
+    
     //-- center pane ** combust
-    JPanel lpCombustPartPane = ScFactory.ccCreateBorderPanel();
-    /* 6 */JButton dtfmDummy = new JButton("=Dcombust=");
-    dtfmDummy.setPreferredSize(new Dimension(200, 200));
-    lpCombustPartPane.add(dtfmDummy,BorderLayout.CENTER);
+    cmCombustTablePane.addMouseListener(cmVCombustTableClickListener);
+    cmCombustTablePane.add(cmVCombustResultTable,
+      VcTranslator.tr("_v_combust"));
+    cmCombustTablePane.add(new JButton("=R.C="),
+      VcTranslator.tr("_r_combust"));
+    cmCombustTablePane.addMouseListener(cmVCombustTableClickListener);
     
     //-- center pane ** center
     JPanel lpCenterPane = ScFactory.ccCreateBorderPanel();
     lpCenterPane.add(lpWeighPartPane, BorderLayout.CENTER);
-    lpCenterPane.add(lpCombustPartPane, BorderLayout.PAGE_END);
+    lpCenterPane.add(cmCombustTablePane, BorderLayout.PAGE_END);
     
     //-- pack
     cmPane.add(lpLeftWing,BorderLayout.LINE_START);
