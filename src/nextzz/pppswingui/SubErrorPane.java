@@ -55,6 +55,14 @@ public final class SubErrorPane implements SiTabbable{
   
   //===
   
+  public final Runnable cmLoggerRefreshingness = new Runnable() {
+    @Override public void run() {
+      cmLogger.ccRefresh();
+    }//+++
+  };//***
+  
+  //===
+  
   @Override public final void ccInit(){
     
     ScFactory.ccSetupInfoArea(cmDescriptor);

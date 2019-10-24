@@ -40,8 +40,6 @@ public final class MainFileManager {
   
   //=== home
   
-  private String cmRootLocation=null;
-  
   private static final String C_ROOT_MY_MI_XV
     = "C:\\keypadhome\\develop\\nextzz";
   
@@ -49,14 +47,22 @@ public final class MainFileManager {
   
   public static final String
     //-- sub folder
-    C_SUB_BINARIES_FOLDER = "bin",
-    C_SUB_CONFIGS_FOLDER = "cfg",
-    C_SUB_DATAS_FOLDER = "cfg",
-    C_SUB_FONTS_FOLDER = "font",
+    C_SUB_BINARIES_FOLDER   = "bin",
+    C_SUB_CONFIGS_FOLDER    = "cfg",
+    C_SUB_DATAS_FOLDER      = "dat",
+    C_SUB_FONTS_FOLDER      = "font",
     C_SUB_WEIGH_LOGS_FOLDER = "ke",
-    C_SUB_TEMP_LOGS_FOLDER = "trd",
-    C_SUB_ERR_LOGS_FOLDER = "err"
-    //-- file name
+    C_SUB_TEMP_LOGS_FOLDER  = "trd",
+    C_SUB_ERR_LOGS_FOLDER   = "err",
+    //-- import file name
+    //[todo]::..
+    //-- export file name
+    C_EXP_WEIGHING = "ke",
+    C_EXP_TRD_V    = "vtrd",
+    C_EXP_TRD_R    = "rtrd",
+    //-- text extension
+    C_TYPE_INI = ".ini",
+    C_TYPE_CSV = ".csv"
   ;//...
   
   //===
@@ -77,26 +83,58 @@ public final class MainFileManager {
   
   //===
   
-  private File cmFontFile=null;
+  private boolean cmValidity=true;
+  private File cmRootDirectory = null;
+  private File cmFontFile = null;
+  private File cmTrendExportDirectory = null;
   
   public final void ccInit(){
     
-    //[todo]::validate root folder
-    ssValidateFontFile();
+    cmValidity&=ssValidateRootLocation();
+    cmValidity&=ssValidateFontFile();
     //[todo]::validate configfile
     //[todo]::validate ...
     
   }//++!
   
-  private void ssValidateRootLocation(){
+  private boolean ssValidateRootLocation(){
     
-    //[head]:: now what??
-  
+    //-- bubble
+    String lpRes=null;
+    String[] lpNeccesity=new String[]{
+      C_SUB_BINARIES_FOLDER,
+      C_SUB_CONFIGS_FOLDER,
+      C_SUB_DATAS_FOLDER,
+      C_SUB_FONTS_FOLDER,
+      C_SUB_WEIGH_LOGS_FOLDER,
+      C_SUB_TEMP_LOGS_FOLDER,
+      C_SUB_ERR_LOGS_FOLDER
+    };
+    boolean lpValidity=false;
+    for(String it:new String[]{
+      VcConst.C_V_PWD,
+      C_ROOT_MY_MI_XV
+    }){
+      File lpSub=new File(it);
+      lpValidity|=McConst.ccVerifyFolder(lpSub, lpNeccesity);
+      if(lpValidity){
+        lpRes=it;
+        break;
+      }//..?
+    }//..~
+    if(!lpValidity){return false;}
+    
+    //-- apply
+    cmRootDirectory=new File(lpRes);
+    cmTrendExportDirectory=new File(cmRootDirectory.getAbsolutePath()
+      + VcConst.C_V_PATHSEP+C_SUB_TEMP_LOGS_FOLDER);
+    return true;
+    
   }//+++
   
-  private void ssValidateFontFile(){
+  private boolean ssValidateFontFile(){
     
-    //--
+    //-- bubble 
     boolean lpOK=false;
     for(String it:new String[]{
       C_LOCAL_FONT_MY_MAC_XI,
@@ -109,32 +147,37 @@ public final class MainFileManager {
       if(lpOK){break;}
     }//..~
     
-    //--
-    if(lpOK){
-      /* 4 */VcConst.ccPrintln("MainFileManager.ssValidateFontFile()::"
-        +"loadted file",cmFontFile.getName());
-    }else{
-      /* 4 */VcConst.ccPrintln("MainFileManager.ssValidateFontFile()::"
+    //-- report
+    if(!lpOK){
+      /* 4 */VcConst.ccLogln("MainFileManager.ssValidateFontFile()::"
         +"failed to verify file for loading");
       cmFontFile=null;
-      return; 
-    }//..!
+      return false;
+    }//..?
+    /* 4 */VcConst.ccLogln("MainFileManager.ssValidateFontFile()::"
+      +"loadted file",cmFontFile.getName());
     
-    //--
-    if(cmFontFile.length()<=9999999l){
-      /* 4 */VcConst.ccPrintln("MainFileManager.ssValidateFontFile()::"
-        +"file length",cmFontFile.length());
-    }else{
-      /* 4 */VcConst.ccPrintln("MainFileManager.ssValidateFontFile()::"
+    //-- length
+    if(cmFontFile.length()>9999999l){
+      /* 4 */VcConst.ccLogln("MainFileManager.ssValidateFontFile()::"
         +"refuse file larger than 9999kB");
       cmFontFile=null;
-      return; 
+      return false; 
     }//..?
+    
+    //-- 
+    /* 4 */VcConst.ccLogln("MainFileManager.ssValidateFontFile()::"
+      +"file length",cmFontFile.length());
+    return true;
     
   }//+++
   
   //===
   
+  public final boolean ccIsValid(){return cmValidity;}//++>
+  
   public final File ccGetFontFile(){return cmFontFile;}//++>
   
- }//***eof
+  public final File ccGetTrendDirectory(){return cmTrendExportDirectory;}//++>
+  
+}//***eof

@@ -27,7 +27,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import javax.swing.JButton;
-import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
@@ -41,6 +40,7 @@ import kosui.pppswingui.ScConst;
 import kosui.pppswingui.ScFactory;
 import kosui.pppswingui.ScGauge;
 import kosui.pppswingui.ScTable;
+import kosui.ppputil.VcConst;
 import kosui.ppputil.VcSwingCoordinator;
 import kosui.ppputil.VcTranslator;
 import nextzz.pppmodel.MainPlantModel;
@@ -120,24 +120,31 @@ public final class SubMonitorPane implements SiTabbable{
   
   private final JTabbedPane cmCombustTablePane = new JTabbedPane();;
   
-  public final JPopupMenu cmVCombustResultMenu = new JPopupMenu();
+  public final JPopupMenu cmCombustResultMenu = new JPopupMenu();
   
-  private final MouseAdapter cmVCombustTableClickListener = new MouseAdapter(){
+  private final MouseAdapter cmCombustTableClickListener = new MouseAdapter(){
     @Override public void mouseReleased(MouseEvent me) {
       if(me.isPopupTrigger()){
-        cmVCombustResultMenu.show(me.getComponent(), me.getX(), me.getY());
+        cmCombustResultMenu.show(me.getComponent(), me.getX(), me.getY());
       }//..?
     }//+++
   };//***
   
-  public final EiTriggerable cmVCombustResultExporting = new EiTriggerable(){
+  public final EiTriggerable cmCombustResultExporting = new EiTriggerable(){
     @Override public void ccTrigger() {
-      
-      //[head]::yeah.. but wait, we need to deal with the 
-      System.out.println("cmVCombustResultExporting.ccTrigger()::not yet:"
-        +Integer.toString(cmCombustTablePane.getSelectedIndex())
-      );
-      
+      int lpSelectedIndex = cmCombustTablePane.getSelectedIndex();
+      /* 4 */VcConst.ccLogln("cmCombustResultExporting::tab:", lpSelectedIndex);
+      switch (lpSelectedIndex) {
+        case 0:
+          SubVCombustStaticManager.ccRefer().ccExportAndClear();
+        break;
+        case 1:
+          System.err.println("cmCombustResultExporting::RC_not_yet");
+        break;
+        default:
+          System.err.println("cmCombustResultExporting::unreachable_error");
+        break;
+      }//...?
     }//+++
   };//***
   
@@ -228,18 +235,18 @@ public final class SubMonitorPane implements SiTabbable{
     lpWeighPartPane.add(cmStatisticWeighResultTable,BorderLayout.PAGE_END);
     
     //-- center pane ** combust ** popup
-    JMenuItem lpVCRExportMI = new JMenuItem("_export");
-    cmVCombustResultMenu.add(lpVCRExportMI);
+    JMenuItem lpVCRExportMI=new JMenuItem(VcTranslator.tr("_export_n_clear"));
+    cmCombustResultMenu.add(lpVCRExportMI);
     VcSwingCoordinator
-      .ccRegisterAction(lpVCRExportMI, cmVCombustResultExporting);
+      .ccRegisterAction(lpVCRExportMI, cmCombustResultExporting);
     
     //-- center pane ** combust
-    cmCombustTablePane.addMouseListener(cmVCombustTableClickListener);
+    cmCombustTablePane.addMouseListener(cmCombustTableClickListener);
     cmCombustTablePane.add(cmVCombustResultTable,
       VcTranslator.tr("_v_combust"));
     cmCombustTablePane.add(new JButton("=R.C="),
       VcTranslator.tr("_r_combust"));
-    cmCombustTablePane.addMouseListener(cmVCombustTableClickListener);
+    cmCombustTablePane.addMouseListener(cmCombustTableClickListener);
     
     //-- center pane ** center
     JPanel lpCenterPane = ScFactory.ccCreateBorderPanel();
@@ -255,7 +262,7 @@ public final class SubMonitorPane implements SiTabbable{
   @Override public final String ccGetTitle() {
     return C_TAB_NAME;
   }//++>
-
+  
   @Override public final JPanel ccGetPane() {
     return cmPane;
   }//++>

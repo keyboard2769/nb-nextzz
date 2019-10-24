@@ -19,19 +19,26 @@
 
 package nextzz.pppmodel;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
+import javax.swing.SwingUtilities;
 import kosui.pppmodel.McTableAdapter;
+import kosui.pppmodel.McTextFileExporter;
+import kosui.ppputil.VcConst;
 import kosui.ppputil.VcStampUtility;
 import kosui.ppputil.VcTranslator;
+import nextzz.pppswingui.ConstSwingUI;
+import nextzz.pppswingui.SubErrorPane;
 
 public final class SubVCombustStaticManager extends McTableAdapter{
   
-  public static final int C_CAPACITY_SIZE = 32;//.. supposedly 512 on the roll
-  public static final int C_CAPACITY_MASK = 31;//.. supposedly 511 on the roll
-
+  public static final int C_CAPACITY_SIZE = 16;//.. supposedly 512 on the roll
+  public static final int C_CAPACITY_MASK = 15;//.. supposedly 511 on the roll
+  
   private static final SubVCombustStaticManager SELF
     = new SubVCombustStaticManager();
   public static final SubVCombustStaticManager ccRefer(){return SELF;}//+++
@@ -106,6 +113,14 @@ public final class SubVCombustStaticManager extends McTableAdapter{
         default:return "<?>";
       }//...?
     }//++>
+    final String ccToCSVRow(){
+      StringBuilder lpRes = new StringBuilder(ccGetColumnContent(0));
+      for(int i=1;i<=6;i++){
+        lpRes.append(',');
+        lpRes.append(ccGetColumnContent(i));
+      }//..~
+      return "<rec>,"+lpRes.toString();
+    }//++>
   }//***
   
   private final List<McVCombustRecord> cmListOfRecord
@@ -116,8 +131,11 @@ public final class SubVCombustStaticManager extends McTableAdapter{
     int pxTHI,int pxTHII, int pxTHIII, int pxTHIV
   ){
     if(cmListOfRecord.size()>=C_CAPACITY_MASK){
-      ssClearData();
-      ssExportData();
+      //[tofix]::..so..is this safea actually? .. what if it collapse
+      ccExportAndClear();
+      SubErrorPane.ccRefer().cmLogger
+        .ccWriteln(VcTranslator.tr("_m_vcr_size_reached"),C_CAPACITY_SIZE);
+      SwingUtilities.invokeLater(SubErrorPane.ccRefer().cmLoggerRefreshingness);
     }//..?
     cmListOfRecord.add(new McVCombustRecord(
       pxVE, pxVB,
@@ -125,12 +143,48 @@ public final class SubVCombustStaticManager extends McTableAdapter{
     ));
   }//+++
   
+  synchronized public final void ccExportAndClear(){
+    ssExportData();
+    ssClearData();
+  }//+++
+  
   private void ssClearData(){
     cmListOfRecord.clear();
   }//+++
   
   private void ssExportData(){
-    System.err.println(".SubVCombustStaticManager.ssExportData()::not_yet!");
+    
+    //-- check in
+    if(cmListOfRecord.isEmpty()){
+      SwingUtilities.invokeLater(ConstSwingUI.O_TREND_EMPTY_WARNINGNESS);
+      return;
+    }//..?
+    if(MainFileManager.ccRefer().ccGetTrendDirectory()==null){
+      SwingUtilities.invokeLater(ConstSwingUI.O_IMPOSSIBLE_WARNINGNESS);
+      return;
+    }//..?
+    
+    //-- make file
+    File lpFile=new File(
+      MainFileManager.ccRefer().ccGetTrendDirectory().getAbsoluteFile()
+       + VcConst.C_V_PATHSEP
+       + MainFileManager.C_EXP_TRD_V
+       + VcStampUtility.ccFileNameTypeVI()
+       + MainFileManager.C_TYPE_CSV
+    );
+    
+    //-- make data
+    LinkedList<String> lpData = new LinkedList<String>();
+    lpData.add("#type,time,chute['c],entrance['c],pipe['c],sand['c],"
+      + "vexfan[%],vbfan[%]");//[todo]::..how do we fix this??
+    for(McVCombustRecord it : cmListOfRecord){
+      lpData.add(it.ccToCSVRow());
+    }//..~
+    
+    //-- export
+    new McTextFileExporter(lpFile, lpData)
+      .execute();//[todo]::..how do we report the failure?
+    
   }//+++
   
   //===

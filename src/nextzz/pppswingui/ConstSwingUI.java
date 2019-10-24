@@ -23,16 +23,27 @@ import kosui.ppplocalui.EcConst;
 import kosui.pppmodel.MiPixillatable;
 import kosui.pppswingui.ScConst;
 import kosui.pppswingui.ScIcon;
-import kosui.ppputil.VcConst;
 import kosui.ppputil.VcTranslator;
 
 public final class ConstSwingUI {
   
   public static final ScIcon O_WINDOW_ICON = new ScIcon();
   
+  public static final Runnable O_IMPOSSIBLE_WARNINGNESS = new Runnable() {
+    @Override public void run() {
+      ScConst.ccErrorBox(VcTranslator.tr("_m_unreachable_error"));
+    }//+++
+  };//***
+  
   public static final Runnable O_WEIGH_UNREADY_WARNINGNESS = new Runnable() {
     @Override public void run() {
       ScConst.ccErrorBox(VcTranslator.tr("_m_auto_weigh_not_ready"));
+    }//+++
+  };//***
+  
+  public static final Runnable O_TREND_EMPTY_WARNINGNESS = new Runnable() {
+    @Override public void run() {
+      ScConst.ccErrorBox(VcTranslator.tr("_m_no_trend_data"));
     }//+++
   };//***
   

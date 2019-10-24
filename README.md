@@ -37,7 +37,7 @@ but hey, dose it sounds stupid if you read it DOUBLE-ZEUS ??
 
 #### heading
 
-- [ ] $ the log and file stuff
+- [ ] $ weigh result logging and before-quitting stuff
 
 #### last
 
@@ -50,5 +50,6 @@ but hey, dose it sounds stupid if you read it DOUBLE-ZEUS ??
 - [x] $ let the dynamic weigh result table shine
 - [x] $ added the "linear setting" to THE list
 - [x] $ the zero adjusting stuff works now more than likely
+- [x] $ partly did the TRD logging and root verifying stuff
 
 <hr><!--EOF-->

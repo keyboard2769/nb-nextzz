@@ -170,7 +170,7 @@ public final class SubWeighStatisticManager extends McTableAdapter{
   }//+++
   
   //[todo]:: % cleardata
-  //[todo]:: % exportdata
+  //[head]:: % exportdata
   
   //===
   

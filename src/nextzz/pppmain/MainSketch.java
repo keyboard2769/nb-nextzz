@@ -307,11 +307,17 @@ public class MainSketch extends PApplet{
       (MainSketch.class.getResourceAsStream("/nextzz/pppresource/tr.xml"));
     /* 7 */VcTranslator.ccGetInstance().ccSetMode('c');//..later!
     if(!(lpIsCSVxOK&&lpIsXMLxOK)){
-      ScConst.ccMessage("faild to laod text resource from archiver.");
+      ScConst.ccMessage("faild to laod text resource from archiver!");
     }//..?
     
     //-- file finding
     MainFileManager.ccRefer().ccInit();
+    if(!MainFileManager.ccRefer().ccIsValid()){
+      ScConst.ccMessage("faild to validate home directory!");
+      System.exit(-1);
+    }//..?
+    
+    //-- locale applying
     if(MainFileManager.ccRefer().ccGetFontFile()==null){
       VcTranslator.ccGetInstance().ccSetMode('e');
     }//..?
@@ -367,7 +373,7 @@ public class MainSketch extends PApplet{
   }//+++
   
   public static final String ccGetLastLeavingStamp(){
-    return "_1910231619";
+    return "_1910241625";
   }//+++
 
 }//***eof
