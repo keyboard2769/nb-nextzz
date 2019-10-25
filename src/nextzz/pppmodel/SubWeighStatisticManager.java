@@ -19,13 +19,20 @@
 
 package nextzz.pppmodel;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
+import javax.swing.SwingUtilities;
 import kosui.pppmodel.McTableAdapter;
+import kosui.pppmodel.McTextFileExporter;
+import kosui.ppputil.VcConst;
 import kosui.ppputil.VcStampUtility;
 import kosui.ppputil.VcTranslator;
+import nextzz.pppswingui.ConstSwingUI;
+import nextzz.pppswingui.SubErrorPane;
 
 public final class SubWeighStatisticManager extends McTableAdapter{
   
@@ -153,24 +160,107 @@ public final class SubWeighStatisticManager extends McTableAdapter{
         default:return "<?>";
       }//...?
     }//++>
+    final String ccToCSVRow(){
+      StringBuilder lpRes = new StringBuilder(ccGetColumnContent(0));
+      lpRes.append(',');lpRes.append(ccGetColumnContent(1));
+      lpRes.append(',');lpRes.append(ccGetColumnContent(2));
+      lpRes.append(',');lpRes.append(ccGetColumnContent(3));
+      for(int i=MainPlantModel.C_MATT_AGGR_GENERAL_MASK;
+              i>=MainPlantModel.C_MATT_AGGR_UI_VALID_HEAD;i--){
+        lpRes.append(',');
+        lpRes.append(Float.toString(cmDesAGResultKG[i]));
+      }//..~
+      for(int i=MainPlantModel.C_MATT_REST_GENERAL_MASK;
+              i>=MainPlantModel.C_MATT_REST_UI_VALID_HEAD;i--){
+        lpRes.append(',');
+        lpRes.append(Float.toString(cmDesFRResultKG[i]));
+      }//..~
+      for(int i=MainPlantModel.C_MATT_REST_GENERAL_MASK;
+              i>=MainPlantModel.C_MATT_REST_UI_VALID_HEAD;i--){
+        lpRes.append(',');
+        lpRes.append(Float.toString(cmDesASResultKG[i]));
+      }//..~
+      for(int i=MainPlantModel.C_MATT_REST_GENERAL_MASK;
+              i>=MainPlantModel.C_MATT_REST_UI_VALID_HEAD;i--){
+        lpRes.append(',');
+        lpRes.append(Float.toString(cmDesRCResultKG[i]));
+      }//..~
+      for(int i=MainPlantModel.C_MATT_REST_GENERAL_MASK;
+              i>=MainPlantModel.C_MATT_REST_UI_VALID_HEAD;i--){
+        lpRes.append(',');
+        lpRes.append(Float.toString(cmDesADResultKG[i]));
+      }//..~
+      return "<not_yet>,"+lpRes.toString();
+    }//++>
   }//***
   
-  private final List<McWeighRecord> cmLesRecord 
+  private final List<McWeighRecord> cmListOfRecord 
     = new ArrayList<McWeighRecord>(C_CAPACITY_SIZE);
   
   public final void ccLogRecord(
       int pxRecipe, float pxMixtrueTemp,
       float[] pxPacked
   ){
+    if(cmListOfRecord.size()>=C_CAPACITY_MASK){
+      ccExportAndClear();
+      SubErrorPane.ccWriteln(VcTranslator
+        .tr("_m_wrr_size_reached"), C_CAPACITY_SIZE);
+    }//+++
     float lpSum
       = pxPacked[ 0]+pxPacked[ 8]+pxPacked[ 12]
       + pxPacked[16]+pxPacked[20];
-    cmLesRecord
+    cmListOfRecord
       .add(new McWeighRecord(pxRecipe, pxMixtrueTemp, lpSum, pxPacked));
   }//+++
   
-  //[todo]:: % cleardata
-  //[head]:: % exportdata
+  synchronized public final void ccExportAndClear(){
+    ssExportData();
+    ssClearData();
+  }//+++
+  
+  private void ssClearData(){
+    cmListOfRecord.clear();
+  }//+++
+  
+  private void ssExportData(){
+    
+    //-- check in
+    if(cmListOfRecord.isEmpty()){
+      SwingUtilities.invokeLater(ConstSwingUI.O_TREND_EMPTY_WARNINGNESS);
+      return;
+    }//..?
+    if(MainFileManager.ccRefer().ccGetTrendExportDirectory()==null){
+      SwingUtilities.invokeLater(ConstSwingUI.O_IMPOSSIBLE_WARNINGNESS);
+      return;
+    }//..?
+    
+    //-- make file
+    File lpFile=new File(
+      MainFileManager.ccRefer().ccGetWeighExportDirectory().getAbsoluteFile()
+       + VcConst.C_V_PATHSEP
+       + MainFileManager.C_EXP_WEIGHING
+       + VcStampUtility.ccFileNameTypeVI()
+       + MainFileManager.C_TYPE_CSV
+    );
+    
+    //-- make data
+    LinkedList<String> lpData = new LinkedList<String>();
+    lpData.add("#type,time,recipe,mixer-t,total,"
+      + "ag7,ag6,ag5,ag4,ag3,ag2,ag1,"
+      + "fr3,fr2,fr1,"
+      + "as3,as2,as1,"
+      + "rc3,rc2,rc1,"
+      + "ad3,ad2,ad1"
+    );//[todo]::..how do we fix this??
+    for(McWeighRecord it : cmListOfRecord){
+      lpData.add(it.ccToCSVRow());
+    }//..~
+    
+    //-- export
+    new McTextFileExporter(lpFile, lpData)
+      .execute();//[todo]::..how do we report the failure?
+    
+  }//+++
   
   //===
   
@@ -183,11 +273,11 @@ public final class SubWeighStatisticManager extends McTableAdapter{
   }//++>
   
   @Override public int getRowCount() {
-    return cmLesRecord.size();
+    return cmListOfRecord.size();
   }//++>
   
   @Override public Object getValueAt(int pxRowIndex, int pxColumnIndex) {
-    return cmLesRecord.get(pxRowIndex).ccGetColumnContent(pxColumnIndex);
+    return cmListOfRecord.get(pxRowIndex).ccGetColumnContent(pxColumnIndex);
   }//++>
 
 }//***eof

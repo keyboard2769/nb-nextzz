@@ -127,6 +127,7 @@ public class MainSketch extends PApplet{
       (SubMixerGroup.ccRefer());//.. might depends on weigher group
     
     //-- swing ui group
+    ScConst.ccSetOwner(this);
     SwingUtilities.invokeLater
       (MainWindow.ccRefer().cmInitiating);
     SwingUtilities.invokeLater
@@ -373,7 +374,7 @@ public class MainSketch extends PApplet{
   }//+++
   
   public static final String ccGetLastLeavingStamp(){
-    return "_1910241625";
+    return "_1910251625";
   }//+++
 
 }//***eof

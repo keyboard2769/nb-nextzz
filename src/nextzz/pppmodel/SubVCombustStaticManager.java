@@ -133,9 +133,8 @@ public final class SubVCombustStaticManager extends McTableAdapter{
     if(cmListOfRecord.size()>=C_CAPACITY_MASK){
       //[tofix]::..so..is this safea actually? .. what if it collapse
       ccExportAndClear();
-      SubErrorPane.ccRefer().cmLogger
-        .ccWriteln(VcTranslator.tr("_m_vcr_size_reached"),C_CAPACITY_SIZE);
-      SwingUtilities.invokeLater(SubErrorPane.ccRefer().cmLoggerRefreshingness);
+      SubErrorPane.ccWriteln(VcTranslator
+        .tr("_m_vcr_size_reached"), C_CAPACITY_SIZE);
     }//..?
     cmListOfRecord.add(new McVCombustRecord(
       pxVE, pxVB,
@@ -159,14 +158,14 @@ public final class SubVCombustStaticManager extends McTableAdapter{
       SwingUtilities.invokeLater(ConstSwingUI.O_TREND_EMPTY_WARNINGNESS);
       return;
     }//..?
-    if(MainFileManager.ccRefer().ccGetTrendDirectory()==null){
+    if(MainFileManager.ccRefer().ccGetTrendExportDirectory()==null){
       SwingUtilities.invokeLater(ConstSwingUI.O_IMPOSSIBLE_WARNINGNESS);
       return;
     }//..?
     
     //-- make file
     File lpFile=new File(
-      MainFileManager.ccRefer().ccGetTrendDirectory().getAbsoluteFile()
+      MainFileManager.ccRefer().ccGetTrendExportDirectory().getAbsolutePath()
        + VcConst.C_V_PATHSEP
        + MainFileManager.C_EXP_TRD_V
        + VcStampUtility.ccFileNameTypeVI()

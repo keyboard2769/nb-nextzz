@@ -19,9 +19,11 @@
 
 package nextzz.pppswingui;
 
+import com.sun.org.apache.xerces.internal.impl.dtd.models.CMLeaf;
 import java.awt.BorderLayout;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
+import javax.swing.SwingUtilities;
 import kosui.pppswingui.ScFactory;
 import kosui.pppswingui.ScList;
 import kosui.pppswingui.ScStoker;
@@ -73,12 +75,26 @@ public final class SubErrorPane implements SiTabbable{
     
   }//..!
   
+  //===
+  
   @Override public final String ccGetTitle() {
     return C_TAB_NAME;
   }//+++
 
   @Override public final JPanel ccGetPane() {
     return cmPane;
+  }//+++
+  
+  //===
+  
+  public static final void ccWriteln(String pxLine){
+    SELF.cmLogger.ccWriteln(pxLine);
+    SwingUtilities.invokeLater(SELF.cmLoggerRefreshingness);
+  }//+++
+  
+  public static final void ccWriteln(String pxTag, Object pxValue){
+    SELF.cmLogger.ccWriteln(pxTag, pxValue);
+    SwingUtilities.invokeLater(SELF.cmLoggerRefreshingness);
   }//+++
   
  }//***eof

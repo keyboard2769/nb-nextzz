@@ -101,6 +101,7 @@ public final class MainWindow {
       
       //-- style
       ScConst.ccApplyLookAndFeel(0, false);
+      ScConst.ccApplyModifiedColorTheme();
 
       //-- init 
       cmWindow.ccInit(MainSketch.C_WARE_TITLE, ScConst.C_DARK_GREEN);

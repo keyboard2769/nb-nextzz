@@ -87,6 +87,7 @@ public final class MainFileManager {
   private File cmRootDirectory = null;
   private File cmFontFile = null;
   private File cmTrendExportDirectory = null;
+  private File cmWeighExportDirectory = null;
   
   public final void ccInit(){
     
@@ -127,7 +128,9 @@ public final class MainFileManager {
     //-- apply
     cmRootDirectory=new File(lpRes);
     cmTrendExportDirectory=new File(cmRootDirectory.getAbsolutePath()
-      + VcConst.C_V_PATHSEP+C_SUB_TEMP_LOGS_FOLDER);
+     + VcConst.C_V_PATHSEP+C_SUB_TEMP_LOGS_FOLDER);
+    cmWeighExportDirectory=new File(cmRootDirectory.getAbsolutePath()
+     + VcConst.C_V_PATHSEP+C_SUB_WEIGH_LOGS_FOLDER);
     return true;
     
   }//+++
@@ -174,10 +177,20 @@ public final class MainFileManager {
   
   //===
   
-  public final boolean ccIsValid(){return cmValidity;}//++>
+  public final boolean ccIsValid(){
+    return cmValidity;
+  }//++>
   
-  public final File ccGetFontFile(){return cmFontFile;}//++>
+  public final File ccGetFontFile(){
+    return cmFontFile;
+  }//++>
   
-  public final File ccGetTrendDirectory(){return cmTrendExportDirectory;}//++>
+  public final File ccGetTrendExportDirectory(){
+    return cmTrendExportDirectory;
+  }//++>
+  
+  public final File ccGetWeighExportDirectory(){
+    return cmWeighExportDirectory;
+  }//+++>
   
 }//***eof
