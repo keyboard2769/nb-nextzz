@@ -43,6 +43,9 @@ public final class MainFileManager {
   private static final String C_ROOT_MY_MI_XV
     = "C:\\keypadhome\\develop\\nextzz";
   
+  private static final String C_ROOT_MY_MAC_XIII
+    = "/Users/Keypad/Yard/_temp/nextZZ";
+  
   //=== folder
   
   public static final String
@@ -114,7 +117,8 @@ public final class MainFileManager {
     boolean lpValidity=false;
     for(String it:new String[]{
       VcConst.C_V_PWD,
-      C_ROOT_MY_MI_XV
+      C_ROOT_MY_MI_XV,
+      C_ROOT_MY_MAC_XIII
     }){
       File lpSub=new File(it);
       lpValidity|=McConst.ccVerifyFolder(lpSub, lpNeccesity);
@@ -123,7 +127,12 @@ public final class MainFileManager {
         break;
       }//..?
     }//..~
-    if(!lpValidity){return false;}
+    if(!lpValidity){
+      System.err.
+        println("nextzz.pppmodel.MainFileManager.ssValidateRootLocation()::"
+          + "fail_in_bubble");
+      return false;
+    }//..?
     
     //-- apply
     cmRootDirectory=new File(lpRes);

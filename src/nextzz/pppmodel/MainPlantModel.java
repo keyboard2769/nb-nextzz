@@ -100,14 +100,7 @@ public final class MainPlantModel {
   
   //-- v combust
   public final ZcRangedValueModel cmVCombustLogINTV
-    = new ZcRangedValueModel(0, 32);
-  public final Runnable cmVCombustResultTableRefreshing
-    = new Runnable() {
-    @Override public void run() {
-      SubMonitorPane.ccRefer().cmVCombustResultTable.ccRefresh();
-      ScConst.ccScrollToLast(SubMonitorPane.ccRefer().cmVCombustResultTable);
-    }//+++
-  };//***
+    = new ZcRangedValueModel(0, 16*15);
   
   //-- zero
   
@@ -171,7 +164,8 @@ public final class MainPlantModel {
           SubAnalogScalarManager.ccRefer().cmDesThermoCelcius
             .ccGet(SubAnalogScalarManager.C_I_THIV_SAND)
         );
-        SwingUtilities.invokeLater(cmVCombustResultTableRefreshing);
+        SwingUtilities.invokeLater(SubMonitorPane
+          .ccRefer().cmVCombustResultTableRefreshingness);
       }//..?
     }//..?
   

@@ -85,7 +85,7 @@ public final class MainWindow {
   
   private int cmInitX=100, cmInitY=100;
     
-  public final ScTitledWindow cmWindow=new ScTitledWindow(null);
+  public final ScTitledWindow cmWindow = new ScTitledWindow();
   
   public final JButton cmQuitButton
     = new JButton(VcTranslator.tr("_quit"));
@@ -103,7 +103,7 @@ public final class MainWindow {
       ScConst.ccApplyLookAndFeel(0, false);
       ScConst.ccApplyModifiedColorTheme();
 
-      //-- init 
+      //-- init
       cmWindow.ccInit(MainSketch.C_WARE_TITLE, ScConst.C_DARK_GREEN);
       
       //-- content

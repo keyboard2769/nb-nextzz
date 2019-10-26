@@ -33,6 +33,7 @@ import kosui.ppputil.VcStampUtility;
 import kosui.ppputil.VcTranslator;
 import nextzz.pppswingui.ConstSwingUI;
 import nextzz.pppswingui.SubErrorPane;
+import nextzz.pppswingui.SubMonitorPane;
 
 public final class SubWeighStatisticManager extends McTableAdapter{
   
@@ -190,7 +191,7 @@ public final class SubWeighStatisticManager extends McTableAdapter{
         lpRes.append(',');
         lpRes.append(Float.toString(cmDesADResultKG[i]));
       }//..~
-      return "<not_yet>,"+lpRes.toString();
+      return "<rec>,"+lpRes.toString();
     }//++>
   }//***
   
@@ -216,6 +217,8 @@ public final class SubWeighStatisticManager extends McTableAdapter{
   synchronized public final void ccExportAndClear(){
     ssExportData();
     ssClearData();
+    SwingUtilities.invokeLater(SubMonitorPane
+      .ccRefer().cmWeighResultTableRefreshingness);
   }//+++
   
   private void ssClearData(){

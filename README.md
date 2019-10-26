@@ -29,7 +29,6 @@ but hey, dose it sounds stupid if you read it DOUBLE-ZEUS ??
 - [ ] $ maybe we need to let the feeder speed box send manual pulse
 - [ ] $ over sized stuff should get located near the sixth bin
 - [ ] $ fill v provision and combust motor load factor
-- [ ] $ move feeder assistance switch to feeder pane
 - [ ] $ feeder flux setting representation needs another floating point
 - [ ] $ current slot overwhelming color and setting
 - [ ] $ complete the error list and log mechanism
@@ -37,11 +36,11 @@ but hey, dose it sounds stupid if you read it DOUBLE-ZEUS ??
 
 #### heading
 
-- [ ] $ weigh result logging and before-quitting stuff
+- [ ] $ reclaim the notch and toggle stuff
+- [ ] $ move feeder assistance switch to feeder pane
 
 #### last
 
-- [x] $ local inputtive box color is preferred to dark orange .. cool yeah
 - [x] $ fixed final batch display cleaning thing aka the name box problem
 - [x] $ flag manipulating action needs pulse control actually
 - [x] $ the mixer content pl can flash now .. and it s out of control ! 
@@ -51,5 +50,6 @@ but hey, dose it sounds stupid if you read it DOUBLE-ZEUS ??
 - [x] $ added the "linear setting" to THE list
 - [x] $ the zero adjusting stuff works now more than likely
 - [x] $ partly did the TRD logging and root verifying stuff
+- [x] $ partly did the weigh logging and export-before-quitting stuff
 
 <hr><!--EOF-->

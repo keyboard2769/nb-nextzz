@@ -449,7 +449,7 @@ public final class SubWeighControlManager {
       SubWeighDynamicManager.ccRefer().ccDumpResult()
     );
     SwingUtilities.invokeLater(SubMonitorPane.ccRefer()
-      .cmStatisticWeighResultTableRefreshing);
+      .cmWeighResultTableRefreshingness);
   }//+++
   
   private void ssDecrementBatchCounter(){

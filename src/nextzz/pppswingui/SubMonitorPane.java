@@ -94,10 +94,14 @@ public final class SubMonitorPane implements SiTabbable{
   public final JButton cmPrintButton
     = new JButton(VcTranslator.tr("_print"));
   
-  public final JTextField cmFRWeigherStatePL = ScFactory.ccCreateTextLamp("[-:-]");
-  public final JTextField cmAGWeigherStatePL = ScFactory.ccCreateTextLamp("[-:-]");
-  public final JTextField cmASWeigherStatePL = ScFactory.ccCreateTextLamp("[-:-]");
-  public final JTextField cmMixerStatePL = ScFactory.ccCreateTextLamp("[-:-]");
+  public final JTextField cmFRWeigherStatePL
+    = ScFactory.ccCreateTextLamp("[-:-]");
+  public final JTextField cmAGWeigherStatePL
+    = ScFactory.ccCreateTextLamp("[-:-]");
+  public final JTextField cmASWeigherStatePL
+    = ScFactory.ccCreateTextLamp("[-:-]");
+  public final JTextField cmMixerStatePL
+    = ScFactory.ccCreateTextLamp("[-:-]");
   
   public final ScTable cmDynamicWeighResultTable
     = new ScTable(SubWeighDynamicManager.ccRefer(),80,80);
@@ -108,7 +112,8 @@ public final class SubMonitorPane implements SiTabbable{
   public final ScTable cmVCombustResultTable
     = new ScTable(SubVCombustStaticManager.ccRefer(), 180, 180);
   
-  public final Runnable cmStatisticWeighResultTableRefreshing=new Runnable(){
+  public final Runnable cmWeighResultTableRefreshingness
+    =new Runnable(){
     @Override public void run() {
       SubMonitorPane.ccRefer().cmStatisticWeighResultTable.ccRefresh();
       ScConst.ccScrollToLast(SubMonitorPane.ccRefer()
@@ -116,15 +121,23 @@ public final class SubMonitorPane implements SiTabbable{
     }//+++
   };//***
   
+  public final Runnable cmVCombustResultTableRefreshingness
+    = new Runnable() {
+    @Override public void run() {
+      SubMonitorPane.ccRefer().cmVCombustResultTable.ccRefresh();
+      ScConst.ccScrollToLast(SubMonitorPane.ccRefer().cmVCombustResultTable);
+    }//+++
+  };//***
+  
   //=== *popup ** v combust result
   
-  private final JTabbedPane cmCombustTablePane = new JTabbedPane();;
+  private final JTabbedPane cmCombustResultPane = new JTabbedPane();;
   
-  public final JPopupMenu cmCombustResultMenu = new JPopupMenu();
+  private  final JPopupMenu cmCombustResultMenu = new JPopupMenu();
   
-  private final MouseAdapter cmCombustTableClickListener = new MouseAdapter(){
+  private final MouseAdapter cmCombustResultClickListener = new MouseAdapter(){
     @Override public void mouseReleased(MouseEvent me) {
-      if(me.isPopupTrigger()){
+      if(me.isPopupTrigger() || (me.getButton()!=MouseEvent.BUTTON1)){
         cmCombustResultMenu.show(me.getComponent(), me.getX(), me.getY());
       }//..?
     }//+++
@@ -132,7 +145,7 @@ public final class SubMonitorPane implements SiTabbable{
   
   public final EiTriggerable cmCombustResultExporting = new EiTriggerable(){
     @Override public void ccTrigger() {
-      int lpSelectedIndex = cmCombustTablePane.getSelectedIndex();
+      int lpSelectedIndex = cmCombustResultPane.getSelectedIndex();
       /* 4 */VcConst.ccLogln("cmCombustResultExporting::tab:", lpSelectedIndex);
       switch (lpSelectedIndex) {
         case 0:
@@ -145,6 +158,24 @@ public final class SubMonitorPane implements SiTabbable{
           System.err.println("cmCombustResultExporting::unreachable_error");
         break;
       }//...?
+    }//+++
+  };//***
+  
+  //=== *popup ** w statistic result
+  
+  private final JPopupMenu cmWeighResultMenu = new JPopupMenu();
+  
+  private final MouseAdapter cmWeighResultClickListener = new MouseAdapter() {
+    @Override public void mouseReleased(MouseEvent me){
+      if(me.isPopupTrigger() || (me.getButton()!=MouseEvent.BUTTON1)){
+        cmWeighResultMenu.show(me.getComponent(), me.getX(), me.getY());
+      }//..?
+    }//+++
+  };//***
+  
+  public final EiTriggerable cmWeighResultExporting = new EiTriggerable() {
+    @Override public void ccTrigger(){
+      SubWeighStatisticManager.ccRefer().ccExportAndClear();
     }//+++
   };//***
   
@@ -228,6 +259,14 @@ public final class SubMonitorPane implements SiTabbable{
     lpWeighToolBar.add(cmAGWeigherStatePL);
     lpWeighToolBar.add(cmASWeigherStatePL);
     lpWeighToolBar.add(cmMixerStatePL);
+    
+    //-- center pane ** weigh result ** popup
+    JMenuItem lpWWRExportMI=new JMenuItem(VcTranslator.tr("_export_n_clear"));
+    cmWeighResultMenu.add(lpWWRExportMI);
+    VcSwingCoordinator
+      .ccRegisterAction(lpWWRExportMI, cmWeighResultExporting);
+    cmStatisticWeighResultTable.ccAddMouseListener(cmWeighResultClickListener);
+    
     //-- center pane ** weigh ** pack
     JPanel lpWeighPartPane = ScFactory.ccCreateBorderPanel();
     lpWeighPartPane.add(lpWeighToolBar,BorderLayout.PAGE_START);
@@ -235,23 +274,22 @@ public final class SubMonitorPane implements SiTabbable{
     lpWeighPartPane.add(cmStatisticWeighResultTable,BorderLayout.PAGE_END);
     
     //-- center pane ** combust ** popup
-    JMenuItem lpVCRExportMI=new JMenuItem(VcTranslator.tr("_export_n_clear"));
-    cmCombustResultMenu.add(lpVCRExportMI);
+    JMenuItem lpCCRExportMI=new JMenuItem(VcTranslator.tr("_export_n_clear"));
+    cmCombustResultMenu.add(lpCCRExportMI);
     VcSwingCoordinator
-      .ccRegisterAction(lpVCRExportMI, cmCombustResultExporting);
+      .ccRegisterAction(lpCCRExportMI, cmCombustResultExporting);
+    cmCombustResultPane.addMouseListener(cmCombustResultClickListener);
     
     //-- center pane ** combust
-    cmCombustTablePane.addMouseListener(cmCombustTableClickListener);
-    cmCombustTablePane.add(cmVCombustResultTable,
+    cmCombustResultPane.add(cmVCombustResultTable,
       VcTranslator.tr("_v_combust"));
-    cmCombustTablePane.add(new JButton("=R.C="),
+    cmCombustResultPane.add(new JButton("=R.C="),
       VcTranslator.tr("_r_combust"));
-    cmCombustTablePane.addMouseListener(cmCombustTableClickListener);
     
     //-- center pane ** center
     JPanel lpCenterPane = ScFactory.ccCreateBorderPanel();
     lpCenterPane.add(lpWeighPartPane, BorderLayout.CENTER);
-    lpCenterPane.add(cmCombustTablePane, BorderLayout.PAGE_END);
+    lpCenterPane.add(cmCombustResultPane, BorderLayout.PAGE_END);
     
     //-- pack
     cmPane.add(lpLeftWing,BorderLayout.LINE_START);

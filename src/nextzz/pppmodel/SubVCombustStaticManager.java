@@ -33,11 +33,12 @@ import kosui.ppputil.VcStampUtility;
 import kosui.ppputil.VcTranslator;
 import nextzz.pppswingui.ConstSwingUI;
 import nextzz.pppswingui.SubErrorPane;
+import nextzz.pppswingui.SubMonitorPane;
 
 public final class SubVCombustStaticManager extends McTableAdapter{
   
-  public static final int C_CAPACITY_SIZE = 16;//.. supposedly 512 on the roll
-  public static final int C_CAPACITY_MASK = 15;//.. supposedly 511 on the roll
+  public static final int C_CAPACITY_SIZE = 512;//.. supposedly 512 on the roll
+  public static final int C_CAPACITY_MASK = 511;//.. supposedly 511 on the roll
   
   private static final SubVCombustStaticManager SELF
     = new SubVCombustStaticManager();
@@ -145,6 +146,8 @@ public final class SubVCombustStaticManager extends McTableAdapter{
   synchronized public final void ccExportAndClear(){
     ssExportData();
     ssClearData();
+    SwingUtilities.invokeLater(SubMonitorPane
+      .ccRefer().cmVCombustResultTableRefreshingness);
   }//+++
   
   private void ssClearData(){
