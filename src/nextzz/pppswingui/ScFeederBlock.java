@@ -32,6 +32,7 @@ import kosui.pppswingui.ScConst;
 import kosui.pppswingui.ScFactory;
 import kosui.ppputil.VcNumericUtility;
 import kosui.ppputil.VcStringUtility;
+import kosui.ppputil.VcTranslator;
 import nextzz.pppmodel.MainPlantModel;
 
 public class ScFeederBlock extends JPanel{
@@ -51,9 +52,9 @@ public class ScFeederBlock extends JPanel{
   public final JTextField cmTPHField
     = ScFactory.ccCreateValueBox("000tph",64,22);
   public final JToggleButton cmForceSW
-    = ScFactory.ccCreateCommandToggler("_force", 48, 22);
+    = ScFactory.ccCreateCommandToggler(VcTranslator.tr("_force"),48, 22);
   public final JToggleButton cmDisableSW
-    = ScFactory.ccCreateCommandToggler("_disab", 48, 22);
+    = ScFactory.ccCreateCommandToggler(VcTranslator.tr("_disab"), 48, 22);
   public final JButton cmConfigSW
     = ScFactory.ccCreateCommandButton("#", 22, 22);
   

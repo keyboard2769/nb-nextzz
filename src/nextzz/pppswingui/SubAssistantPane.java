@@ -74,22 +74,6 @@ public final class SubAssistantPane implements SiTabbable{
       VcTranslator.tr("_cdamper:o") //..open
     );
   
-  //[todo]::move to feeder pane
-  public final JComboBox<String> cmVFeederIxVibratorNT
-    = ScFactory.ccCreateNotch(
-      VcTranslator.tr("_vf1vib:auto"),
-      VcTranslator.tr("_vf1vib:d"),
-      VcTranslator.tr("_vf1vib:m")
-    );
-  
-  //[todo]::move to feeder pane
-  public final JComboBox<String> cmVFeederIIxVibratorNT
-    = ScFactory.ccCreateNotch(
-      VcTranslator.tr("_vf2vib:auto"),
-      VcTranslator.tr("_vf2vib:d"),
-      VcTranslator.tr("_vf2vib:m")
-    );
-  
   public final JComboBox<String> cmVCombustSourceNT
     = ScFactory.ccCreateNotch(
       VcTranslator.tr("_vcombs:g"),//..gas
@@ -154,32 +138,29 @@ public final class SubAssistantPane implements SiTabbable{
     //-- layout ** tower
     JPanel lpLeftI=ScFactory.ccCreateGridPanel(C_ROW_MAX, 1);
     lpLeftI.add(new JLabel(VcTranslator.tr("_aptower:")));
-    ccAddAssistant(lpLeftI, cmTowerBlowerNT);
+    ConstSwingUI.ccAddAssistant(lpLeftI, cmTowerBlowerNT);
     
     //-- layout ** ag
     JPanel lpLeftII=ScFactory.ccCreateGridPanel(C_ROW_MAX, 1);
     lpLeftII.add(new JLabel(VcTranslator.tr("_vergin:")));
-    ccAddAssistant(lpLeftII,cmAirPulseOperateNT);
-    ccAddAssistant(lpLeftII,cmAirPulseModeNT);
-    ccAddAssistant(lpLeftII,cmCoolingDamperNT);
+    ConstSwingUI.ccAddAssistant(lpLeftII,cmAirPulseOperateNT);
+    ConstSwingUI.ccAddAssistant(lpLeftII,cmAirPulseModeNT);
+    ConstSwingUI.ccAddAssistant(lpLeftII,cmCoolingDamperNT);
     lpLeftII.add(new JSeparator(SwingConstants.HORIZONTAL));
-    ccAddAssistant(lpLeftII,cmVFeederIxVibratorNT);
-    ccAddAssistant(lpLeftII,cmVFeederIIxVibratorNT);
-    lpLeftII.add(new JSeparator(SwingConstants.HORIZONTAL));
-    ccAddAssistant(lpLeftII,cmVCombustSourceNT);
-    ccAddAssistant(lpLeftII,cmVFuelExchangeNT);
+    ConstSwingUI.ccAddAssistant(lpLeftII,cmVCombustSourceNT);
+    ConstSwingUI.ccAddAssistant(lpLeftII,cmVFuelExchangeNT);
     
     //-- layout ** filler/asphalt
     JPanel lpLeftIII=ScFactory.ccCreateGridPanel(C_ROW_MAX, 1);
     lpLeftIII.add(new JLabel(VcTranslator.tr("_powder:")));
-    ccAddAssistant(lpLeftIII,cmFillerSiloAirNT);
-    ccAddAssistant(lpLeftIII,cmFillerSiloSelectNT);
-    ccAddAssistant(lpLeftIII,cmCementSiloAirNT);
-    ccAddAssistant(lpLeftIII,cmDustSiloAirNT);
-    ccAddAssistant(lpLeftIII,cmDustSiloDischargeSW);
+    ConstSwingUI.ccAddAssistant(lpLeftIII,cmFillerSiloAirNT);
+    ConstSwingUI.ccAddAssistant(lpLeftIII,cmFillerSiloSelectNT);
+    ConstSwingUI.ccAddAssistant(lpLeftIII,cmCementSiloAirNT);
+    ConstSwingUI.ccAddAssistant(lpLeftIII,cmDustSiloAirNT);
+    ConstSwingUI.ccAddAssistant(lpLeftIII,cmDustSiloDischargeSW);
     lpLeftIII.add(new JSeparator(SwingConstants.HORIZONTAL));
     lpLeftIII.add(new JLabel(VcTranslator.tr("_asphalt:")));
-    ccAddAssistant(lpLeftIII, cmAsphaltSupplySW);
+    ConstSwingUI.ccAddAssistant(lpLeftIII, cmAsphaltSupplySW);
     
     //-- layout ** recycle/add
     JPanel lpLeftIV=ScFactory.ccCreateGridPanel(C_ROW_MAX, 1);
@@ -213,22 +194,5 @@ public final class SubAssistantPane implements SiTabbable{
   }//+++
   
   //===
-  
-  private void ccAddAssistant(JPanel pxPane, JComponent pxSwitch){
-    assert pxPane!=null;
-    assert pxSwitch!=null;
-    pxPane.add(pxSwitch);
-    if(pxSwitch instanceof JComboBox){
-      ((JComboBox)pxSwitch).addActionListener
-        (MainActionManager.ccRefer().cmNotchListener);
-    }else 
-    if(pxSwitch instanceof JToggleButton){
-      ((JToggleButton)pxSwitch).addActionListener
-        (MainActionManager.ccRefer().cmNotchListener);
-    }else{
-      throw new RuntimeException
-        (".ssAddAssistant():you are not suppsed to do this");
-    }//...?
-  }//+++
   
  }//***eof

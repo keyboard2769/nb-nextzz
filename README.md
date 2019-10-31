@@ -36,12 +36,10 @@ but hey, dose it sounds stupid if you read it DOUBLE-ZEUS ??
 
 #### heading
 
-- [ ] $ reclaim the notch and toggle stuff
-- [ ] $ move feeder assistance switch to feeder pane
+- [ ] $ let feeder group ratio button work with a set value
 
 #### last
 
-- [x] $ fixed final batch display cleaning thing aka the name box problem
 - [x] $ flag manipulating action needs pulse control actually
 - [x] $ the mixer content pl can flash now .. and it s out of control ! 
 - [x] $ we just gave up on the 'fixing' thing of the auto-weigh-sequence
@@ -51,5 +49,7 @@ but hey, dose it sounds stupid if you read it DOUBLE-ZEUS ??
 - [x] $ the zero adjusting stuff works now more than likely
 - [x] $ partly did the TRD logging and root verifying stuff
 - [x] $ partly did the weigh logging and export-before-quitting stuff
+- [x] $ print button can send some file to printer now
+- [x] $ move feeder assistance switch to feeder pane
 
 <hr><!--EOF-->

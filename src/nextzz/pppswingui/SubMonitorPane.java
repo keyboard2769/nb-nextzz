@@ -88,9 +88,6 @@ public final class SubMonitorPane implements SiTabbable{
       new ScGauge("_ct30", "A"),new ScGauge("_ct31", "A")
     ));
   
-  public final JButton cmExportButton
-    = new JButton(VcTranslator.tr("_export"));
-  
   public final JButton cmPrintButton
     = new JButton(VcTranslator.tr("_print"));
   
@@ -252,7 +249,6 @@ public final class SubMonitorPane implements SiTabbable{
     
     //-- center pane ** weigh ** bar
     JToolBar lpWeighToolBar = ScFactory.ccCreateStuckedToolBar();
-    lpWeighToolBar.add(cmExportButton);
     lpWeighToolBar.add(cmPrintButton);
     lpWeighToolBar.add(new JSeparator(SwingConstants.VERTICAL));
     lpWeighToolBar.add(cmFRWeigherStatePL);

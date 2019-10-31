@@ -19,11 +19,16 @@
 
 package nextzz.pppswingui;
 
+import javax.swing.JComboBox;
+import javax.swing.JComponent;
+import javax.swing.JPanel;
+import javax.swing.JToggleButton;
 import kosui.ppplocalui.EcConst;
 import kosui.pppmodel.MiPixillatable;
 import kosui.pppswingui.ScConst;
 import kosui.pppswingui.ScIcon;
 import kosui.ppputil.VcTranslator;
+import nextzz.pppmain.MainActionManager;
 
 public final class ConstSwingUI {
   
@@ -46,6 +51,25 @@ public final class ConstSwingUI {
       ScConst.ccErrorBox(VcTranslator.tr("_m_no_trend_data"));
     }//+++
   };//***
+  
+  //===
+  
+  public static void ccAddAssistant(JPanel pxPane, JComponent pxSwitch){
+    assert pxPane!=null;
+    assert pxSwitch!=null;
+    pxPane.add(pxSwitch);
+    if(pxSwitch instanceof JComboBox){
+      ((JComboBox)pxSwitch).addActionListener
+        (MainActionManager.ccRefer().cmNotchListener);
+    }else 
+    if(pxSwitch instanceof JToggleButton){
+      ((JToggleButton)pxSwitch).addActionListener
+        (MainActionManager.ccRefer().cmNotchListener);
+    }else{
+      throw new RuntimeException
+        (".ssAddAssistant():you are not suppsed to do this");
+    }//...?
+  }//+++
   
   //===
   

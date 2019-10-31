@@ -22,11 +22,16 @@ package nextzz.pppmain;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.io.File;
+import java.util.LinkedList;
+import java.util.List;
 import javax.swing.SwingUtilities;
+import javax.swing.SwingWorker;
 import kosui.ppplocalui.EcButton;
 import kosui.ppplocalui.EcElement;
 import kosui.ppplocalui.EcValueBox;
 import kosui.ppplocalui.EiTriggerable;
+import kosui.pppmodel.McConst;
 import kosui.pppswingui.ScConst;
 import kosui.ppputil.VcConst;
 import kosui.ppputil.VcLocalConsole;
@@ -44,6 +49,7 @@ import nextzz.ppplocalui.SubOperativeGroup;
 import nextzz.ppplocalui.SubVBondGroup;
 import nextzz.ppplocalui.SubVFeederGroup;
 import nextzz.ppplocalui.SubWeigherGroup;
+import nextzz.pppmodel.MainFileManager;
 import nextzz.pppmodel.MainPlantModel;
 import nextzz.pppmodel.SubAnalogScalarManager;
 import nextzz.pppswingui.SubAssistantPane;
@@ -54,7 +60,9 @@ import nextzz.pppmodel.SubVCombustStaticManager;
 import nextzz.pppmodel.SubWeighControlManager;
 import nextzz.pppmodel.SubWeighStatisticManager;
 import nextzz.pppsimulate.MainSimulator;
+import nextzz.pppswingui.ScCSVFilePrinter;
 import nextzz.pppswingui.SubFeederPane;
+import nextzz.pppswingui.SubMonitorPane;
 import nextzz.pppswingui.SubSettingPane;
 
 public final class MainActionManager {
@@ -366,7 +374,64 @@ public final class MainActionManager {
     }//+++
   };//***
   
+  public final EiTriggerable cmPrinting = new EiTriggerable() {
+    @Override public void ccTrigger() {
+      
+      //-- check in
+      ScConst.ccSetFileChooserCurrentDirectoryLocation
+        (MainFileManager.ccRefer()
+          .ccGetWeighExportDirectory().getAbsolutePath());
+      File lpFile = ScConst.ccGetFileByFileChooser('f');
+      boolean lpPreCkeck
+        = McConst.ccVerifyFileForLoading(lpFile, "csv",999999l);
+      if(!lpPreCkeck){
+        ScConst.ccErrorBox("_m_invalid_file");
+        return;
+      }//..?
+      
+      //-- read in
+      List<String> lpDesLine = new LinkedList<String>();
+      boolean lpImport = McConst.ccImportTextFile(lpFile, lpDesLine);
+      if(!lpImport){
+        System.err.println("ccImportTextToList::failed");
+        return;
+      }//..?
+      if(lpDesLine.isEmpty()){
+        ScConst.ccErrorBox("_m_unknown_error");
+        return;
+      }//..?
+      
+      //-- work
+      ScCSVFilePrinter lpWorker
+          //[todo]:: let s make some notch
+        = new ScCSVFilePrinter(lpDesLine, 12, 8, 10,null);
+      lpWorker.execute();
+      
+    }//+++
+  };//***
+  
   //=== trigger ** what?
+  
+  public final EiTriggerable cmDummyWeighRecordGenerating = new EiTriggerable(){
+    @Override public void ccTrigger() {
+      for(int i=0;i<16;i++){
+        SubWeighStatisticManager.ccRefer().ccLogRecord(
+          990,99.9f,
+          new float[]{
+            10f,11f,12f,13f, 14f,15f,16f,17f,
+            20f,21f,22f,23f,
+            30f,31f,32f,33f,
+            40f,41f,42f,43f,
+            50f,51f,52f,53f
+          }
+        );
+      }//..~
+      SwingUtilities.invokeLater(SubMonitorPane.ccRefer()
+        .cmWeighResultTableRefreshingness);
+      VcLocalConsole.ccGetInstance()
+        .ccSetMessage("[echo]dmwsr::generated");
+    }//+++
+  };//***
   
   public final EiTriggerable cmDebugging = new EiTriggerable() {
     @Override public void ccTrigger(){
@@ -461,11 +526,11 @@ public final class MainActionManager {
       VcSwingCoordinator.ccRegisterAction
         (MainWindow.ccRefer().cmHideButton, cmHiding);
       
-      //-- 
-      
       //-- sub
       VcSwingCoordinator.ccRegisterAction
         (MainWindow.ccRefer().cmErrorClearButton, cmErrorCleaning);
+      VcSwingCoordinator.ccRegisterAction
+        (SubMonitorPane.ccRefer().cmPrintButton, cmPrinting);
       VcSwingCoordinator.ccRegisterAction
         (SubSettingPane.ccRefer().cmModifyButton, cmSettingModifying);
 
@@ -583,6 +648,8 @@ public final class MainActionManager {
       ("debug", cmDebugging);
     VcLocalConsole.ccRegisterCommand
       ("mrst", cmMotorThmalResetting);
+    VcLocalConsole.ccRegisterCommand
+      ("dmwsr", cmDummyWeighRecordGenerating);
   
   }//++!
   

@@ -20,6 +20,7 @@
 package nextzz.pppswingui;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Arrays;
@@ -27,8 +28,12 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JSeparator;
 import javax.swing.JSpinner;
+import javax.swing.SwingConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import kosui.ppplogic.ZcRangedModel;
@@ -52,6 +57,24 @@ public final class SubFeederPane implements SiTabbable{
   //===
   
   public static final String C_TAB_NAME = VcTranslator.tr("_feeder");
+  
+  public final JComboBox<String> cmVFeederIxVibratorNT
+    = ScFactory.ccCreateNotch(
+      VcTranslator.tr("_vf1vib:a"),
+      VcTranslator.tr("_vf1vib:d"),
+      VcTranslator.tr("_vf1vib:m")
+    );
+  
+  public final JComboBox<String> cmVFeederIIxVibratorNT
+    = ScFactory.ccCreateNotch(
+      VcTranslator.tr("_vf2vib:a"),
+      VcTranslator.tr("_vf2vib:d"),
+      VcTranslator.tr("_vf2vib:m")
+    );
+  
+  //[todo]::cmRFeederIxVibratorNT
+  
+  //[todo]::cmRFeederIIxVibratorNT
   
   public final JPanel cmPane = ScFactory.ccCreateBorderPanel();
   
@@ -139,6 +162,18 @@ public final class SubFeederPane implements SiTabbable{
   
   @Override public final void ccInit(){
     
+    //-- misc pane
+    JPanel lpMiscPane = ScFactory
+      .ccCreateGridPanel(SubAssistantPane.C_ROW_MAX, 1);
+    lpMiscPane.setPreferredSize(new Dimension(149, 149));
+    lpMiscPane.add(new JLabel(VcTranslator.tr("_vergin:")));
+    lpMiscPane.add(new JSeparator(SwingConstants.HORIZONTAL));
+    ConstSwingUI.ccAddAssistant(lpMiscPane,cmVFeederIxVibratorNT);
+    ConstSwingUI.ccAddAssistant(lpMiscPane,cmVFeederIIxVibratorNT);
+    lpMiscPane.add(new JLabel(VcTranslator.tr("_recycle:")));
+    lpMiscPane.add(new JSeparator(SwingConstants.HORIZONTAL));
+    
+    //-- block pane
     JPanel lpVFeederPanel = ScFactory.ccCreateGridPanel(10,1);
     JPanel lpRFeederPanel = ScFactory.ccCreateGridPanel(10,1);
     for(int i=1;i<=10;i++){
@@ -175,7 +210,8 @@ public final class SubFeederPane implements SiTabbable{
     }//..~
     
     //-- pack
-    cmPane.add(lpVFeederPanel,BorderLayout.LINE_START);
+    cmPane.add(lpMiscPane,BorderLayout.LINE_START);
+    cmPane.add(lpVFeederPanel,BorderLayout.CENTER);
     cmPane.add(lpRFeederPanel,BorderLayout.LINE_END);
     
   }//..!
