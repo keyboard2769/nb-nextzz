@@ -22,8 +22,10 @@ package nextzz.pppsetting;
 import kosui.ppplogic.ZcRangedModel;
 import kosui.ppputil.VcNumericUtility;
 import kosui.ppputil.VcTranslator;
+import nextzz.pppmodel.MainPlantModel;
 import nextzz.pppmodel.MainSpecificator;
 import nextzz.pppmodel.SubAnalogScalarManager;
+import processing.core.PApplet;
 
 public final class SubFeederFluxSetting extends McAbstractSettingPartition{
   
@@ -94,8 +96,31 @@ public final class SubFeederFluxSetting extends McAbstractSettingPartition{
   }//***
   
   //===
+  
+  public final MiSettingItem cmVRatioBaseTPHItem = new MiSettingItem() {
+    @Override public String ccGetName() {
+      return "[tph]"+VcTranslator.tr("_v_ratio_base");
+    }//++>
+    @Override public String ccGetDescription() {
+      return VcTranslator.tr("_dscp_v_ratio_base");
+    }//++>
+    @Override public String ccGetLimitationInfo() {
+      return "[0 ~ 400]";
+    }//++>
+    @Override public String ccGetValue() {
+      return Float.toString(MainPlantModel.ccRefer().vmVRatioBaseTPH);
+    }//++>
+    @Override public void ccSetValue(String pxVal) {
+      float lpFixed = VcNumericUtility.ccParseFloatString(pxVal);
+      lpFixed = PApplet.constrain(lpFixed, 0f, 400f);
+      MainPlantModel.ccRefer().vmVRatioBaseTPH=lpFixed;
+    }//++<
+  };//***
+  
+  //===
 
   @Override public void ccInit() {
+    cmListOfItem.add(cmVRatioBaseTPHItem);
     for(int i=0;i<=MainSpecificator.ccRefer().vmVFeederAmount;i++){
       cmListOfItem.add(new McFeederRPMSpanItem('v', i));
       cmListOfItem.add(new McFeederTPHSpanItem('v', i));

@@ -145,8 +145,8 @@ public final class SubFeederPane implements SiTabbable{
       /* 4 */VcConst.ccLogln(".cmFeederSpeedChangeListener.stateChanged() >>>");
       for(
         int i=MainPlantModel.C_VF_UI_VALID_HEAD;
-        i<=MainPlantModel.C_VF_UI_VALID_MAX;
-        i++
+            i<=MainPlantModel.C_VF_UI_VALID_MAX;
+            i++
       ){
         SubFeederDelegator.ccSetVFeederSpeed
           (i, cmLesVFeederBlock.get(i).ccGetValue());

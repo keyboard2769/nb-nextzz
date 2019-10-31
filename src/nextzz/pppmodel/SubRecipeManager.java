@@ -308,7 +308,7 @@ public final class SubRecipeManager extends McTableAdapter{
   
   public final boolean ccHasRecipe(int pxID){
     return cmMapOfRecipe.containsKey(pxID);
-  }//+++
+  }//++>
   
   public final String ccGetRecipeName(int pxID){
     if((pxID <= 0) || (pxID >999)){return C_INVALID_MARK;}
@@ -316,20 +316,33 @@ public final class SubRecipeManager extends McTableAdapter{
       return VcTranslator.tr("_opm_not_found");
     }//..?
     return cmMapOfRecipe.get(pxID).cmRecipeName;
-  }//+++
+  }//++>
   
-  public final
-  float ccGetPercentage(char matt,int order){
-    if(cmOnWeighingRecipeBUF==null){return 0f;}
-    switch (matt) {
-      case 'G':return cmOnWeighingRecipeBUF.cmDesAGPercentage[order&7];
-      case 'F':return cmOnWeighingRecipeBUF.cmDesFRPercentage[order&3];
-      case 'S':return cmOnWeighingRecipeBUF.cmDesASPercentage[order&3];
-      case 'R':return cmOnWeighingRecipeBUF.cmDesRCPercentage[order&3];
-      case 'D':return cmOnWeighingRecipeBUF.cmDesADPercentage[order&3];
+  public final float ccGetPercentage(int pxID, char pxMatt, int pxOrder){
+    if(!ccHasRecipe(pxID)){return 0f;}
+    McRecipe lpSpecified = cmMapOfRecipe.get(pxID);
+    switch (pxMatt) {
+      case 'G':return lpSpecified.cmDesAGPercentage[pxOrder&7];
+      case 'F':return lpSpecified.cmDesFRPercentage[pxOrder&3];
+      case 'S':return lpSpecified.cmDesASPercentage[pxOrder&3];
+      case 'R':return lpSpecified.cmDesRCPercentage[pxOrder&3];
+      case 'D':return lpSpecified.cmDesADPercentage[pxOrder&3];
       default:return 0f;
     }//..?
-  }//+++
+  }//++>
+  
+  public final
+  float ccGetOnWeighingPercentage(char pxMatt,int pxOrder){
+    if(cmOnWeighingRecipeBUF==null){return 0f;}
+    switch (pxMatt) {
+      case 'G':return cmOnWeighingRecipeBUF.cmDesAGPercentage[pxOrder&7];
+      case 'F':return cmOnWeighingRecipeBUF.cmDesFRPercentage[pxOrder&3];
+      case 'S':return cmOnWeighingRecipeBUF.cmDesASPercentage[pxOrder&3];
+      case 'R':return cmOnWeighingRecipeBUF.cmDesRCPercentage[pxOrder&3];
+      case 'D':return cmOnWeighingRecipeBUF.cmDesADPercentage[pxOrder&3];
+      default:return 0f;
+    }//..?
+  }//++>
   
   //[todo]::syn getKG(int index,char matt,int order, float val)
   //[todo]::syn getAD(int index,char matt,int order, float val)

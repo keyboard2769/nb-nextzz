@@ -552,7 +552,7 @@ public final class SubWeighControlManager {
       cmDesAGWeighLevelTargetKG[i]=cmDesAGWeighLevelTargetKG[(i+1)
         &MainPlantModel.C_MATT_AGGR_GENERAL_MASK]
         +ssTranslatePercentage(SubRecipeManager.ccRefer()
-          .ccGetPercentage('G', i));//..how do we fix index from level to actual?
+          .ccGetOnWeighingPercentage('G', i));//..how do we fix index from level to actual?
       SubWeighDynamicManager.ccRefer()
         .ccSetAGTargetWeighKG(i, cmDesAGWeighLevelTargetKG[i]);
       
@@ -566,7 +566,7 @@ public final class SubWeighControlManager {
         cmDesFRWeighLevelTargetKG[i]=cmDesFRWeighLevelTargetKG[(i+1)
           &MainPlantModel.C_MATT_REST_GENERAL_MASK]
           +ssTranslatePercentage(SubRecipeManager.ccRefer()
-            .ccGetPercentage('F', i));//..how do we fix index from level to actual?
+            .ccGetOnWeighingPercentage('F', i));//..how do we fix index from level to actual?
         SubWeighDynamicManager.ccRefer()
           .ccSetFRTargetWeighKG(i, cmDesFRWeighLevelTargetKG[i]);
         //-- fr ** ad
@@ -577,7 +577,7 @@ public final class SubWeighControlManager {
         cmDesASWeighLevelTargetKG[i]=cmDesASWeighLevelTargetKG[(i+1)
           &MainPlantModel.C_MATT_REST_GENERAL_MASK]
           +ssTranslatePercentage(SubRecipeManager.ccRefer()
-            .ccGetPercentage('S', i));//..how do we fix index from level to actual?
+            .ccGetOnWeighingPercentage('S', i));//..how do we fix index from level to actual?
         SubWeighDynamicManager.ccRefer()
           .ccSetASTargetWeighKG(i, cmDesASWeighLevelTargetKG[i]);
         //-- as ** ad
@@ -631,6 +631,14 @@ public final class SubWeighControlManager {
     ssVerifyFirstRow();
     ssRefreshUI();
     
+  }//++<
+  
+  public final int ccGetAcceptedRecipeID(){
+    return cmDesRecipeNumber[0];
+  }//++<
+  
+  public final int ccGetFirsetRecipeID(){
+    return cmDesRecipeNumber[1];
   }//++<
   
   //===

@@ -51,11 +51,13 @@ import nextzz.ppplocalui.SubVFeederGroup;
 import nextzz.ppplocalui.SubWeigherGroup;
 import nextzz.pppmodel.MainFileManager;
 import nextzz.pppmodel.MainPlantModel;
+import nextzz.pppmodel.MainSpecificator;
 import nextzz.pppmodel.SubAnalogScalarManager;
 import nextzz.pppswingui.SubAssistantPane;
 import nextzz.pppsetting.MainSettingManager;
 import nextzz.pppsetting.MiSettingItem;
 import nextzz.pppmodel.SubDegreeControlManager;
+import nextzz.pppmodel.SubRecipeManager;
 import nextzz.pppmodel.SubVCombustStaticManager;
 import nextzz.pppmodel.SubWeighControlManager;
 import nextzz.pppmodel.SubWeighStatisticManager;
@@ -257,8 +259,46 @@ public final class MainActionManager {
     = new EiTriggerable() {
     @Override public void ccTrigger() {
       //[tofix]:: with the booked recipe
+      /*
+       * if there is a accepted recipe, rate with the recipe.
+       * if there is no accepted recipe, rate with first recipe if valid.
+       * if there is no accepted recipe and the first recipe is not valid,
+       *   make them all equal.
+       */
+      char lpFlag = 'n';
+      int lpAccepted = SubWeighControlManager.ccRefer().ccGetAcceptedRecipeID();
+      int lpFirst = SubWeighControlManager.ccRefer().ccGetFirsetRecipeID();
+      if(SubRecipeManager.ccRefer().ccHasRecipe(lpFirst)){lpFlag='f';}
+      if(SubRecipeManager.ccRefer().ccHasRecipe(lpAccepted)){lpFlag='a';}
+      switch(lpFlag){
+        case 'a':break;
+        case 'f':
+        {
+          for(int i=MainPlantModel.C_VF_UI_VALID_HEAD;
+                  i<=MainSpecificator.ccRefer().vmVFeederAmount;
+                  i++)
+          {
+            float lpPercentage = SubRecipeManager.ccRefer()
+              .ccGetPercentage(lpFirst, 'G', i);
+            float lpTon
+              = lpPercentage*(MainPlantModel.ccRefer().vmVRatioBaseTPH)/100f;
+            
+            //[head]:: how do we convert the tph value to rpm value ??
+            
+            VcConst.ccPrintln("rcp"+Integer.toString(i), lpPercentage);
+          
+          }
+        }
+        break;
+        
+        default:break;
+        
+      }//..?
+      
+      //[dtfm]::
       SubFeederPane.ccRefer().cmLesVFeederBlock.get(1).ccSetValue(1222);
       SubFeederPane.ccRefer().cmLesVFeederBlock.get(6).ccSetValue(1222);
+      
     }//+++
   };//***
   

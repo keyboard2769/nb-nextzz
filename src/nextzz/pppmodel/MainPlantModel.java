@@ -24,7 +24,6 @@ import kosui.ppplogic.ZcOnDelayTimer;
 import kosui.ppplogic.ZcRangedValueModel;
 import kosui.ppplogic.ZcTimer;
 import kosui.pppmodel.McPipedChannel;
-import kosui.pppswingui.ScConst;
 import kosui.ppputil.VcLocalConsole;
 import kosui.ppputil.VcLocalTagger;
 import nextzz.pppdelegate.SubFeederDelegator;
@@ -72,12 +71,12 @@ public final class MainPlantModel {
   //   ..   as they should feel comfortable when implementing their own stuff.
   //   .. as for delegator, witch is THE traffic line interface
   //   ..   between pc and plc, the valid count hard coded as shown below.
-  public static final int C_FEEDER_RPM_MIN =    0;
-  public static final int C_FEEDER_RPM_MAX = 1800;
-  public static final int C_VF_UI_VALID_HEAD  =    1;
-  public static final int C_VF_UI_VALID_MAX   =   10;
-  public static final int C_RF_UI_VALID_HEAD  =    1;
-  public static final int C_RF_UI_VALID_MAX   =    5;
+  public static final int C_FEEDER_RPM_MIN   =    0;
+  public static final int C_FEEDER_RPM_MAX   = 1800;
+  public static final int C_VF_UI_VALID_HEAD =    1;
+  public static final int C_VF_UI_VALID_MAX  =   10;
+  public static final int C_RF_UI_VALID_HEAD =    1;
+  public static final int C_RF_UI_VALID_MAX  =    5;
   
   //===
 
@@ -96,7 +95,8 @@ public final class MainPlantModel {
   
   //-- v supply
   public final McPipedChannel cmDesVFeederTPH = new McPipedChannel();
-  public volatile int cmVSupplyTPH = 0;
+  public volatile float vmVRatioBaseTPH = 320;
+  public volatile int vmVSupplyTPH = 0;
   
   //-- v combust
   public final ZcRangedValueModel cmVCombustLogINTV
@@ -137,14 +137,14 @@ public final class MainPlantModel {
     SubDegreeControlManager.ccRefer().ccLogic();
     
     //-- v feeder tph
-    cmVSupplyTPH=0;
+    vmVSupplyTPH=0;
     for(
       int i=C_VF_UI_VALID_HEAD;
       i<=MainSpecificator.ccRefer().vmVFeederAmount;
       i++
     ){
       if(SubFeederDelegator.ccGetVFeederRunning(i)){
-        cmVSupplyTPH+=cmDesVFeederTPH.ccGet(i);
+        vmVSupplyTPH+=cmDesVFeederTPH.ccGet(i);
       }//..? 
     }//..~
     

@@ -116,12 +116,12 @@ public class SubVCombustDelegator {
     //-- cas
     SubVBondGroup.ccRefer().cmBelconFluxCB
       .ccSetFloatValueForOneAfter(VcNumericUtility
-        .ccToFloatForOneAfter(MainPlantModel.ccRefer().cmVSupplyTPH)
+        .ccToFloatForOneAfter(MainPlantModel.ccRefer().vmVSupplyTPH)
       );
     SubVBondGroup.ccRefer().cmBelconFluxCB
       .ccSetIsActivated(mnVColdAggreageSensorPL);
     SubVBondGroup.ccRefer().cmVDContentLV
-      .ccSetProportion(MainPlantModel.ccRefer().cmVSupplyTPH, 4000);
+      .ccSetProportion(MainPlantModel.ccRefer().vmVSupplyTPH, 4000);
   
   }//+++
   

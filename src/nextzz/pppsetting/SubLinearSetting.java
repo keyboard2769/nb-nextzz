@@ -19,9 +19,7 @@
 
 package nextzz.pppsetting;
 
-import java.util.Arrays;
 import kosui.ppplogic.ZcRangedModel;
-import kosui.ppputil.VcConst;
 import kosui.ppputil.VcNumericUtility;
 import kosui.ppputil.VcTranslator;
 import nextzz.pppmodel.SubAnalogScalarManager;

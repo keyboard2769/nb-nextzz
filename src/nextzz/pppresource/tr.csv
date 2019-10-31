@@ -249,7 +249,7 @@
 <tr>,_vf1vib:m,V1VIB:OPEN,VF1ﾊﾞｲﾌﾞ：入り,新料斗1震动：常开,[]
 <tr>,_vf2vib:a,V2VIB:AUTO,VF1ﾊﾞｲﾌﾞ：自動,新料斗2震动：自动,[]
 <tr>,_vf2vib:d,V2VIB:CLOSE,VF1ﾊﾞｲﾌﾞ：切り,新料斗2震动：常关,[]
-<tr>,_vf2vib:m,V2VIB:OPEN,VF1ﾊﾞｲﾌﾞ：入り,新料斗2震动：常开,[]q
+<tr>,_vf2vib:m,V2VIB:OPEN,VF1ﾊﾞｲﾌﾞ：入り,新料斗2震动：常开,[]
 ,,,,,
 ,,,,,
 <sep>,,*-swing-pane-setting-combust-*,,,
