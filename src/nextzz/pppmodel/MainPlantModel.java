@@ -104,9 +104,9 @@ public final class MainPlantModel {
   
   //-- zero
   
-  public volatile boolean vmAGZeroAdjustSelecor =false;
-  public volatile boolean vmFRZeroAdjustSelecor =false;
-  public volatile boolean vmASZeroAdjustSelecor =false;
+  public volatile boolean vmAGZeroAdjustSelector =false;
+  public volatile boolean vmFRZeroAdjustSelector =false;
+  public volatile boolean vmASZeroAdjustSelector =false;
   
   //===
   
@@ -175,11 +175,11 @@ public final class MainPlantModel {
     
     //-- misc
     SubOperativeGroup.ccRefer().cmAGZeroSW
-      .ccSetIsActivated(vmAGZeroAdjustSelecor);
+      .ccSetIsActivated(vmAGZeroAdjustSelector);
     SubOperativeGroup.ccRefer().cmFRZeroSW
-      .ccSetIsActivated(vmFRZeroAdjustSelecor);
+      .ccSetIsActivated(vmFRZeroAdjustSelector);
     SubOperativeGroup.ccRefer().cmASZeroSW
-      .ccSetIsActivated(vmASZeroAdjustSelecor);
+      .ccSetIsActivated(vmASZeroAdjustSelector);
     
     //-- manager
     SubWeighControlManager.ccRefer().ccBind();

@@ -244,6 +244,12 @@ public final class SubAnalogScalarManager {
       .ccToScaledIntegerValue(SubFeederDelegator.ccGetVFeederSpeed(pxIndex));
   }//++>
   
+  synchronized public final
+  int ccToVFeederFluxRPM(int pxIndex, int pxTPH){
+    return cmListOfVFeederFluxScalar.get(pxIndex&15)
+      .ccToUnscaledInputValue(pxTPH);
+  }//++>
+  
   //=== feeder flux ** R
   //[todo]::ccSetRFeederFluxRPMSpan
   //[todo]::ccGetRFeederFluxRPMSpan

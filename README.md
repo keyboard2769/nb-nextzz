@@ -18,6 +18,7 @@ but hey, dose it sounds stupid if you read it DOUBLE-ZEUS ??
 - [ ] $ tre
 - [ ] $ dos
 - [ ] $ uno
+- [ ] $ refine case test of pid controller to have target manipulation
 - [ ] $ a linear pane with blocks of 'zero' and 'span' button
 - [ ] $ holding mixer gate screws log and weight control up
 - [ ] $ the gate simulation and the case of cut point handling
@@ -25,18 +26,17 @@ but hey, dose it sounds stupid if you read it DOUBLE-ZEUS ??
 - [ ] $ and maybe we should re-implement the dry-wet control with a stepper
         .. to eliminate all those flags? .. after you made the file system done
 - [ ] $ for weigh control manager, may every matt tagged stuff get merged
-        .. i mean , get merged into the 'controller' class
+        .. i mean , get merged into a 'controller' class or something
 - [ ] $ maybe we need to let the feeder speed box send manual pulse
 - [ ] $ over sized stuff should get located near the sixth bin
 - [ ] $ fill v provision and combust motor load factor
-- [ ] $ feeder flux setting representation needs another floating point
-- [ ] $ current slot overwhelming color and setting
 - [ ] $ complete the error list and log mechanism
-- [ ] $ refine case test of pid controller to have target manipulation
 
 #### heading
 
-- [ ] $ let feeder group ratio button work with a set value
+- [ ] $ lets reclaim the setting pane and its content and translate 
+- [ ] $ feeder flux setting representation needs another floating point
+- [ ] $ current slot overwhelming color and setting
 
 #### last
 
@@ -51,5 +51,6 @@ but hey, dose it sounds stupid if you read it DOUBLE-ZEUS ??
 - [x] $ partly did the weigh logging and export-before-quitting stuff
 - [x] $ print button can send some file to printer now
 - [x] $ move feeder assistance switch to feeder pane
+- [x] $ feeder group ratio button works based on the the flux setting item
 
 <hr><!--EOF-->

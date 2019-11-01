@@ -38,7 +38,7 @@ import nextzz.pppmain.MainActionManager;
 import nextzz.pppsetting.MainSettingManager;
 import nextzz.pppsetting.McAbstractSettingPartition;
 import nextzz.pppsetting.MiSettingItem;
-import nextzz.pppsetting.SubCombustSetting;
+import nextzz.pppsetting.SubBasicSetting;
 
 public final class SubSettingPane implements SiTabbable{
   
@@ -69,7 +69,7 @@ public final class SubSettingPane implements SiTabbable{
     = new ScList(MainSettingManager.ccRefer(), 160, 160);
   
   public final ScTable cmTable
-    = new ScTable(SubCombustSetting.ccRefer(), -1, -1);//..needa fit manually
+    = new ScTable(SubBasicSetting.ccRefer(), -1, -1);//..needa fit manually
   
   public final JTextArea cmDescriptor = new JTextArea("...", 3, 80);
   

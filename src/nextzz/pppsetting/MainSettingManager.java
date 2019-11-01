@@ -40,6 +40,8 @@ public final class MainSettingManager implements ListModel<String>{
     = new ArrayList<McAbstractSettingPartition>();
   
   private MainSettingManager(){
+    ssAdd(SubBasicSetting.ccRefer());
+    ssAdd(SubWeighSetting.ccRefer());
     ssAdd(SubCombustSetting.ccRefer());
     ssAdd(SubFeederFluxSetting.ccRefer());
     ssAdd(SubLinearSetting.ccRefer());

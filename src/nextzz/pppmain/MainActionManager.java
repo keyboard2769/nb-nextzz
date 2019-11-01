@@ -26,7 +26,6 @@ import java.io.File;
 import java.util.LinkedList;
 import java.util.List;
 import javax.swing.SwingUtilities;
-import javax.swing.SwingWorker;
 import kosui.ppplocalui.EcButton;
 import kosui.ppplocalui.EcElement;
 import kosui.ppplocalui.EcValueBox;
@@ -87,9 +86,9 @@ public final class MainActionManager {
       
       //-- exporting
       SubVCombustStaticManager.ccRefer().ccExportAndClear();
-      SubWeighStatisticManager.ccRefer().ccExportAndClear();//[head]::..how do we test this
+      SubWeighStatisticManager.ccRefer().ccExportAndClear();
       
-      //--
+      //-- 
       VcConst.ccPrintln(".cmQuitting()::call PApplet::exit()");
       MainSketch.ccGetPApplet().exit();
       
@@ -188,22 +187,22 @@ public final class MainActionManager {
   
   public final EiTriggerable cmAGZeroAdjustFlipping = new EiTriggerable() {
     @Override public void ccTrigger() {
-      MainPlantModel.ccRefer().vmAGZeroAdjustSelecor = 
-        ! MainPlantModel.ccRefer().vmAGZeroAdjustSelecor;
+      MainPlantModel.ccRefer().vmAGZeroAdjustSelector = 
+        ! MainPlantModel.ccRefer().vmAGZeroAdjustSelector;
     }//+++
   };//***
   
   public final EiTriggerable cmFRZeroAdjustFlipping = new EiTriggerable() {
     @Override public void ccTrigger() {
-      MainPlantModel.ccRefer().vmFRZeroAdjustSelecor = 
-        ! MainPlantModel.ccRefer().vmFRZeroAdjustSelecor;
+      MainPlantModel.ccRefer().vmFRZeroAdjustSelector = 
+        ! MainPlantModel.ccRefer().vmFRZeroAdjustSelector;
     }//+++
   };//***
   
   public final EiTriggerable cmASZeroAdjustFlipping = new EiTriggerable() {
     @Override public void ccTrigger() {
-      MainPlantModel.ccRefer().vmASZeroAdjustSelecor = 
-        ! MainPlantModel.ccRefer().vmASZeroAdjustSelecor;
+      MainPlantModel.ccRefer().vmASZeroAdjustSelector = 
+        ! MainPlantModel.ccRefer().vmASZeroAdjustSelector;
     }//+++
   };//***
   
@@ -212,21 +211,21 @@ public final class MainActionManager {
   
   public final EiTriggerable cmZeroAdjustApplying = new EiTriggerable() {
     @Override public void ccTrigger() {
-      if(MainPlantModel.ccRefer().vmAGZeroAdjustSelecor){
+      if(MainPlantModel.ccRefer().vmAGZeroAdjustSelector){
         int lpKG = SubAnalogScalarManager.ccRefer().ccGetAGCellKG();
         SubAnalogScalarManager.ccRefer().ccSetAGReviseOffsetKG(-1*lpKG);
       }//..?
-      if(MainPlantModel.ccRefer().vmFRZeroAdjustSelecor){
+      if(MainPlantModel.ccRefer().vmFRZeroAdjustSelector){
         int lpKG = SubAnalogScalarManager.ccRefer().ccGetFRCellKG();
         SubAnalogScalarManager.ccRefer().ccSetFRReviseOffsetKG(-1*lpKG);
       }//..?
-      if(MainPlantModel.ccRefer().vmASZeroAdjustSelecor){
+      if(MainPlantModel.ccRefer().vmASZeroAdjustSelector){
         int lpKG = SubAnalogScalarManager.ccRefer().ccGetASCellKG();
         SubAnalogScalarManager.ccRefer().ccSetASReviseOffsetKG(-1*lpKG);
       }//..?
-      MainPlantModel.ccRefer().vmAGZeroAdjustSelecor=false;
-      MainPlantModel.ccRefer().vmFRZeroAdjustSelecor=false;
-      MainPlantModel.ccRefer().vmASZeroAdjustSelecor=false;
+      MainPlantModel.ccRefer().vmAGZeroAdjustSelector=false;
+      MainPlantModel.ccRefer().vmFRZeroAdjustSelector=false;
+      MainPlantModel.ccRefer().vmASZeroAdjustSelector=false;
     }//+++
   };//***
   
@@ -255,23 +254,41 @@ public final class MainActionManager {
   
   //=== trigger ** operative ** v feeder group
   
+  /**
+   * if there is a accepted recipe, rate with the recipe.
+   * if there is no accepted recipe, rate with first recipe if valid.
+   * if there is no accepted recipe and the first recipe is not valid,
+   *   make them all equal.
+   */
   public final EiTriggerable cmVFeederRatioAutoFitting
     = new EiTriggerable() {
     @Override public void ccTrigger() {
-      //[tofix]:: with the booked recipe
-      /*
-       * if there is a accepted recipe, rate with the recipe.
-       * if there is no accepted recipe, rate with first recipe if valid.
-       * if there is no accepted recipe and the first recipe is not valid,
-       *   make them all equal.
-       */
       char lpFlag = 'n';
       int lpAccepted = SubWeighControlManager.ccRefer().ccGetAcceptedRecipeID();
       int lpFirst = SubWeighControlManager.ccRefer().ccGetFirsetRecipeID();
       if(SubRecipeManager.ccRefer().ccHasRecipe(lpFirst)){lpFlag='f';}
       if(SubRecipeManager.ccRefer().ccHasRecipe(lpAccepted)){lpFlag='a';}
       switch(lpFlag){
-        case 'a':break;
+        
+        //-- case of accepted raw
+        case 'a':
+        {
+          for(int i=MainPlantModel.C_VF_UI_VALID_HEAD;
+                  i<=MainSpecificator.ccRefer().vmVFeederAmount;
+                  i++)
+          {
+            float lpPercentage = SubRecipeManager.ccRefer()
+              .ccGetOnWeighingPercentage('G', i);
+            float lpTon
+              = lpPercentage*(MainPlantModel.ccRefer().vmVRatioBaseTPH)/10f;
+            int lpRoll = SubAnalogScalarManager.ccRefer()
+              .ccToVFeederFluxRPM(i, (int)lpTon);//[todo]::do you remember somthing called `sieving`?
+            SubFeederPane.ccRefer().cmLesVFeederBlock.get(i).ccSetValue(lpRoll);
+          }
+        }
+        break;
+        
+        //-- case of first raw
         case 'f':
         {
           for(int i=MainPlantModel.C_VF_UI_VALID_HEAD;
@@ -281,24 +298,32 @@ public final class MainActionManager {
             float lpPercentage = SubRecipeManager.ccRefer()
               .ccGetPercentage(lpFirst, 'G', i);
             float lpTon
-              = lpPercentage*(MainPlantModel.ccRefer().vmVRatioBaseTPH)/100f;
-            
-            //[head]:: how do we convert the tph value to rpm value ??
-            
-            VcConst.ccPrintln("rcp"+Integer.toString(i), lpPercentage);
-          
+              = lpPercentage*(MainPlantModel.ccRefer().vmVRatioBaseTPH)/10f;
+            int lpRoll = SubAnalogScalarManager.ccRefer()
+              .ccToVFeederFluxRPM(i, (int)lpTon);//[todo]::do you remember somthing called `sieving`?
+            SubFeederPane.ccRefer().cmLesVFeederBlock.get(i).ccSetValue(lpRoll);
           }
         }
         break;
         
-        default:break;
+        //-- case of equalizer
+        default:
+        {
+          float lpPercentage = 100f/MainSpecificator.ccRefer().vmVFeederAmount;
+          float lpTon
+            = lpPercentage*(MainPlantModel.ccRefer().vmVRatioBaseTPH)/10f;
+          for(int i=MainPlantModel.C_VF_UI_VALID_HEAD;
+                  i<=MainSpecificator.ccRefer().vmVFeederAmount;
+                  i++)
+          {
+            int lpRoll = SubAnalogScalarManager.ccRefer()
+              .ccToVFeederFluxRPM(i, (int)lpTon);//[todo]::do you remember somthing called `sieving`?
+            SubFeederPane.ccRefer().cmLesVFeederBlock.get(i).ccSetValue(lpRoll);
+          }
+        }
+        break;
         
       }//..?
-      
-      //[dtfm]::
-      SubFeederPane.ccRefer().cmLesVFeederBlock.get(1).ccSetValue(1222);
-      SubFeederPane.ccRefer().cmLesVFeederBlock.get(6).ccSetValue(1222);
-      
     }//+++
   };//***
   
