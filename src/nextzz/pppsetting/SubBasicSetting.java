@@ -31,10 +31,32 @@ public class SubBasicSetting extends McAbstractSettingPartition{
   
   //===
   
+  /*
+  public final MiSettingItem cmDohItem= new MiSettingItem() {
+    @Override public String ccGetName() {
+      return "[unit]"+VcTranslator.tr("_Doh");
+    }//++>
+    @Override public String ccGetDescription() {
+      return VcTranslator.tr("_dscp_Doh");
+    }//++>
+    @Override public String ccGetLimitationInfo() {
+      return "[? ~ ?]";
+    }//++>
+    @Override public String ccGetValue() {
+      return "<noteyet>";
+    }//++>
+    @Override public void ccSetValue(String pxVal) {
+      int lpFixed = VcNumericUtility.ccParseIntegerString(pxVal);
+      lpFixed=ZcRangedValueModel.ccLimitInclude(lpFixed, 0, 400);
+      System.out.println(".ccSetValue()::not_yet:"+Integer.toString(lpFixed));
+    }//++<
+  };//***
+  */
+  
   public final MiSettingItem cmDohItem = new MiSettingItem() {
     //[todo]::..what should i do ??
     @Override public String ccGetName() {
-      return "[KG]"+VcTranslator.tr("_doh");
+      return "[unit]"+VcTranslator.tr("_doh");
     }//++>
     @Override public String ccGetDescription() {
       return VcTranslator.tr("_dscp_doh_dont_even_know_what_doh");

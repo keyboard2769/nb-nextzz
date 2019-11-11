@@ -31,7 +31,6 @@ import kosui.ppplocalui.EcShape;
 import kosui.ppplocalui.EcText;
 import kosui.ppplocalui.EcValueBox;
 import kosui.ppplocalui.EiGroup;
-import kosui.pppswingui.ScConst;
 import kosui.ppputil.VcNumericUtility;
 import nextzz.pppmain.MainSketch;
 import processing.core.PApplet;
