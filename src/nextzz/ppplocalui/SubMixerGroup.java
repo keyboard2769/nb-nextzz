@@ -55,7 +55,7 @@ public final class SubMixerGroup implements EiGroup{
   public final EcValueBox
     cmWetCountCB = new EcValueBox("_wet", "00 S"),
     cmDryCountCB = new EcValueBox("_dry", "00 S"),
-    cmMixerTemperatureCB = new EcValueBox("_mixer", "-000 'C")
+    cmMixerTemperatureCB = new EcValueBox("_mixer", "-000 `C")
   ;//...
   public final EcText
     cmWetText = new EcText(VcTranslator.tr("_wet")),

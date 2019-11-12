@@ -177,7 +177,7 @@ public final class SubVCombustStaticManager extends McTableAdapter{
     
     //-- make data
     LinkedList<String> lpData = new LinkedList<String>();
-    lpData.add("#type,time,chute['c],entrance['c],pipe['c],sand['c],"
+    lpData.add("#type,time,chute[`c],entrance[`c],pipe[`c],sand[`c],"
       + "vexfan[%],vbfan[%]");//[todo]::..how do we fix this??
     for(McVCombustRecord it : cmListOfRecord){
       lpData.add(it.ccToCSVRow());

@@ -66,7 +66,7 @@ public final class SubTemperatureSetting extends McAbstractSettingPartition{
     private final int cmIndex;
     public McTemperatureOffsetItem(int pxIndex){cmIndex=pxIndex;}
     @Override public String ccGetName() {
-      return "['C]"
+      return "[`C]"
         +VcTranslator.tr(String.format("_ca%02d", cmIndex))
         +VcTranslator.tr("_ca_rvc_offset");
     }//+++

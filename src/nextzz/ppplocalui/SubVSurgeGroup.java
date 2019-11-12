@@ -63,7 +63,7 @@ public final class SubVSurgeGroup implements EiGroup{
   public final EcText cmSandTemperatueText
     = new EcText(VcTranslator.tr("_sandt"));
   public final EcValueBox cmSandTemperatureCB
-    = new EcValueBox("_sand", "-000 'C");
+    = new EcValueBox("_sand", "-000 `C");
   public final List<EcGauge> cmLesHotbinLV
     = Collections.unmodifiableList(Arrays.asList(
       new EcGauge("??"),
@@ -113,7 +113,7 @@ public final class SubVSurgeGroup implements EiGroup{
   public final EcText cmPipeTemperatueText
     = new EcText(VcTranslator.tr("_pipet"));
   public final EcValueBox cmPipeTemperatureCB
-    = new EcValueBox("_pipe", "-000 'C");
+    = new EcValueBox("_pipe", "-000 `C");
   
   //===
   

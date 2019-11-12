@@ -110,6 +110,12 @@ public final class MainSimulator {
        .ccIsHooked()&&(MainSimulator.ccOneSecondClock()
       ||pxMotor.ccIsContacted());
   }//+++
+  
+  public static final boolean ccSelect(
+    boolean pxFlagA, boolean pxInputA, boolean pxInputB
+  ){
+    return pxFlagA?pxInputA:pxInputB;
+  }//+++
 
   public static final boolean ccSelectModeForce(
     boolean pxForceClose, boolean pxForceOpen, boolean pxAutoFlag

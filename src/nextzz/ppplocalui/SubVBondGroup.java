@@ -47,7 +47,7 @@ public final class SubVBondGroup implements EiGroup{
   public final EcShape cmPlate = new EcShape();
   
   public final EcValueBox cmTargetTemperatureTB
-    = new EcValueBox("_vbtarget", "+000 'C", 0x3610);
+    = new EcValueBox("_vbtarget", "+000 `C", 0x3610);
   
   public final EcButton
     cmTargetDecrementSW = new EcButton("-", 0x3611),
@@ -55,10 +55,10 @@ public final class SubVBondGroup implements EiGroup{
   ;//...
   
   public final EcValueBox cmChuteTemperatureTB
-    = new EcValueBox("_vbagc", "+000 'C");
+    = new EcValueBox("_vbagc", "+000 `C");
   
   public final EcValueBox cmEntranceTemperatureCB
-    = new EcValueBox("_bagenc", "+000 'C");
+    = new EcValueBox("_bagenc", "+000 `C");
   
   public final EcValueBox cmVDPressureCB
     = new EcValueBox("_vdpb", "+000 kpa");

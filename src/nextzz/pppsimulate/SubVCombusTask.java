@@ -28,7 +28,6 @@ import kosui.ppputil.VcLocalTagger;
 import kosui.ppputil.VcNumericUtility;
 import nextzz.pppdelegate.SubAnalogDelegator;
 import nextzz.pppdelegate.SubVCombustDelegator;
-import nextzz.ppplocalui.SubVFeederGroup;
 
 public final class SubVCombusTask implements ZiTask{
   

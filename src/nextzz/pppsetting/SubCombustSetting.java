@@ -35,10 +35,12 @@ public final class SubCombustSetting extends McAbstractSettingPartition{
   
   //=== 
   
+  //=== v safe guard
+  
   public final MiSettingItem cmVEntranceCoolDownCelciusItem
     = new MiSettingItem() {
     @Override public String ccGetName() {
-      return "['C]"+VcTranslator.tr("_entrance_cool_down_temp");
+      return "[`C]"+VcTranslator.tr("_entrance_cool_down_temp");
     }//++>
     @Override public String ccGetDescription() {
       return VcTranslator.tr("_dscp_entrance_cool_down_temp");
@@ -64,7 +66,7 @@ public final class SubCombustSetting extends McAbstractSettingPartition{
   public final MiSettingItem cmVEntranceMeltDownCelciusItem
     = new MiSettingItem() {
     @Override public String ccGetName() {
-      return "['C]"+VcTranslator.tr("_entrance_melt_down_temp");
+      return "[`C]"+VcTranslator.tr("_entrance_melt_down_temp");
     }//++>
     @Override public String ccGetDescription() {
       return VcTranslator.tr("_dscp_entrance_melt_down_temp");
@@ -87,10 +89,32 @@ public final class SubCombustSetting extends McAbstractSettingPartition{
     }//++<
   };//***
   
+  //=== v burner degree
+  
+  public final MiSettingItem cmVTargetTemperatureItem= new MiSettingItem() {
+    @Override public String ccGetName() {
+      return "[`C]"+VcTranslator.tr("_v_target_temperature");
+    }//++>
+    @Override public String ccGetDescription() {
+      return VcTranslator.tr("_dscp_v_target_temperature");
+    }//++>
+    @Override public String ccGetLimitationInfo() {
+      return "[1 ~ 255]";
+    }//++>
+    @Override public String ccGetValue() {
+      return Integer.toString(SubDegreeControlManager.ccRefer().vmVTargetCELC);
+    }//++>
+    @Override public void ccSetValue(String pxVal) {
+      int lpFixed = VcNumericUtility.ccParseIntegerString(pxVal);
+      lpFixed=ZcRangedValueModel.ccLimitInclude(lpFixed, 1, 255);
+      SubDegreeControlManager.ccRefer().vmVTargetCELC=lpFixed;
+    }//++<
+  };//***
+  
   public final MiSettingItem cmVTargetAdjustWidthItem
     = new MiSettingItem() {
     @Override public String ccGetName() {
-      return "['C]"+VcTranslator.tr("_v_target_adjust_width");
+      return "[`C]"+VcTranslator.tr("_v_target_adjust_width");
     }//++>
     @Override public String ccGetDescription() {
       return VcTranslator.tr("_dscp_v_target_adjust_width");
@@ -109,13 +133,13 @@ public final class SubCombustSetting extends McAbstractSettingPartition{
     }//++<
   };//***
   
-  public final MiSettingItem cmVPreHeatingPercentageItem
+  public final MiSettingItem cmVPreHeatingDegreeItem
     = new MiSettingItem() {
     @Override public String ccGetName() {
-      return "[%]"+VcTranslator.tr("_v_pre_heating_percentage");
+      return "[%]"+VcTranslator.tr("_v_pre_heating_degree");
     }//++>
     @Override public String ccGetDescription() {
-      return VcTranslator.tr("_dscp_v_pre_heating_percentage");
+      return VcTranslator.tr("_dscp_v_pre_heating_degree");
     }//++>
     @Override public String ccGetLimitationInfo() {
       return "[1 ~ 99]";
@@ -130,6 +154,28 @@ public final class SubCombustSetting extends McAbstractSettingPartition{
       SubDegreeControlManager.ccRefer().vmVPreHeatingPT=lpFixed;
     }//++<
   };//***
+  
+  public final MiSettingItem cmVBurnerLimitDegreeItem= new MiSettingItem() {
+    @Override public String ccGetName() {
+      return "[%]"+VcTranslator.tr("_v_burner_limit_degree");
+    }//++>
+    @Override public String ccGetDescription() {
+      return VcTranslator.tr("_dscp_v_burner_limit_degree");
+    }//++>
+    @Override public String ccGetLimitationInfo() {
+      return "[1 ~ 99]";
+    }//++>
+    @Override public String ccGetValue() {
+      return "<noteyet>";
+    }//++>
+    @Override public void ccSetValue(String pxVal) {
+      int lpFixed = VcNumericUtility.ccParseIntegerString(pxVal);
+      lpFixed=ZcRangedValueModel.ccLimitInclude(lpFixed, 1, 99);
+      System.out.println(".ccSetValue()::not_yet:"+Integer.toString(lpFixed));
+    }//++<
+  };//***
+  
+  //=== v exf degree
   
   public final MiSettingItem cmVDryerTargetPressureItem
     = new MiSettingItem() {
@@ -175,10 +221,135 @@ public final class SubCombustSetting extends McAbstractSettingPartition{
     }//++<
   };//***
   
+  public final MiSettingItem cmVExfanLimitDegreeItem= new MiSettingItem() {
+    @Override public String ccGetName() {
+      return "[%]"+VcTranslator.tr("_v_exfan_limit_degree");
+    }//++>
+    @Override public String ccGetDescription() {
+      return VcTranslator.tr("_dscp__v_exfan_limit_degree");
+    }//++>
+    @Override public String ccGetLimitationInfo() {
+      return "[1 ~ 99]";
+    }//++>
+    @Override public String ccGetValue() {
+      return "<noteyet>";
+    }//++>
+    @Override public void ccSetValue(String pxVal) {
+      int lpFixed = VcNumericUtility.ccParseIntegerString(pxVal);
+      lpFixed=ZcRangedValueModel.ccLimitInclude(lpFixed, 1, 99);
+      System.out.println(".ccSetValue()::not_yet:"+Integer.toString(lpFixed));
+    }//++<
+  };//***
+  
+  //=== v combust control
+  
+  public final MiSettingItem cmVCombustControlProprtionZoneItem
+    = new MiSettingItem() {
+    @Override public String ccGetName() {
+      return "[%]"+VcTranslator.tr("_v_combust_control_proprtion_zone");
+    }//++>
+    @Override public String ccGetDescription() {
+      return VcTranslator.tr("_dscp__v_combust_control_proprtion_zone");
+    }//++>
+    @Override public String ccGetLimitationInfo() {
+      return "[1 ~ 99]";
+    }//++>
+    @Override public String ccGetValue() {
+      return "<noteyet>";
+    }//++>
+    @Override public void ccSetValue(String pxVal) {
+      int lpFixed = VcNumericUtility.ccParseIntegerString(pxVal);
+      lpFixed=ZcRangedValueModel.ccLimitInclude(lpFixed, 1, 99);
+      System.out.println(".ccSetValue()::not_yet:"+Integer.toString(lpFixed));
+    }//++<
+  };//***
+  
+  public final MiSettingItem cmVCombustControlDeadZoneItem
+    = new MiSettingItem() {
+    @Override public String ccGetName() {
+      return "[%]"+VcTranslator.tr("_v_combust_control_dead_zone");
+    }//++>
+    @Override public String ccGetDescription() {
+      return VcTranslator.tr("_dscp__v_combust_control_dead_zone");
+    }//++>
+    @Override public String ccGetLimitationInfo() {
+      return "[1 ~ 99]";
+    }//++>
+    @Override public String ccGetValue() {
+      return "<noteyet>";
+    }//++>
+    @Override public void ccSetValue(String pxVal) {
+      int lpFixed = VcNumericUtility.ccParseIntegerString(pxVal);
+      lpFixed=ZcRangedValueModel.ccLimitInclude(lpFixed, 1, 99);
+      System.out.println(".ccSetValue()::not_yet:"+Integer.toString(lpFixed));
+    }//++<
+  };//***
+  
+  public final MiSettingItem cmVCombustControlSampleIntervalItem
+    = new MiSettingItem() {
+    @Override public String ccGetName() {
+      return "[S]"+VcTranslator.tr("_v_combust_control_sample_interval");
+    }//++>
+    @Override public String ccGetDescription() {
+      return VcTranslator.tr("_dscp__v_combust_control_sample_interval");
+    }//++>
+    @Override public String ccGetLimitationInfo() {
+      return "[0.5 ~ 3600.0]";
+    }//++>
+    @Override public String ccGetValue() {
+      return "<noteyet>";
+    }//++>
+    @Override public void ccSetValue(String pxVal) {
+      int lpFixed = VcNumericUtility.ccParseIntegerString(pxVal);
+      lpFixed=ZcRangedValueModel.ccLimitInclude(lpFixed, 960, 962);
+      System.out.println(".ccSetValue()::not_yet:"+Integer.toString(lpFixed));
+    }//++<
+  };//***
+  
+  public final MiSettingItem cmVCombustControlAdjustIntervalItem
+    = new MiSettingItem() {
+    @Override public String ccGetName() {
+      return "[S]"+VcTranslator.tr("_v_combust_control_adjust_interval");
+    }//++>
+    @Override public String ccGetDescription() {
+      return VcTranslator.tr("_dscp_v_combust_control_adjust_interval");
+    }//++>
+    @Override public String ccGetLimitationInfo() {
+      return "[0.5 ~ 3600.0]";
+    }//++>
+    @Override public String ccGetValue() {
+      return "<noteyet>";
+    }//++>
+    @Override public void ccSetValue(String pxVal) {
+      int lpFixed = VcNumericUtility.ccParseIntegerString(pxVal);
+      lpFixed=ZcRangedValueModel.ccLimitInclude(lpFixed, 960, 962);
+      System.out.println(".ccSetValue()::not_yet:"+Integer.toString(lpFixed));
+    }//++<
+  };//***
+  
+  //[todo]::..
+  //=== r safe guard
+  //=== r burner degree
+  //=== r exf degree
+  //=== r combust control
+  
   //===
   
   @Override public void ccInit(){
-    McAbstractSettingPartition.ccRegisterAll(SELF);
+    
+    McAbstractSettingPartition.ccRegisterAll(SELF);//..[head]::replace order
+    
+    //-- v safe guard
+    //-- v burner degree
+    //-- v exf degree
+    //-- v combust control
+    
+    //[todo]::..
+    //-- r safe guard
+    //-- r burner degree
+    //-- r exf degree
+    //-- r combust control
+    
   }//++!
   
   @Override public String ccGetTile() {

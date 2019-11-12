@@ -82,12 +82,12 @@ public class SubWeighSetting extends McAbstractSettingPartition{
   
   //=== emptiness
   
-  public final MiSettingItem cmAGEmtyKGItem = new MiSettingItem() {
+  public final MiSettingItem cmAGEmptyKGItem = new MiSettingItem() {
     @Override public String ccGetName() {
-      return "[KG]"+VcTranslator.tr("_ag_emty_kg");
+      return "[KG]"+VcTranslator.tr("_ag_empty_kg");
     }//++>
     @Override public String ccGetDescription() {
-      return VcTranslator.tr("_dscp_ag_emty_kg");
+      return VcTranslator.tr("_dscp_ag_empty_kg");
     }//++>
     @Override public String ccGetLimitationInfo() {
       return "[0 ~ 400]";
@@ -103,12 +103,12 @@ public class SubWeighSetting extends McAbstractSettingPartition{
     }//++<
   };//***
   
-  public final MiSettingItem cmFREmtyKGItem = new MiSettingItem() {
+  public final MiSettingItem cmFREmptyKGItem = new MiSettingItem() {
     @Override public String ccGetName() {
-      return "[KG]"+VcTranslator.tr("_fr_emty_kg");
+      return "[KG]"+VcTranslator.tr("_fr_empty_kg");
     }//++>
     @Override public String ccGetDescription() {
-      return VcTranslator.tr("_dscp_fr_emty_kg");
+      return VcTranslator.tr("_dscp_fr_empty_kg");
     }//++>
     @Override public String ccGetLimitationInfo() {
       return "[0 ~ 50]";
@@ -124,12 +124,12 @@ public class SubWeighSetting extends McAbstractSettingPartition{
     }//++<
   };//***
   
-  public final MiSettingItem cmASEmtyKGItem = new MiSettingItem() {
+  public final MiSettingItem cmASEmptyKGItem = new MiSettingItem() {
     @Override public String ccGetName() {
-      return "[KG]"+VcTranslator.tr("_as_emty_kg");
+      return "[KG]"+VcTranslator.tr("_as_empty_kg");
     }//++>
     @Override public String ccGetDescription() {
-      return VcTranslator.tr("_dscp_as_emty_kg");
+      return VcTranslator.tr("_dscp_as_empty_kg");
     }//++>
     @Override public String ccGetLimitationInfo() {
       return "[0 ~ 50]";
@@ -347,10 +347,10 @@ public class SubWeighSetting extends McAbstractSettingPartition{
   
   public final MiSettingItem cmAGErrorMarginItem= new MiSettingItem() {
     @Override public String ccGetName() {
-      return "[%]"+VcTranslator.tr("_ag_ErrorMargin");
+      return "[%]"+VcTranslator.tr("_ag_error_margin");
     }//++>
     @Override public String ccGetDescription() {
-      return VcTranslator.tr("_dscp_ag_ErrorMargin");
+      return VcTranslator.tr("_dscp_ag_error_margin");
     }//++>
     @Override public String ccGetLimitationInfo() {
       return "[1 ~ 99]";
@@ -367,10 +367,10 @@ public class SubWeighSetting extends McAbstractSettingPartition{
   
   public final MiSettingItem cmFRErrorMarginItem= new MiSettingItem() {
     @Override public String ccGetName() {
-      return "[%]"+VcTranslator.tr("_fr_ErrorMargin");
+      return "[%]"+VcTranslator.tr("_fr_error_margin");
     }//++>
     @Override public String ccGetDescription() {
-      return VcTranslator.tr("_dscp_fr_ErrorMargin");
+      return VcTranslator.tr("_dscp_fr_error_margin");
     }//++>
     @Override public String ccGetLimitationInfo() {
       return "[1 ~ 99]";
@@ -387,10 +387,10 @@ public class SubWeighSetting extends McAbstractSettingPartition{
   
   public final MiSettingItem cmASErrorMarginItem= new MiSettingItem() {
     @Override public String ccGetName() {
-      return "[%]"+VcTranslator.tr("_as_ErrorMargin");
+      return "[%]"+VcTranslator.tr("_as_error_margin");
     }//++>
     @Override public String ccGetDescription() {
-      return VcTranslator.tr("_dscp_as_ErrorMargin");
+      return VcTranslator.tr("_dscp_as_error_margin");
     }//++>
     @Override public String ccGetLimitationInfo() {
       return "[1 ~ 99]";
@@ -434,10 +434,10 @@ public class SubWeighSetting extends McAbstractSettingPartition{
   
   public final MiSettingItem cmASOverScaleItem= new MiSettingItem() {
     @Override public String ccGetName() {
-      return "[unit]"+VcTranslator.tr("_as_overScale");
+      return "[AD]"+VcTranslator.tr("_as_over_scale");
     }//++>
     @Override public String ccGetDescription() {
-      return VcTranslator.tr("_dscp_as_overScale");
+      return VcTranslator.tr("_dscp_as_over_scale");
     }//++>
     @Override public String ccGetLimitationInfo() {
       return "[0 ~ 7999]";
@@ -458,24 +458,41 @@ public class SubWeighSetting extends McAbstractSettingPartition{
     
     //-- dry/wet
     cmListOfItem.add(cmDryTimeItem);
+    cmListOfItem.add(cmWetTimeItem);
     
     //-- emptiness
-    cmListOfItem.add(cmAGEmtyKGItem);
-    cmListOfItem.add(cmFREmtyKGItem);
-    cmListOfItem.add(cmASEmtyKGItem);
+    cmListOfItem.add(cmAGEmptyKGItem);
+    cmListOfItem.add(cmFREmptyKGItem);
+    cmListOfItem.add(cmASEmptyKGItem);
+    //[todo]::r/a
     
     //-- graduation
     cmListOfItem.add(cmAGGraduationItem);
     cmListOfItem.add(cmFRGraduationItem);
     cmListOfItem.add(cmASGraduationItem);
+    //[todo]::r/a
+    
+    //-- dropping
+    cmListOfItem.add(cmAGDroppingItem);
+    cmListOfItem.add(cmFRDroppingItem);
+    cmListOfItem.add(cmASDroppingItem);
+    //[todo]::r/a
     
     //-- constraining
     cmListOfItem.add(cmAGConstrainingItem);
-    //[head]::
+    cmListOfItem.add(cmFRConstrainingItem);
+    cmListOfItem.add(cmASConstrainingItem);
+    //[todo]::r/a
     
-    //-- ErrorMargin
-    //-- discharge constrainning ** rc
-    //-- over scale ** as
+    //-- error margin
+    cmListOfItem.add(cmAGErrorMarginItem);
+    cmListOfItem.add(cmFRErrorMarginItem);
+    cmListOfItem.add(cmASErrorMarginItem);
+    //[todo]::r/a
+    
+    //-- misc
+    cmListOfItem.add(cmRCDischargeConstrainingItem);
+    cmListOfItem.add(cmASOverScaleItem);
     
   }//++!
 
