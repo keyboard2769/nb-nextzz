@@ -26,32 +26,58 @@ import javax.swing.SwingUtilities;
 import kosui.pppmodel.McConst;
 import kosui.pppswingui.ScConst;
 import kosui.ppputil.VcConst;
+import kosui.ppputil.VcStampUtility;
 import nextzz.pppsetting.McAbstractSettingPartition;
-import nextzz.pppsetting.SubWeighSetting;
+import nextzz.pppsetting.SubCombustSetting;
 import processing.core.PApplet;
 
 public final class MetaTextGenerator {
   
-  private static final String ssProcess(String pxTranslationKey){
-    return pxTranslationKey;//..[not_yet]::
+  private static String ssProcess(String pxTranslationKey){
+    
+    //-- check in
+    if(pxTranslationKey==null){return "<null>";}
+    if(pxTranslationKey.isEmpty()){return "</>";}
+    String lpKey,lpEn;
+    
+    //-- replace ** key
+    lpKey=pxTranslationKey.replaceAll("\\[.+\\]", "");
+    
+    //-- replace ** en
+    lpEn=lpKey.replaceAll("^_", "");
+    lpEn=lpEn.replaceAll("_", "<bk>");
+    StringBuilder lpEnBuf = new StringBuilder(lpEn);
+    lpEnBuf.replace(0, 1, lpEn.substring(0, 1).toUpperCase());
+    //[head]::
+    
+    //-- post
+    return lpKey+","+lpEnBuf.toString();
+    
   }//+++
   
   private static final Runnable O_SW_SETTING_KEYCONTENT_G = new Runnable() {
     @Override public void run() {
       
       //-- let select
+      ScConst.ccSetFileChooserSelectedFile(
+        VcConst.C_V_PWD+VcConst.C_V_PATHSEP
+        +"so"+VcStampUtility.ccFileNameTypeVI()+".txt"
+      );
+      ScConst.ccSetFileChooserButtonText("Export");
       File lpOutputFile = ScConst.ccGetFileByFileChooser('f');
       boolean lpVerify = McConst.ccVerifyFileForSaving(lpOutputFile);
       if(!lpVerify){ssExit(-1);}
       VcConst.ccPrintln("accepted", lpOutputFile.getAbsolutePath());
       
       //-- pack
-      McAbstractSettingPartition lpBUF = SubWeighSetting.ccRefer();
+      McAbstractSettingPartition lpBUF = SubCombustSetting.ccRefer();
       lpBUF.ccInit();
       int lpRowMax = lpBUF.getRowCount();
       List<String> lpLesContent = new LinkedList<String>();
       for(int i=0;i<lpRowMax;i++){
-        lpLesContent.add(lpBUF.getValueAt(i, 1).toString());
+        lpLesContent.add(
+          ssProcess(lpBUF.getValueAt(i, 1).toString())
+        );
       }//..~
       lpLesContent.add("<eof>");
       

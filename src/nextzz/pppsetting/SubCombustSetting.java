@@ -37,7 +37,27 @@ public final class SubCombustSetting extends McAbstractSettingPartition{
   
   //=== v safe guard
   
-  public final MiSettingItem cmVEntranceCoolDownCelciusItem
+  public final MiSettingItem cmEntranceBaseCelciusItem= new MiSettingItem() {
+    @Override public String ccGetName() {
+      return "[`C]"+VcTranslator.tr("_entrance_base_celcius");
+    }//++>
+    @Override public String ccGetDescription() {
+      return VcTranslator.tr("_dscp_entrance_base_celcius");
+    }//++>
+    @Override public String ccGetLimitationInfo() {
+      return "[1 ~ 999]";
+    }//++>
+    @Override public String ccGetValue() {
+      return "<noteyet>";
+    }//++>
+    @Override public void ccSetValue(String pxVal) {
+      int lpFixed = VcNumericUtility.ccParseIntegerString(pxVal);
+      lpFixed=ZcRangedValueModel.ccLimitInclude(lpFixed, 1, 999);
+      System.out.println(".ccSetValue()::not_yet:"+Integer.toString(lpFixed));
+    }//++<
+  };//***
+  
+  public final MiSettingItem cmEntranceCoolDownCelciusItem
     = new MiSettingItem() {
     @Override public String ccGetName() {
       return "[`C]"+VcTranslator.tr("_entrance_cool_down_temp");
@@ -63,7 +83,7 @@ public final class SubCombustSetting extends McAbstractSettingPartition{
     }//++<
   };//***
   
-  public final MiSettingItem cmVEntranceMeltDownCelciusItem
+  public final MiSettingItem cmEntranceMeltDownCelciusItem
     = new MiSettingItem() {
     @Override public String ccGetName() {
       return "[`C]"+VcTranslator.tr("_entrance_melt_down_temp");
@@ -180,10 +200,10 @@ public final class SubCombustSetting extends McAbstractSettingPartition{
   public final MiSettingItem cmVDryerTargetPressureItem
     = new MiSettingItem() {
     @Override public String ccGetName() {
-      return "[-kpa]"+VcTranslator.tr("_v_tryer_target_pres");
+      return "[-kpa]"+VcTranslator.tr("_v_dryer_target_pres");
     }//++>
     @Override public String ccGetDescription() {
-      return VcTranslator.tr("_dscp_v_tryer_target_pres");
+      return VcTranslator.tr("_dscp_v_dryer_target_pres");
     }//++>
     @Override public String ccGetLimitationInfo() {
       return "[1 ~ 199]";
@@ -337,12 +357,27 @@ public final class SubCombustSetting extends McAbstractSettingPartition{
   
   @Override public void ccInit(){
     
-    McAbstractSettingPartition.ccRegisterAll(SELF);//..[head]::replace order
-    
     //-- v safe guard
+    cmListOfItem.add(cmEntranceBaseCelciusItem);
+    cmListOfItem.add(cmEntranceCoolDownCelciusItem);
+    cmListOfItem.add(cmEntranceMeltDownCelciusItem);
+    
     //-- v burner degree
+    cmListOfItem.add(cmVTargetTemperatureItem);
+    cmListOfItem.add(cmVTargetAdjustWidthItem);
+    cmListOfItem.add(cmVPreHeatingDegreeItem);
+    cmListOfItem.add(cmVBurnerLimitDegreeItem);
+    
     //-- v exf degree
+    cmListOfItem.add(cmVDryerTargetPressureItem);
+    cmListOfItem.add(cmVExfanIgnitionPercentageItem);
+    cmListOfItem.add(cmVExfanLimitDegreeItem);
+    
     //-- v combust control
+    cmListOfItem.add(cmVCombustControlProprtionZoneItem);
+    cmListOfItem.add(cmVCombustControlDeadZoneItem);
+    cmListOfItem.add(cmVCombustControlSampleIntervalItem);
+    cmListOfItem.add(cmVCombustControlAdjustIntervalItem);
     
     //[todo]::..
     //-- r safe guard

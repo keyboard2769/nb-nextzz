@@ -120,6 +120,9 @@ public final class SubFeederFluxSetting extends McAbstractSettingPartition{
   //===
 
   @Override public void ccInit() {
+    
+    //[head]::what now??
+    
     cmListOfItem.add(cmVRatioBaseTPHItem);
     for(int i=0;i<=MainSpecificator.ccRefer().vmVFeederAmount;i++){
       cmListOfItem.add(new McFeederRPMSpanItem('v', i));
