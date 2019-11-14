@@ -293,6 +293,16 @@
 <tr>,_v_combust_control_adjust_interval,Virgin<kb>combust<bk>control<bk>adjust<bk>interval,Ｖ温度制御修正間隔,新料温度自控补正间隔,[]
 ,,,,,
 ,,,,,
+<sep>,,*-swing-pane-setting-combust-*,,,
+<tr>,_feeder_flux_setting,FEEDER-FLUX,ﾌｨｰﾀﾞｷｬﾘﾌﾞﾚ設定,供料流量,[]
+<tr>,_v_ratio_base,Virgin<bk>ratio<bk>auto<bk>base,Ｖ基準供給量,新料自动比例基准量,[]
+<tr>,_v_ratio_width,Virgin<bk>ratio<bk>adjust<bk>width,Ｖ供給量調整感度,新料手动调整幅度,[]
+<tr>,_rpm_span_vf,RPM<bk>span<bk>of<bk>virgin<bk>feeder<bk>No.,回転速スパン：ＶＦ,转速采样高点：新料料斗,[]
+<tr>,_tph_span_vf,TPH<bk>span<bk>of<bk>virgin<bk>feeder<bk>No.,供給量スパン：ＶＦ,流量采样高点：新料料斗,[]
+<tr>,_rpm_offset_vf,RPM<bk>offset<bk>of<bk>virgin<bk>feeder<bk>No.,回転速オフセット：ＶＦ,转速采样低点：新料料斗,[]
+<tr>,_tph_offset_vf,TPH<bk>offset<bk>of<bk>virgin<bk>feeder<bk>No.,供給量オフセット：ＶＦ,流量采样低点：新料料斗,[]
+,,,,,
+,,,,,
 <sep>,,*-swing-pane-recipe-*,,,
 <tr>,_l_rid:,ID:,番号：,编号:,[]
 <tr>,_l_rname:,NAME:,名前：,名称：,[]

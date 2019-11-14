@@ -78,7 +78,7 @@ public final class SubAnalogScalarManager {
   
   private final RuntimeException O_RE_SCALA_NOT_FOUND
     = new RuntimeException
-      ("unhandled errer occured while accessing scala object");
+      ("unhandled_errer_occured_while_accessing_scala_object");
   
   private final TreeMap<Integer,ZcScaledModel> cmMapOfScala
     = new TreeMap<Integer, ZcScaledModel>();
@@ -139,7 +139,7 @@ public final class SubAnalogScalarManager {
   public final void ccInit(){
     
     //-- WORDY indexed
-    for(int i=0;i<16;i++){
+    for(int i=0;i<16;i++){//..[todo]::constant??
       
       //-- feeder flux
       //-- feeder flux ** V
@@ -153,7 +153,7 @@ public final class SubAnalogScalarManager {
     }//+++
     
     //-- DOUBLY indexed
-    for(int i=0;i<32;i++){
+    for(int i=0;i<32;i++){//..[todo]::constant??
       //-- ct slot ..1000d -> 100.0f [A]
       cmListOfCTSlotScalar.add(new ZcScaledModel(0, 5000, 0, 1000));
     }//+++
@@ -215,7 +215,7 @@ public final class SubAnalogScalarManager {
   
   //=== 
   
-  //=== feeder flux ** V
+  //=== feeder flux ** V ** modification ** span
   
   synchronized public final
   void ccSetVFeederFluxRPMSpan(int pxIndex, int pxVal){
@@ -237,6 +237,30 @@ public final class SubAnalogScalarManager {
    return cmListOfVFeederFluxScalar.get(pxIndex&15).ccGetOutputSpan();
   }//++>
   
+  //=== feeder flux ** V ** modification ** offset
+  
+  synchronized public final
+  void ccSetVFeederFluxRPMOffset(int pxIndex, int pxVal){
+    cmListOfVFeederFluxScalar.get(pxIndex&15).ccSetInputOffset(pxVal&0xFFFF);
+  }//++<
+  
+  synchronized public final
+  int ccGetVFeederFluxRPMOffset(int pxIndex){
+   return cmListOfVFeederFluxScalar.get(pxIndex&15).ccGetInputOffset();
+  }//++>
+  
+  synchronized public final
+  void ccSetVFeederFluxTPHOffset(int pxIndex, int pxVal){
+    cmListOfVFeederFluxScalar.get(pxIndex&15).ccSetOutputOffset(pxVal&0xFFFF);
+  }//++<
+  
+  synchronized public final
+  int ccGetVFeederFluxTPHOffset(int pxIndex){
+   return cmListOfVFeederFluxScalar.get(pxIndex&15).ccGetOutputOffset();
+  }//++>
+  
+  //=== feeder flux ** V ** resulting
+  
   synchronized public final
   int ccGetVFeederFluxTPH(int pxIndex){
     //[tofix]::why have we leave this??
@@ -251,6 +275,7 @@ public final class SubAnalogScalarManager {
   }//++>
   
   //=== feeder flux ** R
+  
   //[todo]::ccSetRFeederFluxRPMSpan
   //[todo]::ccGetRFeederFluxRPMSpan
   //[todo]::ccSetRFeederFluxTPHSpan
@@ -383,6 +408,7 @@ public final class SubAnalogScalarManager {
   }//++>
   
   //=== R combust
+  
   //[todo]::ccGerRBurnerPercentage
   //[todo]::ccGetRDryerKPA
   //[todo]::ccGetRExfanPercentage

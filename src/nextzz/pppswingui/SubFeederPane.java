@@ -218,7 +218,6 @@ public final class SubFeederPane implements SiTabbable{
   
   //===
   
-  
   public final void ccVRatioShift(float pxMagnitude){
     //[todo]:fix this
     int lpStep=VcNumericUtility.ccInteger(50, pxMagnitude);

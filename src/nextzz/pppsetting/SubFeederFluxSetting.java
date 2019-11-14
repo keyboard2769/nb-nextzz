@@ -35,7 +35,67 @@ public final class SubFeederFluxSetting extends McAbstractSettingPartition{
   public static final SubFeederFluxSetting ccRefer(){return SELF;}//++>
   private SubFeederFluxSetting(){}//++!
 
-  //=== inner 
+  //=== duplicator
+  
+  private class McFeederRPMOffsetItem implements MiSettingItem{
+    private final char cmSystem;
+    private final int cmIndex;
+    public McFeederRPMOffsetItem(char pxSystem_vr, int pxIndex) {
+      cmSystem=pxSystem_vr;
+      cmIndex=pxIndex;
+    }//++!
+    @Override public String ccGetName() {
+      return "[rpm]:"+VcTranslator
+        .tr(String.format("_rpm_offset_%cf", cmSystem))
+        +Integer.toString(cmIndex);
+    }//++>
+    @Override public String ccGetDescription() {
+      return VcTranslator.tr("_dscp_feeder_rpm_offset");
+    }//++>
+    @Override public String ccGetLimitationInfo() {
+      return "[1 ~ 1800]";
+    }//++>
+    @Override public String ccGetValue() {
+      return Integer.toString(SubAnalogScalarManager.ccRefer()
+        .ccGetVFeederFluxRPMOffset(cmIndex));
+    }//++>
+    @Override public void ccSetValue(String pxVal) {
+      int lpFixed=VcNumericUtility.ccParseIntegerString(pxVal);
+      lpFixed=ZcRangedModel.ccLimitInclude(lpFixed, 1, 1800);
+      SubAnalogScalarManager.ccRefer()
+        .ccSetVFeederFluxRPMOffset(cmIndex, lpFixed);
+    }//++<
+  }//***
+  
+  private class McFeederTPHOffsetItem implements MiSettingItem{
+    private final char cmSystem;
+    private final int cmIndex;
+    public McFeederTPHOffsetItem(char pxSystem_vr, int pxIndex) {
+      cmSystem=pxSystem_vr;
+      cmIndex=pxIndex;
+    }//++!
+    @Override public String ccGetName() {
+      return "[tph]:"+VcTranslator
+        .tr(String.format("_tph_offset_%cf", cmSystem))
+        +Integer.toString(cmIndex);
+    }//++>
+    @Override public String ccGetDescription() {
+      return VcTranslator.tr("_dscp_feeder_tph_offset");
+    }//++>
+    @Override public String ccGetLimitationInfo() {
+      return "[1 ~ 200]";
+    }//++>
+    @Override public String ccGetValue() {
+      return Integer.toString(SubAnalogScalarManager.ccRefer()
+        .ccGetVFeederFluxTPHOffset(cmIndex));
+    }//++>
+    @Override public void ccSetValue(String pxVal) {
+      int lpFixed=VcNumericUtility.ccParseIntegerString(pxVal);
+      lpFixed=ZcRangedModel.ccLimitInclude(lpFixed, 1, 200);
+      SubAnalogScalarManager.ccRefer()
+        .ccSetVFeederFluxTPHOffset(cmIndex, lpFixed);
+    }//++<
+  }//***
   
   private class McFeederRPMSpanItem implements MiSettingItem{
     private final char cmSystem;
@@ -46,7 +106,8 @@ public final class SubFeederFluxSetting extends McAbstractSettingPartition{
     }//++!
     @Override public String ccGetName() {
       return "[rpm]:"+VcTranslator
-        .tr(String.format("_rpm_span_%cf%02d", cmSystem,cmIndex));
+        .tr(String.format("_rpm_span_%cf",cmSystem))
+        +Integer.toString(cmIndex);
     }//++>
     @Override public String ccGetDescription() {
       return VcTranslator.tr("_dscp_feeder_rpm_span");
@@ -75,7 +136,8 @@ public final class SubFeederFluxSetting extends McAbstractSettingPartition{
     }//++!
     @Override public String ccGetName() {
       return "[tph]:"+VcTranslator
-        .tr(String.format("_tph_span_%cf%02d", cmSystem,cmIndex));
+        .tr(String.format("_tph_span_%cf",cmSystem))
+        +Integer.toString(cmIndex);
     }//++>
     @Override public String ccGetDescription() {
       return VcTranslator.tr("_dscp_feeder_tph_span");
@@ -95,7 +157,7 @@ public final class SubFeederFluxSetting extends McAbstractSettingPartition{
     }//++<
   }//***
   
-  //===
+  //=== raw
   
   public final MiSettingItem cmVRatioBaseTPHItem = new MiSettingItem() {
     @Override public String ccGetName() {
@@ -117,14 +179,40 @@ public final class SubFeederFluxSetting extends McAbstractSettingPartition{
     }//++<
   };//***
   
+  public final MiSettingItem cmVRatioWidthTPHItem = new MiSettingItem() {
+    @Override public String ccGetName() {
+      return "[tph]"+VcTranslator.tr("_v_ratio_width");
+    }//++>
+    @Override public String ccGetDescription() {
+      return VcTranslator.tr("_dscp_v_ratio_width");
+    }//++>
+    @Override public String ccGetLimitationInfo() {
+      return "[0 ~ 400]";
+    }//++>
+    @Override public String ccGetValue() {
+      return "<not_yet>";
+    }//++>
+    @Override public void ccSetValue(String pxVal) {
+      float lpFixed = VcNumericUtility.ccParseFloatString(pxVal);
+      lpFixed = PApplet.constrain(lpFixed, 0f, 400f);
+      System.err.println("cmVRatioWidthTPHItem::not_yet:"
+        +Float.toString(lpFixed));
+    }//++<
+  };//***
+  
   //===
 
   @Override public void ccInit() {
     
-    //[head]::what now??
-    
     cmListOfItem.add(cmVRatioBaseTPHItem);
-    for(int i=0;i<=MainSpecificator.ccRefer().vmVFeederAmount;i++){
+    cmListOfItem.add(cmVRatioWidthTPHItem);
+    for(
+      int i=MainPlantModel.C_VF_UI_VALID_HEAD;
+      i<=MainSpecificator.ccRefer().vmVFeederAmount;
+      i++
+    ){
+      cmListOfItem.add(new McFeederRPMOffsetItem('v', i));
+      cmListOfItem.add(new McFeederTPHOffsetItem('v', i));
       cmListOfItem.add(new McFeederRPMSpanItem('v', i));
       cmListOfItem.add(new McFeederTPHSpanItem('v', i));
     }//..~

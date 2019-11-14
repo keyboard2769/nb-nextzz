@@ -89,6 +89,7 @@ public class SubLinearSetting extends McAbstractSettingPartition{
     }//++<
   }//***
   
+  //[tofix]::can the real span/offset practically got set in general?
   private class McScalaRealOffsetItem implements MiSettingItem{
     private final int cmKey;
     public McScalaRealOffsetItem(int pxKey) {
@@ -211,6 +212,8 @@ public class SubLinearSetting extends McAbstractSettingPartition{
   //===
   
   @Override public void ccInit() {
+    
+    //[head]::maybe it is just not here??
     
     //-- tare
     cmListOfItem.add(cmAGTareWeight);

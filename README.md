@@ -18,6 +18,7 @@ but hey, dose it sounds stupid if you read it DOUBLE-ZEUS ??
 - [ ] $ tre
 - [ ] $ dos
 - [ ] $ uno
+- [ ] $ let feeder ratio adjust based on tph value
 - [ ] $ refine case test of pid controller to have target manipulation
 - [ ] $ a linear pane with blocks of 'zero' and 'span' button
 - [ ] $ holding mixer gate screws log and weight control up
