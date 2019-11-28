@@ -19,6 +19,7 @@
 
 package nextzz.pppsetting;
 
+import kosui.ppplogic.ZcRangedValueModel;
 import kosui.ppputil.VcNumericUtility;
 import kosui.ppputil.VcTranslator;
 import nextzz.pppmodel.SubAnalogScalarManager;
@@ -63,12 +64,45 @@ public final class SubCTSlotSetting extends McAbstractSettingPartition{
     }//+++
   }//***
   
+  private class McCTSlotAlarmItem implements MiSettingItem{
+    private final int cmIndex;
+    public McCTSlotAlarmItem(int pxIndex) {
+      cmIndex=pxIndex;
+    }//..!
+    @Override public String ccGetName() {
+      return "[A]:"
+        +VcTranslator.tr(String.format("_ct%02d", cmIndex))
+        +VcTranslator.tr("_ct_alarm");
+    }//+++
+    @Override public String ccGetDescription() {
+      return VcTranslator.tr("_dscp_ct_alarm");
+    }//+++
+    @Override public String ccGetLimitationInfo() {
+      return "[1 ~ 999]";
+    }//+++
+    @Override public String ccGetValue() {
+      return "<not_yet>";
+    }//+++
+    @Override public void ccSetValue(String pxVal) {
+      int lpFixed = VcNumericUtility.ccParseIntegerString(pxVal);
+      lpFixed=ZcRangedValueModel.ccLimitInclude(lpFixed, 0, 400);
+      System.out.println("McCTSlotAlarmItem.ccSetValue()::not_yet:"
+        + Integer.toString(lpFixed));
+    }//+++
+  }//***
+  
   //===
   
   @Override public void ccInit() {
+        
+    //[head]::maybe it is just not here??
+    //[head]::have we done??
+    
     for(int i=0;i<32;i++){
       cmListOfItem.add(new McCTSlotSpanItem(i));
+      cmListOfItem.add(new McCTSlotAlarmItem(i));
     }//..~
+    
   }//++!
   
   @Override public String ccGetTile() {

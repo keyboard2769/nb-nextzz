@@ -18,6 +18,11 @@ but hey, dose it sounds stupid if you read it DOUBLE-ZEUS ??
 - [ ] $ tre
 - [ ] $ dos
 - [ ] $ uno
+- [ ] $ current slot overwhelming coloring
+- [ ] $ maybe feeder flux have to be a 'double-linear' model by its evil naturally ?
+        .. say, you've got a model composed as (100rpm, 10tph, 900rpm, 60tph)
+        .. speed under 100rpm have to compromise a model
+        .. that composed as (0rpm, 0tph, 100rpm, 10tph), which is a different model
 - [ ] $ let feeder ratio adjust based on tph value
 - [ ] $ refine case test of pid controller to have target manipulation
 - [ ] $ a linear pane with blocks of 'zero' and 'span' button
@@ -36,12 +41,10 @@ but hey, dose it sounds stupid if you read it DOUBLE-ZEUS ??
 #### heading
 
 - [ ] $ lets reclaim the setting pane and its content and translate 
-- [ ] $ feeder flux setting representation needs another floating point
-- [ ] $ current slot overwhelming color and setting
+- [ ] $ add current slot overwhelming setting
 
 #### last
 
-- [x] $ flag manipulating action needs pulse control actually
 - [x] $ the mixer content pl can flash now .. and it s out of control ! 
 - [x] $ we just gave up on the 'fixing' thing of the auto-weigh-sequence
 - [x] $ shift-tab can now back shift the focus .. don't push to hard !!
@@ -53,5 +56,6 @@ but hey, dose it sounds stupid if you read it DOUBLE-ZEUS ??
 - [x] $ print button can send some file to printer now
 - [x] $ move feeder assistance switch to feeder pane
 - [x] $ feeder group ratio button works based on the the flux setting item
+- [x] $ feeder flux setting representation needs another floating point
 
 <hr><!--EOF-->

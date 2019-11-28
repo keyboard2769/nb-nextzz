@@ -41,8 +41,7 @@ public final class SubTemperatureSetting extends McAbstractSettingPartition{
     public McTemperatureBiasItem(int pxIndex){cmIndex=pxIndex;}
     @Override public String ccGetName() {
       return "[%]"
-        +VcTranslator.tr(String.format("_ca%02d", cmIndex))
-        +VcTranslator.tr("_ca_rvc_bias");
+        +VcTranslator.tr(String.format("_ca%02d_ca_rvc_bias", cmIndex));
     }//+++
     @Override public String ccGetDescription() {
       return VcTranslator.tr("_dscp_ca_rvc_bias");
@@ -67,8 +66,7 @@ public final class SubTemperatureSetting extends McAbstractSettingPartition{
     public McTemperatureOffsetItem(int pxIndex){cmIndex=pxIndex;}
     @Override public String ccGetName() {
       return "[`C]"
-        +VcTranslator.tr(String.format("_ca%02d", cmIndex))
-        +VcTranslator.tr("_ca_rvc_offset");
+        +VcTranslator.tr(String.format("_ca%02d_ca_rvc_offset", cmIndex));
     }//+++
     @Override public String ccGetDescription() {
       return VcTranslator.tr("_dscp_ca_rvc_offset");

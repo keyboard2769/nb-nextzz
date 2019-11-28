@@ -27,8 +27,9 @@ import kosui.pppmodel.McConst;
 import kosui.pppswingui.ScConst;
 import kosui.ppputil.VcConst;
 import kosui.ppputil.VcStampUtility;
+import nextzz.pppmodel.SubAnalogScalarManager;
 import nextzz.pppsetting.McAbstractSettingPartition;
-import nextzz.pppsetting.SubCombustSetting;
+import nextzz.pppsetting.SubTemperatureSetting;
 import processing.core.PApplet;
 
 public final class MetaTextGenerator {
@@ -59,6 +60,7 @@ public final class MetaTextGenerator {
     @Override public void run() {
       
       //-- let select
+      ScConst.ccApplyLookAndFeel(4, false);
       ScConst.ccSetFileChooserSelectedFile(
         VcConst.C_V_PWD+VcConst.C_V_PATHSEP
         +"so"+VcStampUtility.ccFileNameTypeVI()+".txt"
@@ -69,10 +71,14 @@ public final class MetaTextGenerator {
       if(!lpVerify){ssExit(-1);}
       VcConst.ccPrintln("accepted", lpOutputFile.getAbsolutePath());
       
-      //-- pack
-      McAbstractSettingPartition lpBUF = SubCombustSetting.ccRefer();
+      //-- re-direct
+      SubAnalogScalarManager.ccRefer().ccInit();//..[note]::delete later
+      McAbstractSettingPartition lpBUF = SubTemperatureSetting.ccRefer();
       lpBUF.ccInit();
+      
+      //-- pack
       int lpRowMax = lpBUF.getRowCount();
+      VcConst.ccPrintln("RowCount", lpRowMax);
       List<String> lpLesContent = new LinkedList<String>();
       for(int i=0;i<lpRowMax;i++){
         lpLesContent.add(

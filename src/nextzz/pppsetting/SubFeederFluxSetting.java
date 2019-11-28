@@ -86,14 +86,19 @@ public final class SubFeederFluxSetting extends McAbstractSettingPartition{
       return "[1 ~ 200]";
     }//++>
     @Override public String ccGetValue() {
-      return Integer.toString(SubAnalogScalarManager.ccRefer()
-        .ccGetVFeederFluxTPHOffset(cmIndex));
+      int lpRaw = SubAnalogScalarManager.ccRefer()
+        .ccGetVFeederFluxTPHOffset(cmIndex);
+      String lpRes = VcNumericUtility.ccFormatFloatForOneAfter(lpRaw);
+      return lpRes;
     }//++>
     @Override public void ccSetValue(String pxVal) {
-      int lpFixed=VcNumericUtility.ccParseIntegerString(pxVal);
-      lpFixed=ZcRangedModel.ccLimitInclude(lpFixed, 1, 200);
+      float lpFixed = VcNumericUtility.ccParseFloatString(pxVal);
+      lpFixed=PApplet.constrain(lpFixed, 1f, 200f);
       SubAnalogScalarManager.ccRefer()
-        .ccSetVFeederFluxTPHOffset(cmIndex, lpFixed);
+        .ccSetVFeederFluxTPHOffset(
+          cmIndex,
+          VcNumericUtility.ccInteger(lpFixed,10f)
+        );
     }//++<
   }//***
   
@@ -146,14 +151,18 @@ public final class SubFeederFluxSetting extends McAbstractSettingPartition{
       return "[1 ~ 200]";
     }//++>
     @Override public String ccGetValue() {
-      return Integer.toString(SubAnalogScalarManager.ccRefer()
-        .ccGetVFeederFluxTPHSpan(cmIndex));
+      int lpRaw = SubAnalogScalarManager.ccRefer()
+        .ccGetVFeederFluxTPHSpan(cmIndex);
+      String lpRes = VcNumericUtility.ccFormatFloatForOneAfter(lpRaw);
+      return lpRes;
     }//++>
     @Override public void ccSetValue(String pxVal) {
-      int lpFixed=VcNumericUtility.ccParseIntegerString(pxVal);
-      lpFixed=ZcRangedModel.ccLimitInclude(lpFixed, 1, 200);
+      float lpFixed = VcNumericUtility.ccParseFloatString(pxVal);
+      lpFixed=PApplet.constrain(lpFixed, 1f, 200f);
       SubAnalogScalarManager.ccRefer()
-        .ccSetVFeederFluxTPHSpan(cmIndex, lpFixed);
+        .ccSetVFeederFluxTPHSpan(
+          cmIndex, VcNumericUtility.ccInteger(lpFixed,10f)
+        );
     }//++<
   }//***
   

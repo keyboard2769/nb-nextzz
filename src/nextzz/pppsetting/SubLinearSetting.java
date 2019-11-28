@@ -41,7 +41,7 @@ public class SubLinearSetting extends McAbstractSettingPartition{
       cmKey=pxKey;
     }//++!
     @Override public String ccGetName() {
-      return "[AD]:"+VcTranslator
+      return "[AD]"+VcTranslator
         .tr(String.format("_linear_ad_offset_%02d", cmKey));
     }//++>
     @Override public String ccGetDescription() {
@@ -68,7 +68,7 @@ public class SubLinearSetting extends McAbstractSettingPartition{
       cmKey=pxKey;
     }//++!
     @Override public String ccGetName() {
-      return "[AD]:"+VcTranslator
+      return "[AD]"+VcTranslator
         .tr(String.format("_linear_ad_span_%02d", cmKey));
     }//++>
     @Override public String ccGetDescription() {
@@ -213,8 +213,6 @@ public class SubLinearSetting extends McAbstractSettingPartition{
   
   @Override public void ccInit() {
     
-    //[head]::maybe it is just not here??
-    
     //-- tare
     cmListOfItem.add(cmAGTareWeight);
     cmListOfItem.add(cmFRTareWeight);
@@ -229,6 +227,8 @@ public class SubLinearSetting extends McAbstractSettingPartition{
       cmListOfItem.add(new McScalaRealOffsetItem(lpKey));
       cmListOfItem.add(new McScalaRealSpanItem(lpKey));
     }//..~
+    
+    System.out.println("nextzz.pppsetting.SubLinearSetting.ccInit()");
     
   }//++!
   
