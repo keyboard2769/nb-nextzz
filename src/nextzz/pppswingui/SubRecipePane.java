@@ -41,8 +41,8 @@ import kosui.pppswingui.ScTable;
 import kosui.ppputil.VcConst;
 import kosui.ppputil.VcNumericUtility;
 import kosui.ppputil.VcTranslator;
+import nextzz.pppmodel.MainPlantModel;
 import nextzz.pppmodel.SubRecipeManager;
-
 
 public final class SubRecipePane implements SiTabbable{
   
@@ -79,20 +79,20 @@ public final class SubRecipePane implements SiTabbable{
   //[todo]::cmLesRCPercetageBox
   //[todo]::cmLesADPercetageBox
   
-  public final JButton cmImportButton = ScFactory
-    .ccCreateCommandButton(VcTranslator.tr("_import"));
+  public final JButton cmImportButton = ConstSwingUI
+    .ccCreateTranslatedButton("_import");
   
-  public final JButton cmExportButton = ScFactory
-    .ccCreateCommandButton(VcTranslator.tr("_export"));
+  public final JButton cmExportButton = ConstSwingUI
+    .ccCreateTranslatedButton("_export");
   
-  public final JButton cmRegisterButton = ScFactory
-    .ccCreateCommandButton(VcTranslator.tr("_register"));
+  public final JButton cmRegisterButton = ConstSwingUI
+    .ccCreateTranslatedButton("_register");
   
-  public final JButton cmDuplicateButton = ScFactory
-    .ccCreateCommandButton(VcTranslator.tr("_duplicate"));
+  public final JButton cmDuplicateButton = ConstSwingUI
+    .ccCreateTranslatedButton("_duplicate");
   
-  public final JButton cmDeleteButton = ScFactory
-    .ccCreateCommandButton(VcTranslator.tr("_delete"));
+  public final JButton cmDeleteButton = ConstSwingUI
+    .ccCreateTranslatedButton("_delete");
   
   public final JTextField cmIdentityBox = new JTextField("--");
   
@@ -110,12 +110,100 @@ public final class SubRecipePane implements SiTabbable{
   private final ActionListener cmCommandButtonListener
     = new ActionListener() {
     @Override public void actionPerformed(ActionEvent ae) {
-      System.err.println("!!not_yet:"+ae.getActionCommand());
+      
+      //-- 
+      String lpCommand = ae.getActionCommand();
+      
+      //--
+      if(lpCommand.equals("_register")){
+        
+        //-- check id box
+        String lpIDText = cmIdentityBox.getText();
+        if(!VcNumericUtility.ccIsIntegerString(lpIDText)){
+          ScConst.ccErrorBox(VcTranslator.tr("_err_of_invalid_id"));
+          return;
+        }//..?
+        int lpID = VcNumericUtility.ccParseIntegerString(lpIDText);
+        
+        //-- check name box
+        String lpName = cmNameBox.getText();
+        boolean lpIsNameOK
+          = VcConst.ccIsValidString(lpName)
+          & VcConst.ccIsAllNoneSpace(lpName);
+        VcConst.ccPrintln("before for", lpIsNameOK);
+        if(lpName.length()<=128){//..[todo]::make this const??
+          for(int i=0;i<lpName.length();i++){
+            //.. how the hack could it possible we make it generic??
+            lpIsNameOK&=(lpName.charAt(i)!=':');
+            lpIsNameOK&=(lpName.charAt(i)!=';');
+            lpIsNameOK&=(lpName.charAt(i)!=',');
+            lpIsNameOK&=(lpName.charAt(i)!='.');
+            lpIsNameOK&=(lpName.charAt(i)!='\\');
+            lpIsNameOK&=(lpName.charAt(i)!='/');
+            lpIsNameOK&=(lpName.charAt(i)!='|');
+            lpIsNameOK&=(lpName.charAt(i)!='~');
+            lpIsNameOK&=(lpName.charAt(i)!='*');
+            if(!lpIsNameOK){
+              System.err.println(String.format(
+                "[at:%d][with:%s]", i, lpName
+              ));
+              break;
+            }//..?
+          }//..~
+        }else{
+          lpIsNameOK=false;
+        }//..?
+        if(!lpIsNameOK){
+          ScConst.ccErrorBox(VcTranslator.tr("_err_of_invalid_name"));
+          return;
+        }//..?
+        
+        //-- retrieve value
+        float[] lpVal = {
+          0f,0f,0f,0f,0f,0f,0f,0f,
+          0f,0f,0f,0f,
+          0f,0f,0f,0f,
+          0f,0f,0f,0f,
+          0f,0f,0f,0f,
+        };
+        for(
+          int i=MainPlantModel.C_MATT_AGGR_GENERAL_MASK;
+          i>=MainPlantModel.C_MATT_AGGR_UI_VALID_HEAD;i--
+        ){
+          lpVal[i]=VcNumericUtility
+            .ccParseFloatString(cmLesAGPercetageBox.get(i).getText());
+          if(i<=MainPlantModel.C_MATT_REST_GENERAL_MASK){
+            lpVal[8+i]=VcNumericUtility//..[todo]::make this const??
+              .ccParseFloatString(cmLesFRPercetageBox.get(i).getText());
+            lpVal[12+i]=VcNumericUtility//..[todo]::make this const??
+              .ccParseFloatString(cmLesASPercetageBox.get(i).getText());
+            //[todo]::.ccParseFloatString(cmLesRCPercetageBox.get(i).getText());
+            //[todo]::.ccParseFloatString(cmLesADPercetageBox.get(i).getText());
+          }//..?
+        }//..~
+        
+        //-- call
+        System.out.println("lets print those values!!");
+        String lpRead = String.format(
+          "[id:%d][recipe:%s]\n>>>%s",
+          lpID,lpName,Arrays.toString(lpVal)
+        );
+        System.out.println(lpRead);
+        
+        //[head]::
+        SubRecipeManager.ccRefer().ccRegisterPanedRecipe();
+        
+        return;
+      }//..?
+      
+      System.err.println("SubrecipePane.cmCommandButtonListener::"
+        + "unhandled:"+lpCommand);
+      
     }//+++
   };//***
   
   private final MouseAdapter cmClickableBoxListener = new MouseAdapter() {
-    @Override public void mouseClicked(MouseEvent me) {
+    @Override public void mouseReleased(MouseEvent me) {
       Object lpSource =  me.getSource();
       if(lpSource.equals(cmIdentityBox)){
         String lpInput = ScConst.ccGetStringByInputBox(
@@ -129,7 +217,7 @@ public final class SubRecipePane implements SiTabbable{
       if(lpSource.equals(cmNameBox)){
         String lpInput = ScConst.ccGetStringByInputBox(
           VcTranslator.tr("_mpipt_rname"),
-          cmIdentityBox.getText(),cmPane
+          cmNameBox.getText(),cmPane
         );
         if(lpInput.equals(ScConst.C_M_CANCEL)){return;}
         if(!VcConst.ccIsValidString(lpInput)){return;}

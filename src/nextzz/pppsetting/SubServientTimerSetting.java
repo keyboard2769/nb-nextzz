@@ -61,7 +61,6 @@ public class SubServientTimerSetting extends McAbstractSettingPartition{
   
   @Override public void ccInit() {
     
-    //[head]::maybe it is just not here??
     for(
       int i=1,s=32;//..[todo]::how do we const this
       i<s;i++

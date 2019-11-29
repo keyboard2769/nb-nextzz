@@ -41,6 +41,7 @@ but hey, dose it sounds stupid if you read it DOUBLE-ZEUS ??
 - [ ] $ tre
 - [ ] $ dos
 - [ ] $ uno
+- [ ] $ general import and export functionality
 - [ ] $ current slot overwhelming coloring
 - [ ] $ remake the case test of pid controller to have target manipulation
 - [ ] $ a linear pane with blocks of 'zero' and 'span' button
@@ -50,7 +51,7 @@ but hey, dose it sounds stupid if you read it DOUBLE-ZEUS ??
 
 #### heading
 
-- [ ] $ make the book pane work
+- [ ] $ make the recipe pane work
 
 #### last
 

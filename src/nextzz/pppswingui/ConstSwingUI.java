@@ -19,6 +19,8 @@
 
 package nextzz.pppswingui;
 
+import java.awt.Insets;
+import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
@@ -27,6 +29,7 @@ import kosui.ppplocalui.EcConst;
 import kosui.pppmodel.MiPixillatable;
 import kosui.pppswingui.ScConst;
 import kosui.pppswingui.ScIcon;
+import kosui.ppputil.VcStringUtility;
 import kosui.ppputil.VcTranslator;
 import nextzz.pppmain.MainActionManager;
 
@@ -69,6 +72,16 @@ public final class ConstSwingUI {
       throw new RuntimeException
         (".ssAddAssistant():you are not suppsed to do this");
     }//...?
+  }//+++
+  
+  public static JButton ccCreateTranslatedButton(String pxActionCommand){
+    String lpCommand = VcStringUtility.ccNulloutString(pxActionCommand);
+    JButton lpRes = new JButton(VcTranslator.tr(lpCommand));
+    lpRes.setBackground(ScConst.C_PBL_BACK_OFF);
+    lpRes.setForeground(ScConst.C_PBL_FORE);
+    lpRes.setMargin(new Insets(2, 2, 2, 2));
+    lpRes.setActionCommand(lpCommand);
+    return lpRes;
   }//+++
   
   //===

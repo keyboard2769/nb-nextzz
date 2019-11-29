@@ -107,17 +107,17 @@ public final class SubRecipeManager extends McTableAdapter{
         System.err.println("McRecipe.ccSetContentValue()::null passed");
         return;
       }//..?
-      if(pxPacked.length!=24){
+      if(pxPacked.length!=24){//..[todo]::make this const??
         System.err.println("McRecipe.ccSetContentValue()::invalid length");
         return;
       }//..?
-      for(int i=0;i<8;i++){
-        cmDesAGPercentage[i]=pxPacked[0+i];
+      for(int i=0;i<8;i++){//..[todo]::make this const??
+        cmDesAGPercentage[i]=pxPacked[0+i];//..[todo]::make this const??
         if(i<4){
-          cmDesFRPercentage[i]=pxPacked[ 8+i];
-          cmDesASPercentage[i]=pxPacked[12+i];
-          cmDesRCPercentage[i]=pxPacked[16+i];
-          cmDesADPercentage[i]=pxPacked[20+i];
+          cmDesFRPercentage[i]=pxPacked[ 8+i];//..[todo]::make this const??
+          cmDesASPercentage[i]=pxPacked[12+i];//..[todo]::make this const??
+          cmDesRCPercentage[i]=pxPacked[16+i];//..[todo]::make this const??
+          cmDesADPercentage[i]=pxPacked[20+i];//..[todo]::make this const??
         }//..?
       }//..~
     }//++<
@@ -287,7 +287,14 @@ public final class SubRecipeManager extends McTableAdapter{
     ssRefreshPanedRecipe();
   }//+++
   
-  //[todo]::registerPanedRecipe();
+  public final void ccRegisterPanedRecipe(){
+    
+    //[head]::what now? -> what a hack minute, we had the `panned` stuff here?!!?
+    
+    
+    System.out.println("nextzz.pppmodel.SubRecipeManager.registerPanedRecipe()::now what?");;
+  }//+++
+  
   //[todo]::duplicateSelectedRecipe();
   //[todo]::deleteSelectedOne();
   
