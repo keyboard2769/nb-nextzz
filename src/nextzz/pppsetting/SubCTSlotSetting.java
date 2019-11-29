@@ -39,7 +39,7 @@ public final class SubCTSlotSetting extends McAbstractSettingPartition{
     private final int cmIndex;
     public McCTSlotSpanItem(int pxIndex) {
       cmIndex=pxIndex;
-    }//..!
+    }//++!
     @Override public String ccGetName() {
       return "[A]:"
         +VcTranslator.tr(String.format("_ct%02d", cmIndex))
@@ -95,9 +95,6 @@ public final class SubCTSlotSetting extends McAbstractSettingPartition{
   
   @Override public void ccInit() {
         
-    //[head]::maybe it is just not here??
-    //[head]::have we done??
-    
     for(int i=0;i<32;i++){
       cmListOfItem.add(new McCTSlotSpanItem(i));
       cmListOfItem.add(new McCTSlotAlarmItem(i));

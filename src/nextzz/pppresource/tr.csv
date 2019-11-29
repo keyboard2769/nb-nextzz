@@ -358,6 +358,10 @@
 <tr>,_ct_alarm,Current<bk>alarm,過電流,警示标定,[]
 ,,,,,
 ,,,,,
+<sep>,,*-swing-pane-svt--*,,,
+<tr>,_servient_timer_setting,SERVIENT-TIMER,可変タイマ,主控时间,[]
+,,,,,
+,,,,,
 <sep>,,*-swing-pane-recipe-*,,,
 <tr>,_l_rid:,ID:,番号：,编号:,[]
 <tr>,_l_rname:,NAME:,名前：,名称：,[]

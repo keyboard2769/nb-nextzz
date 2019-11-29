@@ -47,6 +47,7 @@ public final class MainSettingManager implements ListModel<String>{
     ssAdd(SubLinearSetting.ccRefer());
     ssAdd(SubTemperatureSetting.ccRefer());
     ssAdd(SubCTSlotSetting.ccRefer());
+    ssAdd(SubServientTimerSetting.ccRefer());
   }//++!
   
   private void ssAdd(McAbstractSettingPartition pxChild){
