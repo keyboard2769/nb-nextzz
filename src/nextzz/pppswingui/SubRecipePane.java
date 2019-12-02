@@ -41,7 +41,6 @@ import kosui.pppswingui.ScTable;
 import kosui.ppputil.VcConst;
 import kosui.ppputil.VcNumericUtility;
 import kosui.ppputil.VcTranslator;
-import nextzz.pppmodel.MainPlantModel;
 import nextzz.pppmodel.SubRecipeManager;
 
 public final class SubRecipePane implements SiTabbable{
@@ -111,93 +110,23 @@ public final class SubRecipePane implements SiTabbable{
     = new ActionListener() {
     @Override public void actionPerformed(ActionEvent ae) {
       
-      //-- 
       String lpCommand = ae.getActionCommand();
       
       //--
       if(lpCommand.equals("_register")){
-        
-        //-- check id box
-        String lpIDText = cmIdentityBox.getText();
-        if(!VcNumericUtility.ccIsIntegerString(lpIDText)){
-          ScConst.ccErrorBox(VcTranslator.tr("_err_of_invalid_id"));
-          return;
-        }//..?
-        int lpID = VcNumericUtility.ccParseIntegerString(lpIDText);
-        
-        //-- check name box
-        String lpName = cmNameBox.getText();
-        boolean lpIsNameOK
-          = VcConst.ccIsValidString(lpName)
-          & VcConst.ccIsAllNoneSpace(lpName);
-        VcConst.ccPrintln("before for", lpIsNameOK);
-        if(lpName.length()<=128){//..[todo]::make this const??
-          for(int i=0;i<lpName.length();i++){
-            //.. how the hack could it possible we make it generic??
-            lpIsNameOK&=(lpName.charAt(i)!=':');
-            lpIsNameOK&=(lpName.charAt(i)!=';');
-            lpIsNameOK&=(lpName.charAt(i)!=',');
-            lpIsNameOK&=(lpName.charAt(i)!='.');
-            lpIsNameOK&=(lpName.charAt(i)!='\\');
-            lpIsNameOK&=(lpName.charAt(i)!='/');
-            lpIsNameOK&=(lpName.charAt(i)!='|');
-            lpIsNameOK&=(lpName.charAt(i)!='~');
-            lpIsNameOK&=(lpName.charAt(i)!='*');
-            if(!lpIsNameOK){
-              System.err.println(String.format(
-                "[at:%d][with:%s]", i, lpName
-              ));
-              break;
-            }//..?
-          }//..~
-        }else{
-          lpIsNameOK=false;
-        }//..?
-        if(!lpIsNameOK){
-          ScConst.ccErrorBox(VcTranslator.tr("_err_of_invalid_name"));
-          return;
-        }//..?
-        
-        //-- retrieve value
-        float[] lpVal = {
-          0f,0f,0f,0f,0f,0f,0f,0f,
-          0f,0f,0f,0f,
-          0f,0f,0f,0f,
-          0f,0f,0f,0f,
-          0f,0f,0f,0f,
-        };
-        for(
-          int i=MainPlantModel.C_MATT_AGGR_GENERAL_MASK;
-          i>=MainPlantModel.C_MATT_AGGR_UI_VALID_HEAD;i--
-        ){
-          lpVal[i]=VcNumericUtility
-            .ccParseFloatString(cmLesAGPercetageBox.get(i).getText());
-          if(i<=MainPlantModel.C_MATT_REST_GENERAL_MASK){
-            lpVal[8+i]=VcNumericUtility//..[todo]::make this const??
-              .ccParseFloatString(cmLesFRPercetageBox.get(i).getText());
-            lpVal[12+i]=VcNumericUtility//..[todo]::make this const??
-              .ccParseFloatString(cmLesASPercetageBox.get(i).getText());
-            //[todo]::.ccParseFloatString(cmLesRCPercetageBox.get(i).getText());
-            //[todo]::.ccParseFloatString(cmLesADPercetageBox.get(i).getText());
-          }//..?
-        }//..~
-        
-        //-- call
-        System.out.println("lets print those values!!");
-        String lpRead = String.format(
-          "[id:%d][recipe:%s]\n>>>%s",
-          lpID,lpName,Arrays.toString(lpVal)
-        );
-        System.out.println(lpRead);
-        
-        //[head]::
         SubRecipeManager.ccRefer().ccRegisterPanedRecipe();
-        
         return;
       }//..?
       
-      System.err.println("SubrecipePane.cmCommandButtonListener::"
-        + "unhandled:"+lpCommand);
+      //--
+      if(lpCommand.equals("_duplicate")){
+        int lpTableIndex = cmRecipeTable.ccGetSelectedRowIndex();
+        SubRecipeManager.ccRefer().ccDuplicateSelectedRecipe(lpTableIndex);
+        return;
+      }//..?
+      
+      System.err.println("SubrecipePane.cmCommandButtonListener::never_reach:"
+        +lpCommand);
       
     }//+++
   };//***
@@ -241,7 +170,7 @@ public final class SubRecipePane implements SiTabbable{
   };//***
   
   private final MouseAdapter cmTablePressListener = new MouseAdapter() {
-    @Override public void mousePressed(MouseEvent me) {
+    @Override public void mouseReleased(MouseEvent me) {
       int lpTableIndex = cmRecipeTable.ccGetSelectedRowIndex();
       /* 4 */VcConst.ccLogln(".cmTablePressListener:", lpTableIndex);
       SubRecipeManager.ccRefer().ccApplyTableSelection(lpTableIndex);

@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.TreeMap;
 import kosui.ppplogic.ZcRangedModel;
 import kosui.pppmodel.McTableAdapter;
+import kosui.pppswingui.ScConst;
 import kosui.ppputil.VcTranslator;
 import kosui.ppputil.VcArrayUtility;
 import kosui.ppputil.VcConst;
@@ -153,6 +154,21 @@ public final class SubRecipeManager extends McTableAdapter{
         default:return "<?>";
       }//..?
     }//++>
+    @Override public String toString() {
+      StringBuilder lpRes = new StringBuilder(McRecipe.class.getName());
+      lpRes.append('@');
+      lpRes.append(Integer.toHexString(this.hashCode()));
+      lpRes.append(String.format(
+        "[id:%d][name:%s]",
+        cmRecipeID,cmRecipeName
+      ));
+      lpRes.append(" AG:");lpRes.append(Arrays.toString(cmDesAGPercentage));
+      lpRes.append(" FR:");lpRes.append(Arrays.toString(cmDesFRPercentage));
+      lpRes.append(" AS:");lpRes.append(Arrays.toString(cmDesASPercentage));
+      lpRes.append(" RC:");lpRes.append(Arrays.toString(cmDesRCPercentage));
+      lpRes.append(" AD:");lpRes.append(Arrays.toString(cmDesADPercentage));
+      return lpRes.toString();
+    }//+++
   }//***
   
   private final McRecipe cmPanedRecipe
@@ -160,7 +176,7 @@ public final class SubRecipeManager extends McTableAdapter{
   
   private McRecipe cmOnWeighingRecipeBUF = null;
   
-  private float cmPanedTotalSum = 0f;
+  private float cmPanedTotalSum   = 0f;
   private float cmPanedAsphaltSum = 0f;
   
   private final TreeMap<Integer, McRecipe> cmMapOfRecipe
@@ -179,7 +195,11 @@ public final class SubRecipeManager extends McTableAdapter{
   }//++!
   
   private void ssRefreshOrder(){
+    /* 4 */VcConst.ccLogln("ssRefreshOrder::order_before:"
+      +Arrays.toString(cmDesOrderBUFF));
     cmDesOrderBUFF=cmMapOfRecipe.keySet().toArray();
+    /* 4 */VcConst.ccLogln("ssRefreshOrder::order_after:"
+      +Arrays.toString(cmDesOrderBUFF));
   }//+++
   
   private void ssCopyRecipe(McRecipe pxFrom, McRecipe pxTo){
@@ -281,6 +301,10 @@ public final class SubRecipeManager extends McTableAdapter{
     int lpFixed = pxIndex & C_CAPACITY_MASK;
     int lpID = VcNumericUtility
       .ccInteger(VcArrayUtility.ccGet(cmDesOrderBUFF, lpFixed));
+    /* 4 */VcConst.ccLogln(String.format(
+      "SubRecipeManager.ccApplyTableSelection::[listIndex:%d][recipeID:%d]",
+      lpFixed,lpID
+    ));
     if(!cmMapOfRecipe.containsKey(lpID)){return;}
     McRecipe lpTarget = cmMapOfRecipe.get(lpID);
     ssCopyRecipe(lpTarget, cmPanedRecipe);
@@ -289,13 +313,82 @@ public final class SubRecipeManager extends McTableAdapter{
   
   public final void ccRegisterPanedRecipe(){
     
-    //[head]::what now? -> what a hack minute, we had the `panned` stuff here?!!?
+    //-- verify
+    int lpID = cmPanedRecipe.cmRecipeID;
+    if(lpID==0){return;}//.. can we do more??
     
+    //-- query
+    boolean lpExist = cmMapOfRecipe.containsKey(lpID);
+    boolean lpDoOverWrite = false;
+    if(lpExist){
+      lpDoOverWrite=ScConst.ccYesOrNoBox(
+        VcTranslator.tr("_m_ask_for_overwrite_with_exsistance"),
+        SubRecipePane.ccRefer().cmPane
+      );
+    }else{
+      lpDoOverWrite=true;
+    }//..?
     
-    System.out.println("nextzz.pppmodel.SubRecipeManager.registerPanedRecipe()::now what?");;
+    //-- do
+    if(lpDoOverWrite){
+      McRecipe lpNew = new McRecipe();
+      ssCopyRecipe(cmPanedRecipe, lpNew);
+      cmMapOfRecipe.put(lpID, lpNew);
+      ssRefreshOrder();
+      SubRecipePane.ccRefer().cmRecipeTable.ccRefresh();
+      
+      System.out.println("test::calling put:"+lpNew.toString());
+      
+    }else{
+      /* 4 */VcConst.ccLogln(
+        "nextzz.pppmodel.SubRecipeManager.registerPanedRecipe()::abbort"
+      );
+    }//..?
+    
   }//+++
   
-  //[todo]::duplicateSelectedRecipe();
+  public final void ccDuplicateSelectedRecipe(int pxIndex){
+    
+    //-- get recipe
+    int lpFixed = pxIndex & C_CAPACITY_MASK;
+    int lpID = VcNumericUtility
+      .ccInteger(VcArrayUtility.ccGet(cmDesOrderBUFF, lpFixed));
+    if(!cmMapOfRecipe.containsKey(lpID)){return;}
+    McRecipe lpTarget = cmMapOfRecipe.get(lpID);
+    
+    //-- allocate
+    int lpNewID = lpID + 1;
+    if(lpNewID > C_CAPACITY_SIZE){
+      ScConst.ccErrorBox(
+        VcTranslator.tr("_m_out_of_space"),
+        SubRecipePane.ccRefer().cmPane
+      );
+    }//..?
+    boolean lpExist = cmMapOfRecipe.containsKey(lpNewID);
+    boolean lpDoOverWrite;
+    if(lpExist){
+      lpDoOverWrite=ScConst.ccYesOrNoBox(
+        VcTranslator.tr("_m_ask_for_overwrite_with_exsistance"),
+        SubRecipePane.ccRefer().cmPane
+      );
+    }else{
+      lpDoOverWrite=true;
+    }//..?
+    if(!lpDoOverWrite){return;}
+    
+    //-- copy
+    String lpNewName = "_0_"+lpTarget.cmRecipeName;
+    McRecipe lpNew = new McRecipe();
+    ssCopyRecipe(lpTarget, lpNew);
+    lpNew.ccSetupRecipeIdentity(lpNewID, lpNewName);
+    
+    //[head]::what now ? -> 
+    System.out.println(
+      "nextzz.pppmodel.SubRecipeManager.ccDuplicateSelectedRecipe()::not_yet!"
+    );
+    
+  }//+++
+  
   //[todo]::deleteSelectedOne();
   
   public final void ccSetOnWeighingRecipe(int pxID){
