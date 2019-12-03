@@ -20,7 +20,6 @@
 package nextzz.pppsimulate;
 
 import java.util.Arrays;
-import kosui.ppplogic.ZcOffDelayTimer;
 import kosui.ppplogic.ZcOnDelayTimer;
 import kosui.ppplogic.ZcPulser;
 import kosui.ppplogic.ZcRoller;
@@ -80,6 +79,8 @@ public final class SubErrorTask implements ZiTask{
     }//..?
     
     //-- fatal
+    //[head]:: now what? -> the boolean array size problem 
+    //[head]:: now what? -> so how the hell did the fan triggerred number three ?
     cmDesMessageBit[0]=true;
     for(int i=C_FATAL_HEAD;i<C_FATAL_TAIL;i++){
       cmDesMessageBit[0]&=!cmDesMessageBit[i];
@@ -91,6 +92,7 @@ public final class SubErrorTask implements ZiTask{
     if(SubErrorDelegator.mnErrorClearSW){
       SubErrorDelegator.mnMessageCode = 1001;
     }else{
+      //[todo]:: refine this PLEASE
       SubErrorDelegator.mnMessageCode
         = (
            ccGetErrorBit(cmMessageTester.ccGetValue())

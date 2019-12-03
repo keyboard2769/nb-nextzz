@@ -493,19 +493,14 @@ public final class SubWeighControlManager {
   }//+++
   
   private void ssVerifyFirstRow(){
-    cmIsAutoWeighReady = ZcPLC.ccAnd(
-      ZcPLC.ccAnd(
-        SubRecipeManager.ccRefer().ccHasRecipe(cmDesRecipeNumber[1]),
-        cmDesKiloGramme[1]>999,
-        cmDesBatchCount[1]>0
-      ),
-      SubVProvisionDelegator.mnMixerIconPL,
-      ZcPLC.ccAnd(
-        SubAnalogScalarManager.ccRefer().ccGetAGCellKG()<=vmAGEmptyKG,
-        SubAnalogScalarManager.ccRefer().ccGetFRCellKG()<=vmFREmptyKG,
-        SubAnalogScalarManager.ccRefer().ccGetASCellKG()<=vmASEmptyKG
-      )
-    );
+    cmIsAutoWeighReady = 
+        (SubVProvisionDelegator.mnMixerIconPL)
+      &&(SubRecipeManager.ccRefer().ccHasRecipe(cmDesRecipeNumber[1]))
+      &&(cmDesKiloGramme[1]>999)
+      &&(cmDesBatchCount[1]>0)
+      &&(SubAnalogScalarManager.ccRefer().ccGetAGCellKG()<=vmAGEmptyKG)
+      &&(SubAnalogScalarManager.ccRefer().ccGetFRCellKG()<=vmFREmptyKG)
+      &&(SubAnalogScalarManager.ccRefer().ccGetASCellKG()<=vmASEmptyKG);
   }//+++
   
   private void ssBunkUp(){

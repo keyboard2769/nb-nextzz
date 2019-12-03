@@ -78,6 +78,9 @@ public final class MainWindow {
       SubMonitorPane.ccRefer().cmASWeigherStatePL
         .setText(SubWeighControlManager.ccRefer().ccGetASCTRLStatus());
       
+      //-- error
+      SubErrorPane.ccRefer().cmErrorList.ccRefresh();
+      
     }//+++
   };//***
 
