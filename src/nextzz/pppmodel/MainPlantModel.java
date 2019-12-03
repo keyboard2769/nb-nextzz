@@ -135,6 +135,7 @@ public final class MainPlantModel {
     SubAnalogScalarManager.ccRefer().ccLogic();
     SubWeighControlManager.ccRefer().ccLogic();
     SubDegreeControlManager.ccRefer().ccLogic();
+    SubErrorListModel.ccRefer().ccLogic();
     
     //-- v feeder tph
     vmVSupplyTPH=0;

@@ -19,7 +19,6 @@
 
 package nextzz.pppswingui;
 
-import com.sun.org.apache.xerces.internal.impl.dtd.models.CMLeaf;
 import java.awt.BorderLayout;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
@@ -97,4 +96,4 @@ public final class SubErrorPane implements SiTabbable{
     SwingUtilities.invokeLater(SELF.cmLoggerRefreshingness);
   }//+++
   
- }//***eof
+}//***eof

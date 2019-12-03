@@ -17,16 +17,25 @@
  * MA 02110-1301  USA
  */
 
-
 package nextzz.pppmodel;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
 import javax.swing.ListModel;
 import javax.swing.event.ListDataListener;
+import kosui.ppplocalui.EcElement;
+import kosui.ppplogic.ZcPulser;
 import kosui.ppputil.VcLocalConsole;
 import kosui.ppputil.VcTranslator;
+import nextzz.pppswingui.SubErrorPane;
 import processing.core.PApplet;
 
 public final class SubErrorListModel implements ListModel<String>{
+  
+  static public final int C_SIZE = 256;
+  static public final int C_MASK = 255;
+  
+  //===
 
   private static final SubErrorListModel SELF = new SubErrorListModel();
   public static final SubErrorListModel ccRefer(){return SELF;}//+++
@@ -36,14 +45,74 @@ public final class SubErrorListModel implements ListModel<String>{
   
   static private int cmListenerCount=0;
   
+  //===
+  
+  private class McError{
+    final int cmID;
+    final String cmKey;
+    boolean cmActivity;
+    ZcPulser cmPulser;
+    public McError(int pxID) {
+      cmID=pxID&C_MASK;
+      cmActivity=false;
+      cmPulser = new ZcPulser();
+      cmKey=String.format("_merr%03d", cmID);
+    }//++!
+    void ccRun(){
+      if(cmPulser.ccPulse(cmActivity)){
+        if(cmActivity){
+          //[head]::
+          //[tood]:: % add to active list 
+          SubErrorPane.ccWriteln("McError.ccRun:UP ->"+cmID);
+        }else{
+          
+          //[tood]:: % remove from active list 
+          SubErrorPane.ccWriteln("McError.ccRun:DN ->"+cmID);
+        }//..?
+        //[tood]:: % refresh list
+      }//..?
+    }//++~
+    void ccSetIsActivated(boolean pxVal){
+      cmActivity=pxVal;
+    }//++<
+    
+  }//***
+  
+  private final ArrayList<McError> cmListOfError
+    = new ArrayList<McError>(C_SIZE+1);
+  
+  private final LinkedList<McError> cmListOfActiveError
+    = new LinkedList<McError>();
+  
+  //===
+  
   public final void ccInit(){
     
+    //--
+    for(int i=0;i<C_SIZE;i++){
+      cmListOfError.add(new McError(i));
+    }//..~
+    
+    //--
     VcLocalConsole.ccSetMessageBarText("[MSG]:from SubErrorListModel.ccInit()");
     
   }//++!
   
   public final void ccLogic(){
-  
+    
+    
+    cmListOfError.get(1).ccSetIsActivated(EcElement.ccIsKeyPressed('1'));
+    cmListOfError.get(2).ccSetIsActivated(EcElement.ccIsKeyPressed('2'));
+    cmListOfError.get(3).ccSetIsActivated(EcElement.ccIsKeyPressed('3'));
+    cmListOfError.get(4).ccSetIsActivated(EcElement.ccIsKeyPressed('4'));
+    
+    for(McError it : cmListOfError){
+      it.ccRun();
+    }//..~
+    
+    //[head]:: now what? 
+    //[head]:: wait a f*+ minute! -> do you remember we already had the wm39 stuff ???
+    
   }//++!
   
   //===
