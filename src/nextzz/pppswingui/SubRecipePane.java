@@ -111,6 +111,7 @@ public final class SubRecipePane implements SiTabbable{
     @Override public void actionPerformed(ActionEvent ae) {
       
       String lpCommand = ae.getActionCommand();
+      int lpTableIndex = cmRecipeTable.ccGetSelectedRowIndex();
       
       //--
       if(lpCommand.equals("_register")){
@@ -120,8 +121,13 @@ public final class SubRecipePane implements SiTabbable{
       
       //--
       if(lpCommand.equals("_duplicate")){
-        int lpTableIndex = cmRecipeTable.ccGetSelectedRowIndex();
         SubRecipeManager.ccRefer().ccDuplicateSelectedRecipe(lpTableIndex);
+        return;
+      }//..?
+      
+      //--
+      if(lpCommand.equals("_delete")){
+        SubRecipeManager.ccRefer().ccDeleteSelectedOne(lpTableIndex);
         return;
       }//..?
       

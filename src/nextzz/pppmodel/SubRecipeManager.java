@@ -336,12 +336,9 @@ public final class SubRecipeManager extends McTableAdapter{
       cmMapOfRecipe.put(lpID, lpNew);
       ssRefreshOrder();
       SubRecipePane.ccRefer().cmRecipeTable.ccRefresh();
-      
-      System.out.println("test::calling put:"+lpNew.toString());
-      
     }else{
       /* 4 */VcConst.ccLogln(
-        "nextzz.pppmodel.SubRecipeManager.registerPanedRecipe()::abbort"
+        "nextzz.pppmodel.SubRecipeManager.registerPanedRecipe()::abort"
       );
     }//..?
     
@@ -374,22 +371,49 @@ public final class SubRecipeManager extends McTableAdapter{
     }else{
       lpDoOverWrite=true;
     }//..?
-    if(!lpDoOverWrite){return;}
+    if(!lpDoOverWrite){
+      /* 4 */VcConst.ccLogln(
+        "nextzz.pppmodel.SubRecipeManager.ccDuplicateSelectedRecipe()::abort"
+      );
+      return;
+    }//..?
     
     //-- copy
     String lpNewName = "_0_"+lpTarget.cmRecipeName;
     McRecipe lpNew = new McRecipe();
     ssCopyRecipe(lpTarget, lpNew);
     lpNew.ccSetupRecipeIdentity(lpNewID, lpNewName);
-    
-    //[head]::what now ? -> 
-    System.out.println(
-      "nextzz.pppmodel.SubRecipeManager.ccDuplicateSelectedRecipe()::not_yet!"
-    );
+    cmMapOfRecipe.put(lpNewID, lpNew);
+    ssRefreshOrder();
+    SubRecipePane.ccRefer().cmRecipeTable.ccRefresh();
     
   }//+++
   
-  //[todo]::deleteSelectedOne();
+  public final void ccDeleteSelectedOne(int pxIndex){
+    
+    //-- limitation
+    if(cmMapOfRecipe.size()<=1){
+      ScConst.ccErrorBox(
+        VcTranslator.tr("_m_emptiness_not_allowed"),
+        SubRecipePane.ccRefer().cmPane
+      );
+      return;
+    }//..?
+    
+    //-- get recipe
+    int lpFixed = pxIndex & C_CAPACITY_MASK;
+    int lpID = VcNumericUtility
+      .ccInteger(VcArrayUtility.ccGet(cmDesOrderBUFF, lpFixed));
+    if(!cmMapOfRecipe.containsKey(lpID)){return;}
+    McRecipe lpTarget = cmMapOfRecipe.get(lpID);
+    
+    //-- do
+    cmMapOfRecipe.remove(lpID);
+    ssRefreshOrder();
+    SubRecipePane.ccRefer().cmRecipeTable.ccSetSelectedRowIndex(0);
+    SubRecipePane.ccRefer().cmRecipeTable.ccRefresh();
+  
+  }//+++
   
   public final void ccSetOnWeighingRecipe(int pxID){
     if(cmMapOfRecipe.containsKey(pxID)){
@@ -449,11 +473,11 @@ public final class SubRecipeManager extends McTableAdapter{
   
   //===
   
-  @Override public int getColumnCount() {
+  @Override public int getColumnCount(){
     return O_LIST_OF_TABLE_COLUMN_TITLES.size();
   }//++>
   
-  @Override public String getColumnName(int pxColumnIndex) {
+  @Override public String getColumnName(int pxColumnIndex){
     return O_LIST_OF_TABLE_COLUMN_TITLES.get(pxColumnIndex);
   }//++>
   
@@ -461,7 +485,7 @@ public final class SubRecipeManager extends McTableAdapter{
     return cmMapOfRecipe.size();
   }//++>
   
-  @Override public Object getValueAt(int pxRowIndex, int pxColumnIndex) {
+  @Override public Object getValueAt(int pxRowIndex, int pxColumnIndex){
     if(cmDesOrderBUFF==null){return "<!>";}
     int lpOrderedIndex=VcNumericUtility
       .ccInteger(VcArrayUtility.ccGet(cmDesOrderBUFF, pxRowIndex));

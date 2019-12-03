@@ -47,25 +47,20 @@ but hey, dose it sounds stupid if you read it DOUBLE-ZEUS ??
 - [ ] $ a linear pane with blocks of 'zero' and 'span' button
 - [ ] $ the gate simulation and the case of cut point handling
 - [ ] $ fill v provision and combust motor load factor
-- [ ] $ complete the error list and log mechanism
 
 #### heading
 
-- [ ] $ make the recipe pane work
+- [ ] $ build an error list handling mechanism
 
 #### last
 
-- [x] $ shift-tab can now back shift the focus .. don't push to hard !!
-- [x] $ let the dynamic weigh result table shine
-- [x] $ added the "linear setting" to THE list
-- [x] $ the zero adjusting stuff works now more than likely
-- [x] $ partly did the TRD logging and root verifying stuff
 - [x] $ partly did the weigh logging and export-before-quitting stuff
-- [x] $ print button can send some file to printer now
-- [x] $ move feeder assistance switch to feeder pane
-- [x] $ feeder group ratio button works based on the the flux setting item
-- [x] $ feeder flux setting representation needs another floating point
-- [x] $ lets reclaim the setting pane and its content and translate 
-- [x] $ add current slot overwhelming setting
+- [x] $ print button can now sends some file to printer
+- [x] $ feeder assistance switch is moved to feeder pane
+- [x] $ feeder group ratio button now works based on the the flux setting item
+- [x] $ feeder flux setting representation now has floating point
+- [x] $ reclaimed the setting pane and its content and translate 
+- [x] $ added current slot overwhelming setting
+- [x] $ made the recipe pane work .. forget about the file ex/import stuff
 
 <hr><!--EOF-->

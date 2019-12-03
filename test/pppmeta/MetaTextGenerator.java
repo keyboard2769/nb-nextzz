@@ -49,7 +49,6 @@ public final class MetaTextGenerator {
     lpEn=lpEn.replaceAll("_", "<bk>");
     StringBuilder lpEnBuf = new StringBuilder(lpEn);
     lpEnBuf.replace(0, 1, lpEn.substring(0, 1).toUpperCase());
-    //[head]::
     
     //-- post
     return lpKey+","+lpEnBuf.toString();

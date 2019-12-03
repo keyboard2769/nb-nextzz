@@ -85,7 +85,7 @@ public class MainSketch extends PApplet{
     
     //-- pre
     EcConst.ccSetupSketch(this);
-    this.frame.setTitle(C_WARE_TITLE);
+    frame.setTitle(C_WARE_TITLE);
     self=this;
     ssInitFont();
     
