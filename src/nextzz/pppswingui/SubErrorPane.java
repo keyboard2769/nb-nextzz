@@ -20,6 +20,8 @@
 package nextzz.pppswingui;
 
 import java.awt.BorderLayout;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
@@ -62,16 +64,28 @@ public final class SubErrorPane implements SiTabbable{
     }//+++
   };//***
   
+  private final MouseAdapter cmListPressListener = new MouseAdapter() {
+    @Override public void mouseReleased(MouseEvent me) {
+      int lpIndex=cmErrorList.ccGetCurrentIndex();
+      if(lpIndex<0){return;}
+      
+      //[head]:: now what? -> list index to error index !!
+      System.out.println("SubErrorPane::cmListPressListener::mouseReleased -> "
+        +lpIndex);
+      System.out.println("SubErrorPane::cmListPressListener::mouseReleased -> "
+        +SubErrorListModel.ccRefer().getDescriptionAt(lpIndex));
+    
+    }//+++
+  };//***
+  
   //===
   
   @Override public final void ccInit(){
-    
     ScFactory.ccSetupInfoArea(cmDescriptor);
-    
+    cmErrorList.ccAddMouseListener(cmListPressListener);
     cmPane.add(cmErrorList,BorderLayout.LINE_START);
     cmPane.add(cmLogger,BorderLayout.CENTER);
     cmPane.add(cmDescriptor,BorderLayout.PAGE_END);
-    
   }//..!
   
   //===

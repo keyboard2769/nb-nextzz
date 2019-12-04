@@ -23,19 +23,18 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import javax.swing.ListModel;
 import javax.swing.event.ListDataListener;
-import kosui.ppplocalui.EcElement;
 import kosui.ppplogic.ZcPulser;
+import kosui.ppplogic.ZcRangedModel;
 import kosui.ppputil.VcLocalConsole;
 import kosui.ppputil.VcStampUtility;
 import kosui.ppputil.VcTranslator;
+import nextzz.pppdelegate.SubErrorDelegator;
 import nextzz.pppswingui.SubErrorPane;
-import processing.core.PApplet;
 
 public final class SubErrorListModel implements ListModel<String>{
   
-  static public final int C_SIZE = 256;
-  static public final int C_MASK = 255;
-  static private int cmListenerCount=0;
+  static private final int C_MASK = 255;
+  static private final int C_SIZE = 256;
   static private final String C_TAG_SET = VcTranslator.tr("_occur");
   static private final String C_TAG_RST = VcTranslator.tr("_clear");
   
@@ -45,6 +44,10 @@ public final class SubErrorListModel implements ListModel<String>{
   public static final SubErrorListModel ccRefer(){return SELF;}//+++
   private SubErrorListModel(){}//++!
 
+  //===
+  
+  static private int cmListenerCount=0;
+  
   //===
   
   private class McError{
@@ -57,13 +60,12 @@ public final class SubErrorListModel implements ListModel<String>{
       cmID=pxID&C_MASK;
       cmActivity=false;
       cmPulser = new ZcPulser();
-      cmKey=String.format("_merr%03d", cmID);
+      cmKey=String.format("_emsg%03d", cmID);
       cmName=VcTranslator.tr(cmKey);
     }//++!
     void ccRun(){
       if(cmPulser.ccPulse(cmActivity)){
         if(cmActivity){
-          //[head]:: d
           ssAddToActivated(cmID);
           SubErrorPane.ccWriteln(String.format("[%s]%s|%s",
             C_TAG_SET,cmName, VcStampUtility.ccDataLogTypeI()
@@ -80,7 +82,16 @@ public final class SubErrorListModel implements ListModel<String>{
       cmActivity=pxVal;
     }//++<
     String ccToListRepresentation(){
-      return String.format("[ERR%03d]%s",cmID,cmName);
+      if(ZcRangedModel.ccContains(cmID, 1, 31)){//..yellow print hard code
+        return String.format("[ERR%03d]%s", cmID, cmName);
+      }//..?
+      if(ZcRangedModel.ccContains(cmID, 32, 63)){//..yellow print hard code
+        return String.format("[WRN%03d]%s", cmID, cmName);
+      }//..?
+      return String.format("[MSG%03d]%s", cmID, cmName);
+    }//++>
+    String ccGetDescription(){
+      return VcTranslator.tr(String.format("_dscp_emsg%03d",cmID));
     }//++>
   }//***
   
@@ -94,26 +105,28 @@ public final class SubErrorListModel implements ListModel<String>{
   
   public final void ccInit(){
     
-    //--
+    //-- create
     for(int i=0;i<C_SIZE;i++){
       cmListOfAll.add(new McError(i));
     }//..~
     
-    //--
+    //-- post
     VcLocalConsole.ccSetMessageBarText("[MSG]:from SubErrorListModel.ccInit()");
     
   }//++!
   
   public final void ccLogic(){
-    
-    tstDummyToggler();//..[later]::deletethis
-    //[head]:: now what? 
-    //[head]:: wait a f*+ minute! -> do you remember we already had the wm39 stuff ???
-    
     for(McError it : cmListOfAll){
+      if(it.cmID==0){continue;}
+      if(ZcRangedModel.ccContains(it.cmID, 1, 31)){//..yellow print hard code
+        it.ccSetIsActivated(SubErrorDelegator.ccGetErrorBitAD(it.cmID));
+      }//..?
+      if(ZcRangedModel.ccContains(it.cmID, 32, 63)){//..yellow print hard code
+        //[head]:: this range is not working
+        it.ccSetIsActivated(SubErrorDelegator.ccGetWarnBitAD(it.cmID-32));
+      }//..?
       it.ccRun();
     }//..~
-    
   }//++!
   
   //===
@@ -125,19 +138,6 @@ public final class SubErrorListModel implements ListModel<String>{
   }//+++
   
   //===
-  
-  @Deprecated private void tstDummyToggler(){
-    if(EcElement.ccIsKeyPressed('1')){cmListOfAll.get(1).ccSetIsActivated(true);}
-    if(EcElement.ccIsKeyPressed('2')){cmListOfAll.get(2).ccSetIsActivated(true);}
-    if(EcElement.ccIsKeyPressed('3')){cmListOfAll.get(3).ccSetIsActivated(true);}
-    if(EcElement.ccIsKeyPressed('4')){cmListOfAll.get(4).ccSetIsActivated(true);}
-    if(EcElement.ccIsKeyPressed('5')){
-      cmListOfAll.get(1).ccSetIsActivated(false);
-      cmListOfAll.get(2).ccSetIsActivated(false);
-      cmListOfAll.get(3).ccSetIsActivated(false);
-      cmListOfAll.get(4).ccSetIsActivated(false);
-    }
-  }//+++
   
   private static void ssAddToActivated(int pxID){
     McError lpTarget = SELF.cmListOfAll.get(pxID&C_MASK);
@@ -168,7 +168,15 @@ public final class SubErrorListModel implements ListModel<String>{
       return cmListOfActivated.get(index&C_MASK).ccToListRepresentation();
     }//..?
   }//+++
-
+  
+  public String getDescriptionAt(int index) {
+    if(cmListOfActivated.isEmpty()){
+      return "...";
+    }else{
+      return cmListOfActivated.get(index&C_MASK).ccGetDescription();
+    }//..?
+  }//+++
+  
   @Override public void addListDataListener(ListDataListener l) {
     cmListenerCount++;
   }//+++

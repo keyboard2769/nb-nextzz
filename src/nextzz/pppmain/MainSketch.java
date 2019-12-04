@@ -51,7 +51,7 @@ import nextzz.pppmodel.SubErrorListModel;
 import nextzz.pppmodel.SubWeighControlManager;
 import nextzz.pppsetting.MainSettingManager;
 import nextzz.pppsimulate.MainSimulator;
-import nextzz.pppsimulate.SubWeighingTask;
+import nextzz.pppsimulate.SubErrorTask;
 import nextzz.pppswingui.ConstSwingUI;
 import processing.core.PApplet;
 import processing.core.PFont;
@@ -185,7 +185,7 @@ public class MainSketch extends PApplet{
     }//..?
     
     //-- debug
-    /* 4 */ SubWeighingTask.ccRefer().tstTagg();
+    /* 4 */ SubErrorTask.ccRefer().tstTagg();
     VcLocalTagger.ccTag("roll",nf(pbRoller,2));
     VcLocalTagger.ccTag
       ("latency",VcNumericUtility.ccFormatPointTwoFloat(17f-frameRate));
@@ -374,7 +374,7 @@ public class MainSketch extends PApplet{
   }//+++
   
   public static final String ccGetLastLeavingStamp(){
-    return "_1912031625";
+    return "_1912041135";
   }//+++
 
 }//***eof

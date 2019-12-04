@@ -76,7 +76,7 @@ public final class SubSettingPane implements SiTabbable{
   //===
   
   private final MouseAdapter cmListPressListener = new MouseAdapter() {
-    @Override public void mousePressed(MouseEvent me) {
+    @Override public void mouseReleased(MouseEvent me) {
       int lpIndex=cmList.ccGetCurrentIndex();
       if(lpIndex<0){return;}
       McAbstractSettingPartition lpModel

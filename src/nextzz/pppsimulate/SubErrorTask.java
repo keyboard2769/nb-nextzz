@@ -21,6 +21,7 @@ package nextzz.pppsimulate;
 
 import java.util.Arrays;
 import kosui.ppplogic.ZcOnDelayTimer;
+import kosui.ppplogic.ZcPLC;
 import kosui.ppplogic.ZcPulser;
 import kosui.ppplogic.ZcRoller;
 import kosui.ppplogic.ZcTimer;
@@ -39,27 +40,29 @@ public final class SubErrorTask implements ZiTask{
   
   //===
   
-  private static final int C_FATAL_HEAD  = 1;
-  private static final int C_FATAL_TAIL  = 63;
-  private static final int C_MSG_MAX     = 127;
-  private static final int C_MSG_MASK    = 128;
+  //## .. (message (fatal (error ...)(warn ...)) ...)
+  private static final int C_FATAL_HEAD  =   1;
+  private static final int C_ERROR_TAIL  =  31;
+  private static final int C_FATAL_TAIL  =  63;
+  private static final int C_MSG_MASK    = 255;
+  private static final int C_MSG_SIZE    = 256;
   
   private final ZcPulser cmClearPLS = new ZcPulser();
-  private final ZcRoller cmMessageTester = new ZcRoller(C_MSG_MAX);
-  private final boolean[] cmDesMessageBit = new boolean[C_MSG_MASK];
-  private final ZcTimer cmMessageSuppressTM = new ZcOnDelayTimer(20);
+  private final ZcRoller cmMessageTester = new ZcRoller(C_MSG_MASK);
+  private final boolean[] cmDesMessageBit = new boolean[C_MSG_SIZE];
+  private final ZcTimer cmSuppressTM = new ZcOnDelayTimer(20);
   
-  public final void ccKeepErrorBit(int pxIndex, boolean pxCondition){
+  public final void ccKeepMessageBit(int pxIndex, boolean pxCondition){
     if(!pxCondition){return;}
-    cmDesMessageBit[pxIndex&127]=true;
-  }//+++
-  
-  public final void ccSetErrorBit(int pxIndex, boolean pxVal){
-    cmDesMessageBit[pxIndex&127]=pxVal;
+    cmDesMessageBit[pxIndex&C_MSG_MASK]=true;
   }//++<
   
-  public final boolean ccGetErrorBit(int pxIndex){
-    return cmDesMessageBit[pxIndex&127];
+  public final void ccSetMessageBit(int pxIndex, boolean pxVal){
+    cmDesMessageBit[pxIndex&C_MSG_MASK]=pxVal;
+  }//++<
+  
+  public final boolean ccGetMessageBit(int pxIndex){
+    return cmDesMessageBit[pxIndex&C_MSG_MASK];
   }//++>
 
   @Override public void ccScan() {
@@ -70,35 +73,56 @@ public final class SubErrorTask implements ZiTask{
       cmMessageTester.ccReset();
     }//..?
     if(!SubErrorDelegator.mnErrorClearSW){
-      ccKeepErrorBit(1, SubVProvisionTask.ccRefer()
+      
+      //## ..bit specification code here
+      //## ..equalvalent to [ld al28;out k302;]
+      
+      //-- power?
+      ccKeepMessageBit(1, SubVProvisionTask.ccRefer()
         .dcVBCompressor.ccIsTripped());
-      ccKeepErrorBit(2, SubVProvisionTask.ccRefer()
+      ccKeepMessageBit(2, SubVProvisionTask.ccRefer()
         .dcMixer.ccIsTripped());
-      ccKeepErrorBit(3, SubVProvisionTask.ccRefer()
+      
+      ccKeepMessageBit(3, SubVProvisionTask.ccRefer()
         .dcVExFan.ccIsTripped());
+      ccKeepMessageBit(66, SubVProvisionTask.ccRefer()
+        .dcVExFan.ccIsTripped());
+      
+      //-- control?
+      //-- temperature?
+      
     }//..?
     
-    //-- fatal
-    //[head]:: now what? -> the boolean array size problem 
-    //[head]:: now what? -> so how the hell did the fan triggerred number three ?
+    //-- fatal 
     cmDesMessageBit[0]=true;
     for(int i=C_FATAL_HEAD;i<C_FATAL_TAIL;i++){
+      
+      //-- sync
+      if(i<=C_ERROR_TAIL){
+        SubErrorDelegator.ccSetErrorBitAD(i, ccGetMessageBit(i));
+      }else{
+        SubErrorDelegator.ccSetWarnBitAD(i, ccGetMessageBit(i));
+      }//..?
+      
+      //-- gather
       cmDesMessageBit[0]&=!cmDesMessageBit[i];
+      
     }//..~
     
     //-- feedback
-    SubErrorDelegator.mnErrorPL=!cmDesMessageBit[0]
-      && !MainSimulator.ccHalfSecondPLS();
+    SubErrorDelegator.mnErrorPL=
+        (!cmDesMessageBit[0])
+      &&(!MainSimulator.ccHalfSecondPLS());
     if(SubErrorDelegator.mnErrorClearSW){
       SubErrorDelegator.mnMessageCode = 1001;
     }else{
-      //[todo]:: refine this PLEASE
-      SubErrorDelegator.mnMessageCode
-        = (
-           ccGetErrorBit(cmMessageTester.ccGetValue())
-             && !cmMessageSuppressTM.ccIsUp()
-          ) ? cmMessageTester.ccGetValue()
-            : -1;
+      SubErrorDelegator.mnMessageCode=ZcPLC.sel(
+        ZcPLC.and(
+          ccGetMessageBit(cmMessageTester.ccGetValue()),
+          !cmSuppressTM.ccIsUp()
+        ),
+        cmMessageTester.ccGetValue(), -1
+      );
     }//..?
     
   }//+++
@@ -106,11 +130,11 @@ public final class SubErrorTask implements ZiTask{
   @Override public void ccSimulate() {
     
     //-- rolling
-    boolean lpCurrent=ccGetErrorBit(cmMessageTester.ccGetValue());
-    cmMessageSuppressTM.ccAct(lpCurrent);
-    if(cmMessageSuppressTM.ccIsUp()||!lpCurrent){
+    boolean lpCurrent=ccGetMessageBit(cmMessageTester.ccGetValue());
+    cmSuppressTM.ccAct(lpCurrent);
+    if(cmSuppressTM.ccIsUp()||!lpCurrent){
       cmMessageTester.ccRoll();
-      cmMessageSuppressTM.ccSetValue(0);
+      cmSuppressTM.ccSetValue(0);
     }//..?
     
   }//+++
@@ -118,9 +142,9 @@ public final class SubErrorTask implements ZiTask{
   //===
   
   @Deprecated public final void tstTagg(){
-    VcLocalTagger.ccTag("-tm-",cmMessageSuppressTM.ccGetValue());
+    VcLocalTagger.ccTag("-tm-",cmSuppressTM.ccGetValue());
     VcLocalTagger.ccTag("sw",SubErrorDelegator.mnErrorClearSW);
-    VcLocalTagger.ccTag("head",cmMessageTester.ccGetValue());
+    VcLocalTagger.ccTag("head",cmMessageTester);
     VcLocalTagger.ccTag("wm39",SubErrorDelegator.mnMessageCode);
   }//+++
   

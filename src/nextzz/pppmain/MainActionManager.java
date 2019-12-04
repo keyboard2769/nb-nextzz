@@ -61,6 +61,7 @@ import nextzz.pppmodel.SubVCombustStaticManager;
 import nextzz.pppmodel.SubWeighControlManager;
 import nextzz.pppmodel.SubWeighStatisticManager;
 import nextzz.pppsimulate.MainSimulator;
+import nextzz.pppsimulate.SubErrorTask;
 import nextzz.pppswingui.ScCSVFilePrinter;
 import nextzz.pppswingui.SubFeederPane;
 import nextzz.pppswingui.SubMonitorPane;
@@ -88,7 +89,7 @@ public final class MainActionManager {
       SubVCombustStaticManager.ccRefer().ccExportAndClear();
       SubWeighStatisticManager.ccRefer().ccExportAndClear();
       
-      //-- 
+      //-- read
       VcConst.ccPrintln(".cmQuitting()::call PApplet::exit()");
       MainSketch.ccGetPApplet().exit();
       
@@ -515,7 +516,17 @@ public final class MainActionManager {
       VcLocalConsole.ccGetInstance()
         .ccSetMessage("[echo]mrst::resetting motor thermal status");
     }//+++
-  };
+  };//***
+  
+  public final EiTriggerable cmErrorBitSetting = new EiTriggerable() {
+    @Override public void ccTrigger(){
+      int lpErrorIndex = VcNumericUtility
+        .ccParseIntegerString(VcLocalConsole.ccGetLastAccepted(1));
+      SubErrorTask.ccRefer().ccSetMessageBit(lpErrorIndex, true);
+      VcLocalConsole.ccGetInstance()
+        .ccSetMessage("[echo]terr:"+lpErrorIndex);
+    }//+++
+  };//***
   
   //=== swing 
   
@@ -715,6 +726,8 @@ public final class MainActionManager {
       ("mrst", cmMotorThmalResetting);
     VcLocalConsole.ccRegisterCommand
       ("dmwsr", cmDummyWeighRecordGenerating);
+    VcLocalConsole.ccRegisterCommand
+      ("terr", cmErrorBitSetting);
   
   }//++!
   
