@@ -40,7 +40,7 @@ public final class SubErrorTask implements ZiTask{
   
   //===
   
-  //## .. (message (fatal (error ...)(warn ...)) ...)
+  //## .. ((0))(message (fatal (error [1 ~ 31])(warn [32 - 63])) [ ~255])
   private static final int C_FATAL_HEAD  =   1;
   private static final int C_ERROR_TAIL  =  31;
   private static final int C_FATAL_TAIL  =  63;
@@ -67,17 +67,17 @@ public final class SubErrorTask implements ZiTask{
 
   @Override public void ccScan() {
     
-    //-- specify
+    //-- specifying
     if(cmClearPLS.ccUpPulse(SubErrorDelegator.mnErrorClearSW)){
       Arrays.fill(cmDesMessageBit, false);
       cmMessageTester.ccReset();
     }//..?
     if(!SubErrorDelegator.mnErrorClearSW){
       
-      //## ..bit specification code here
+      //## ..bit specifying code here
       //## ..equalvalent to [ld al28;out k302;]
       
-      //-- power?
+      //-- specifying ** power?
       ccKeepMessageBit(1, SubVProvisionTask.ccRefer()
         .dcVBCompressor.ccIsTripped());
       ccKeepMessageBit(2, SubVProvisionTask.ccRefer()
@@ -88,23 +88,23 @@ public final class SubErrorTask implements ZiTask{
       ccKeepMessageBit(66, SubVProvisionTask.ccRefer()
         .dcVExFan.ccIsTripped());
       
-      //-- control?
-      //-- temperature?
+      //-- specifying ** control?
+      //-- specifying ** temperature?
       
     }//..?
     
     //-- fatal 
     cmDesMessageBit[0]=true;
-    for(int i=C_FATAL_HEAD;i<C_FATAL_TAIL;i++){
+    for(int i=C_FATAL_HEAD;i<=C_FATAL_TAIL;i++){
       
-      //-- sync
+      //-- fatal ** sync
       if(i<=C_ERROR_TAIL){
-        SubErrorDelegator.ccSetErrorBitAD(i, ccGetMessageBit(i));
+        SubErrorDelegator.ccSetErrorBit(i, ccGetMessageBit(i));
       }else{
-        SubErrorDelegator.ccSetWarnBitAD(i, ccGetMessageBit(i));
+        SubErrorDelegator.ccSetWarnBit(i-32, ccGetMessageBit(i));
       }//..?
       
-      //-- gather
+      //-- fatal ** gather
       cmDesMessageBit[0]&=!cmDesMessageBit[i];
       
     }//..~

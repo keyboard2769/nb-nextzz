@@ -119,11 +119,10 @@ public final class SubErrorListModel implements ListModel<String>{
     for(McError it : cmListOfAll){
       if(it.cmID==0){continue;}
       if(ZcRangedModel.ccContains(it.cmID, 1, 31)){//..yellow print hard code
-        it.ccSetIsActivated(SubErrorDelegator.ccGetErrorBitAD(it.cmID));
+        it.ccSetIsActivated(SubErrorDelegator.ccGetErrorBit(it.cmID));
       }//..?
       if(ZcRangedModel.ccContains(it.cmID, 32, 63)){//..yellow print hard code
-        //[head]:: this range is not working
-        it.ccSetIsActivated(SubErrorDelegator.ccGetWarnBitAD(it.cmID-32));
+        it.ccSetIsActivated(SubErrorDelegator.ccGetWarnBit(it.cmID-32));
       }//..?
       it.ccRun();
     }//..~

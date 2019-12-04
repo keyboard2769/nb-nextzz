@@ -43,18 +43,16 @@ but hey, dose it sounds stupid if you read it DOUBLE-ZEUS ??
 - [ ] $ uno
 - [ ] $ general import and export functionality
 - [ ] $ current slot overwhelming coloring
-- [ ] $ remake the case test of pid controller to have target manipulation
 - [ ] $ a linear pane with blocks of 'zero' and 'span' button
 - [ ] $ the gate simulation and the case of cut point handling
 - [ ] $ fill v provision and combust motor load factor
 
 #### heading
 
-- [ ] $ build an error list handling mechanism
+- [ ] $ remake the case test of pid controller to have target manipulation
 
 #### last
 
-- [x] $ partly did the weigh logging and export-before-quitting stuff
 - [x] $ print button can now sends some file to printer
 - [x] $ feeder assistance switch is moved to feeder pane
 - [x] $ feeder group ratio button now works based on the the flux setting item
@@ -62,5 +60,6 @@ but hey, dose it sounds stupid if you read it DOUBLE-ZEUS ??
 - [x] $ reclaimed the setting pane and its content and translate 
 - [x] $ added current slot overwhelming setting
 - [x] $ made the recipe pane work .. forget about the file ex/import stuff
+- [x] $ yet another error message and list handling mechanism is now available
 
 <hr><!--EOF-->

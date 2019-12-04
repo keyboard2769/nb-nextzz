@@ -68,13 +68,8 @@ public final class SubErrorPane implements SiTabbable{
     @Override public void mouseReleased(MouseEvent me) {
       int lpIndex=cmErrorList.ccGetCurrentIndex();
       if(lpIndex<0){return;}
-      
-      //[head]:: now what? -> list index to error index !!
-      System.out.println("SubErrorPane::cmListPressListener::mouseReleased -> "
-        +lpIndex);
-      System.out.println("SubErrorPane::cmListPressListener::mouseReleased -> "
-        +SubErrorListModel.ccRefer().getDescriptionAt(lpIndex));
-    
+      cmDescriptor.setText(SubErrorListModel
+        .ccRefer().getDescriptionAt(lpIndex));
     }//+++
   };//***
   

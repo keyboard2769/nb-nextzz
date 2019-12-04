@@ -70,7 +70,7 @@ public final class SubErrorDelegator {
   
   //===
   
-  public static final void ccSetErrorBitAD(int pxOrder, boolean pxVal){
+  public static final void ccSetErrorBit(int pxOrder, boolean pxVal){
     switch(pxOrder){
       case  0:mnErrorBitZ=pxVal;break;
       case  1:mnErrorBitI=pxVal;break;
@@ -112,7 +112,7 @@ public final class SubErrorDelegator {
     }//..?
   }//++<
   
-  public static final boolean ccGetErrorBitAD(int pxOrder){
+  public static final boolean ccGetErrorBit(int pxOrder){
     switch(pxOrder){
       case  0:return mnErrorBitZ;
       case  1:return mnErrorBitI;
@@ -156,7 +156,7 @@ public final class SubErrorDelegator {
   
   //===
   
-  public static final void ccSetWarnBitAD(int pxOrder, boolean pxVal){
+  public static final void ccSetWarnBit(int pxOrder, boolean pxVal){
     switch(pxOrder){
       case  0:mnWarnBitZ=pxVal;break;
       case  1:mnWarnBitI=pxVal;break;
@@ -198,7 +198,7 @@ public final class SubErrorDelegator {
     }//..?
   }//++<
   
-  public static final boolean ccGetWarnBitAD(int pxOrder){
+  public static final boolean ccGetWarnBit(int pxOrder){
     switch(pxOrder){
       case  0:return mnWarnBitZ;
       case  1:return mnWarnBitI;
