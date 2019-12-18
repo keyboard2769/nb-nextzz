@@ -46,6 +46,7 @@ but hey, dose it sounds stupid if you read it DOUBLE-ZEUS ??
 - [ ] $ a linear pane with blocks of 'zero' and 'span' button
 - [ ] $ the gate simulation and the case of cut point handling
 - [ ] $ fill v provision and combust motor load factor
+- [ ] $ add a window listener for the closing operation handling issue
 
 #### heading
 
