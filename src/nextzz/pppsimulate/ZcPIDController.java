@@ -128,8 +128,12 @@ public class ZcPIDController {
   }//+++
   
   private void ssAdjustTarget(){
-    if(cmProcessAverage<cmTarget){cmShiftedTarget+=cmAdjustWidth;}
-    if(cmProcessAverage>cmTarget){cmShiftedTarget-=cmAdjustWidth;}
+    if(cmProcessAverage<(cmTarget-cmSamplingDead)){
+      cmShiftedTarget+=cmAdjustWidth;
+    }//..?
+    if(cmProcessAverage>(cmTarget+cmSamplingDead)){
+      cmShiftedTarget-=cmAdjustWidth;
+    }//..?
     cmShiftedTarget=PApplet.constrain(
       cmShiftedTarget,
       cmRangeMinimum, cmRangeMaximum
@@ -230,6 +234,10 @@ public class ZcPIDController {
   }//++>
   
   //=== 
+  
+  @Deprecated public final float tstGetProcessAverage(){
+    return cmProcessAverage;
+  }//++>
   
   @Deprecated public final float tstGetShiftedTarget(){
     return cmShiftedTarget;

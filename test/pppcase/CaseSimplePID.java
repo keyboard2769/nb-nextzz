@@ -20,31 +20,23 @@
 package pppcase;
 
 import kosui.ppplocalui.EcConst;
-import kosui.ppplocalui.EcElement;
-import kosui.ppplogic.ZcRoller;
-import kosui.ppputil.VcConst;
+import kosui.ppplogic.ZcFlicker;
 import kosui.ppputil.VcLocalCoordinator;
-import kosui.ppputil.VcLocalTagger;
 import kosui.ppputil.VcStringUtility;
 import nextzz.pppsimulate.ZcPIDController;
 import processing.core.PApplet;
 
 public final class CaseSimplePID extends PApplet{
   
-  private static final int C_VIS_GAP = 5;
+  private static final int C_VIS_GAP = 8;
   
-  private final ZcRoller cmRoller=new ZcRoller();
+  private final ZcFlicker cmSamplingTM = new ZcFlicker(16, 0.5f);
+  private final ZcFlicker cmAdjustingTM = new ZcFlicker(80, 0.5f);
   
   private final ZcPIDController cmController
-    = new ZcPIDController(0f,240f,0.02f,0.75f);
-  
-  public final EcElement cmAdjusttingPL  = new EcElement("-I-");
-  public final EcElement cmSamplingPL    = new EcElement("-D-");
-  public final EcElement cmUpRequestPL   = new EcElement("UP");
-  public final EcElement cmDownRequestPL = new EcElement("DN");
+    = new ZcPIDController(0f,240f,0.02f,0.33f);
   
   private boolean cmAdjustFlag,cmSampleFlag;
-  private float cmCurrentValue;
 
   @Override public void setup(){
     
@@ -52,20 +44,6 @@ public final class CaseSimplePID extends PApplet{
     size(320,240);
     EcConst.ccSetupSketch(this);
     VcLocalCoordinator.ccGetInstance().ccInit(this);
-    VcLocalTagger.ccGetInstance().ccInit(this);
-    
-    //-- setup
-    cmAdjusttingPL.ccSetLocation(160, 80);
-    cmDownRequestPL.ccSetLocation(cmAdjusttingPL, 2, 0);
-    cmSamplingPL.ccSetLocation(cmDownRequestPL, 2, 0);
-    cmUpRequestPL.ccSetLocation(
-      cmDownRequestPL.ccGetX(),
-      cmDownRequestPL.ccGetY()-2-cmUpRequestPL.ccGetH()
-    );
-    
-    //-- post
-    VcConst.ccSetDoseLog(true);
-    VcLocalCoordinator.ccAddAll(this);
     
   }//+++
 
@@ -73,19 +51,30 @@ public final class CaseSimplePID extends PApplet{
     
     //-- pre
     background(0);
-    cmRoller.ccRoll();
    
-    //-- logic
-    cmCurrentValue=height-mouseY;
-    cmAdjustFlag=cmRoller.ccIsAt(11);
-    cmSampleFlag=cmRoller.ccIsAcrossAt(6, 1);
-    cmController.ccRun(cmCurrentValue,cmAdjustFlag,cmSampleFlag);
+    //-- logic ** clock
+    cmSamplingTM.ccAct(true);
+    cmAdjustingTM.ccAct(true);
+    cmSampleFlag=cmSamplingTM.ccAtEdge();
+    cmAdjustFlag=cmAdjustingTM.ccAtEdge();
+    
+    //-- logic ** controller
+    final int lpConstCurrent = height - mouseY;
+    cmController.ccRun(lpConstCurrent,cmSampleFlag,cmAdjustFlag);
     
     //-- visualize ** push
     final int lpConstTarget = height
      - ceil(cmController.tstGetTarget());
     final int lpConstShifted = height
      - ceil(cmController.tstGetShiftedTarget());
+    final int lpConstAverage = height
+     - ceil(cmController.tstGetProcessAverage());
+    final int lpConstDeadZ = ceil(
+      cmController.tstGetDeadP() - cmController.tstGetDeadN()
+    );
+    final int lpConstProportionZ = ceil(
+      cmController.tstGetProportionP()- cmController.tstGetProportionN()
+    );
     
     //-- visualize ** controller ** target
     stroke(0xFFEEEE33);ccDrawLineH(lpConstTarget);
@@ -93,38 +82,51 @@ public final class CaseSimplePID extends PApplet{
     //-- visualize ** controller ** shifted target 
     stroke(0xFF44FF44);ccDrawLineH(lpConstShifted);
     
+    //-- visualize ** controller ** shifted target 
+    stroke(0xFF3399CC);ccDrawLineH(lpConstAverage);
+    
     //-- visualize ** controller ** proportion zone
-    //[head]::fill(0x66666666);
-    //[head]::stroke(0xFF33CC33);
-    //[head]::now what ??
+    stroke(0xFF33CC33);
+    //[head]:: the fill flash
+    fill(0x66,0x66);
+    rect(
+      160+C_VIS_GAP,lpConstShifted-lpConstProportionZ/2,
+      width/2-C_VIS_GAP*2,lpConstProportionZ
+    );
     
     //-- visualize ** controller ** dead zone
+    stroke(0xFF119911);
+    fill(0x66,0x66);
+    rect(
+      160+C_VIS_GAP*2,lpConstShifted-lpConstDeadZ/2,
+      width/2-C_VIS_GAP*4,lpConstDeadZ
+    );
+    
+    //-- visualize ** controller ** current
+    stroke(0xFF,0xAA);ccDrawLineH(mouseY);
+    fill(0xFF);
+    text(String.format("[pv:%3d]", lpConstCurrent),mouseX,mouseY-20);
+    
+    //[head]::now what ??
     
     //-- visualize ** pop
     noStroke();
     
-    //-- local
-    cmAdjusttingPL.ccSetIsActivated(cmAdjustFlag);
-    cmDownRequestPL.ccSetIsActivated(cmController.ccGetNegativeOutput());
-    cmSamplingPL.ccSetIsActivated(cmSampleFlag);
-    cmUpRequestPL.ccSetIsActivated(cmController.ccGetPositiveOutput());
-    VcLocalCoordinator.ccUpdate();
-    
-    
     //-- inspect
+    fill(0x55,0xAA);
+    rect(10,10,125,105);
     fill(0xEE);
     text(
       "ctrl-"+VcStringUtility.ccBreakObject(cmController),
-      5,120
+      12, 12
     );
-    
-    //-- tag
-    VcLocalTagger.ccTag("roller", cmRoller.ccGetValue());
-    VcLocalTagger.ccStabilize();
     
   }//+++
   
   @Override public void keyPressed(){
+    
+    //[head]:: let config parameter via console
+    
     if(key=='q'){exit();}
     switch(key){
       default:break;
