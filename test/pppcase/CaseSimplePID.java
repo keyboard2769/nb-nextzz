@@ -31,13 +31,12 @@ import processing.core.PApplet;
 
 public final class CaseSimplePID extends PApplet{
   
-  private final float C_DEAD_ZONE = 0.1f;
-  private final float C_PROPORTION = 0.5f;
+  private static final int C_VIS_GAP = 5;
   
   private final ZcRoller cmRoller=new ZcRoller();
   
   private final ZcPIDController cmController
-    = new ZcPIDController(100f, C_PROPORTION, C_DEAD_ZONE);
+    = new ZcPIDController(0f,240f,0.02f,0.75f);
   
   public final EcElement cmAdjusttingPL  = new EcElement("-I-");
   public final EcElement cmSamplingPL    = new EcElement("-D-");
@@ -49,13 +48,13 @@ public final class CaseSimplePID extends PApplet{
 
   @Override public void setup(){
     
-    //--
+    //-- pre
     size(320,240);
     EcConst.ccSetupSketch(this);
     VcLocalCoordinator.ccGetInstance().ccInit(this);
     VcLocalTagger.ccGetInstance().ccInit(this);
     
-    //--
+    //-- setup
     cmAdjusttingPL.ccSetLocation(160, 80);
     cmDownRequestPL.ccSetLocation(cmAdjusttingPL, 2, 0);
     cmSamplingPL.ccSetLocation(cmDownRequestPL, 2, 0);
@@ -64,7 +63,7 @@ public final class CaseSimplePID extends PApplet{
       cmDownRequestPL.ccGetY()-2-cmUpRequestPL.ccGetH()
     );
     
-    //--
+    //-- post
     VcConst.ccSetDoseLog(true);
     VcLocalCoordinator.ccAddAll(this);
     
@@ -82,26 +81,26 @@ public final class CaseSimplePID extends PApplet{
     cmSampleFlag=cmRoller.ccIsAcrossAt(6, 1);
     cmController.ccRun(cmCurrentValue,cmAdjustFlag,cmSampleFlag);
     
-    //-- visualze
-    stroke(EcConst.C_GREEN);fill(EcConst.C_GREEN);
-    line(0,mouseY,width,mouseY);
-    text(nfc(cmCurrentValue,2),mouseX,mouseY-18);
-    float lpShiftedY = height - cmController.ccGetShiftedTarget();
-    stroke(0xFF);
-    line(0,lpShiftedY,width,lpShiftedY);
-    stroke(0x55);
-    float lpDeadPY
-      = height - cmController.ccGetShiftedTarget() * (1f+C_DEAD_ZONE);
-    float lpDeadNY
-      = height - cmController.ccGetShiftedTarget() * (1f-C_DEAD_ZONE);
-    line(0,lpDeadPY,width,lpDeadPY);
-    line(0,lpDeadNY,width,lpDeadNY);
-    float lpProportionPY
-      = height - cmController.ccGetShiftedTarget() * (1f+C_PROPORTION);
-    float lpProportionNY
-      = height - cmController.ccGetShiftedTarget() * (1f-C_PROPORTION);
-    line(0,lpProportionPY,width,lpProportionPY);
-    line(0,lpProportionNY,width,lpProportionNY);
+    //-- visualize ** push
+    final int lpConstTarget = height
+     - ceil(cmController.tstGetTarget());
+    final int lpConstShifted = height
+     - ceil(cmController.tstGetShiftedTarget());
+    
+    //-- visualize ** controller ** target
+    stroke(0xFFEEEE33);ccDrawLineH(lpConstTarget);
+    
+    //-- visualize ** controller ** shifted target 
+    stroke(0xFF44FF44);ccDrawLineH(lpConstShifted);
+    
+    //-- visualize ** controller ** proportion zone
+    //[head]::fill(0x66666666);
+    //[head]::stroke(0xFF33CC33);
+    //[head]::now what ??
+    
+    //-- visualize ** controller ** dead zone
+    
+    //-- visualize ** pop
     noStroke();
     
     //-- local
@@ -110,6 +109,7 @@ public final class CaseSimplePID extends PApplet{
     cmSamplingPL.ccSetIsActivated(cmSampleFlag);
     cmUpRequestPL.ccSetIsActivated(cmController.ccGetPositiveOutput());
     VcLocalCoordinator.ccUpdate();
+    
     
     //-- inspect
     fill(0xEE);
@@ -129,6 +129,12 @@ public final class CaseSimplePID extends PApplet{
     switch(key){
       default:break;
     }//..?
+  }//+++
+  
+  //===
+  
+  void ccDrawLineH(int pxY){
+    line(0, pxY, width, pxY);
   }//+++
   
   //===

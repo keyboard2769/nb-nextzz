@@ -86,6 +86,7 @@ public class MainSketch extends PApplet{
     //-- pre
     EcConst.ccSetupSketch(this);
     frame.setTitle(C_WARE_TITLE);
+    frame.addWindowListener(MainWindow.ccRefer().cmAppClosing);
     self=this;
     ssInitFont();
     
@@ -374,7 +375,7 @@ public class MainSketch extends PApplet{
   }//+++
   
   public static final String ccGetLastLeavingStamp(){
-    return "_1912041330";
+    return "_1912201146";
   }//+++
 
 }//***eof

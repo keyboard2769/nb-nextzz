@@ -57,7 +57,6 @@ import nextzz.pppsetting.MainSettingManager;
 import nextzz.pppsetting.MiSettingItem;
 import nextzz.pppmodel.SubDegreeControlManager;
 import nextzz.pppmodel.SubRecipeManager;
-import nextzz.pppmodel.SubVCombustStaticManager;
 import nextzz.pppmodel.SubWeighControlManager;
 import nextzz.pppmodel.SubWeighStatisticManager;
 import nextzz.pppsimulate.MainSimulator;
@@ -84,15 +83,7 @@ public final class MainActionManager {
   
   public final EiTriggerable cmQuitting = new EiTriggerable() {
     @Override public void ccTrigger(){
-      
-      //-- exporting
-      SubVCombustStaticManager.ccRefer().ccExportAndClear();
-      SubWeighStatisticManager.ccRefer().ccExportAndClear();
-      
-      //-- read
-      VcConst.ccPrintln(".cmQuitting()::call PApplet::exit()");
-      MainSketch.ccGetPApplet().exit();
-      
+      MainWindow.ccRefer().cmAppClosing.windowClosing(null);
     }//+++
   };//***
   

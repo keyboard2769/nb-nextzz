@@ -20,6 +20,8 @@
 package nextzz.pppmain;
 
 import java.awt.Dimension;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import javax.swing.JButton;
 import javax.swing.JSeparator;
 import javax.swing.JTabbedPane;
@@ -34,7 +36,9 @@ import kosui.ppputil.VcStampUtility;
 import kosui.ppputil.VcTranslator;
 import nextzz.pppmodel.MainPlantModel;
 import nextzz.pppmodel.SubAnalogScalarManager;
+import nextzz.pppmodel.SubVCombustStaticManager;
 import nextzz.pppmodel.SubWeighControlManager;
+import nextzz.pppmodel.SubWeighStatisticManager;
 import nextzz.pppswingui.SiTabbable;
 import nextzz.pppswingui.SubAssistantPane;
 import nextzz.pppswingui.SubErrorPane;
@@ -52,6 +56,20 @@ public final class MainWindow {
   private MainWindow(){}//++!
   
   //===
+  
+  public final WindowAdapter cmAppClosing = new WindowAdapter() {
+    @Override public void windowClosing(WindowEvent we) {
+      
+      //-- exporting
+      SubVCombustStaticManager.ccRefer().ccExportAndClear();
+      SubWeighStatisticManager.ccRefer().ccExportAndClear();
+      
+      //-- read
+      VcConst.ccPrintln(".cmAppClosing $ call PApplet::exit()");
+      MainSketch.ccGetPApplet().exit();
+      
+    }//+++
+  };//***
   
   public final Runnable cmUpdating = new Runnable() {
     @Override public void run() {

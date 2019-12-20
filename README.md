@@ -46,15 +46,14 @@ but hey, dose it sounds stupid if you read it DOUBLE-ZEUS ??
 - [ ] $ a linear pane with blocks of 'zero' and 'span' button
 - [ ] $ the gate simulation and the case of cut point handling
 - [ ] $ fill v provision and combust motor load factor
-- [ ] $ add a window listener for the closing operation handling issue
 
 #### heading
 
+- [ ] $ remake the pid controller
 - [ ] $ remake the case test of pid controller to have target manipulation
 
 #### last
 
-- [x] $ print button can now sends some file to printer
 - [x] $ feeder assistance switch is moved to feeder pane
 - [x] $ feeder group ratio button now works based on the the flux setting item
 - [x] $ feeder flux setting representation now has floating point
@@ -62,5 +61,6 @@ but hey, dose it sounds stupid if you read it DOUBLE-ZEUS ??
 - [x] $ added current slot overwhelming setting
 - [x] $ made the recipe pane work .. forget about the file ex/import stuff
 - [x] $ yet another error message and list handling mechanism is now available
+- [x] $ added a window listener for the closing operation integrity issue
 
 <hr><!--EOF-->

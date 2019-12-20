@@ -53,10 +53,10 @@ public final class SubDegreeControlManager {
   public volatile int vmVExfanIgnitionPT = 15;//.. aka "TyakKaKaiDo"
     
   private final ZcPIDController 
-    cmVTemperatureCTRL   = new ZcPIDController(100f,0.8f,0.10f,true),
-    cmVBurnerDegreeCTRL  = new ZcPIDController(100f,0.5f,0.02f),
-    cmVPressureCTRL      = new ZcPIDController(100f,0.8f,0.10f),
-    cmVExfanDegreeCTRL   = new ZcPIDController(100f,0.5f,0.02f)
+    cmVTemperatureCTRL   = new ZcPIDController(0f,400f,0.05f,0.75f),
+    cmVBurnerDegreeCTRL  = new ZcPIDController(0f,100f,0.03f,0.30f),
+    cmVPressureCTRL      = new ZcPIDController(0f,200f,0.05f,0.75f),
+    cmVExfanDegreeCTRL   = new ZcPIDController(0f,100f,0303f,0.30f)
   ;//,,,
   
   private final ZcPulser cmVShiftResetPLS = new ZcPulser();
@@ -83,8 +83,8 @@ public final class SubDegreeControlManager {
   public final EiTriggerable cmControllerRetargetting = new EiTriggerable() {
     @Override public void ccTrigger() {
       System.out.println("cmControllerRetargetting()::invoked!!");
-      cmVTemperatureCTRL.ccResetShiftedTarget();
-      cmVPressureCTRL.ccResetShiftedTarget();
+      cmVTemperatureCTRL.ccReset();
+      cmVPressureCTRL.ccReset();
     }//+++
   };//***
   
@@ -104,6 +104,7 @@ public final class SubDegreeControlManager {
     cmVTemperatureAdjustTM.ccRoll(1);
     cmVTemperatureSamplingTM.ccRoll(1);
     //-- vb ** controller
+    //[head]:: refine this !!
     cmVTemperatureCTRL.ccSetTarget(vmVTargetCELC);
     cmVTemperatureCTRL.ccRun(
       SubAnalogScalarManager.ccRefer().cmDesThermoCelcius
@@ -112,12 +113,17 @@ public final class SubDegreeControlManager {
         && SubVCombustDelegator.mnVColdAggreageSensorPL,
       cmVTemperatureSamplingTM.ccIsAt(1)
     );
-    cmVBurnerDegreeCTRL.ccRun(!SubVCombustDelegator.mnVBFlamingPL
-        ? 0f
-        : (SubVCombustDelegator.mnVColdAggreageSensorPL
-            ? cmVTemperatureCTRL.ccGetMinusTrimmed()*100f
-            : ((float)vmVPreHeatingPT)),
+    
+    cmVBurnerDegreeCTRL.ccRun(
+      //[head]:: fix this !!
+      /*
+      !SubVCombustDelegator.mnVBFlamingPL
+      ? 0f
+      : (SubVCombustDelegator.mnVColdAggreageSensorPL
+      ? cmVTemperatureCTRL.ccGetMinusTrimmed()*100f
+      : ((float)vmVPreHeatingPT)),
       (float)SubAnalogScalarManager.ccRefer().ccGetVBurnerPercentage()
+      */ 
     );
     //-- vb ** to plc
     SubVCombustDelegator.mnVBurnerCloseFLG
@@ -138,12 +144,16 @@ public final class SubDegreeControlManager {
       cmVPressureAdjustTM.ccIsAt(1) && SubVCombustDelegator.mnVBFlamingPL,
       cmVPressureSamplingTM.ccIsAt(1)
     );
-    cmVExfanDegreeCTRL.ccRun(!SubVProvisionDelegator.mnVExfanIconPL
-        ? 0f
-        : (SubVCombustDelegator.mnVBFlamingPL
-            ? cmVPressureCTRL.ccGetReverselyTrimmed()*100f
-            : ((float)vmVExfanIgnitionPT)),
+    cmVExfanDegreeCTRL.ccRun(
+      //[head]:: fix this !!
+      /*
+      !SubVProvisionDelegator.mnVExfanIconPL
+      ? 0f
+      : (SubVCombustDelegator.mnVBFlamingPL
+      ? cmVPressureCTRL.ccGetReverselyTrimmed()*100f
+      : ((float)vmVExfanIgnitionPT)),
       (float)SubAnalogScalarManager.ccRefer().ccGetVExfanPercentage()
+      */
     );
     //-- ve ** to plc
     SubVCombustDelegator.mnVExfanCloseFLG
