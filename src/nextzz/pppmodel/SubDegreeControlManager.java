@@ -20,8 +20,9 @@
 package nextzz.pppmodel;
 
 import kosui.ppplocalui.EiTriggerable;
+import kosui.ppplogic.ZcFlicker;
+import kosui.ppplogic.ZcPLC;
 import kosui.ppplogic.ZcPulser;
-import kosui.ppplogic.ZcRangedValueModel;
 import kosui.ppputil.VcLocalTagger;
 import nextzz.pppdelegate.SubVCombustDelegator;
 import nextzz.pppdelegate.SubVProvisionDelegator;
@@ -52,20 +53,21 @@ public final class SubDegreeControlManager {
   
   public volatile int vmVExfanIgnitionPT = 15;//.. aka "TyakKaKaiDo"
     
-  private final ZcPIDController 
-    cmVTemperatureCTRL   = new ZcPIDController(0f,400f,0.05f,0.75f),
+  private final ZcPIDController
+    //[head]::so what is the best init value??
+    cmVTemperatureCTRL   = new ZcPIDController(0f,400f,0.01f,0.55f),
     cmVBurnerDegreeCTRL  = new ZcPIDController(0f,100f,0.03f,0.30f),
     cmVPressureCTRL      = new ZcPIDController(0f,200f,0.05f,0.75f),
-    cmVExfanDegreeCTRL   = new ZcPIDController(0f,100f,0303f,0.30f)
+    cmVExfanDegreeCTRL   = new ZcPIDController(0f,100f,0.05f,0.30f)
   ;//,,,
   
   private final ZcPulser cmVShiftResetPLS = new ZcPulser();
   
-  private final ZcRangedValueModel
-    cmVTemperatureAdjustTM = new ZcRangedValueModel(0, 63),
-    cmVTemperatureSamplingTM = new ZcRangedValueModel(0, 15),
-    cmVPressureAdjustTM = new ZcRangedValueModel(0, 63),
-    cmVPressureSamplingTM = new ZcRangedValueModel(0, 15)
+  private final ZcFlicker
+    cmVTemperatureAdjustTM   = new ZcFlicker(80),
+    cmVTemperatureSamplingTM = new ZcFlicker(16),
+    cmVPressureAdjustTM      = new ZcFlicker(32),
+    cmVPressureSamplingTM    = new ZcFlicker(16)
   ;//,,,
   
   //-- r
@@ -80,11 +82,20 @@ public final class SubDegreeControlManager {
   
   //===
   
-  public final EiTriggerable cmControllerRetargetting = new EiTriggerable() {
+  public final EiTriggerable cmVTemperatureTargetSettling
+    = new EiTriggerable() {
     @Override public void ccTrigger() {
-      System.out.println("cmControllerRetargetting()::invoked!!");
-      cmVTemperatureCTRL.ccReset();
-      cmVPressureCTRL.ccReset();
+      cmVTemperatureCTRL.ccSetTarget(vmVTargetCELC);
+    }//+++
+  };//***
+  
+  public final EiTriggerable cmVPressureTargetSettling
+    = new EiTriggerable() {
+    @Override public void ccTrigger() {
+      cmVPressureCTRL.ccSetTarget(
+        MainPlantModel.C_PRESSURE_CONTOL_OFFSET 
+         - ((float)vmVDryerTargetMinusKPA)
+      );
     }//+++
   };//***
   
@@ -96,35 +107,35 @@ public final class SubDegreeControlManager {
     
     //-- v ** shift reset
     if(cmVShiftResetPLS.ccUpPulse(SubVCombustDelegator.mnVBFlamingPL)){
-      cmControllerRetargetting.ccTrigger();
+      cmVTemperatureCTRL.ccReset();
+      cmVPressureCTRL.ccReset();
     }//..?
     
     //-- vb
     //-- vb ** timing
-    cmVTemperatureAdjustTM.ccRoll(1);
-    cmVTemperatureSamplingTM.ccRoll(1);
+    cmVTemperatureAdjustTM.ccAct(SubVCombustDelegator.mnVBFlamingPL);
+    cmVTemperatureSamplingTM.ccAct(SubVCombustDelegator.mnVBFlamingPL);
     //-- vb ** controller
-    //[head]:: refine this !!
-    cmVTemperatureCTRL.ccSetTarget(vmVTargetCELC);
     cmVTemperatureCTRL.ccRun(
       SubAnalogScalarManager.ccRefer().cmDesThermoCelcius
         .ccGet(SubAnalogScalarManager.C_I_THI_CHUTE),
-      cmVTemperatureAdjustTM.ccIsAt(1)
-        && SubVCombustDelegator.mnVColdAggreageSensorPL,
-      cmVTemperatureSamplingTM.ccIsAt(1)
+      cmVTemperatureSamplingTM.ccAtEdge(),
+      cmVTemperatureAdjustTM.ccAtEdge()
+        && SubVCombustDelegator.mnVColdAggreageSensorPL
+    );
+    cmVBurnerDegreeCTRL.ccSetTarget(
+      ZcPLC.sel(!SubVCombustDelegator.mnVBFlamingPL,
+        0f,
+        ZcPLC.sel(SubVCombustDelegator.mnVColdAggreageSensorPL,
+          cmVTemperatureCTRL.ccGetMinusTrimmed()*100f,
+          (float)vmVPreHeatingPT
+        )
+      )
+    );
+    cmVBurnerDegreeCTRL.ccRun(
+      (float)SubAnalogScalarManager.ccRefer().ccGetVBurnerPercentage()
     );
     
-    cmVBurnerDegreeCTRL.ccRun(
-      //[head]:: fix this !!
-      /*
-      !SubVCombustDelegator.mnVBFlamingPL
-      ? 0f
-      : (SubVCombustDelegator.mnVColdAggreageSensorPL
-      ? cmVTemperatureCTRL.ccGetMinusTrimmed()*100f
-      : ((float)vmVPreHeatingPT)),
-      (float)SubAnalogScalarManager.ccRefer().ccGetVBurnerPercentage()
-      */ 
-    );
     //-- vb ** to plc
     SubVCombustDelegator.mnVBurnerCloseFLG
       = cmVBurnerDegreeCTRL.ccGetNegativeOutput();
@@ -133,27 +144,26 @@ public final class SubDegreeControlManager {
     
     //-- ve
     //-- ve ** timing
-    cmVPressureAdjustTM.ccRoll(1);
-    cmVPressureSamplingTM.ccRoll(1);
+    cmVPressureAdjustTM.ccAct(SubVCombustDelegator.mnVBFlamingPL);
+    cmVPressureSamplingTM.ccAct(SubVCombustDelegator.mnVBFlamingPL);
     //-- ve ** controller
-    cmVPressureCTRL.ccSetTarget(MainPlantModel.C_PRESSURE_CONTOL_OFFSET
-      - ((float)vmVDryerTargetMinusKPA));
     cmVPressureCTRL.ccRun(
       MainPlantModel.C_PRESSURE_CONTOL_OFFSET
         + ((float)SubAnalogScalarManager.ccRefer().ccGetVDryerKPA()),
-      cmVPressureAdjustTM.ccIsAt(1) && SubVCombustDelegator.mnVBFlamingPL,
-      cmVPressureSamplingTM.ccIsAt(1)
+      cmVPressureSamplingTM.ccAtEdge(),
+      cmVPressureAdjustTM.ccAtEdge() && SubVCombustDelegator.mnVBFlamingPL
+    );
+    cmVExfanDegreeCTRL.ccSetTarget(
+      ZcPLC.sel(!SubVProvisionDelegator.mnVExfanIconPL,
+        0f,
+        ZcPLC.sel(SubVCombustDelegator.mnVBFlamingPL,
+          cmVPressureCTRL.ccGetReverselyTrimmed()*100f,
+          (float)vmVExfanIgnitionPT
+        )
+      )
     );
     cmVExfanDegreeCTRL.ccRun(
-      //[head]:: fix this !!
-      /*
-      !SubVProvisionDelegator.mnVExfanIconPL
-      ? 0f
-      : (SubVCombustDelegator.mnVBFlamingPL
-      ? cmVPressureCTRL.ccGetReverselyTrimmed()*100f
-      : ((float)vmVExfanIgnitionPT)),
       (float)SubAnalogScalarManager.ccRefer().ccGetVExfanPercentage()
-      */
     );
     //-- ve ** to plc
     SubVCombustDelegator.mnVExfanCloseFLG
@@ -177,6 +187,8 @@ public final class SubDegreeControlManager {
 
   @Deprecated public final void tstTagg(){
     VcLocalTagger.ccTag("vt-ctrl", cmVTemperatureCTRL);
+    VcLocalTagger.ccTag("vt-stm", cmVTemperatureSamplingTM);
+    VcLocalTagger.ccTag("vt-stm", cmVTemperatureAdjustTM);
     VcLocalTagger.ccTag("vb-ctrl", cmVBurnerDegreeCTRL);
     VcLocalTagger.ccTag("vp-ctrl", cmVPressureCTRL);
     VcLocalTagger.ccTag("ve-ctrl", cmVExfanDegreeCTRL);

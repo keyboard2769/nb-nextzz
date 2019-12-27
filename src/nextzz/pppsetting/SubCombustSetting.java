@@ -21,6 +21,7 @@ package nextzz.pppsetting;
 
 import kosui.ppplogic.ZcRangedValueModel;
 import kosui.pppswingui.ScConst;
+import kosui.ppputil.VcLocalCoordinator;
 import kosui.ppputil.VcNumericUtility;
 import kosui.ppputil.VcTranslator;
 import nextzz.pppmodel.SubDegreeControlManager;
@@ -216,6 +217,8 @@ public final class SubCombustSetting extends McAbstractSettingPartition{
       int lpFixed = VcNumericUtility.ccParseIntegerString(pxVal);
       lpFixed=ZcRangedValueModel.ccLimitInclude(lpFixed, 1, 199);
       SubDegreeControlManager.ccRefer().vmVDryerTargetMinusKPA=lpFixed;
+      VcLocalCoordinator.ccInvokeLater
+        (SubDegreeControlManager.ccRefer().cmVTemperatureTargetSettling);
     }//++<
   };//***
   
@@ -275,6 +278,7 @@ public final class SubCombustSetting extends McAbstractSettingPartition{
       return "[1 ~ 99]";
     }//++>
     @Override public String ccGetValue() {
+      //[head]:: fill them all!!
       return "<noteyet>";
     }//++>
     @Override public void ccSetValue(String pxVal) {

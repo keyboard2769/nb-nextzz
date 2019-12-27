@@ -49,18 +49,17 @@ but hey, dose it sounds stupid if you read it DOUBLE-ZEUS ??
 
 #### heading
 
-- [ ] $ remake the pid controller
-- [ ] $ remake the case test of pid controller to have target manipulation
+- [ ] $ let PID settings work
 
 #### last
 
-- [x] $ feeder assistance switch is moved to feeder pane
-- [x] $ feeder group ratio button now works based on the the flux setting item
 - [x] $ feeder flux setting representation now has floating point
 - [x] $ reclaimed the setting pane and its content and translate 
 - [x] $ added current slot overwhelming setting
 - [x] $ made the recipe pane work .. forget about the file ex/import stuff
 - [x] $ yet another error message and list handling mechanism is now available
 - [x] $ added a window listener for the closing operation integrity issue
+- [x] $ remake the pid controller
+- [x] $ remake the case test of pid controller to have target manipulation
 
 <hr><!--EOF-->

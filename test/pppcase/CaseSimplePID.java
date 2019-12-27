@@ -19,24 +19,111 @@
 
 package pppcase;
 
+import javax.swing.SwingUtilities;
 import kosui.ppplocalui.EcConst;
+import kosui.ppplocalui.EcElement;
+import kosui.ppplocalui.EiTriggerable;
 import kosui.ppplogic.ZcFlicker;
+import kosui.ppplogic.ZcRangedValueModel;
+import kosui.pppswingui.ScConst;
 import kosui.ppputil.VcLocalCoordinator;
+import kosui.ppputil.VcNumericUtility;
 import kosui.ppputil.VcStringUtility;
 import nextzz.pppsimulate.ZcPIDController;
 import processing.core.PApplet;
+import processing.event.MouseEvent;
 
 public final class CaseSimplePID extends PApplet{
   
+  private static CaseSimplePID self = null;
+  
   private static final int C_VIS_GAP = 8;
   
-  private final ZcFlicker cmSamplingTM = new ZcFlicker(16, 0.5f);
-  private final ZcFlicker cmAdjustingTM = new ZcFlicker(80, 0.5f);
+  private static volatile int mnSamplingFPS = 16;
+  private static volatile int mnAdjustingFPS = 80;
+  
+  public final EcElement cmSamplingTimerPL
+    = new EcElement("[s]:01s");
+  
+  public final EcElement cmAdjustingTimerPL
+    = new EcElement("[a]:05s");
+  
+  private final ZcFlicker cmSamplingTM
+    = new ZcFlicker(mnSamplingFPS);
+  
+  private final ZcFlicker cmAdjustingTM
+    = new ZcFlicker(mnAdjustingFPS);
+  
+  private final ZcRangedValueModel cmSamplingFlash
+    = new ZcRangedValueModel(0, 10);
+  
+  private final  EiTriggerable cmSamplingTimerSetting = new EiTriggerable() {
+    @Override public void ccTrigger() {
+      cmSamplingTimerPL.ccSetText(String.format(
+        "[s]:%2ds", (int)EcConst.ccToSecondCount(mnSamplingFPS)
+      ));
+      cmSamplingTM.ccSetTime(mnSamplingFPS);
+    }//+++
+  };//***
+  
+  private static final Runnable O_SAMP_TM_IPT = new Runnable() {
+    @Override public void run() {
+      String lpEntered = ScConst.ccGetStringByInputBox(
+        "[1 ~ 99] as second for sampling",
+        Integer.toString((int)EcConst.ccToSecondCount(mnSamplingFPS))
+      );
+      int lpFixed = VcNumericUtility.ccParseIntegerString(lpEntered);
+      mnSamplingFPS = EcConst.ccToFrameCount(
+        (float)constrain(lpFixed, 1, 99)
+      );
+      VcLocalCoordinator.ccInvokeLater(self.cmSamplingTimerSetting);
+    }//+++
+  };//***
+  
+  private final ZcRangedValueModel cmAdjustingFlash
+    = new ZcRangedValueModel(0, 10);
+  
+  private final EiTriggerable cmAdjustingTimerSetting = new EiTriggerable() {
+    @Override public void ccTrigger() {
+      cmAdjustingTimerPL.ccSetText(String.format(
+        "[a]:%2ds", (int)EcConst.ccToSecondCount(mnAdjustingFPS)
+      ));
+      cmAdjustingTM.ccSetTime(mnAdjustingFPS);
+    }//+++
+  };//***
+  
+  private static final Runnable O_ADJ_TM_IPT = new Runnable() {
+    @Override public void run() {
+      String lpEntered = ScConst.ccGetStringByInputBox(
+        "[1 ~ 99] as second for adjusting",
+        Integer.toString((int)EcConst.ccToSecondCount(mnAdjustingFPS))
+      );
+      int lpFixed = VcNumericUtility.ccParseIntegerString(lpEntered);
+      mnAdjustingFPS = EcConst.ccToFrameCount(
+        (float)constrain(lpFixed, 1, 99)
+      );
+      VcLocalCoordinator.ccInvokeLater(self.cmAdjustingTimerSetting);
+    }//+++
+  };//***
   
   private final ZcPIDController cmController
     = new ZcPIDController(0f,240f,0.02f,0.33f);
   
-  private boolean cmAdjustFlag,cmSampleFlag;
+  public final EcElement cmModeTargetPL
+    = new EcElement("[t]Target");
+  
+  public final EcElement cmModeDeadPL
+    = new EcElement("[d]Dead");
+  
+  public final EcElement cmModeProportionPL
+    = new EcElement("[p]Prop");
+  
+  public final EcElement cmRunPL
+    = new EcElement("[r]RUN");
+  
+  private boolean cmAdjustingFlag,cmSamplingFlag,cmRunningFlag;
+  
+  private char cmMouseWheelMode = 't';
 
   @Override public void setup(){
     
@@ -44,6 +131,25 @@ public final class CaseSimplePID extends PApplet{
     size(320,240);
     EcConst.ccSetupSketch(this);
     VcLocalCoordinator.ccGetInstance().ccInit(this);
+    self = this;
+    
+    //-- local ui ** range
+    cmModeTargetPL.ccSetLocation(10, 135);
+    cmModeDeadPL.ccSetLocation(cmModeTargetPL, 'b', 5);
+    cmModeProportionPL.ccSetLocation(cmModeDeadPL, 'b', 5);
+    cmModeTargetPL.ccSetSize(cmModeProportionPL);
+    cmModeDeadPL.ccSetSize(cmModeProportionPL);
+    cmModeTargetPL.ccSetIsActivated(true);
+    
+    //-- local ui ** clock
+    cmRunPL.ccSetLocation(cmModeTargetPL, 'r', 5);
+    cmSamplingTimerPL.ccSetLocation(cmRunPL, 'b', 5);
+    cmAdjustingTimerPL.ccSetLocation(cmSamplingTimerPL, 'b', 5);
+    cmSamplingTimerPL.ccSetSize(cmAdjustingTimerPL);
+    cmRunPL.ccSetSize(cmSamplingTimerPL);
+    
+    //--- local ui ** pack
+    VcLocalCoordinator.ccAddAll(this);
     
   }//+++
 
@@ -52,15 +158,25 @@ public final class CaseSimplePID extends PApplet{
     //-- pre
     background(0);
    
-    //-- logic ** clock
+    //-- logic ** clock ** sampling
     cmSamplingTM.ccAct(true);
+    cmSamplingFlash.ccShift(-1);
+    cmSamplingFlag=cmSamplingTM.ccAtEdge() & cmRunningFlag;
+    if(cmSamplingFlag){cmSamplingFlash.ccSetToMaximum();}//..?
+    
+    //-- logic ** clock ** adjusting
     cmAdjustingTM.ccAct(true);
-    cmSampleFlag=cmSamplingTM.ccAtEdge();
-    cmAdjustFlag=cmAdjustingTM.ccAtEdge();
+    cmAdjustingFlash.ccShift(-1);
+    cmAdjustingFlag=cmAdjustingTM.ccAtEdge() & cmRunningFlag;
+    if(cmAdjustingFlag){cmAdjustingFlash.ccSetToMaximum();}//..?
     
     //-- logic ** controller
     final int lpConstCurrent = height - mouseY;
-    cmController.ccRun(lpConstCurrent,cmSampleFlag,cmAdjustFlag);
+    if(cmRunningFlag){
+      cmController.ccRun(lpConstCurrent,cmSamplingFlag,cmAdjustingFlag);
+    }else{
+      cmController.ccRun(lpConstCurrent);
+    }//..?
     
     //-- visualize ** push
     final int lpConstTarget = height
@@ -87,8 +203,7 @@ public final class CaseSimplePID extends PApplet{
     
     //-- visualize ** controller ** proportion zone
     stroke(0xFF33CC33);
-    //[head]:: the fill flash
-    fill(0x66,0x66);
+    fill((0x66+cmAdjustingFlash.ccGetValue()*3)&0xFF,0x66);
     rect(
       160+C_VIS_GAP,lpConstShifted-lpConstProportionZ/2,
       width/2-C_VIS_GAP*2,lpConstProportionZ
@@ -96,7 +211,7 @@ public final class CaseSimplePID extends PApplet{
     
     //-- visualize ** controller ** dead zone
     stroke(0xFF119911);
-    fill(0x66,0x66);
+    fill((0x66+cmSamplingFlash.ccGetValue()*3)&0xFF,0x66);
     rect(
       160+C_VIS_GAP*2,lpConstShifted-lpConstDeadZ/2,
       width/2-C_VIS_GAP*4,lpConstDeadZ
@@ -107,10 +222,13 @@ public final class CaseSimplePID extends PApplet{
     fill(0xFF);
     text(String.format("[pv:%3d]", lpConstCurrent),mouseX,mouseY-20);
     
-    //[head]::now what ??
-    
     //-- visualize ** pop
     noStroke();
+    
+    //-- local ui
+    cmSamplingTimerPL.ccSetIsActivated(EcElement.ccIsKeyPressed('s'));
+    cmAdjustingTimerPL.ccSetIsActivated(EcElement.ccIsKeyPressed('a'));
+    VcLocalCoordinator.ccUpdate();
     
     //-- inspect
     fill(0x55,0xAA);
@@ -121,16 +239,58 @@ public final class CaseSimplePID extends PApplet{
       12, 12
     );
     
-  }//+++
+  }//++~
   
   @Override public void keyPressed(){
-    
-    //[head]:: let config parameter via console
-    
     if(key=='q'){exit();}
     switch(key){
+      case 'a':SwingUtilities.invokeLater(O_ADJ_TM_IPT);break;
+      case 's':SwingUtilities.invokeLater(O_SAMP_TM_IPT);break;
+      case 'r':
+        cmRunningFlag = !cmRunningFlag;
+        cmRunPL.ccSetIsActivated(cmRunningFlag);
+      break;
+      case 't':case 'd':case 'p':
+        cmMouseWheelMode=key;
+        cmModeTargetPL.ccSetIsActivated(cmMouseWheelMode=='t');
+        cmModeDeadPL.ccSetIsActivated(cmMouseWheelMode=='d');
+        cmModeProportionPL.ccSetIsActivated(cmMouseWheelMode=='p');
+      break;
       default:break;
     }//..?
+  }//+++
+
+  @Override public void mouseWheel(MouseEvent me) {
+     int lpCount=-1*(int)(me.getAmount());
+     switch(cmMouseWheelMode){
+       case 't':
+       {
+         float lpTarget = cmController.tstGetTarget();
+         lpTarget += ((float)(lpCount));
+         cmController.ccSetTarget(lpTarget);
+       }
+       break;
+       case 'd':
+       {
+         float lpDead = cmController.tstGetDeadF();
+         lpDead += ((float)(lpCount))/100f;
+         cmController.ccSetDead(constrain(
+           lpDead,
+           0.02f, cmController.tstGetProportionF()
+         ));
+       }
+       break;
+       case 'p':
+       {
+         float lpProp = cmController.tstGetProportionF();
+         lpProp += ((float)(lpCount))/100f;
+         cmController.ccSetProportion(constrain(lpProp,
+           cmController.tstGetDeadF(), 0.98f
+         ));
+       }  
+       break;
+       default:break;
+     }//..?
   }//+++
   
   //===

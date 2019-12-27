@@ -46,6 +46,9 @@ public final class MainFileManager {
   private static final String C_ROOT_MY_MAC_XIII
     = "/Users/Keypad/Yard/_temp/nextZZ";
   
+  private static final String C_ROOT_MY_SONY_XI
+    = "C:\\home\\_develop\\nextzz";
+  
   //=== folder
   
   public static final String
@@ -118,7 +121,8 @@ public final class MainFileManager {
     for(String it:new String[]{
       VcConst.C_V_PWD,
       C_ROOT_MY_MI_XV,
-      C_ROOT_MY_MAC_XIII
+      C_ROOT_MY_MAC_XIII,
+      C_ROOT_MY_SONY_XI
     }){
       File lpSub=new File(it);
       lpValidity|=McConst.ccVerifyFolder(lpSub, lpNeccesity);

@@ -47,6 +47,7 @@ import nextzz.ppplocalui.SubWeigherGroup;
 import nextzz.pppmodel.MainFileManager;
 import nextzz.pppmodel.MainPlantModel;
 import nextzz.pppmodel.MainSpecificator;
+import nextzz.pppmodel.SubDegreeControlManager;
 import nextzz.pppmodel.SubErrorListModel;
 import nextzz.pppmodel.SubWeighControlManager;
 import nextzz.pppsetting.MainSettingManager;
@@ -186,7 +187,7 @@ public class MainSketch extends PApplet{
     }//..?
     
     //-- debug
-    /* 4 */ SubErrorTask.ccRefer().tstTagg();
+    /* 4 */ SubDegreeControlManager.ccRefer().tstTagg();
     VcLocalTagger.ccTag("roll",nf(pbRoller,2));
     VcLocalTagger.ccTag
       ("latency",VcNumericUtility.ccFormatPointTwoFloat(17f-frameRate));
@@ -375,7 +376,7 @@ public class MainSketch extends PApplet{
   }//+++
   
   public static final String ccGetLastLeavingStamp(){
-    return "_1912201632";
+    return "_1912272251";
   }//+++
 
 }//***eof

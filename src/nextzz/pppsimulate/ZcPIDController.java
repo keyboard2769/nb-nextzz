@@ -221,6 +221,14 @@ public class ZcPIDController {
     return cmAnalogOutput;
   }//++>
   
+  public final float ccGetMinusTrimmed(){
+    return cmAnalogOutput>=0f?cmAnalogOutput:0f;
+  }//++>
+  
+  public final float ccGetReverselyTrimmed(){
+    return cmAnalogOutput<=0f?cmAnalogOutput:0f;
+  }//++>
+  
   public final boolean ccGetPositiveOutput(){
     return cmAnalogOutput>0f;
   }//++>
@@ -247,12 +255,20 @@ public class ZcPIDController {
     return cmTarget;
   }//++>
   
+  @Deprecated public final float tstGetDeadF(){
+    return cmDeadFACT;
+  }//++>
+  
   @Deprecated public final float tstGetDeadP(){
     return cmDeadPositive;
   }//++>
   
   @Deprecated public final float tstGetDeadN(){
     return cmDeadNegative;
+  }//++>
+  
+  @Deprecated public final float tstGetProportionF(){
+    return cmProportionFACT;
   }//++>
   
   @Deprecated public final float tstGetProportionP(){

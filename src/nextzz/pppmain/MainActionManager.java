@@ -352,8 +352,8 @@ public final class MainActionManager {
           }//..!
           SubDegreeControlManager.ccRefer().vmVTargetCELC
             = VcNumericUtility.ccParseIntegerString(lpInput)&0xFF;
-          VcLocalCoordinator.ccInvokeLater(SubDegreeControlManager
-            .ccRefer().cmControllerRetargetting);
+          VcLocalCoordinator.ccInvokeLater
+            (SubDegreeControlManager.ccRefer().cmVTemperatureTargetSettling);
         }//+++
       });//***
     }//+++
@@ -365,7 +365,8 @@ public final class MainActionManager {
       SubDegreeControlManager.ccRefer().vmVTargetCELC
         -= SubDegreeControlManager.ccRefer().vmVTargetAdjustWidth;
       SubDegreeControlManager.ccRefer().vmVTargetCELC &= 0xFF;
-      SubDegreeControlManager.ccRefer().cmControllerRetargetting.ccTrigger();
+      VcLocalCoordinator.ccInvokeLater
+        (SubDegreeControlManager.ccRefer().cmVTemperatureTargetSettling);
     }//+++
   };//***
   
@@ -375,7 +376,8 @@ public final class MainActionManager {
       SubDegreeControlManager.ccRefer().vmVTargetCELC
         += SubDegreeControlManager.ccRefer().vmVTargetAdjustWidth;
       SubDegreeControlManager.ccRefer().vmVTargetCELC &= 0xFF;
-      SubDegreeControlManager.ccRefer().cmControllerRetargetting.ccTrigger();
+      VcLocalCoordinator.ccInvokeLater
+        (SubDegreeControlManager.ccRefer().cmVTemperatureTargetSettling);
     }//+++
   };//***
   
