@@ -101,7 +101,7 @@ public final class MainSpecificator {
   public final boolean ccVerify(){
     //[notyet]::
     cmIsVerificated=(false);
-    VcConst.ccPrintln("MainSpecification.%file loading%::not yet");
+    VcConst.ccPrintln(".MainSpecification.ccVerify() % not yet");
     return cmIsVerificated;
   }//+++
   

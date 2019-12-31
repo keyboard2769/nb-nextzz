@@ -25,6 +25,7 @@ import kosui.ppputil.VcLocalCoordinator;
 import kosui.ppputil.VcNumericUtility;
 import kosui.ppputil.VcTranslator;
 import nextzz.pppmodel.SubDegreeControlManager;
+import processing.core.PApplet;
 
 public final class SubCombustSetting extends McAbstractSettingPartition{
   
@@ -46,15 +47,16 @@ public final class SubCombustSetting extends McAbstractSettingPartition{
       return VcTranslator.tr("_dscp_entrance_base_celcius");
     }//++>
     @Override public String ccGetLimitationInfo() {
-      return "[1 ~ 999]";
+      return "[10 ~ 400]";
     }//++>
     @Override public String ccGetValue() {
-      return "<noteyet>";
+      return Integer.toString(SubDegreeControlManager
+        .ccRefer().vmVEntranceBaseCELC);
     }//++>
     @Override public void ccSetValue(String pxVal) {
       int lpFixed = VcNumericUtility.ccParseIntegerString(pxVal);
-      lpFixed=ZcRangedValueModel.ccLimitInclude(lpFixed, 1, 999);
-      System.out.println(".ccSetValue()::not_yet:"+Integer.toString(lpFixed));
+      lpFixed=ZcRangedValueModel.ccLimitInclude(lpFixed, 10, 400);
+      SubDegreeControlManager.ccRefer().vmVEntranceBaseCELC = lpFixed;
     }//++<
   };//***
   
@@ -145,12 +147,12 @@ public final class SubCombustSetting extends McAbstractSettingPartition{
     }//++>
     @Override public String ccGetValue() {
       return Integer.toString
-        (SubDegreeControlManager.ccRefer().vmVTargetAdjustWidth);
+        (SubDegreeControlManager.ccRefer().vmVTargetStepCELC);
     }//++>
     @Override public void ccSetValue(String pxVal) {
       int lpFixed = VcNumericUtility.ccParseIntegerString(pxVal);
       lpFixed=ZcRangedValueModel.ccLimitInclude(lpFixed, 1, 20);
-      SubDegreeControlManager.ccRefer().vmVTargetAdjustWidth=lpFixed;
+      SubDegreeControlManager.ccRefer().vmVTargetStepCELC=lpFixed;
     }//++<
   };//***
   
@@ -184,15 +186,16 @@ public final class SubCombustSetting extends McAbstractSettingPartition{
       return VcTranslator.tr("_dscp_v_burner_limit_degree");
     }//++>
     @Override public String ccGetLimitationInfo() {
-      return "[1 ~ 99]";
+      return "[10 ~ 100]";
     }//++>
     @Override public String ccGetValue() {
-      return "<noteyet>";
+      return Integer.toString(SubDegreeControlManager
+        .ccRefer().vmVBurnerDegreeLimitPT);
     }//++>
     @Override public void ccSetValue(String pxVal) {
       int lpFixed = VcNumericUtility.ccParseIntegerString(pxVal);
-      lpFixed=ZcRangedValueModel.ccLimitInclude(lpFixed, 1, 99);
-      System.out.println(".ccSetValue()::not_yet:"+Integer.toString(lpFixed));
+      lpFixed=ZcRangedValueModel.ccLimitInclude(lpFixed, 10, 100);
+      SubDegreeControlManager.ccRefer().vmVBurnerDegreeLimitPT=lpFixed;
     }//++<
   };//***
   
@@ -218,7 +221,7 @@ public final class SubCombustSetting extends McAbstractSettingPartition{
       lpFixed=ZcRangedValueModel.ccLimitInclude(lpFixed, 1, 199);
       SubDegreeControlManager.ccRefer().vmVDryerTargetMinusKPA=lpFixed;
       VcLocalCoordinator.ccInvokeLater
-        (SubDegreeControlManager.ccRefer().cmVTemperatureTargetSettling);
+        (SubDegreeControlManager.ccRefer().cmVPressureTargetSettling);
     }//++<
   };//***
   
@@ -252,15 +255,16 @@ public final class SubCombustSetting extends McAbstractSettingPartition{
       return VcTranslator.tr("_dscp__v_exfan_limit_degree");
     }//++>
     @Override public String ccGetLimitationInfo() {
-      return "[1 ~ 99]";
+      return "[10 ~ 100]";
     }//++>
     @Override public String ccGetValue() {
-      return "<noteyet>";
+      return Integer.toString(SubDegreeControlManager
+        .ccRefer().vmVExfanDegreeLimitPT);
     }//++>
     @Override public void ccSetValue(String pxVal) {
       int lpFixed = VcNumericUtility.ccParseIntegerString(pxVal);
-      lpFixed=ZcRangedValueModel.ccLimitInclude(lpFixed, 1, 99);
-      System.out.println(".ccSetValue()::not_yet:"+Integer.toString(lpFixed));
+      lpFixed=ZcRangedValueModel.ccLimitInclude(lpFixed, 10, 100);
+      SubDegreeControlManager.ccRefer().vmVExfanDegreeLimitPT = lpFixed;
     }//++<
   };//***
   
@@ -278,13 +282,17 @@ public final class SubCombustSetting extends McAbstractSettingPartition{
       return "[1 ~ 99]";
     }//++>
     @Override public String ccGetValue() {
-      //[head]:: fill them all!!
-      return "<noteyet>";
+      int lpTimed = (int)(SubDegreeControlManager
+        .ccRefer().vmVCombustCTRLProportionFACT*100f);
+      return Integer.toString(lpTimed);
     }//++>
     @Override public void ccSetValue(String pxVal) {
       int lpFixed = VcNumericUtility.ccParseIntegerString(pxVal);
       lpFixed=ZcRangedValueModel.ccLimitInclude(lpFixed, 1, 99);
-      System.out.println(".ccSetValue()::not_yet:"+Integer.toString(lpFixed));
+      SubDegreeControlManager.ccRefer().vmVCombustCTRLProportionFACT=
+        ((float)lpFixed)/100f;
+      VcLocalCoordinator.ccInvokeLater(SubDegreeControlManager
+        .ccRefer().cmVCombustCTRLApplying);
     }//++<
   };//***
   
@@ -300,12 +308,17 @@ public final class SubCombustSetting extends McAbstractSettingPartition{
       return "[1 ~ 99]";
     }//++>
     @Override public String ccGetValue() {
-      return "<noteyet>";
+      int lpTimed = (int)(SubDegreeControlManager
+        .ccRefer().vmVCombustCTRLDeadFACT*100f);
+      return Integer.toString(lpTimed);
     }//++>
     @Override public void ccSetValue(String pxVal) {
       int lpFixed = VcNumericUtility.ccParseIntegerString(pxVal);
       lpFixed=ZcRangedValueModel.ccLimitInclude(lpFixed, 1, 99);
-      System.out.println(".ccSetValue()::not_yet:"+Integer.toString(lpFixed));
+      SubDegreeControlManager.ccRefer().vmVCombustCTRLDeadFACT=
+        ((float)lpFixed)/100f;
+      VcLocalCoordinator.ccInvokeLater(SubDegreeControlManager
+        .ccRefer().cmVCombustCTRLApplying);
     }//++<
   };//***
   
@@ -321,12 +334,15 @@ public final class SubCombustSetting extends McAbstractSettingPartition{
       return "[0.5 ~ 3600.0]";
     }//++>
     @Override public String ccGetValue() {
-      return "<noteyet>";
+      return VcNumericUtility.ccFormatPointTwoFloat(SubDegreeControlManager
+        .ccRefer().vmVCombustCTRLSamplingSEC);
     }//++>
     @Override public void ccSetValue(String pxVal) {
-      int lpFixed = VcNumericUtility.ccParseIntegerString(pxVal);
-      lpFixed=ZcRangedValueModel.ccLimitInclude(lpFixed, 960, 962);
-      System.out.println(".ccSetValue()::not_yet:"+Integer.toString(lpFixed));
+      float lpFixed = VcNumericUtility.ccParseFloatString(pxVal);
+      lpFixed = PApplet.constrain(lpFixed, 0.5f, 3600f);
+      SubDegreeControlManager.ccRefer().vmVCombustCTRLSamplingSEC=lpFixed;
+      VcLocalCoordinator.ccInvokeLater(SubDegreeControlManager
+        .ccRefer().cmVCombustCTRLApplying);
     }//++<
   };//***
   
@@ -342,12 +358,15 @@ public final class SubCombustSetting extends McAbstractSettingPartition{
       return "[0.5 ~ 3600.0]";
     }//++>
     @Override public String ccGetValue() {
-      return "<noteyet>";
+      return VcNumericUtility.ccFormatPointTwoFloat(SubDegreeControlManager
+        .ccRefer().vmVCombustCTRLAdjustingSEC);
     }//++>
     @Override public void ccSetValue(String pxVal) {
-      int lpFixed = VcNumericUtility.ccParseIntegerString(pxVal);
-      lpFixed=ZcRangedValueModel.ccLimitInclude(lpFixed, 960, 962);
-      System.out.println(".ccSetValue()::not_yet:"+Integer.toString(lpFixed));
+      float lpFixed = VcNumericUtility.ccParseFloatString(pxVal);
+      lpFixed = PApplet.constrain(lpFixed, 0.5f, 3600f);
+      SubDegreeControlManager.ccRefer().vmVCombustCTRLAdjustingSEC=lpFixed;
+      VcLocalCoordinator.ccInvokeLater(SubDegreeControlManager
+        .ccRefer().cmVCombustCTRLApplying);
     }//++<
   };//***
   

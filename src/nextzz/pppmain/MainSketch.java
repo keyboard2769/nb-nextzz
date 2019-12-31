@@ -49,10 +49,8 @@ import nextzz.pppmodel.MainPlantModel;
 import nextzz.pppmodel.MainSpecificator;
 import nextzz.pppmodel.SubDegreeControlManager;
 import nextzz.pppmodel.SubErrorListModel;
-import nextzz.pppmodel.SubWeighControlManager;
 import nextzz.pppsetting.MainSettingManager;
 import nextzz.pppsimulate.MainSimulator;
-import nextzz.pppsimulate.SubErrorTask;
 import nextzz.pppswingui.ConstSwingUI;
 import processing.core.PApplet;
 import processing.core.PFont;
@@ -82,7 +80,7 @@ public class MainSketch extends PApplet{
   @Override public void setup(){
     
     size(pbWindowW,pbWindowH,JAVA2D);
-    /* 4 */VcConst.ccPrintln("MainSketch.setup()::begin");
+    /* 4 */VcConst.ccPrintln(".setup() $ begin");
     
     //-- pre
     EcConst.ccSetupSketch(this);
@@ -107,7 +105,6 @@ public class MainSketch extends PApplet{
     MainPlantModel.ccRefer().ccInit();
     MainSettingManager.ccRefer().ccLoadFromFile(null);
     SubErrorListModel.ccRefer().ccInit();
-    SubWeighControlManager.ccRefer().ccInit();
     
     //-- simulator
     MainSimulator.ccInit();
@@ -153,7 +150,7 @@ public class MainSketch extends PApplet{
     
     //-- post
     frame.setIconImage(ConstSwingUI.O_WINDOW_ICON);
-    /* 4 */VcConst.ccPrintln("MainSketch.setup()::over");
+    /* 4 */VcConst.ccPrintln(".setup() $ over");
     
   }//+++
   
@@ -294,16 +291,16 @@ public class MainSketch extends PApplet{
   public static void main(String[] args) {
     
     //-- check in
-    VcConst.ccPrintln(".main()::with", VcConst.C_V_OS);
-    VcConst.ccPrintln(".main()::at", VcConst.C_V_PWD);
+    /* 4 */VcConst.ccSetDoseLog(false);
+    VcConst.ccPrintln(".main() $ with", VcConst.C_V_OS);
+    VcConst.ccPrintln(".main() $ at", VcConst.C_V_PWD);
     /* ? */VcConst.ccPrintln
-      (".main()::kosui -b", EcConst.ccGetLastLeavingStamp());
+      (".main() $ kosui -b", EcConst.ccGetLastLeavingStamp());
     /* ? */VcConst.ccPrintln
-      (".main()::nzz -b", MainSketch.ccGetLastLeavingStamp());
+      (".main() $ nzz -b", MainSketch.ccGetLastLeavingStamp());
     
     //-- translation
     VcTranslator.ccGetInstance().ccInit();
-    /* 4 *///VcConst.ccSetDoseLog(true);
     boolean lpIsCSVxOK = VcTranslator.ccGetInstance().ccParseCSV
       (MainSketch.class.getResourceAsStream("/nextzz/pppresource/tr.csv"));
     boolean lpIsXMLxOK = VcTranslator.ccGetInstance().ccParseXML
@@ -337,7 +334,7 @@ public class MainSketch extends PApplet{
     }//..?
     EcRect lpPotentialWindow = new EcRect(pbWindowW, pbWindowH);
     if(ScConst.ccHasSubMonior()){
-      /* 4 */VcConst.ccPrintln(".main()::detected sub monitor");
+      /* 4 */VcConst.ccPrintln(".main() $ detected sub monitor");
       Rectangle lpSubBound = ScConst.ccGetSubMoniorBound();
       int lpPotentialInitX=0;
       int lpPotentialInitY=0;
@@ -369,14 +366,14 @@ public class MainSketch extends PApplet{
     }//..?
     
     //-- run sketch
-    /* 4 */VcConst.ccLogln(".main()::commited-w", pbWindowW);
-    /* 4 */VcConst.ccLogln(".main()::commited-h", pbWindowH);
+    /* 4 */VcConst.ccLogln(".main() $ commited-w", pbWindowW);
+    /* 4 */VcConst.ccLogln(".main() $ commited-h", pbWindowH);
     PApplet.main(MainSketch.class.getCanonicalName());
     
   }//+++
   
   public static final String ccGetLastLeavingStamp(){
-    return "_1912272251";
+    return "_1912312351";
   }//+++
 
 }//***eof

@@ -63,7 +63,7 @@ public final class MainPlantModel {
   public static final int C_THERMO_VALID_MAX = 16;
   
   //-- combust
-  public static final float C_PRESSURE_CONTOL_OFFSET = 500f;
+  public static final float C_PRESSURE_CONTOL_OFFSET = 400f;
   
   //-- feeder
   //   .. for any UI part grouping vergin or recycle feeder abstractly
@@ -115,6 +115,8 @@ public final class MainPlantModel {
     //-- manager
     SubAnalogScalarManager.ccRefer().ccInit();
     SubRecipeManager.ccRefer().ccInit();
+    SubDegreeControlManager.ccRefer().ccInit();
+    SubWeighControlManager.ccRefer().ccInit();
     
   }//++!
   

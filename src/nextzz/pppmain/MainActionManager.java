@@ -363,7 +363,7 @@ public final class MainActionManager {
     = new EiTriggerable() {
     @Override public void ccTrigger() {
       SubDegreeControlManager.ccRefer().vmVTargetCELC
-        -= SubDegreeControlManager.ccRefer().vmVTargetAdjustWidth;
+        -= SubDegreeControlManager.ccRefer().vmVTargetStepCELC;
       SubDegreeControlManager.ccRefer().vmVTargetCELC &= 0xFF;
       VcLocalCoordinator.ccInvokeLater
         (SubDegreeControlManager.ccRefer().cmVTemperatureTargetSettling);
@@ -374,7 +374,7 @@ public final class MainActionManager {
     = new EiTriggerable() {
     @Override public void ccTrigger() {
       SubDegreeControlManager.ccRefer().vmVTargetCELC
-        += SubDegreeControlManager.ccRefer().vmVTargetAdjustWidth;
+        += SubDegreeControlManager.ccRefer().vmVTargetStepCELC;
       SubDegreeControlManager.ccRefer().vmVTargetCELC &= 0xFF;
       VcLocalCoordinator.ccInvokeLater
         (SubDegreeControlManager.ccRefer().cmVTemperatureTargetSettling);

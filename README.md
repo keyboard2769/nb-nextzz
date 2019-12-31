@@ -42,24 +42,24 @@ but hey, dose it sounds stupid if you read it DOUBLE-ZEUS ??
 - [ ] $ dos
 - [ ] $ uno
 - [ ] $ general import and export functionality
-- [ ] $ current slot overwhelming coloring
 - [ ] $ a linear pane with blocks of 'zero' and 'span' button
+- [ ] $ a working manual weighing simulation
 - [ ] $ the gate simulation and the case of cut point handling
-- [ ] $ fill v provision and combust motor load factor
 
 #### heading
 
-- [ ] $ let PID settings work
+- [ ] $ current slot overwhelming coloring
+- [ ] $ fill v provision and combust motor load factor
 
 #### last
 
-- [x] $ feeder flux setting representation now has floating point
 - [x] $ reclaimed the setting pane and its content and translate 
 - [x] $ added current slot overwhelming setting
 - [x] $ made the recipe pane work .. forget about the file ex/import stuff
 - [x] $ yet another error message and list handling mechanism is now available
 - [x] $ added a window listener for the closing operation integrity issue
-- [x] $ remake the pid controller
-- [x] $ remake the case test of pid controller to have target manipulation
+- [x] $ remade the pid controller
+- [x] $ remade the case test of pid controller to have target manipulation
+- [x] $ combust settings may works now more than likely
 
 <hr><!--EOF-->

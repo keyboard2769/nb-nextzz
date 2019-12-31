@@ -95,10 +95,10 @@ public final class SubSettingPane implements SiTabbable{
       if((lpListIndex<0)
        ||(lpTableIndex<0)
       ){return;}//..?
-      /* 4 */VcConst.ccLogln(
-        VcStringUtility.ccPackupPairedTag("l", lpListIndex),
-        VcStringUtility.ccPackupPairedTag("t", lpTableIndex)
-      );
+      /* 4 */VcConst.ccLogln(String.format(
+        ".cmTablePressListener $ [l:%3d][t:%3d]",
+        lpListIndex,lpTableIndex
+      ));
       MiSettingItem lpItem = MainSettingManager.ccRefer()
         .ccGetSelectedItem(lpListIndex, lpTableIndex);
       if(lpItem==null){return;}//..?

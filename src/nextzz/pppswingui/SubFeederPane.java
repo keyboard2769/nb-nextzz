@@ -142,7 +142,6 @@ public final class SubFeederPane implements SiTabbable{
   private final ChangeListener cmFeederSpeedChangeListener
     = new ChangeListener() {
     @Override public void stateChanged(ChangeEvent ce) {
-      /* 4 */VcConst.ccLogln(".cmFeederSpeedChangeListener.stateChanged() >>>");
       for(
         int i=MainPlantModel.C_VF_UI_VALID_HEAD;
             i<=MainPlantModel.C_VF_UI_VALID_MAX;

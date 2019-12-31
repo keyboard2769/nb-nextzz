@@ -25,6 +25,8 @@ import java.util.List;
 import kosui.ppplogic.ZcDelayor;
 import kosui.ppplogic.ZcHookFlicker;
 import kosui.ppplogic.ZcOnDelayTimer;
+import kosui.ppplogic.ZcPLC;
+import kosui.ppplogic.ZcPulser;
 import kosui.ppplogic.ZcTimer;
 import kosui.ppplogic.ZiTask;
 import kosui.ppputil.VcLocalTagger;
@@ -52,6 +54,9 @@ public final class SubFeederTask implements ZiTask{
   
   private final ZcChainController cmVFeederChainCTRL
     = new ZcChainController(2, C_CONTROLLER_UPBOUND);
+  
+  private final ZcPulser cmVFeederAutoStartPLS
+    = new ZcPulser();
   
   public final List<ZcMotor> dcLesVFeeder
     = Collections.unmodifiableList(Arrays.asList(
@@ -157,11 +162,16 @@ public final class SubFeederTask implements ZiTask{
     if(!lpVFeederIL){
       cmVFeederChainCTRL.ccForceStop();
     }//..?
-    cmVFeederChainCTRL.ccSetConfirmedAt(
-      C_CONTROLLER_UPBOUND,lpVFeederIL
+    cmVFeederChainCTRL.ccSetConfirmedAt(C_CONTROLLER_UPBOUND,lpVFeederIL);
+    boolean lpVFeederStartFlag = ZcPLC.or(
+      SubFeederDelegator.mnVFChainMSSW,
+      ZcPLC.and(
+        cmVFeederChainCTRL.ccIsAllStopped(),
+        cmVFeederAutoStartPLS.ccUpPulse(SubFeederDelegator
+          .mnVEntranceTemperatureOverbaseFLG)
+      )
     );
-    boolean lpVFeederStartFlag
-      = SubFeederDelegator.mnVFChainMSSW;
+    
     cmVFeederChainCTRL.ccSetRun(lpVFeederStartFlag);
     cmVFeederChainCTRL.ccRun();
     

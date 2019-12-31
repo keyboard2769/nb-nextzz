@@ -22,6 +22,8 @@ package nextzz.pppdelegate;
 import nextzz.ppplocalui.SubOperativeGroup;
 import nextzz.ppplocalui.SubVFeederGroup;
 import nextzz.pppmodel.MainPlantModel;
+import nextzz.pppmodel.SubAnalogScalarManager;
+import nextzz.pppmodel.SubDegreeControlManager;
 
 public class SubFeederDelegator {
   
@@ -29,6 +31,7 @@ public class SubFeederDelegator {
     
     //-- vf ** chain
     mnVFChainMSSW,mnVFChainMSPL,
+    mnVEntranceTemperatureOverbaseFLG,
     
     //-- vf ** force
     mnVFForceSWnI,mnVFForceSWnII,mnVFForceSWnIII,mnVFForceSWnIV,
@@ -72,6 +75,12 @@ public class SubFeederDelegator {
       .get(5).ccIsMousePressed();
     SubOperativeGroup.ccRefer().cmLesMotorSW
       .get(5).ccSetIsActivated(mnVFChainMSPL);
+    mnVEntranceTemperatureOverbaseFLG = 
+      SubAnalogScalarManager.ccRefer()
+        .cmDesThermoCelcius.ccGet(SubAnalogScalarManager.C_I_THII_ENTRANCE)
+      >
+      SubDegreeControlManager.ccRefer()
+        .vmVEntranceBaseCELC;
     
     //-- v feeder ** operative
     mnVFChainMSSW=SubOperativeGroup.ccRefer().cmLesMotorSW

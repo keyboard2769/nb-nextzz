@@ -219,7 +219,6 @@ public class SubLinearSetting extends McAbstractSettingPartition{
     cmListOfItem.add(cmASTareWeight);
     
     //-- scalas
-    //VcConst.ccPrintln("id", Arrays.toString(SubAnalogScalarManager.ccRefer().ccGetScalaKeyList()));
     for(Object it : SubAnalogScalarManager.ccRefer().ccGetScalaKeyList()){
       int lpKey = VcNumericUtility.ccInteger(it);
       cmListOfItem.add(new McScalaADOffsetItem(lpKey));
@@ -227,8 +226,6 @@ public class SubLinearSetting extends McAbstractSettingPartition{
       cmListOfItem.add(new McScalaRealOffsetItem(lpKey));
       cmListOfItem.add(new McScalaRealSpanItem(lpKey));
     }//..~
-    
-    System.out.println("nextzz.pppsetting.SubLinearSetting.ccInit()");
     
   }//++!
   

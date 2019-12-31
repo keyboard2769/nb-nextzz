@@ -124,7 +124,6 @@ public final class ZcProtectRelay{
     if(cmDrum.ccGetOutputWith(C_S_II_FSTART,C_STAGE_MAX)){
       cmDoesStep&=pxInput;
       if(cmDrum.ccGetOutputWith(C_S_II_FSTART,C_STAGE_MAX) && !pxInput){
-        System.out.println("i did it!!");
         ccForceLock();
       }//..?
     }//..?
