@@ -265,24 +265,24 @@ public final class SubVProvisionTask implements ZiTask{
   @Override public void ccSimulate(){
 
     //-- misc ** motor
-    dcVCompressor.ccSimulate(0.76f);
-    dcMixer.ccSimulate(0.65f);
-    dcVExFan.ccSimulate(SubVCombusTask.ccRefer()
+    dcVCompressor.ccRun(0.76f);
+    dcMixer.ccRun(0.65f);
+    dcVExFan.ccRun(SubVCombusTask.ccRefer()
       .dcVExfanDegree.ccGetProportion()/2f+0.44f);
-    dcVBCompressor.ccSimulate(0.45f);
-    dcCoarseDustScrew.ccSimulate(0.67f);
-    dcAsSupplyPump.ccSimulate(0.45f);
+    dcVBCompressor.ccRun(0.45f);
+    dcCoarseDustScrew.ccRun(0.67f);
+    dcAsSupplyPump.ccRun(0.45f);
 
     //-- ag chain
-    dcScreen.ccSimulate(0.66f);
-    dcHotElevator.ccSimulate(0.65f);
-    dcDryer.ccSimulate(0.64f);
-    dcInclinedBelcon.ccSimulate(0.63f);
-    dcHorizontalBelcon.ccSimulate(0.62f);
+    dcScreen.ccRun(0.66f);
+    dcHotElevator.ccRun(0.65f);
+    dcDryer.ccRun(0.64f);
+    dcInclinedBelcon.ccRun(0.63f);
+    dcHorizontalBelcon.ccRun(0.62f);
 
     //-- fr chain
-    dcFillerScrew.ccSimulate(0.66f);
-    dcFillerElevator.ccSimulate(0.64f);
+    dcFillerScrew.ccRun(0.66f);
+    dcFillerElevator.ccRun(0.64f);
     dcFillerSilo.ccCharge(127);
     ZcContainer.ccTransfer(
       dcFillerSilo, dcFillerBin,
@@ -298,9 +298,9 @@ public final class SubVProvisionTask implements ZiTask{
       }//..?
     }//..?
     if(dcDustSiloDischargeGateMV){dcDustSilo.ccDischarge(64);}
-    dcDustSiloElevator.ccSimulate(0.45f);
-    dcDustExtractionScrew.ccSimulate(0.47f);
-    dcBagDustScrew.ccSimulate(0.55f);
+    dcDustSiloElevator.ccRun(0.45f);
+    dcDustExtractionScrew.ccRun(0.47f);
+    dcBagDustScrew.ccRun(0.55f);
     ZcContainer.ccTransfer(
       dcBagHopper, dcDustSilo,
       dcDustSiloElevator.ccIsContacted()

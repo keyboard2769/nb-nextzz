@@ -19,7 +19,6 @@
 
 package nextzz.pppsetting;
 
-import kosui.ppplogic.ZcRangedValueModel;
 import kosui.ppputil.VcNumericUtility;
 import kosui.ppputil.VcTranslator;
 import nextzz.pppmodel.MainPlantModel;
@@ -54,8 +53,9 @@ public final class SubCTSlotSetting extends McAbstractSettingPartition{
     }//+++
     @Override public String ccGetValue() {
       return VcNumericUtility
-        .ccFormatFloatForOneAfter(SubAnalogScalarManager.ccRefer()
-          .ccGetCTSlotREALSpan(cmIndex));
+        .ccFormatFloatForOneAfter(
+          SubAnalogScalarManager.ccRefer().ccGetCTSlotREALSpan(cmIndex)
+        );
     }//+++
     @Override public void ccSetValue(String pxVal) {
       float lpFixed = VcNumericUtility.ccParseFloatString(pxVal);
@@ -82,8 +82,21 @@ public final class SubCTSlotSetting extends McAbstractSettingPartition{
       return "[1 ~ 999]";
     }//+++
     @Override public String ccGetValue() {
-      //[head]::
-      return "<not_yet>";
+      int lpRaw;
+      if(cmIndex>=0 && cmIndex<16){//..[todo]::how do we constantize this ??
+        lpRaw = MainPlantModel.ccRefer().cmDesCTSlotAlarmPartIxAMPR
+          .ccGet(cmIndex);
+      }else if(cmIndex>=16 && cmIndex<32){//..[todo]::how do we constantize this ??
+        lpRaw = MainPlantModel.ccRefer().cmDesCTSlotAlarmPartIxAMPR
+          .ccGet(cmIndex-16);//..[todo]::how do we constantize this ??
+      }else{
+        System.err.println(
+          ".McCTSlotAlarmItem.ccSetValue() $ invalid index"
+        );
+        return "<x>";
+      }//..?
+      return VcNumericUtility
+        .ccFormatFloatForOneAfter(lpRaw);
     }//+++
     @Override public void ccSetValue(String pxVal) {
       float lpFixed = VcNumericUtility.ccParseFloatString(pxVal);
@@ -94,7 +107,7 @@ public final class SubCTSlotSetting extends McAbstractSettingPartition{
           .ccSet(cmIndex, lpCasted);
       }else if(cmIndex>=16 && cmIndex<32){//..[todo]::how do we constantize this ??
         MainPlantModel.ccRefer().cmDesCTSlotAlarmPartIxAMPR
-          .ccSet(cmIndex-16, lpCasted);
+          .ccSet(cmIndex-16, lpCasted);//..[todo]::how do we constantize this ??
       }else{
         System.err.println(
           ".McCTSlotAlarmItem.ccSetValue() $ invalid index"

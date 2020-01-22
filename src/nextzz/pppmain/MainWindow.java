@@ -76,8 +76,15 @@ public final class MainWindow {
     
       //-- current
       for(int i=0;i<MainPlantModel.C_CTSLOT_CHANNEL_MAX;i++){
+        
+        //-- current ** prepare
         int lpValue=SubAnalogScalarManager.ccRefer().ccGetCTSlotAMPR(i);
         int lpSpan=SubAnalogScalarManager.ccRefer().ccGetCTSlotREALSpan(i);
+        int lpAlarm=(i<16)?
+          (MainPlantModel.ccRefer().cmDesCTSlotAlarmPartIxAMPR.ccGet(i   ))
+         :(MainPlantModel.ccRefer().cmDesCTSlotAlarmPartIxAMPR.ccGet(i-16));
+        
+        //-- current ** bind
         SubMonitorPane.ccRefer().cmLesCurrentCTSlot.get(i)
           .ccSetFloatValueForOneAfter(
             lpValue<10?0f:
@@ -85,11 +92,9 @@ public final class MainWindow {
           );
         SubMonitorPane.ccRefer().cmLesCurrentCTSlot.get(i)
           .ccSetPercentage(VcNumericUtility.ccProportion(lpValue, lpSpan));
-        //[head]::
-        if(i%2==1){
-          SubMonitorPane.ccRefer().cmLesCurrentCTSlot.get(i)
-            .ccSetAlert(true);//.[later]::
-        }//..?
+        SubMonitorPane.ccRefer().cmLesCurrentCTSlot.get(i)
+          .ccSetAlert(lpValue > lpAlarm);
+        
       }//..~
       
       //-- weigh state

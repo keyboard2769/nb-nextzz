@@ -202,8 +202,8 @@ public final class SubVCombusTask implements ZiTask{
     dcVExfanDegree.ccSimulate();
     
     //-- motor
-    dcVOilPump.ccSimulate(dcVBunerDegree.ccGetProportion()/4f+0.35f);
-    dcVBurnerFan.ccSimulate(
+    dcVOilPump.ccRun(dcVBunerDegree.ccGetProportion()/4f+0.35f);
+    dcVBurnerFan.ccRun(
       dcVBunerDegree.ccGetProportion()/(dcVOilPump.ccIsOnFire()?2f:4f)
        + 0.45f
     );
@@ -252,7 +252,6 @@ public final class SubVCombusTask implements ZiTask{
     if(SubFeederTask.ccRefer().ccIsSandBinNotEmpty()){
       ZcReal.ccTransfer(simDryerChuteCELC, simSandBinCELC,10);
     }//..?
-    
     
     //-- temperature ** other
     //[todo]:: go find a better home

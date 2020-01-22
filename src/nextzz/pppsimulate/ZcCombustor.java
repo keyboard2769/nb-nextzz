@@ -33,9 +33,9 @@ public class ZcCombustor extends ZcMotor{
   
   //===
 
-  @Override public void ccSimulate(float pxLoad){
+  @Override public void ccRun(float pxLoad){
     ccSetLoad(/* 6 */pxLoad);
-    ccSimulate();
+    ccRun();
     cmIsOnFire=(ccIsContacted()||cmPilot)&&(cmIsOnFire||cmIgniter);
   }//+++
   

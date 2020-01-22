@@ -123,6 +123,8 @@ public final class MainPlantModel {
     SubDegreeControlManager.ccRefer().ccInit();
     SubWeighControlManager.ccRefer().ccInit();
     
+    //-- value
+    
   }//++!
   
   public final void ccLogic(){

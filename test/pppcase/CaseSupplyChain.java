@@ -129,11 +129,11 @@ public class CaseSupplyChain extends PApplet{
       (dcTheController.ccGetFlasher(cmRoller.ccIsAbove(7)));
     
     //--
-    dcMotorI.ccSimulate(0.5f);
-    dcMotorII.ccSimulate(0.5f);
-    dcMotorIII.ccSimulate(0.5f);
-    dcMotorIV.ccSimulate(0.5f);
-    dcMotorV.ccSimulate(0.5f);
+    dcMotorI.ccRun(0.5f);
+    dcMotorII.ccRun(0.5f);
+    dcMotorIII.ccRun(0.5f);
+    dcMotorIV.ccRun(0.5f);
+    dcMotorV.ccRun(0.5f);
     
     //--
     cmAlartIxPL.ccSetIsActivated(dcAlartI);

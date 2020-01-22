@@ -240,7 +240,7 @@ public final class SubFeederTask implements ZiTask{
       i<=MainSpecificator.ccRefer().vmVFeederAmount;
       i++
     ){
-      dcLesVFeeder.get(i).ccSimulate(0.64f);
+      dcLesVFeeder.get(i).ccRun(0.64f);
       simLesVFeederSensorTM.get(i).ccAct(dcLesVFeeder.get(i).ccIsContacted()
         && (SubFeederDelegator.ccGetVFeederSpeed(i)>512)
       );

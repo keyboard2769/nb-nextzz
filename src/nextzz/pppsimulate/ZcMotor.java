@@ -39,12 +39,12 @@ public class ZcMotor extends ZcRangedValueModel{
   
   //===
   
-  /* 1 */ public void ccSimulate(float pxLoad){
+  /* 1 */ public void ccRun(float pxLoad){
     ccSetLoad(pxLoad);
-    ccSimulate();
+    ZcMotor.this.ccRun();
   }//++~
   
-  public final void ccSimulate(){
+  public final void ccRun(){
     
     //--
     cmContactDelay.ccAct(cmMC);

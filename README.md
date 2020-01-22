@@ -48,12 +48,15 @@ but hey, dose it sounds stupid if you read it DOUBLE-ZEUS ??
 
 #### heading
 
-- [ ] $ current slot overwhelming coloring
-- [ ] $ fill v provision and combust motor load factor
+- [ ] $ fill all possible motor load factor : 
+        .. SubWeighingTask   : headed
+        .. SubFeederTask     : await
+        .. SubVProvisionTask : await
+        .. SubVCombusTask    : await
+        .. SubErrorTask      : await
 
 #### last
 
-- [x] $ reclaimed the setting pane and its content and translate 
 - [x] $ added current slot overwhelming setting
 - [x] $ made the recipe pane work .. forget about the file ex/import stuff
 - [x] $ yet another error message and list handling mechanism is now available
@@ -61,5 +64,6 @@ but hey, dose it sounds stupid if you read it DOUBLE-ZEUS ??
 - [x] $ remade the pid controller
 - [x] $ remade the case test of pid controller to have target manipulation
 - [x] $ combust settings may works now more than likely
+- [x] $ current slot overwhelming coloring
 
 <hr><!--EOF-->

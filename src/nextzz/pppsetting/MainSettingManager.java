@@ -25,6 +25,7 @@ import java.util.List;
 import javax.swing.ListModel;
 import javax.swing.event.ListDataListener;
 import kosui.ppplogic.ZcRangedModel;
+import nextzz.pppmodel.MainPlantModel;
 import nextzz.pppmodel.SubAnalogScalarManager;
 
 public final class MainSettingManager implements ListModel<String>{
@@ -57,10 +58,18 @@ public final class MainSettingManager implements ListModel<String>{
   }//++!
   
   public final void ccLoadFromFile(File pxFile){
+    
+    //-- check in
+    System.out.println("blahblahblah $ all setting init work start from here");
+    System.out.println("..supposedly");
     if(pxFile==null){
-    /* 7 */  System.err
-        .println("MainSettingManager.ccLoadFromFile()::not yet.");
+      /* 7 */ System.out.println(
+        ".MainSettingManager.ccLoadFromFile() $ not yet."
+        //[todo]::also fix the block logic
+      );
     }//..?
+    
+    //-- current
     /* 7 */SubAnalogScalarManager.ccRefer().ccSetCTSlotREALSpan(0,  750);
     /* 7 */SubAnalogScalarManager.ccRefer().ccSetCTSlotREALSpan(1, 3000);
     /* 7 */SubAnalogScalarManager.ccRefer().ccSetCTSlotREALSpan(2, 2600);
@@ -80,7 +89,16 @@ public final class MainSettingManager implements ListModel<String>{
     /* 7 */SubAnalogScalarManager.ccRefer().ccSetCTSlotREALSpan(13,  380);
     /* 7 */SubAnalogScalarManager.ccRefer().ccSetCTSlotREALSpan(14,  450);
     /* 7 */SubAnalogScalarManager.ccRefer().ccSetCTSlotREALSpan(15,  110);
-    /* 7 *///return true;
+    //--
+    for(int i=0;i<16;i++){//..[todo]:: how do we constantize this ??
+      /* 7 */MainPlantModel.ccRefer().cmDesCTSlotAlarmPartIxAMPR
+        .ccSet(i, SubAnalogScalarManager.ccRefer().ccGetCTSlotREALSpan(i)*3/4);
+    }//..?
+    
+    //-- timer
+    //-- combust
+    //-- other or other what ever
+    
   }//++!
   
   //===
