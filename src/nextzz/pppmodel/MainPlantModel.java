@@ -103,10 +103,15 @@ public final class MainPlantModel {
     = new ZcRangedValueModel(0, 16*15);
   
   //-- zero
-  
   public volatile boolean vmAGZeroAdjustSelector =false;
   public volatile boolean vmFRZeroAdjustSelector =false;
   public volatile boolean vmASZeroAdjustSelector =false;
+  
+  //-- ct slot alarm
+  public final McPipedChannel cmDesCTSlotAlarmPartIxAMPR
+    = new McPipedChannel();
+  public final McPipedChannel cmDesCTSlotAlarmPartIIxAMPR
+    = new McPipedChannel();
   
   //===
   

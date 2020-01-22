@@ -196,8 +196,9 @@ public final class SubMonitorPane implements SiTabbable{
     if(MainSpecificator.ccRefer().ccNeedsExtendsCurrentSlot())
       {lpLeftWing.add(VcTranslator.tr("_rs_ct"),lpSlotGroupII);}
     for(ScGauge it : cmLesCurrentCTSlot){
-       it.ccSetText(VcTranslator.tr(it.ccGetKey()));
-       it.ccSetPercentage(4);//..arbitrary
+      it.ccSetText(VcTranslator.tr(it.ccGetKey()));
+      it.ccSetPercentage(4);//..arbitrary
+      it.ccSetAlertColor(ScConst.C_DIM_RED);
     }//..~
     
     //-- table config

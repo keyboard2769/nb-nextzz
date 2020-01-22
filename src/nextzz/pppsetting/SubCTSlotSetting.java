@@ -22,6 +22,7 @@ package nextzz.pppsetting;
 import kosui.ppplogic.ZcRangedValueModel;
 import kosui.ppputil.VcNumericUtility;
 import kosui.ppputil.VcTranslator;
+import nextzz.pppmodel.MainPlantModel;
 import nextzz.pppmodel.SubAnalogScalarManager;
 import processing.core.PApplet;
 
@@ -81,13 +82,24 @@ public final class SubCTSlotSetting extends McAbstractSettingPartition{
       return "[1 ~ 999]";
     }//+++
     @Override public String ccGetValue() {
+      //[head]::
       return "<not_yet>";
     }//+++
     @Override public void ccSetValue(String pxVal) {
-      int lpFixed = VcNumericUtility.ccParseIntegerString(pxVal);
-      lpFixed=ZcRangedValueModel.ccLimitInclude(lpFixed, 0, 400);
-      System.out.println("McCTSlotAlarmItem.ccSetValue()::not_yet:"
-        + Integer.toString(lpFixed));
+      float lpFixed = VcNumericUtility.ccParseFloatString(pxVal);
+      lpFixed=PApplet.constrain(lpFixed, 1f, 999f);
+      int lpCasted = VcNumericUtility.ccInteger(lpFixed,10f);
+      if(cmIndex>=0 && cmIndex<16){//..[todo]::how do we constantize this ??
+        MainPlantModel.ccRefer().cmDesCTSlotAlarmPartIxAMPR
+          .ccSet(cmIndex, lpCasted);
+      }else if(cmIndex>=16 && cmIndex<32){//..[todo]::how do we constantize this ??
+        MainPlantModel.ccRefer().cmDesCTSlotAlarmPartIxAMPR
+          .ccSet(cmIndex-16, lpCasted);
+      }else{
+        System.err.println(
+          ".McCTSlotAlarmItem.ccSetValue() $ invalid index"
+        );
+      }//..?
     }//+++
   }//***
   
@@ -95,7 +107,7 @@ public final class SubCTSlotSetting extends McAbstractSettingPartition{
   
   @Override public void ccInit() {
         
-    for(int i=0;i<32;i++){
+    for(int i=0;i<32;i++){//..[todo]::how do we constant this ??
       cmListOfItem.add(new McCTSlotSpanItem(i));
       cmListOfItem.add(new McCTSlotAlarmItem(i));
     }//..~

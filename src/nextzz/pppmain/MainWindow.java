@@ -85,6 +85,11 @@ public final class MainWindow {
           );
         SubMonitorPane.ccRefer().cmLesCurrentCTSlot.get(i)
           .ccSetPercentage(VcNumericUtility.ccProportion(lpValue, lpSpan));
+        //[head]::
+        if(i%2==1){
+          SubMonitorPane.ccRefer().cmLesCurrentCTSlot.get(i)
+            .ccSetAlert(true);//.[later]::
+        }//..?
       }//..~
       
       //-- weigh state
