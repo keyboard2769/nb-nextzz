@@ -25,14 +25,16 @@ import kosui.ppputil.VcStringUtility;
 public class ZcGate extends ZcRangedValueModel{
   
   private boolean dcOpen,dcClose;
-  private boolean dcIsOpened,dcIsClosed;
-  private boolean dcIsAtOpened,dcIsAtMiddle,dcIsAtClosed;
+  private boolean dcOpened,dcClosed;
+  private boolean dcAtOpened,dcAtMiddle,dcAtClosed;
+  private boolean cmEnpowered;
   private int cmSpeed,cmAutoSwitchRange,cmLimitSwitchRange;
   
   public ZcGate(int pxSpeed, int pxAuto, int pxLimit) {
     super(400, 3200);
     dcOpen=false;
     dcClose=false;
+    cmEnpowered=true;
     ccSetSpeed(pxSpeed);
     ccSetupRange(pxAuto, pxLimit);
   }//..!
@@ -47,107 +49,112 @@ public class ZcGate extends ZcRangedValueModel{
   
   //===
   
-  public final void ccSimulate(boolean pxEnpowered){
+  /* 1 */ public void ccRun(boolean pxEnpowered){
+    ccSetEnpowered(pxEnpowered);
+    ccRun();
+  }//++~
+  
+  public final void ccRun(){
     if(dcOpen&&dcClose){
       ccSetupAction(false, false);
       return;
     }//..?
-    if(pxEnpowered){
+    if(cmEnpowered){
       if(dcClose){ccShift(-1*cmSpeed);}
-      if(dcOpen){ccShift(    cmSpeed);}
+      if(dcOpen){ ccShift(   cmSpeed);}
     }//..?
     //--
-    dcIsOpened = ccIsAbove(cmMax-cmLimitSwitchRange);
-    dcIsClosed     = ccIsBelow(cmMin+cmLimitSwitchRange);
+    dcOpened = ccIsAbove(cmMax-cmLimitSwitchRange);
+    dcClosed = ccIsBelow(cmMin+cmLimitSwitchRange);
     //--
-    dcIsAtOpened = ccIsWith(
+    dcAtOpened = ccIsWith(
       cmMax-cmLimitSwitchRange-cmAutoSwitchRange,
       cmMax-cmLimitSwitchRange+cmAutoSwitchRange
     );
-    dcIsAtMiddle = ccIsWith(
+    dcAtMiddle = ccIsWith(
       (cmMax+cmMin)/2-cmAutoSwitchRange,
       (cmMax+cmMin)/2+cmAutoSwitchRange
     );
-    dcIsAtClosed = ccIsWith(
+    dcAtClosed = ccIsWith(
       cmMin+cmLimitSwitchRange-cmAutoSwitchRange,
       cmMin+cmLimitSwitchRange+cmAutoSwitchRange
     );
-  }//+++
-  
-  public final void ccSimulate(){
-    ccSimulate(true);
-  }//+++
+  }//++~
   
   //===
   
+  public final void ccSetEnpowered(boolean pxEnpowered){
+    cmEnpowered = pxEnpowered;
+  }//++<
+  
   public final void ccSetSpeed(int pxSpeed){
     cmSpeed=pxSpeed&0xFF;
-  }//+++
+  }//++<
   
   public final void ccSetAutoSwitchRange(int pxRange){
     cmAutoSwitchRange=pxRange&0xFF;
-  }//+++
+  }//++<
   
   public final void ccSetLimitSwitchRange(int pxRange){
     cmLimitSwitchRange=pxRange&0xFF;
-  }//+++
+  }//++<
   
   public final void ccSetupRange(int pxAuto, int pxLimit){
     ccSetAutoSwitchRange(pxAuto);
     ccSetLimitSwitchRange(pxLimit);
-  }//+++
+  }//++<
   
   public final void ccSetOpening(boolean pxStatus){
     dcOpen=pxStatus;
-  }//+++
+  }//++<
   
   public final void ccSetClosing(boolean pxStatus){
     dcClose=pxStatus;
-  }//+++
+  }//++<
   
   public final void ccSetupAction(boolean pxClose, boolean pxOpen){
     if(pxOpen&&pxClose){return;}
     ccSetClosing(pxClose);
     ccSetOpening(pxOpen);
-  }//+++
+  }//++<
   
   public final void ccSetupAction(boolean pxOpen){
     ccSetupAction(!pxOpen, pxOpen);
-  }//+++
+  }//++<
   
   //===
   
   public final boolean ccIsFullOpened(){
-    return dcIsOpened;
-  }//+++
+    return dcOpened;
+  }//++>
   
   public final boolean ccIsClosed(){
-    return dcIsClosed;
-  }//+++
+    return dcClosed;
+  }//++>
   
   public final boolean ccIsAtFull(){
-    return dcIsAtOpened;
-  }//+++
+    return dcAtOpened;
+  }//++>
   
   public final boolean ccIsAtMiddle(){
-    return dcIsAtMiddle;
-  }//+++
+    return dcAtMiddle;
+  }//++>
   
   public final boolean ccIsAtClosed(){
-    return dcIsAtClosed;
-  }//+++
+    return dcAtClosed;
+  }//++>
   
   public final boolean ccIsOpening(){
     return dcOpen;
-  }//+++
+  }//++>
   
   public final boolean ccIsClosing(){
     return dcClose;
-  }//+++
+  }//++>
   
   public final boolean ccIsMissing(){
-    return !dcIsOpened && !dcIsClosed;
-  }//+++
+    return !dcOpened && !dcClosed;
+  }//++>
   
   //===
 
@@ -159,8 +166,8 @@ public class ZcGate extends ZcRangedValueModel{
     lpRes.append(VcStringUtility.ccPackupBoolTag("DN", dcClose));
     lpRes.append(VcStringUtility.ccPackupBoolTag("UP", dcOpen));
     lpRes.append('|');
-    lpRes.append(VcStringUtility.ccPackupBoolTag("CL", dcIsClosed));
-    lpRes.append(VcStringUtility.ccPackupBoolTag("OL", dcIsOpened));
+    lpRes.append(VcStringUtility.ccPackupBoolTag("CL", dcClosed));
+    lpRes.append(VcStringUtility.ccPackupBoolTag("OL", dcOpened));
     lpRes.append('|');
     lpRes.append(VcStringUtility.ccPackupPairedTag("v", cmValue));
     lpRes.append(VcStringUtility.ccPackupPairedTag("SPD", cmSpeed));

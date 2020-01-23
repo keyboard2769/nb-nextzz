@@ -49,9 +49,9 @@ but hey, dose it sounds stupid if you read it DOUBLE-ZEUS ??
 #### heading
 
 - [ ] $ fill all possible motor load factor : 
-        .. SubWeighingTask   : headed
-        .. SubFeederTask     : await
-        .. SubVProvisionTask : await
+        .. SubWeighingTask   : nofound
+        .. SubFeederTask     : nofound
+        .. SubVProvisionTask : heaing
         .. SubVCombusTask    : await
         .. SubErrorTask      : await
 

@@ -198,8 +198,8 @@ public final class SubVCombusTask implements ZiTask{
   @Override public void ccSimulate() {
     
     //-- damper
-    dcVBunerDegree.ccSimulate();
-    dcVExfanDegree.ccSimulate();
+    dcVBunerDegree.ccRun();
+    dcVExfanDegree.ccRun();
     
     //-- motor
     dcVOilPump.ccRun(dcVBunerDegree.ccGetProportion()/4f+0.35f);

@@ -49,7 +49,7 @@ public class TestSketch extends PApplet{
     //--
     
     ttt.ccSetupAction(mouseX>160);
-    ttt.ccSimulate();
+    ttt.ccRun();
     
     VcLocalTagger.ccTag("ad", ttt.ccGetValue());
     VcLocalTagger.ccTag("real", ttt.ccGetProportion());

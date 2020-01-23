@@ -225,7 +225,7 @@ public final class SubFeederTask implements ZiTask{
     //-- cold aggregate sensor
     simVColdAggregateSensorTM.ccAct(
       simVFeederCutout
-      && SubVProvisionTask.ccRefer().dcHorizontalBelcon.ccIsContacted()
+        && SubVProvisionTask.ccRefer().dcHorizontalBelcon.ccIsContacted()
     );
     dcCAS=simVColdAggregateSensorTM.ccIsUp()
       && SubVProvisionTask.ccRefer().dcInclinedBelcon.ccIsContacted();
@@ -241,21 +241,25 @@ public final class SubFeederTask implements ZiTask{
       i++
     ){
       dcLesVFeeder.get(i).ccRun(0.64f);
-      simLesVFeederSensorTM.get(i).ccAct(dcLesVFeeder.get(i).ccIsContacted()
-        && (SubFeederDelegator.ccGetVFeederSpeed(i)>512)
+      simLesVFeederSensorTM.get(i).ccAct(
+        dcLesVFeeder.get(i).ccIsContacted()
+          && (SubFeederDelegator.ccGetVFeederSpeed(i)>512)
       );
       dcDesVFSG[i]=!simLesVFeederSensorTM.get(i).ccIsUp();
       simVFeederCutout|=simLesVFeederSensorTM.get(i).ccIsUp();
       if(dcCAS && lpHotbinInjectCondition){
-        dcLesHotBin.get(i).ccCharge(SubFeederDelegator.ccGetVFeederSpeed(i)/120,
+        dcLesHotBin.get(i).ccCharge(
+          SubFeederDelegator.ccGetVFeederSpeed(i)/120,
           simLesVFeederSensorTM.get(i).ccIsUp()
         );
         if(i>=6){
-          dcOverSizedBin.ccCharge(SubFeederDelegator.ccGetVFeederSpeed(i)/200,
+          dcOverSizedBin.ccCharge(
+            SubFeederDelegator.ccGetVFeederSpeed(i)/200,
             dcLesHotBin.get(i).ccIsOverflowing()
           );
         }else{
-          dcOverFlowedBin.ccCharge(SubFeederDelegator.ccGetVFeederSpeed(i)/300,
+          dcOverFlowedBin.ccCharge(
+            SubFeederDelegator.ccGetVFeederSpeed(i)/300,
             dcLesHotBin.get(i).ccIsOverflowing()
           );
         }//..?

@@ -219,7 +219,7 @@ public class SubWeighingTask implements ZiTask{
     );
     
     //-- mixer gate
-    dcMixerGate.ccSimulate
+    dcMixerGate.ccRun
       (SubVProvisionTask.ccRefer().dcVCompressor.ccIsContacted());
     
   }//+++
