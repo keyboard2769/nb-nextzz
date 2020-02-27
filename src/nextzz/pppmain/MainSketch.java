@@ -175,6 +175,7 @@ public class MainSketch extends PApplet{
     //-- local ui
     MainPlantModel.ccRefer().ccBind();
     MainDelegator.ccBind();
+    VcLocalCoordinator.ccUpdateQueue();
     VcLocalCoordinator.ccUpdateActive();
     VcLocalConsole.ccUpdate();
     
@@ -373,7 +374,7 @@ public class MainSketch extends PApplet{
   }//+++
   
   public static final String ccGetLastLeavingStamp(){
-    return "_2001231000";
+    return "_2002271128";
   }//+++
 
 }//***eof
