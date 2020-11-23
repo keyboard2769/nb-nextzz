@@ -66,7 +66,7 @@ public final class MetaTextGenerator {
       );
       ScConst.ccSetFileChooserButtonText("Export");
       File lpOutputFile = ScConst.ccGetFileByFileChooser('f');
-      boolean lpVerify = McConst.ccVerifyFileForSaving(lpOutputFile);
+      boolean lpVerify = McConst.ccVerifyFileForSaving(lpOutputFile)==0;
       if(!lpVerify){ssExit(-1);}
       VcConst.ccPrintln("accepted", lpOutputFile.getAbsolutePath());
       

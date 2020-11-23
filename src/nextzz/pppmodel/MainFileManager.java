@@ -125,7 +125,7 @@ public final class MainFileManager {
       C_ROOT_MY_SONY_XI
     }){
       File lpSub=new File(it);
-      lpValidity|=McConst.ccVerifyFolder(lpSub, lpNeccesity);
+      lpValidity|=McConst.ccVerifyFolder(lpSub, lpNeccesity)==0;
       if(lpValidity){
         lpRes=it;
         break;
@@ -159,7 +159,7 @@ public final class MainFileManager {
       C_TRUETYPE_FONT_MY_SONY_XI
     }){
       cmFontFile=new File(it);
-      lpOK=McConst.ccVerifyFileForLoading(cmFontFile);
+      lpOK=McConst.ccVerifyFileForLoading(cmFontFile)==0;
       if(lpOK){break;}
     }//..~
     

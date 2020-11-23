@@ -442,7 +442,7 @@ public final class MainActionManager {
           .ccGetWeighExportDirectory().getAbsolutePath());
       File lpFile = ScConst.ccGetFileByFileChooser('f');
       boolean lpPreCkeck
-        = McConst.ccVerifyFileForLoading(lpFile, "csv",999999l);
+        = McConst.ccVerifyFileForLoading(lpFile, "csv",999999l)==0;
       if(!lpPreCkeck){
         ScConst.ccErrorBox("_m_invalid_file");
         return;
@@ -450,7 +450,7 @@ public final class MainActionManager {
       
       //-- read in
       List<String> lpDesLine = new LinkedList<String>();
-      boolean lpImport = McConst.ccImportTextFile(lpFile, lpDesLine);
+      boolean lpImport = McConst.ccImportTextFile(lpFile, lpDesLine)==0;
       if(!lpImport){
         System.err.println("ccImportTextToList::failed");
         return;
