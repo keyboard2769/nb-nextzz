@@ -31,6 +31,7 @@ import kosui.ppplocalui.EcElement;
 import kosui.ppplocalui.EcValueBox;
 import kosui.ppplocalui.EiTriggerable;
 import kosui.pppmodel.McConst;
+import kosui.pppmodel.McFactory;
 import kosui.pppswingui.ScConst;
 import kosui.ppputil.VcConst;
 import kosui.ppputil.VcLocalConsole;
@@ -449,15 +450,9 @@ public final class MainActionManager {
       }//..?
       
       //-- read in
-      List<String> lpDesLine = new LinkedList<String>();
-      boolean lpImport = McConst.ccImportTextFile(lpFile, lpDesLine)==0;
-      if(!lpImport){
-        System.err.println("ccImportTextToList::failed");
-        return;
-      }//..?
-      if(lpDesLine.isEmpty()){
+      List<String> lpDesLine = McFactory.ccLoadTextFromFile(lpFile);
+      if(!VcConst.ccIsValidList(lpDesLine, 1)){
         ScConst.ccErrorBox("_m_unknown_error");
-        return;
       }//..?
       
       //-- work
