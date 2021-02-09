@@ -121,12 +121,11 @@ public final class SubFeederPane implements SiTabbable{
         String lpCurrentValue = Integer
           .toString(VcNumericUtility.ccInteger(lpCurrentSpinner.getValue()));
         String lpNewValueString = ScConst.ccGetStringByInputBox(
+          cmPane,
           VcTranslator.tr("_feeder_speed"),
-          lpCurrentValue,
-          cmPane
+          lpCurrentValue
         );
         if(!VcConst.ccIsValidString(lpNewValueString)){return;}
-        if(lpNewValueString.equals(ScConst.C_M_CANCEL)){return;}
         int lpNewValue=VcNumericUtility
           .ccParseIntegerString(lpNewValueString);
         lpCurrentSpinner.setValue(

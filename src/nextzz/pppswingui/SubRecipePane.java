@@ -142,19 +142,21 @@ public final class SubRecipePane implements SiTabbable{
       Object lpSource =  me.getSource();
       if(lpSource.equals(cmIdentityBox)){
         String lpInput = ScConst.ccGetStringByInputBox(
+          cmPane,
           VcTranslator.tr("_mpipt_rid"),
-          cmIdentityBox.getText(),cmPane
+          cmIdentityBox.getText()
         );
-        if(lpInput.equals(ScConst.C_M_CANCEL)){return;}
+        if(lpInput==null){return;}
         int lpID = VcNumericUtility.ccParseIntegerString(lpInput);
         SubRecipeManager.ccRefer().ccSetPanedRecipeID(lpID);
       }else
       if(lpSource.equals(cmNameBox)){
         String lpInput = ScConst.ccGetStringByInputBox(
+          cmPane,
           VcTranslator.tr("_mpipt_rname"),
-          cmNameBox.getText(),cmPane
+          cmNameBox.getText()
         );
-        if(lpInput.equals(ScConst.C_M_CANCEL)){return;}
+        if(lpInput==null){return;}
         if(!VcConst.ccIsValidString(lpInput)){return;}
         SubRecipeManager.ccRefer().ccSetPanedRecipeName(lpInput);
       }else
@@ -164,10 +166,11 @@ public final class SubRecipePane implements SiTabbable{
         if(lpName==null){return;}
         if(lpName.length()!=2){return;}
         String lpInput = ScConst.ccGetStringByInputBox(
+          cmPane,
           VcTranslator.tr("_mpipt_"+lpName),
-          lpTarget.getText(),cmPane
+          lpTarget.getText()
         );
-        if(lpInput.equals(ScConst.C_M_CANCEL)){return;}
+        if(lpInput==null){return;}
         float lpParsed = VcNumericUtility.ccParseFloatString(lpInput);
         SubRecipeManager.ccRefer()
           .ccSetPanePercentage(lpName.charAt(0),lpName.charAt(1),lpParsed);

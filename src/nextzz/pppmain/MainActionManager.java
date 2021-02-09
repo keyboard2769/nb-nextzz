@@ -23,7 +23,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.io.File;
-import java.util.LinkedList;
 import java.util.List;
 import javax.swing.SwingUtilities;
 import kosui.ppplocalui.EcButton;
@@ -33,6 +32,7 @@ import kosui.ppplocalui.EiTriggerable;
 import kosui.pppmodel.McConst;
 import kosui.pppmodel.McFactory;
 import kosui.pppswingui.ScConst;
+import kosui.ppputil.VcArrayUtility;
 import kosui.ppputil.VcConst;
 import kosui.ppputil.VcLocalConsole;
 import kosui.ppputil.VcLocalCoordinator;
@@ -423,12 +423,11 @@ public final class MainActionManager {
         return;
       }//..?
       String lpInput = ScConst.ccGetStringByInputBox(
+        SubSettingPane.ccRefer().cmPane,
         lpItem.ccGetLimitationInfo(),
-        lpItem.ccGetValue(),
-        SubSettingPane.ccRefer().cmPane
+        lpItem.ccGetValue()
       );
       if(!VcConst.ccIsValidString(lpInput)){return;}
-      if(lpInput.equals(ScConst.C_M_CANCEL)){return;}
       lpItem.ccSetValue(lpInput);
       SubSettingPane.ccRefer().cmTable.ccRefresh();
     }//+++
@@ -451,7 +450,7 @@ public final class MainActionManager {
       
       //-- read in
       List<String> lpDesLine = McFactory.ccLoadTextFromFile(lpFile);
-      if(!VcConst.ccIsValidList(lpDesLine, 1)){
+      if(!VcArrayUtility.ccIsValidList(lpDesLine, 1)){
         ScConst.ccErrorBox("_m_unknown_error");
       }//..?
       

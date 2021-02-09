@@ -322,8 +322,8 @@ public final class SubRecipeManager extends McTableAdapter{
     boolean lpDoOverWrite = false;
     if(lpExist){
       lpDoOverWrite=ScConst.ccYesOrNoBox(
-        VcTranslator.tr("_m_ask_for_overwrite_with_exsistance"),
-        SubRecipePane.ccRefer().cmPane
+        SubRecipePane.ccRefer().cmPane,
+        VcTranslator.tr("_m_ask_for_overwrite_with_exsistance")
       );
     }else{
       lpDoOverWrite=true;
@@ -357,16 +357,16 @@ public final class SubRecipeManager extends McTableAdapter{
     int lpNewID = lpID + 1;
     if(lpNewID > C_CAPACITY_SIZE){
       ScConst.ccErrorBox(
-        VcTranslator.tr("_m_out_of_space"),
-        SubRecipePane.ccRefer().cmPane
+        SubRecipePane.ccRefer().cmPane,
+        VcTranslator.tr("_m_out_of_space")
       );
     }//..?
     boolean lpExist = cmMapOfRecipe.containsKey(lpNewID);
     boolean lpDoOverWrite;
     if(lpExist){
       lpDoOverWrite=ScConst.ccYesOrNoBox(
-        VcTranslator.tr("_m_ask_for_overwrite_with_exsistance"),
-        SubRecipePane.ccRefer().cmPane
+        SubRecipePane.ccRefer().cmPane,
+        VcTranslator.tr("_m_ask_for_overwrite_with_exsistance")
       );
     }else{
       lpDoOverWrite=true;
@@ -394,8 +394,8 @@ public final class SubRecipeManager extends McTableAdapter{
     //-- limitation
     if(cmMapOfRecipe.size()<=1){
       ScConst.ccErrorBox(
-        VcTranslator.tr("_m_emptiness_not_allowed"),
-        SubRecipePane.ccRefer().cmPane
+        SubRecipePane.ccRefer().cmPane,
+        VcTranslator.tr("_m_emptiness_not_allowed")
       );
       return;
     }//..?
