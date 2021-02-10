@@ -60,8 +60,8 @@ public class CaseProtectRelay extends PApplet{
     size(320,240);
     frame.setTitle(CaseProtectRelay.class.getSimpleName());
     EcConst.ccSetupSketch(this);
-    VcLocalCoordinator.ccGetInstance().ccInit(this);
-    VcLocalTagger.ccGetInstance().ccInit(this, 9);
+    VcLocalCoordinator.ccInit(this);
+    VcLocalTagger.ccInit(this, 9);
     
     //--
     cmReadyPL.ccSetLocation(5, 170);

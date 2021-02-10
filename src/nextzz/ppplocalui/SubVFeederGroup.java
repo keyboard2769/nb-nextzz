@@ -156,7 +156,7 @@ public final class SubVFeederGroup implements EiGroup{
     lpPotentialX = MainSketch.ccGetPrefferedW()
       - lpPotentialW
       - ConstLocalUI.C_SIDE_MARGIN;
-    lpPotentialY = VcLocalConsole.ccGetInstance().ccGetBarHeight()
+    lpPotentialY = VcLocalConsole.ccGetBarHeight()
       + ConstLocalUI.C_SIDE_MARGIN;
     
     //-- pane

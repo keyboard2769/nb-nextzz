@@ -130,7 +130,7 @@ public final class CaseSimplePID extends PApplet{
     //-- pre
     size(320,240);
     EcConst.ccSetupSketch(this);
-    VcLocalCoordinator.ccGetInstance().ccInit(this);
+    VcLocalCoordinator.ccInit(this);
     self = this;
     
     //-- local ui ** range

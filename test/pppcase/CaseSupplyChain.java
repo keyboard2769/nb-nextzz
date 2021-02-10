@@ -66,8 +66,8 @@ public class CaseSupplyChain extends PApplet{
     
     //--
     EcConst.ccSetupSketch(this);
-    VcLocalTagger.ccGetInstance().ccInit(this);
-    VcLocalCoordinator.ccGetInstance().ccInit(this);
+    VcLocalTagger.ccInit(this);
+    VcLocalCoordinator.ccInit(this);
     EcElement.ccSetTextAdjust(0, -2);
     
     //--

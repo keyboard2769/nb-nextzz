@@ -177,7 +177,7 @@ public final class SubOperativeGroup implements EiGroup{
     cmMotorSwitchPane.ccSetLocation(
       MainSketch.ccGetPrefferedW()-lpPotentialW-ConstLocalUI.C_SIDE_MARGIN,
       MainSketch.ccGetPrefferedH()-lpPotentialH//-ConstLocalUI.C_SIDE_MARGIN
-        - VcLocalConsole.ccGetInstance().ccGetBarHeight()
+        - VcLocalConsole.ccGetBarHeight()
     );
     cmLesMotorSW.get(1).ccSetLocation(cmMotorSwitchPane,
       ConstLocalUI.C_INPANE_MARGIN_S,

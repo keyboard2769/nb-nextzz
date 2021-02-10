@@ -73,8 +73,8 @@ public class CaseHeatFlow extends PApplet{
     size(320,240);
     VcConst.ccSetDoseLog(true);
     EcConst.ccSetupSketch(this);
-    VcLocalCoordinator.ccGetInstance().ccInit(this);
-    VcLocalTagger.ccGetInstance().ccInit(this);
+    VcLocalCoordinator.ccInit(this);
+    VcLocalTagger.ccInit(this);
     
     //-- relocation
     cmCoolingDamperPL.ccSetLocation(160, 5);

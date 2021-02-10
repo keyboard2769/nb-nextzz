@@ -104,13 +104,13 @@ public final class MainActionManager {
  
   public final EiTriggerable cmInputFocusCleaning = new EiTriggerable() {
     @Override public void ccTrigger(){
-      VcLocalCoordinator.ccGetInstance().ccClearCurrentInputFocus();
+      VcLocalCoordinator.ccClearCurrentInputFocus();
     }//+++
   };//***
   
   public final EiTriggerable cmInputtableClicking = new EiTriggerable() {
     @Override public void ccTrigger(){
-      VcLocalCoordinator.ccGetInstance().ccSetCurrentInputFocus();
+      VcLocalCoordinator.ccSetCurrentInputFocus();
     }//+++
   };//***
   
@@ -118,7 +118,7 @@ public final class MainActionManager {
     @Override public void ccTrigger(){
       VcLocalCoordinator.ccInvokeLater(cmBackgroundRefreshing);
       if(VcLocalCoordinator.ccHasInputtableFocused()){
-        VcLocalCoordinator.ccGetInstance().ccToNextInputIndex();
+        VcLocalCoordinator.ccToNextInputIndex();
       }//..?
     }//+++
   };//***
@@ -126,7 +126,7 @@ public final class MainActionManager {
   public final EiTriggerable cmNumericInputting = new EiTriggerable() {
     @Override public void ccTrigger(){
       EcElement lpSource
-       = VcLocalCoordinator.ccGetInstance().ccGetCurrentFocusedBox();
+       = VcLocalCoordinator.ccGetCurrentFocusedBox();
       if(lpSource instanceof EcValueBox){
         int lpInput = VcNumericUtility
           .ccParseIntegerString(VcLocalConsole.ccGetLastAccepted());
@@ -481,17 +481,16 @@ public final class MainActionManager {
       }//..~
       SwingUtilities.invokeLater(SubMonitorPane.ccRefer()
         .cmWeighResultTableRefreshingness);
-      VcLocalConsole.ccGetInstance()
-        .ccSetMessage("[echo]dmwsr::generated");
+      VcLocalConsole.ccSetMessage("[echo]dmwsr::generated");
     }//+++
   };//***
   
   public final EiTriggerable cmDebugging = new EiTriggerable() {
     @Override public void ccTrigger(){
       MainSketch.pbDebugMode=!MainSketch.pbDebugMode;
-      VcLocalTagger.ccGetInstance().ccSetIsVisible(MainSketch.pbDebugMode);
+      VcLocalTagger.ccSetIsVisible(MainSketch.pbDebugMode);
       VcConst.ccSetDoseLog(MainSketch.pbDebugMode);
-      VcLocalConsole.ccGetInstance().ccSetMessage("[echo]debug:"
+      VcLocalConsole.ccSetMessage("[echo]debug:"
         + (MainSketch.pbDebugMode?"on":"off")
       );
     }//+++
@@ -500,8 +499,7 @@ public final class MainActionManager {
   public final EiTriggerable cmMotorThmalResetting = new EiTriggerable() {
     @Override public void ccTrigger(){
       MainSimulator.tstResetAllMotorTrip();
-      VcLocalConsole.ccGetInstance()
-        .ccSetMessage("[echo]mrst::resetting motor thermal status");
+      VcLocalConsole.ccSetMessage("[echo]mrst::resetting motor thermal status");
     }//+++
   };//***
   
@@ -510,8 +508,7 @@ public final class MainActionManager {
       int lpErrorIndex = VcNumericUtility
         .ccParseIntegerString(VcLocalConsole.ccGetLastAccepted(1));
       SubErrorTask.ccRefer().ccSetMessageBit(lpErrorIndex, true);
-      VcLocalConsole.ccGetInstance()
-        .ccSetMessage("[echo]terr:"+lpErrorIndex);
+      VcLocalConsole.ccSetMessage("[echo]terr:"+lpErrorIndex);
     }//+++
   };//***
   

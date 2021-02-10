@@ -52,7 +52,7 @@ public class CaseFeederChain extends PApplet{
     //--
     size(320,240);
     EcConst.ccSetupSketch(this);
-    VcLocalCoordinator.ccGetInstance().ccInit(this);
+    VcLocalCoordinator.ccInit(this);
     
     //--
     for(int i=0;i<10;i++){
@@ -79,7 +79,7 @@ public class CaseFeederChain extends PApplet{
     VcLocalCoordinator.ccAddElement(cmRunPL);
     
     //--
-    VcLocalTagger.ccGetInstance().ccInit(this);
+    VcLocalTagger.ccInit(this);
   
   }//+++
 

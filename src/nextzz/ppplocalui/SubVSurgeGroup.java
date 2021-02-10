@@ -128,7 +128,7 @@ public final class SubVSurgeGroup implements EiGroup{
     lpPotentialX
       = SubWeigherGroup.ccRefer().cmPlateFR.ccGetX();
     lpPotentialY
-      = VcLocalConsole.ccGetInstance().ccGetBarHeight()
+      = VcLocalConsole.ccGetBarHeight()
         + ConstLocalUI.C_SIDE_MARGIN;
     lpPotentialW
       = SubWeigherGroup.ccRefer().cmPlateAS.ccEndX()

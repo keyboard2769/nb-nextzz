@@ -46,8 +46,8 @@ public class CaseContainer extends PApplet{
   @Override public void setup() {
     size(320,240);
     EcConst.ccSetupSketch(this);
-    VcLocalCoordinator.ccGetInstance().ccInit(this);
-    VcLocalTagger.ccGetInstance().ccInit(this, 9);
+    VcLocalCoordinator.ccInit(this);
+    VcLocalTagger.ccInit(this, 9);
     EcRect lpG = new EcRect(5,120,27, 27);
     cmChargeKEY.ccSetLocation(   lpG.ccGridX(2), lpG.ccGridY(1));
     cmResetKEY.ccSetLocation(    lpG.ccGridX(1), lpG.ccGridY(2));

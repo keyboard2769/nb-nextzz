@@ -96,10 +96,10 @@ public class MainSketch extends PApplet{
     ConstLocalUI.ccInit();
     ConstSwingUI.ccInit();
     EcElement.ccSetTextAdjust(0, -1);
-    VcLocalCoordinator.ccGetInstance().ccInit(this);
-    VcLocalConsole.ccGetInstance().ccInit(this);
-    /* 6 */VcLocalTagger.ccGetInstance().ccInit(this,false);
-    /* 6 */VcLocalTagger.ccGetInstance().ccSetColor(0xFF111111, 0xFFEEEEEE);
+    VcLocalCoordinator.ccInit(this);
+    VcLocalConsole.ccInit(this);
+    /* 6 */VcLocalTagger.ccInit(this,false);
+    /* 6 */VcLocalTagger.ccSetColor(0xFF111111, 0xFFEEEEEE);
     
     //-- modeling
     MainPlantModel.ccRefer().ccInit();
@@ -212,10 +212,10 @@ public class MainSketch extends PApplet{
     boolean lpMasked=false;
     if(keyCode==java.awt.event.KeyEvent.VK_TAB){
       if(pbModifiableKeyCode==java.awt.event.KeyEvent.VK_SHIFT){
-        VcLocalCoordinator.ccGetInstance().ccToPreviousInputIndex();
+        VcLocalCoordinator.ccToPreviousInputIndex();
         lpMasked=true;
       }else{
-        VcLocalCoordinator.ccGetInstance().ccToNextInputIndex();
+        VcLocalCoordinator.ccToNextInputIndex();
       }//..?
     }//..?
     if(keyCode==java.awt.event.KeyEvent.VK_SHIFT){pbModifiableKeyCode=keyCode;}
@@ -374,7 +374,7 @@ public class MainSketch extends PApplet{
   }//+++
   
   public static final String ccGetLastLeavingStamp(){
-    return "_2002271128";
+    return "_2102101109";
   }//+++
 
 }//***eof

@@ -36,8 +36,8 @@ public class TestSketch extends PApplet{
     size(320,240);
     frame.setTitle(TestSketch.class.getSimpleName());
     EcConst.ccSetupSketch(this);
-    VcLocalCoordinator.ccGetInstance().ccInit(this);
-    VcLocalTagger.ccGetInstance().ccInit(this);
+    VcLocalCoordinator.ccInit(this);
+    VcLocalTagger.ccInit(this);
   }//++!
 
   @Override public void draw() {
